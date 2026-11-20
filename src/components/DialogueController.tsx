@@ -90,13 +90,21 @@ export const DialogueController: React.FC<DialogueControllerProps> = ({
   }, []);
 
   // Notify scene artwork highlight target whenever active dialogue beat changes
+  const onActiveSpeakerChangeRef = useRef(onActiveSpeakerChange);
+  onActiveSpeakerChangeRef.current = onActiveSpeakerChange;
+  const lastReportedLineIdRef = useRef<string | null>(null);
+
   useEffect(() => {
+    const currentId = activeLine ? activeLine.id : null;
+    if (currentId === lastReportedLineIdRef.current) return;
+    lastReportedLineIdRef.current = currentId;
+
     if (!activeLine) {
-      onActiveSpeakerChange?.(null, null);
+      onActiveSpeakerChangeRef.current?.(null, null);
       return;
     }
-    onActiveSpeakerChange?.(activeLine.characterFocus ?? activeLine.speaker, activeLine);
-  }, [activeLine, onActiveSpeakerChange]);
+    onActiveSpeakerChangeRef.current?.(activeLine.characterFocus ?? activeLine.speaker, activeLine);
+  }, [activeLine]);
 
   const startLinePlayback = useCallback(
     (lineIndex: number, forceRestart = false) => {

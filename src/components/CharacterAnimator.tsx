@@ -15,6 +15,7 @@ interface CharacterAnimatorProps {
   caption?: string;
   subtitle?: string;
   dialogueText?: string;
+  showSubtitle?: boolean;
   onInspect?: (payload: { src: string; alt: string; note?: string }) => void;
   inspectNote?: string;
 }
@@ -30,6 +31,7 @@ export const CharacterAnimator: React.FC<CharacterAnimatorProps> = ({
   caption,
   subtitle,
   dialogueText,
+  showSubtitle = false,
   onInspect,
   inspectNote,
 }) => {
@@ -43,7 +45,8 @@ export const CharacterAnimator: React.FC<CharacterAnimatorProps> = ({
   const speakerAccent = character ? CHARACTER_STYLES[character].accent : '#f28b50';
   const speakerMeta = character ? CHARACTER_STYLES[character] : null;
 
-  const displayText = dialogueText || subtitle || (isSpeaking ? caption : undefined);
+  // Render subtitle box only if explicitly requested, preventing duplicate text with SyncedSpeechBubble
+  const displayText = showSubtitle ? (dialogueText || subtitle) : undefined;
 
   const motionClass =
     reducedMotion || subtleMotion === 'none'

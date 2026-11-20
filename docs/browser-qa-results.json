@@ -1,0 +1,937 @@
+{
+  "timestamp": "2026-11-20T13:11:59.238Z",
+  "prologue": {
+    "prologuePresent": true,
+    "initialMoment": "scene-a-darkness",
+    "pauseBtnTested": true,
+    "replayBtnTested": true,
+    "muteBtnTested": true,
+    "titleText": ""
+  },
+  "readingExperience": {
+    "sceneAuditResults": [
+      {
+        "id": "scene-01",
+        "found": true,
+        "panelCount": 0,
+        "imageCount": 2,
+        "speechBubbleCount": 0,
+        "subtitleCount": 0,
+        "panelSizes": [
+          {
+            "src": "mumbai_skyline_backdrop.jpg",
+            "width": 1981,
+            "height": 3013,
+            "aspectRatio": "0.66",
+            "tooSmall": false
+          },
+          {
+            "src": "p06_panel01.webp",
+            "width": 617,
+            "height": 936,
+            "aspectRatio": "0.66",
+            "tooSmall": false
+          }
+        ],
+        "duplicateSubtitlesFound": false
+      },
+      {
+        "id": "scene-02",
+        "found": true,
+        "panelCount": 6,
+        "imageCount": 7,
+        "speechBubbleCount": 0,
+        "subtitleCount": 0,
+        "panelSizes": [
+          {
+            "src": "p07_panel02.webp",
+            "width": 1981,
+            "height": 1812,
+            "aspectRatio": "1.09",
+            "tooSmall": false
+          },
+          {
+            "src": "p07_panel01.webp",
+            "width": 625,
+            "height": 150,
+            "aspectRatio": "4.18",
+            "tooSmall": false
+          },
+          {
+            "src": "p07_panel02.webp",
+            "width": 610,
+            "height": 145,
+            "aspectRatio": "4.22",
+            "tooSmall": false
+          },
+          {
+            "src": "p07_panel03.webp",
+            "width": 610,
+            "height": 146,
+            "aspectRatio": "4.18",
+            "tooSmall": false
+          },
+          {
+            "src": "p07_panel04.webp",
+            "width": 610,
+            "height": 149,
+            "aspectRatio": "4.09",
+            "tooSmall": false
+          },
+          {
+            "src": "p07_panel05.webp",
+            "width": 610,
+            "height": 144,
+            "aspectRatio": "4.25",
+            "tooSmall": false
+          },
+          {
+            "src": "p07_panel06.webp",
+            "width": 408,
+            "height": 100,
+            "aspectRatio": "4.09",
+            "tooSmall": true
+          }
+        ],
+        "duplicateSubtitlesFound": false
+      },
+      {
+        "id": "scene-03",
+        "found": true,
+        "panelCount": 6,
+        "imageCount": 7,
+        "speechBubbleCount": 0,
+        "subtitleCount": 0,
+        "panelSizes": [
+          {
+            "src": "p08_panel02.webp",
+            "width": 1981,
+            "height": 1755,
+            "aspectRatio": "1.13",
+            "tooSmall": false
+          },
+          {
+            "src": "p08_panel01.webp",
+            "width": 705,
+            "height": 168,
+            "aspectRatio": "4.18",
+            "tooSmall": false
+          },
+          {
+            "src": "p08_panel02.webp",
+            "width": 1070,
+            "height": 257,
+            "aspectRatio": "4.16",
+            "tooSmall": false
+          },
+          {
+            "src": "p08_panel03.webp",
+            "width": 625,
+            "height": 150,
+            "aspectRatio": "4.16",
+            "tooSmall": false
+          },
+          {
+            "src": "p08_panel04.webp",
+            "width": 610,
+            "height": 145,
+            "aspectRatio": "4.22",
+            "tooSmall": false
+          },
+          {
+            "src": "p08_panel05.webp",
+            "width": 625,
+            "height": 148,
+            "aspectRatio": "4.22",
+            "tooSmall": false
+          },
+          {
+            "src": "p08_panel06.webp",
+            "width": 593,
+            "height": 145,
+            "aspectRatio": "4.09",
+            "tooSmall": false
+          }
+        ],
+        "duplicateSubtitlesFound": false
+      },
+      {
+        "id": "scene-04",
+        "found": true,
+        "panelCount": 22,
+        "imageCount": 23,
+        "speechBubbleCount": 0,
+        "subtitleCount": 0,
+        "panelSizes": [
+          {
+            "src": "p10_panel04.webp",
+            "width": 1981,
+            "height": 8736,
+            "aspectRatio": "0.23",
+            "tooSmall": false
+          },
+          {
+            "src": "p09_panel01.webp",
+            "width": 1070,
+            "height": 528,
+            "aspectRatio": "2.03",
+            "tooSmall": false
+          },
+          {
+            "src": "p09_panel02.webp",
+            "width": 300,
+            "height": 73,
+            "aspectRatio": "4.13",
+            "tooSmall": true
+          },
+          {
+            "src": "p09_panel04.webp",
+            "width": 299,
+            "height": 112,
+            "aspectRatio": "2.67",
+            "tooSmall": true
+          },
+          {
+            "src": "p09_panel03.webp",
+            "width": 610,
+            "height": 223,
+            "aspectRatio": "2.74",
+            "tooSmall": false
+          },
+          {
+            "src": "p10_panel01.webp",
+            "width": 292,
+            "height": 512,
+            "aspectRatio": "0.57",
+            "tooSmall": false
+          },
+          {
+            "src": "p10_panel02.webp",
+            "width": 292,
+            "height": 360,
+            "aspectRatio": "0.81",
+            "tooSmall": false
+          },
+          {
+            "src": "p10_panel03.webp",
+            "width": 610,
+            "height": 807,
+            "aspectRatio": "0.76",
+            "tooSmall": false
+          },
+          {
+            "src": "p10_panel04.webp",
+            "width": 610,
+            "height": 197,
+            "aspectRatio": "3.10",
+            "tooSmall": false
+          },
+          {
+            "src": "p10_panel06.webp",
+            "width": 292,
+            "height": 512,
+            "aspectRatio": "0.57",
+            "tooSmall": false
+          },
+          {
+            "src": "p10_panel08.webp",
+            "width": 292,
+            "height": 525,
+            "aspectRatio": "0.56",
+            "tooSmall": false
+          },
+          {
+            "src": "p10_panel07.webp",
+            "width": 610,
+            "height": 758,
+            "aspectRatio": "0.81",
+            "tooSmall": false
+          },
+          {
+            "src": "p11_panel01.webp",
+            "width": 625,
+            "height": 218,
+            "aspectRatio": "2.87",
+            "tooSmall": false
+          },
+          {
+            "src": "p11_panel02.webp",
+            "width": 292,
+            "height": 231,
+            "aspectRatio": "1.27",
+            "tooSmall": false
+          },
+          {
+            "src": "p11_panel03.webp",
+            "width": 300,
+            "height": 236,
+            "aspectRatio": "1.27",
+            "tooSmall": false
+          },
+          {
+            "src": "p11_panel05.webp",
+            "width": 354,
+            "height": 287,
+            "aspectRatio": "1.23",
+            "tooSmall": false
+          },
+          {
+            "src": "p12_panel01.webp",
+            "width": 293,
+            "height": 508,
+            "aspectRatio": "0.58",
+            "tooSmall": false
+          },
+          {
+            "src": "p12_panel02.webp",
+            "width": 292,
+            "height": 552,
+            "aspectRatio": "0.53",
+            "tooSmall": false
+          },
+          {
+            "src": "p12_panel03.webp",
+            "width": 610,
+            "height": 807,
+            "aspectRatio": "0.76",
+            "tooSmall": false
+          },
+          {
+            "src": "p12_panel04.webp",
+            "width": 345,
+            "height": 113,
+            "aspectRatio": "3.04",
+            "tooSmall": true
+          },
+          {
+            "src": "p12_panel05.webp",
+            "width": 292,
+            "height": 503,
+            "aspectRatio": "0.58",
+            "tooSmall": false
+          },
+          {
+            "src": "p12_panel06.webp",
+            "width": 292,
+            "height": 541,
+            "aspectRatio": "0.54",
+            "tooSmall": false
+          },
+          {
+            "src": "p12_panel07.webp",
+            "width": 610,
+            "height": 807,
+            "aspectRatio": "0.76",
+            "tooSmall": false
+          }
+        ],
+        "duplicateSubtitlesFound": false
+      },
+      {
+        "id": "scene-05",
+        "found": true,
+        "panelCount": 7,
+        "imageCount": 8,
+        "speechBubbleCount": 0,
+        "subtitleCount": 0,
+        "panelSizes": [
+          {
+            "src": "p17_panel01.webp",
+            "width": 1981,
+            "height": 1700,
+            "aspectRatio": "1.17",
+            "tooSmall": false
+          },
+          {
+            "src": "p13_panel01.webp",
+            "width": 522,
+            "height": 130,
+            "aspectRatio": "4.03",
+            "tooSmall": false
+          },
+          {
+            "src": "p13_panel02.webp",
+            "width": 522,
+            "height": 123,
+            "aspectRatio": "4.23",
+            "tooSmall": false
+          },
+          {
+            "src": "p11_panel06.webp",
+            "width": 485,
+            "height": 165,
+            "aspectRatio": "2.93",
+            "tooSmall": false
+          },
+          {
+            "src": "p13_panel03.webp",
+            "width": 485,
+            "height": 117,
+            "aspectRatio": "4.14",
+            "tooSmall": true
+          },
+          {
+            "src": "p13_panel04.webp",
+            "width": 485,
+            "height": 116,
+            "aspectRatio": "4.17",
+            "tooSmall": true
+          },
+          {
+            "src": "p13_panel05.webp",
+            "width": 485,
+            "height": 116,
+            "aspectRatio": "4.17",
+            "tooSmall": true
+          },
+          {
+            "src": "p13_panel06.webp",
+            "width": 475,
+            "height": 118,
+            "aspectRatio": "4.03",
+            "tooSmall": true
+          }
+        ],
+        "duplicateSubtitlesFound": false
+      },
+      {
+        "id": "scene-06",
+        "found": true,
+        "panelCount": 10,
+        "imageCount": 11,
+        "speechBubbleCount": 0,
+        "subtitleCount": 0,
+        "panelSizes": [
+          {
+            "src": "p17_panel01.webp",
+            "width": 1981,
+            "height": 4318,
+            "aspectRatio": "0.46",
+            "tooSmall": false
+          },
+          {
+            "src": "p14_panel01.webp",
+            "width": 292,
+            "height": 672,
+            "aspectRatio": "0.43",
+            "tooSmall": false
+          },
+          {
+            "src": "p14_panel02.webp",
+            "width": 299,
+            "height": 704,
+            "aspectRatio": "0.43",
+            "tooSmall": false
+          },
+          {
+            "src": "p14_panel03.webp",
+            "width": 299,
+            "height": 709,
+            "aspectRatio": "0.42",
+            "tooSmall": false
+          },
+          {
+            "src": "p14_panel04.webp",
+            "width": 292,
+            "height": 677,
+            "aspectRatio": "0.43",
+            "tooSmall": false
+          },
+          {
+            "src": "p14_panel05.webp",
+            "width": 625,
+            "height": 425,
+            "aspectRatio": "1.47",
+            "tooSmall": false
+          },
+          {
+            "src": "p15_panel01.webp",
+            "width": 299,
+            "height": 97,
+            "aspectRatio": "3.09",
+            "tooSmall": true
+          },
+          {
+            "src": "p15_panel02.webp",
+            "width": 299,
+            "height": 46,
+            "aspectRatio": "6.47",
+            "tooSmall": true
+          },
+          {
+            "src": "p15_panel03.webp",
+            "width": 626,
+            "height": 94,
+            "aspectRatio": "6.67",
+            "tooSmall": true
+          },
+          {
+            "src": "p15_panel05.webp",
+            "width": 1070,
+            "height": 728,
+            "aspectRatio": "1.47",
+            "tooSmall": false
+          },
+          {
+            "src": "p17_panel01.webp",
+            "width": 1027,
+            "height": 572,
+            "aspectRatio": "1.80",
+            "tooSmall": false
+          }
+        ],
+        "duplicateSubtitlesFound": false
+      },
+      {
+        "id": "scene-07",
+        "found": true,
+        "panelCount": 12,
+        "imageCount": 13,
+        "speechBubbleCount": 0,
+        "subtitleCount": 0,
+        "panelSizes": [
+          {
+            "src": "p16_panel01.webp",
+            "width": 1981,
+            "height": 3010,
+            "aspectRatio": "0.66",
+            "tooSmall": false
+          },
+          {
+            "src": "p16_panel01.webp",
+            "width": 1070,
+            "height": 317,
+            "aspectRatio": "3.38",
+            "tooSmall": false
+          },
+          {
+            "src": "p16_panel02.webp",
+            "width": 522,
+            "height": 154,
+            "aspectRatio": "3.40",
+            "tooSmall": false
+          },
+          {
+            "src": "p16_panel03.webp",
+            "width": 522,
+            "height": 150,
+            "aspectRatio": "3.48",
+            "tooSmall": false
+          },
+          {
+            "src": "p16_panel04.webp",
+            "width": 613,
+            "height": 179,
+            "aspectRatio": "3.43",
+            "tooSmall": false
+          },
+          {
+            "src": "p16_panel05.webp",
+            "width": 1070,
+            "height": 322,
+            "aspectRatio": "3.32",
+            "tooSmall": false
+          },
+          {
+            "src": "p17_panel02.webp",
+            "width": 1066,
+            "height": 148,
+            "aspectRatio": "7.22",
+            "tooSmall": false
+          },
+          {
+            "src": "p17_panel03.webp",
+            "width": 607,
+            "height": 253,
+            "aspectRatio": "2.40",
+            "tooSmall": false
+          },
+          {
+            "src": "p17_panel04.webp",
+            "width": 290,
+            "height": 93,
+            "aspectRatio": "3.11",
+            "tooSmall": true
+          },
+          {
+            "src": "p18_panel01.webp",
+            "width": 283,
+            "height": 70,
+            "aspectRatio": "4.03",
+            "tooSmall": true
+          },
+          {
+            "src": "p18_panel05.webp",
+            "width": 283,
+            "height": 424,
+            "aspectRatio": "0.67",
+            "tooSmall": false
+          },
+          {
+            "src": "p18_panel06.webp",
+            "width": 290,
+            "height": 448,
+            "aspectRatio": "0.65",
+            "tooSmall": false
+          },
+          {
+            "src": "p18_panel07.webp",
+            "width": 592,
+            "height": 145,
+            "aspectRatio": "4.08",
+            "tooSmall": false
+          }
+        ],
+        "duplicateSubtitlesFound": false
+      },
+      {
+        "id": "scene-08",
+        "found": true,
+        "panelCount": 16,
+        "imageCount": 17,
+        "speechBubbleCount": 0,
+        "subtitleCount": 0,
+        "panelSizes": [
+          {
+            "src": "p16_panel01.webp",
+            "width": 1981,
+            "height": 3189,
+            "aspectRatio": "0.62",
+            "tooSmall": false
+          },
+          {
+            "src": "p19_panel06.webp",
+            "width": 522,
+            "height": 125,
+            "aspectRatio": "4.17",
+            "tooSmall": false
+          },
+          {
+            "src": "p20_panel02.webp",
+            "width": 522,
+            "height": 125,
+            "aspectRatio": "4.17",
+            "tooSmall": false
+          },
+          {
+            "src": "p20_panel03.webp",
+            "width": 610,
+            "height": 298,
+            "aspectRatio": "2.04",
+            "tooSmall": false
+          },
+          {
+            "src": "p21_panel01.webp",
+            "width": 300,
+            "height": 89,
+            "aspectRatio": "3.37",
+            "tooSmall": true
+          },
+          {
+            "src": "p21_panel02.webp",
+            "width": 292,
+            "height": 85,
+            "aspectRatio": "3.44",
+            "tooSmall": true
+          },
+          {
+            "src": "p21_panel03.webp",
+            "width": 610,
+            "height": 179,
+            "aspectRatio": "3.41",
+            "tooSmall": false
+          },
+          {
+            "src": "p21_panel04.webp",
+            "width": 292,
+            "height": 84,
+            "aspectRatio": "3.47",
+            "tooSmall": true
+          },
+          {
+            "src": "p21_panel05.webp",
+            "width": 292,
+            "height": 87,
+            "aspectRatio": "3.37",
+            "tooSmall": true
+          },
+          {
+            "src": "p22_panel01.webp",
+            "width": 1070,
+            "height": 319,
+            "aspectRatio": "3.36",
+            "tooSmall": false
+          },
+          {
+            "src": "p22_panel02.webp",
+            "width": 1070,
+            "height": 312,
+            "aspectRatio": "3.43",
+            "tooSmall": false
+          },
+          {
+            "src": "p22_panel03.webp",
+            "width": 522,
+            "height": 151,
+            "aspectRatio": "3.45",
+            "tooSmall": false
+          },
+          {
+            "src": "p22_panel04.webp",
+            "width": 522,
+            "height": 315,
+            "aspectRatio": "1.66",
+            "tooSmall": false
+          },
+          {
+            "src": "p23_panel01.webp",
+            "width": 522,
+            "height": 155,
+            "aspectRatio": "3.37",
+            "tooSmall": false
+          },
+          {
+            "src": "p23_panel02.webp",
+            "width": 522,
+            "height": 155,
+            "aspectRatio": "3.37",
+            "tooSmall": false
+          },
+          {
+            "src": "p23_panel04.webp",
+            "width": 613,
+            "height": 178,
+            "aspectRatio": "3.45",
+            "tooSmall": false
+          },
+          {
+            "src": "p23_panel05.webp",
+            "width": 431,
+            "height": 130,
+            "aspectRatio": "3.32",
+            "tooSmall": false
+          }
+        ],
+        "duplicateSubtitlesFound": false
+      },
+      {
+        "id": "scene-09",
+        "found": true,
+        "panelCount": 3,
+        "imageCount": 4,
+        "speechBubbleCount": 0,
+        "subtitleCount": 0,
+        "panelSizes": [
+          {
+            "src": "p17_panel01.webp",
+            "width": 1981,
+            "height": 2386,
+            "aspectRatio": "0.83",
+            "tooSmall": false
+          },
+          {
+            "src": "p24_panel01.webp",
+            "width": 1070,
+            "height": 317,
+            "aspectRatio": "3.38",
+            "tooSmall": false
+          },
+          {
+            "src": "p24_panel02.webp",
+            "width": 894,
+            "height": 804,
+            "aspectRatio": "1.11",
+            "tooSmall": false
+          },
+          {
+            "src": "p24_panel03.webp",
+            "width": 1070,
+            "height": 319,
+            "aspectRatio": "3.36",
+            "tooSmall": false
+          }
+        ],
+        "duplicateSubtitlesFound": false
+      },
+      {
+        "id": "scene-10",
+        "found": true,
+        "panelCount": 14,
+        "imageCount": 16,
+        "speechBubbleCount": 0,
+        "subtitleCount": 0,
+        "panelSizes": [
+          {
+            "src": "p25_panel01.webp",
+            "width": 1981,
+            "height": 4954,
+            "aspectRatio": "0.40",
+            "tooSmall": false
+          },
+          {
+            "src": "p25_panel01.webp",
+            "width": 522,
+            "height": 126,
+            "aspectRatio": "4.14",
+            "tooSmall": false
+          },
+          {
+            "src": "p25_panel02.webp",
+            "width": 522,
+            "height": 127,
+            "aspectRatio": "4.10",
+            "tooSmall": false
+          },
+          {
+            "src": "p25_panel04.webp",
+            "width": 711,
+            "height": 178,
+            "aspectRatio": "4.00",
+            "tooSmall": false
+          },
+          {
+            "src": "p25_panel05.webp",
+            "width": 522,
+            "height": 124,
+            "aspectRatio": "4.20",
+            "tooSmall": false
+          },
+          {
+            "src": "p25_panel06.webp",
+            "width": 531,
+            "height": 132,
+            "aspectRatio": "4.02",
+            "tooSmall": false
+          },
+          {
+            "src": "p26_panel01.webp",
+            "width": 610,
+            "height": 183,
+            "aspectRatio": "3.33",
+            "tooSmall": false
+          },
+          {
+            "src": "p26_panel02.webp",
+            "width": 610,
+            "height": 177,
+            "aspectRatio": "3.45",
+            "tooSmall": false
+          },
+          {
+            "src": "p26_panel03.webp",
+            "width": 295,
+            "height": 705,
+            "aspectRatio": "0.42",
+            "tooSmall": false
+          },
+          {
+            "src": "p26_panel04.webp",
+            "width": 292,
+            "height": 719,
+            "aspectRatio": "0.41",
+            "tooSmall": false
+          },
+          {
+            "src": "p26_panel05.webp",
+            "width": 295,
+            "height": 725,
+            "aspectRatio": "0.41",
+            "tooSmall": false
+          },
+          {
+            "src": "p26_panel06.webp",
+            "width": 292,
+            "height": 709,
+            "aspectRatio": "0.41",
+            "tooSmall": false
+          },
+          {
+            "src": "p26_panel07.webp",
+            "width": 616,
+            "height": 184,
+            "aspectRatio": "3.35",
+            "tooSmall": false
+          },
+          {
+            "src": "p27_panel01.webp",
+            "width": 634,
+            "height": 717,
+            "aspectRatio": "0.88",
+            "tooSmall": false
+          },
+          {
+            "src": "p27_panel02.webp",
+            "width": 365,
+            "height": 135,
+            "aspectRatio": "2.70",
+            "tooSmall": false
+          },
+          {
+            "src": "ch1_tea_sketch.webp",
+            "width": 0,
+            "height": 176,
+            "aspectRatio": 0,
+            "tooSmall": true
+          }
+        ],
+        "duplicateSubtitlesFound": false
+      }
+    ],
+    "totalPanels": 108,
+    "tooSmallPanels": 18,
+    "duplicateCount": 0
+  },
+  "audioAndScrolling": {
+    "slowScrollAudioCheck": {
+      "narratorPlaying": false,
+      "captionText": "Chronicle · ProloguePause“”",
+      "s2Active": true
+    },
+    "s04Check": {
+      "scene04Reached": true,
+      "speechBubblesVisible": 0,
+      "bubbleTexts": []
+    },
+    "reverseScrollCheck": {
+      "activeScene": "scene-02",
+      "scrolledUpSuccess": true
+    },
+    "rapidJumpCheck": {
+      "finalScene": "scene-10",
+      "scrollY": 30063
+    },
+    "muteCheck": {
+      "found": true,
+      "beforeLabel": "Mute ambient sound",
+      "afterLabel": "Mute ambient sound"
+    }
+  },
+  "performance": {
+    "fpsResults": {
+      "avgFPS": 31,
+      "p99FPS": 11,
+      "minFPS": 10,
+      "totalFrames": 175,
+      "memory": {
+        "usedJSHeapMB": 75,
+        "totalJSHeapMB": 132
+      }
+    },
+    "resourceTimings": {
+      "totalResources": 241,
+      "audioCount": 67,
+      "avgAudioDurationMs": 6,
+      "imageCount": 99,
+      "avgImageDurationMs": 131
+    }
+  },
+  "mobile": {
+    "bodyWidth": 390,
+    "scrollWidth": 390,
+    "hasHorizontalScroll": false,
+    "minFontSize": 9,
+    "avgFontSize": 16
+  },
+  "consoleErrors": [],
+  "networkErrors": []
+}

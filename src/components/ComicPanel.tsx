@@ -35,7 +35,7 @@ export const ComicPanel: React.FC<ComicPanelProps> = ({
   const [isZoomed, setIsZoomed] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
 
-  const displayText = dialogueText || subtitle || caption;
+  const displayText = dialogueText || subtitle;
 
   return (
     <figure

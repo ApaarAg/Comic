@@ -111,6 +111,7 @@ export const ChapterChrome: React.FC<ChapterChromeProps> = ({
           <div className="relative flex items-center gap-2 sm:gap-2.5 shrink-0">
             <button
               type="button"
+              data-testid="chrome-mute-toggle"
               onClick={onToggleMute}
               aria-label={isMuted ? 'Unmute ambient sound' : 'Mute ambient sound'}
               aria-pressed={!isMuted}
