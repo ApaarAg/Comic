@@ -24,7 +24,17 @@ export type SfxCue =
   | 'truck'
   | 'transition';
 
-type AmbienceTrackId =
+export type AmbienceTrackId =
+  | 'scene_01_mumbai'
+  | 'scene_02_traffic'
+  | 'scene_03_party'
+  | 'scene_04_death_world'
+  | 'scene_05_convergence'
+  | 'scene_06_transformation'
+  | 'scene_07_hospital'
+  | 'scene_08_escape'
+  | 'scene_09_truck'
+  | 'scene_10_eight_years_later'
   | 'amb_mumbai'
   | 'amb_traffic'
   | 'amb_party'
@@ -33,20 +43,30 @@ type AmbienceTrackId =
   | 'amb_dawn';
 
 const MOOD_TO_AMBIENCE: Record<SoundMood, AmbienceTrackId> = {
-  prologue: 'amb_celestial',
-  sunset: 'amb_mumbai',
-  traffic: 'amb_traffic',
-  twilight: 'amb_party',
-  celestial: 'amb_celestial',
-  split: 'amb_party',
-  descent: 'amb_celestial',
-  clinical: 'amb_hospital',
-  chase: 'amb_hospital',
-  impact: 'amb_hospital',
-  dawn: 'amb_dawn',
+  prologue: 'scene_01_mumbai',
+  sunset: 'scene_01_mumbai',
+  traffic: 'scene_02_traffic',
+  twilight: 'scene_03_party',
+  celestial: 'scene_04_death_world',
+  split: 'scene_05_convergence',
+  descent: 'scene_06_transformation',
+  clinical: 'scene_07_hospital',
+  chase: 'scene_08_escape',
+  impact: 'scene_09_truck',
+  dawn: 'scene_10_eight_years_later',
 };
 
 const AMBIENCE_SOURCES: Record<AmbienceTrackId, string> = {
+  scene_01_mumbai: '/assets/audio/soundscapes/scene_01_mumbai.wav',
+  scene_02_traffic: '/assets/audio/soundscapes/scene_02_traffic.wav',
+  scene_03_party: '/assets/audio/soundscapes/scene_03_party.wav',
+  scene_04_death_world: '/assets/audio/soundscapes/scene_04_death_world.wav',
+  scene_05_convergence: '/assets/audio/soundscapes/scene_05_convergence.wav',
+  scene_06_transformation: '/assets/audio/soundscapes/scene_06_transformation.wav',
+  scene_07_hospital: '/assets/audio/soundscapes/scene_07_hospital.wav',
+  scene_08_escape: '/assets/audio/soundscapes/scene_08_escape.wav',
+  scene_09_truck: '/assets/audio/soundscapes/scene_09_truck.wav',
+  scene_10_eight_years_later: '/assets/audio/soundscapes/scene_10_eight_years_later.wav',
   amb_mumbai: '/assets/audio/amb_mumbai.wav',
   amb_traffic: '/assets/audio/amb_traffic.wav',
   amb_party: '/assets/audio/amb_party.wav',

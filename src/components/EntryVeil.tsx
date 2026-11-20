@@ -379,28 +379,15 @@ export const EntryVeil: React.FC<EntryVeilProps> = ({
               &ldquo;{activeBeat.text}&rdquo;
             </p>
           </div>
-          <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
+          <div className="mt-8 flex items-center justify-center">
             <button
               type="button"
               data-testid="enter-chapter-btn"
-              onClick={() => triggerEnter(!isMuted)}
-              className="inline-flex items-center gap-3 border border-[#f28b50] bg-[#f28b50] px-7 py-3.5 text-xs font-semibold uppercase tracking-[0.2em] text-[#090d1a] cursor-pointer"
+              onClick={() => triggerEnter(true)}
+              className="inline-flex items-center gap-3 border border-[#f28b50] bg-[#f28b50] px-8 py-4 text-xs font-semibold uppercase tracking-[0.2em] text-[#090d1a] hover:scale-105 transition-transform cursor-pointer"
             >
               <span>Enter Chapter One</span>
               <ArrowRight className="h-4 w-4" />
-            </button>
-            <button
-              type="button"
-              onClick={onToggleMute}
-              aria-pressed={!isMuted}
-              className="inline-flex items-center gap-2 border border-white/20 bg-[#12172a]/85 px-4 py-3.5 text-xs font-medium uppercase tracking-[0.16em] text-[#f5efe6] cursor-pointer"
-            >
-              {isMuted ? (
-                <VolumeX className="h-3.5 w-3.5" />
-              ) : (
-                <Volume2 className="h-3.5 w-3.5 text-[#f28b50]" />
-              )}
-              <span>{isMuted ? 'Sound Off' : 'Sound On'}</span>
             </button>
           </div>
         </div>
@@ -481,27 +468,11 @@ export const EntryVeil: React.FC<EntryVeilProps> = ({
               <RotateCcw className="h-3.5 w-3.5" />
             </button>
 
-            {/* Mute / Unmute Toggle */}
-            <button
-              type="button"
-              onClick={onToggleMute}
-              aria-label={isMuted ? 'Enable sound' : 'Mute sound'}
-              aria-pressed={!isMuted}
-              className="inline-flex h-9 sm:h-10 items-center gap-2 border border-white/20 bg-[#0b0e1b]/85 px-3 sm:px-3.5 text-[11px] font-medium uppercase tracking-[0.16em] text-[#f5efe6] backdrop-blur-md transition-colors hover:border-[#f28b50] cursor-pointer whitespace-nowrap"
-            >
-              {isMuted ? (
-                <VolumeX className="h-3.5 w-3.5 text-[#cfc5b9]/80" />
-              ) : (
-                <Volume2 className="h-3.5 w-3.5 text-[#f28b50]" />
-              )}
-              <span className="hidden sm:inline">{isMuted ? 'Sound Off' : 'Sound On'}</span>
-            </button>
-
             {/* Skip Intro */}
             <button
               type="button"
               data-testid="skip-prologue-btn"
-              onClick={() => triggerEnter(!isMuted)}
+              onClick={() => triggerEnter(true)}
               className="inline-flex h-9 sm:h-10 items-center gap-2 border border-[#f28b50]/60 bg-[#f28b50]/20 px-3.5 sm:px-4 text-[11px] font-medium uppercase tracking-[0.18em] text-[#fbf6ee] backdrop-blur-md transition-all hover:bg-[#f28b50] hover:text-[#090d1a] cursor-pointer whitespace-nowrap"
             >
               <span>Skip Intro</span>

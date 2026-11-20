@@ -111,22 +111,6 @@ export const ChapterChrome: React.FC<ChapterChromeProps> = ({
           <div className="relative flex items-center gap-2 sm:gap-2.5 shrink-0">
             <button
               type="button"
-              data-testid="chrome-mute-toggle"
-              onClick={onToggleMute}
-              aria-label={isMuted ? 'Unmute ambient sound' : 'Mute ambient sound'}
-              aria-pressed={!isMuted}
-              className="inline-flex h-10 items-center gap-2 border border-white/15 bg-[#121628]/85 px-3 text-xs font-medium tracking-wider uppercase text-[#f6efe5] transition-colors hover:border-[#f28b50]/60 hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#f28b50] whitespace-nowrap shrink-0 cursor-pointer"
-            >
-              {isMuted ? (
-                <VolumeX className="h-3.5 w-3.5 text-[#e6ddd0]/65" />
-              ) : (
-                <Volume2 className="h-3.5 w-3.5 text-[#f28b50]" />
-              )}
-              <span className="hidden md:inline">{isMuted ? 'Sound Off' : 'Sound On'}</span>
-            </button>
-
-            <button
-              type="button"
               onClick={() => setMixerOpen((prev) => !prev)}
               aria-label="Toggle audio mixer"
               aria-expanded={mixerOpen}
@@ -163,14 +147,35 @@ export const ChapterChrome: React.FC<ChapterChromeProps> = ({
                   <span className="font-mono text-[11px] uppercase tracking-[0.2em] text-[#f28b50]">
                     Audio Mixer
                   </span>
-                  <button
-                    type="button"
-                    onClick={() => setMixerOpen(false)}
-                    aria-label="Close audio mixer"
-                    className="text-[#cfc5b9]/75 hover:text-white cursor-pointer"
-                  >
-                    <X className="h-3.5 w-3.5" />
-                  </button>
+                  <div className="flex items-center gap-2">
+                    <button
+                      type="button"
+                      data-testid="chrome-mute-toggle"
+                      onClick={onToggleMute}
+                      aria-label={isMuted ? 'Unmute master audio' : 'Mute master audio'}
+                      className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded border border-white/20 text-[10px] uppercase font-mono tracking-wider text-[#e6ddd0] hover:border-[#f28b50] hover:text-[#f28b50] cursor-pointer"
+                    >
+                      {isMuted ? (
+                        <>
+                          <VolumeX className="h-3 w-3 text-[#cfc5b9]/75" />
+                          <span>Muted</span>
+                        </>
+                      ) : (
+                        <>
+                          <Volume2 className="h-3 w-3 text-[#f28b50]" />
+                          <span>Active</span>
+                        </>
+                      )}
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setMixerOpen(false)}
+                      aria-label="Close audio mixer"
+                      className="text-[#cfc5b9]/75 hover:text-white cursor-pointer"
+                    >
+                      <X className="h-3.5 w-3.5" />
+                    </button>
+                  </div>
                 </div>
 
                 <div className="space-y-3.5 text-xs">

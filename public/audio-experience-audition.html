@@ -1,0 +1,1192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Storyverse — Audio Experience 2.0 Audition & Comparison Suite</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,400;1,600&family=IBM+Plex+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #070912;
+      --surface: #0e1222;
+      --surface-elevated: #151b32;
+      --border: rgba(255, 255, 255, 0.12);
+      --accent: #f28b50;
+      --accent-glow: rgba(242, 139, 80, 0.25);
+      --text: #f6efe6;
+      --muted: #a69e94;
+      --card-highlight: #1b223d;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      padding: 2.5rem 1.5rem 5rem;
+      line-height: 1.5;
+    }
+    .container { max-width: 1240px; margin: 0 auto; }
+    header {
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 2rem;
+      margin-bottom: 3rem;
+    }
+    .eyebrow {
+      font-family: 'IBM Plex Mono', monospace;
+      color: var(--accent);
+      text-transform: uppercase;
+      font-size: 0.75rem;
+      letter-spacing: 0.2em;
+      margin-bottom: 0.5rem;
+    }
+    h1 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2.75rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: #fff;
+      line-height: 1.15;
+      margin-bottom: 0.75rem;
+    }
+    .subtitle {
+      color: var(--muted);
+      font-size: 1.05rem;
+      max-width: 820px;
+    }
+    nav.pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      margin-top: 1.5rem;
+    }
+    nav.pills a {
+      display: inline-block;
+      text-decoration: none;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      padding: 0.5rem 1rem;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--text);
+      border-radius: 4px;
+      transition: all 0.2s;
+    }
+    nav.pills a:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+      background: rgba(242, 139, 80, 0.08);
+    }
+    section {
+      margin-bottom: 4.5rem;
+      scroll-margin-top: 2rem;
+    }
+    .section-header {
+      margin-bottom: 1.5rem;
+    }
+    .section-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2rem;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    .section-desc {
+      color: var(--muted);
+      font-size: 0.95rem;
+      margin-top: 0.35rem;
+    }
+    .badge {
+      display: inline-block;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.65rem;
+      text-transform: uppercase;
+      padding: 0.2rem 0.55rem;
+      border-radius: 3px;
+      letter-spacing: 0.1em;
+    }
+    .badge-gemini { background: rgba(66, 133, 244, 0.2); color: #8ab4f8; border: 1px solid rgba(66, 133, 244, 0.4); }
+    .badge-eleven { background: rgba(242, 139, 80, 0.2); color: #f28b50; border: 1px solid rgba(242, 139, 80, 0.4); }
+    .badge-baseline { background: rgba(160, 160, 160, 0.15); color: #aaa; border: 1px solid rgba(160, 160, 160, 0.3); }
+
+    /* Narrator Candidates Grid */
+    .narrator-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+      gap: 1.5rem;
+    }
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      position: relative;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+    .card:hover {
+      border-color: rgba(242, 139, 80, 0.4);
+      transform: translateY(-2px);
+    }
+    .card.recommended {
+      border-color: var(--accent);
+      background: linear-gradient(180deg, #18203b 0%, #0e1222 100%);
+      box-shadow: 0 8px 24px rgba(242, 139, 80, 0.12);
+    }
+    .card-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 0.5rem;
+    }
+    .candidate-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.4rem;
+      font-weight: 600;
+      color: #fff;
+    }
+    .candidate-meta {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.75rem;
+      color: var(--muted);
+      margin-top: 0.2rem;
+    }
+    .candidate-desc {
+      font-size: 0.85rem;
+      color: #cfc5b9;
+      background: rgba(0, 0, 0, 0.25);
+      padding: 0.75rem;
+      border-left: 3px solid var(--accent);
+      border-radius: 0 4px 4px 0;
+    }
+    .passages {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      margin-top: 0.5rem;
+    }
+    .passage-item {
+      background: rgba(255, 255, 255, 0.03);
+      padding: 0.75rem;
+      border-radius: 6px;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+    .passage-label {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--accent);
+      margin-bottom: 0.25rem;
+      display: flex;
+      justify-content: space-between;
+    }
+    .passage-text {
+      font-size: 0.82rem;
+      color: #e6ddd0;
+      font-style: italic;
+      margin-bottom: 0.5rem;
+    }
+    audio {
+      width: 100%;
+      height: 32px;
+      outline: none;
+      filter: invert(0.9) hue-rotate(180deg);
+    }
+
+    /* Acting Comparison Layout */
+    .acting-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+    .acting-row {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1.5rem;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+    }
+    @media (max-width: 860px) {
+      .acting-row { grid-template-columns: 1fr; }
+    }
+    .acting-header {
+      grid-column: 1 / -1;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      padding-bottom: 0.75rem;
+      margin-bottom: 0.25rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+    .acting-char {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.35rem;
+      color: #fff;
+    }
+    .acting-dir {
+      font-size: 0.85rem;
+      color: var(--accent);
+      font-family: 'IBM Plex Mono', monospace;
+    }
+    .acting-quote {
+      grid-column: 1 / -1;
+      font-style: italic;
+      font-size: 0.95rem;
+      color: #fbf6ee;
+      padding: 0.5rem 0.75rem;
+      background: rgba(0,0,0,0.3);
+      border-radius: 4px;
+    }
+    .acting-side {
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      padding: 1rem;
+      border-radius: 6px;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    .acting-side.new-performance {
+      border-color: rgba(242, 139, 80, 0.35);
+      background: rgba(242, 139, 80, 0.03);
+    }
+    .side-title {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    /* Soundscapes Grid */
+    .soundscapes-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1.25rem;
+    }
+    .soundscape-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1.25rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+    .scene-num {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.7rem;
+      color: var(--accent);
+      text-transform: uppercase;
+    }
+    .scene-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.25rem;
+      color: #fff;
+    }
+    .soundscape-layers {
+      font-size: 0.8rem;
+      color: var(--muted);
+      line-height: 1.4;
+      min-height: 44px;
+    }
+
+    /* Bible Table */
+    .table-container {
+      overflow-x: auto;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.85rem;
+      text-align: left;
+    }
+    th {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      background: rgba(255, 255, 255, 0.04);
+      padding: 0.85rem 1rem;
+      border-bottom: 1px solid var(--border);
+      color: #fff;
+    }
+    td {
+      padding: 0.85rem 1rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      color: #cfc5b9;
+    }
+    tr:hover td {
+      background: rgba(255, 255, 255, 0.02);
+    }
+    .intensity-badge {
+      display: inline-block;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.7rem;
+      padding: 0.15rem 0.4rem;
+      border-radius: 3px;
+      font-weight: 600;
+    }
+    .intensity-5 { background: #e53e3e; color: #fff; }
+    .intensity-4 { background: #dd6b20; color: #fff; }
+    .intensity-3 { background: #d69e2e; color: #fff; }
+    .intensity-2 { background: #319795; color: #fff; }
+    .intensity-1 { background: #4a5568; color: #fff; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="eyebrow">Storyverse Chapter 01 · Production Auditions</div>
+      <h1>Audio Experience 2.0 Audition & Comparison Suite</h1>
+      <p class="subtitle">
+        Review the new narrator candidates, listen to side-by-side emotional character performances, explore the 10 tailored scene soundscapes, and audit the complete 34-line Voice Acting Bible.
+      </p>
+      <nav class="pills">
+        <a href="#narrator">1. Narrator Replacement Candidates</a>
+        <a href="#acting">2. Emotional Acting Auditions</a>
+        <a href="#soundscapes">3. Cinematic Soundscapes (10 Scenes)</a>
+        <a href="#bible">4. Voice Acting Bible (34 Lines)</a>
+      </nav>
+    </header>
+
+    <!-- SECTION 1: NARRATOR REPLACEMENT CANDIDATES -->
+    <section id="narrator">
+      <div class="section-header">
+        <h2 class="section-title">
+          <span>Phase 1 — Narrator Replacement Candidates</span>
+          <span class="badge badge-gemini">Google Gemini</span>
+          <span class="badge badge-eleven">ElevenLabs</span>
+        </h2>
+        <p class="section-desc">
+          All candidates auditioned on the exact same three passages: <strong>Passage A</strong> (Atmospheric Sunset), <strong>Passage B</strong> (Dramatic Midnight Death), and <strong>Passage C</strong> (Reflective Epilogue).
+        </p>
+      </div>
+
+      <div class="narrator-grid">
+        <!-- Candidate 1: Gemini Charon -->
+        <div class="card recommended">
+          <div class="card-top">
+            <div>
+              <div class="candidate-name">Candidate 1: Gemini Charon</div>
+              <div class="candidate-meta">Google Gemini 3.8/2.5 Flash TTS · Deep Baritone</div>
+            </div>
+            <span class="badge badge-gemini">Primary Candidate</span>
+          </div>
+          <div class="candidate-desc">
+            Deep, rich, resonant male baritone with authentic Indian English pronunciation, natural chest resonance, and deliberate cinematic pacing.
+          </div>
+          <div class="passages">
+            <div class="passage-item">
+              <div class="passage-label"><span>Passage A · Mumbai Skyline</span> <span>Atmospheric</span></div>
+              <div class="passage-text">"It began on a Wednesday afternoon as a late December sun was just dipping below the Mumbai skyline."</div>
+              <audio controls preload="none" src="/assets/audio/auditions/narrator/cand1-gemini-charon-a.wav"></audio>
+            </div>
+            <div class="passage-item">
+              <div class="passage-label"><span>Passage B · Midnight Death</span> <span>Climactic</span></div>
+              <div class="passage-text">"And so, only a few minutes away from midnight, Laila Starr met her death once again."</div>
+              <audio controls preload="none" src="/assets/audio/auditions/narrator/cand1-gemini-charon-b.wav"></audio>
+            </div>
+            <div class="passage-item">
+              <div class="passage-label"><span>Passage C · Eight Years Later</span> <span>Reflective</span></div>
+              <div class="passage-text">"Eight years later, the sun rose anyway — as it always has, as it always will."</div>
+              <audio controls preload="none" src="/assets/audio/auditions/narrator/cand1-gemini-charon-c.wav"></audio>
+            </div>
+          </div>
+        </div>
+
+        <!-- Candidate 2: ElevenLabs Daniel -->
+        <div class="card">
+          <div class="card-top">
+            <div>
+              <div class="candidate-name">Candidate 2: ElevenLabs Daniel</div>
+              <div class="candidate-meta">ElevenLabs Multilingual v2 · Steady Broadcaster</div>
+            </div>
+            <span class="badge badge-eleven">Authoritative</span>
+          </div>
+          <div class="candidate-desc">
+            Deep, commanding broadcaster baritone with crisp enunciation, authoritative gravitas, and steady, unflinching pacing.
+          </div>
+          <div class="passages">
+            <div class="passage-item">
+              <div class="passage-label"><span>Passage A · Mumbai Skyline</span></div>
+              <div class="passage-text">"It began on a Wednesday afternoon as a late December sun was just dipping below the Mumbai skyline."</div>
+              <audio controls preload="none" src="/assets/audio/auditions/narrator/cand2-eleven-daniel-a.mp3"></audio>
+            </div>
+            <div class="passage-item">
+              <div class="passage-label"><span>Passage B · Midnight Death</span></div>
+              <div class="passage-text">"And so, only a few minutes away from midnight, Laila Starr met her death once again."</div>
+              <audio controls preload="none" src="/assets/audio/auditions/narrator/cand2-eleven-daniel-b.mp3"></audio>
+            </div>
+            <div class="passage-item">
+              <div class="passage-label"><span>Passage C · Eight Years Later</span></div>
+              <div class="passage-text">"Eight years later, the sun rose anyway — as it always has, as it always will."</div>
+              <audio controls preload="none" src="/assets/audio/auditions/narrator/cand2-eleven-daniel-c.mp3"></audio>
+            </div>
+          </div>
+        </div>
+
+        <!-- Candidate 3: ElevenLabs George -->
+        <div class="card">
+          <div class="card-top">
+            <div>
+              <div class="candidate-name">Candidate 3: ElevenLabs George</div>
+              <div class="candidate-meta">ElevenLabs Multilingual v2 · Warm Storyteller</div>
+            </div>
+            <span class="badge badge-eleven">Textured</span>
+          </div>
+          <div class="candidate-desc">
+            Warm, textured vocal grit with natural storytelling nuance, mature vocal weight, and dramatic rhythmic pauses.
+          </div>
+          <div class="passages">
+            <div class="passage-item">
+              <div class="passage-label"><span>Passage A · Mumbai Skyline</span></div>
+              <div class="passage-text">"It began on a Wednesday afternoon as a late December sun was just dipping below the Mumbai skyline."</div>
+              <audio controls preload="none" src="/assets/audio/auditions/narrator/cand3-eleven-george-a.mp3"></audio>
+            </div>
+            <div class="passage-item">
+              <div class="passage-label"><span>Passage B · Midnight Death</span></div>
+              <div class="passage-text">"And so, only a few minutes away from midnight, Laila Starr met her death once again."</div>
+              <audio controls preload="none" src="/assets/audio/auditions/narrator/cand3-eleven-george-b.mp3"></audio>
+            </div>
+            <div class="passage-item">
+              <div class="passage-label"><span>Passage C · Eight Years Later</span></div>
+              <div class="passage-text">"Eight years later, the sun rose anyway — as it always has, as it always will."</div>
+              <audio controls preload="none" src="/assets/audio/auditions/narrator/cand3-eleven-george-c.mp3"></audio>
+            </div>
+          </div>
+        </div>
+
+        <!-- Candidate 4: ElevenLabs Brian -->
+        <div class="card">
+          <div class="card-top">
+            <div>
+              <div class="candidate-name">Candidate 4: ElevenLabs Brian</div>
+              <div class="candidate-meta">ElevenLabs Multilingual v2 · Deep Legend</div>
+            </div>
+            <span class="badge badge-eleven">Resonant</span>
+          </div>
+          <div class="candidate-desc">
+            Deep, comforting, cinematic baritone with powerful low-end resonance and smooth narrative phrasing.
+          </div>
+          <div class="passages">
+            <div class="passage-item">
+              <div class="passage-label"><span>Passage A · Mumbai Skyline</span></div>
+              <div class="passage-text">"It began on a Wednesday afternoon as a late December sun was just dipping below the Mumbai skyline."</div>
+              <audio controls preload="none" src="/assets/audio/auditions/narrator/cand4-eleven-brian-a.mp3"></audio>
+            </div>
+            <div class="passage-item">
+              <div class="passage-label"><span>Passage B · Midnight Death</span></div>
+              <div class="passage-text">"And so, only a few minutes away from midnight, Laila Starr met her death once again."</div>
+              <audio controls preload="none" src="/assets/audio/auditions/narrator/cand4-eleven-brian-b.mp3"></audio>
+            </div>
+            <div class="passage-item">
+              <div class="passage-label"><span>Passage C · Eight Years Later</span></div>
+              <div class="passage-text">"Eight years later, the sun rose anyway — as it always has, as it always will."</div>
+              <audio controls preload="none" src="/assets/audio/auditions/narrator/cand4-eleven-brian-c.mp3"></audio>
+            </div>
+          </div>
+        </div>
+
+        <!-- Baseline: Prabhat Neural -->
+        <div class="card">
+          <div class="card-top">
+            <div>
+              <div class="candidate-name">Baseline: Prabhat Neural</div>
+              <div class="candidate-meta">Microsoft Edge Neural TTS · en-IN-PrabhatNeural</div>
+            </div>
+            <span class="badge badge-baseline">Current (To Replace)</span>
+          </div>
+          <div class="candidate-desc">
+            Previous baseline for comparison. Synthetic prosody and robotic artifacts that the user requested to replace.
+          </div>
+          <div class="passages">
+            <div class="passage-item">
+              <div class="passage-label"><span>Passage A · Mumbai Skyline</span></div>
+              <div class="passage-text">"It began on a Wednesday afternoon as a late December sun was just dipping below the Mumbai skyline."</div>
+              <audio controls preload="none" src="/assets/audio/voices/narrator/sample-prabhat-baritone.mp3"></audio>
+            </div>
+            <div class="passage-item">
+              <div class="passage-label"><span>Passage B · Midnight Death</span></div>
+              <div class="passage-text">"And so, only a few minutes away from midnight, Laila Starr met her death once again."</div>
+              <audio controls preload="none" src="/assets/audio/voices/narrator/s09-02-midnight.mp3"></audio>
+            </div>
+            <div class="passage-item">
+              <div class="passage-label"><span>Passage C · Eight Years Later</span></div>
+              <div class="passage-text">"Eight years later, the sun rose anyway — as it always has, as it always will."</div>
+              <audio controls preload="none" src="/assets/audio/voices/narrator/scene-10-connector.mp3"></audio>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 2: EMOTIONAL ACTING AUDITIONS -->
+    <section id="acting">
+      <div class="section-header">
+        <h2 class="section-title">
+          <span>Phase 3 — Emotional Acting Auditions</span>
+        </h2>
+        <p class="section-desc">
+          Compare the new dynamic character performances (using low-stability expressive voice acting and direction) against the previous flat readings.
+        </p>
+      </div>
+
+      <div class="acting-grid">
+        <!-- 1. Death Outrage -->
+        <div class="acting-row">
+          <div class="acting-header">
+            <div class="acting-char">Death — Outrage & Indignation (Scene 04)</div>
+            <div class="acting-dir">Intensity 5/5 · Explosive · Cosmic authority shattered</div>
+          </div>
+          <div class="acting-quote">"WHAT?! I'm an absolute consequence. It's in the job description! Send down a plague! Strike the child with lightning!"</div>
+          <div class="acting-side new-performance">
+            <div class="side-title">
+              <span style="color:var(--accent);">⭐ New Dynamic Acting (Lily · Stability 0.22, Style 0.70)</span>
+              <span class="badge badge-eleven">Audio Experience 2.0</span>
+            </div>
+            <p style="font-size:0.8rem; color:#a69e94;">Incredulous screech, furious celestial rage, breathless demands.</p>
+            <audio controls preload="none" src="/assets/audio/auditions/acting/acting-s04-09-death.mp3"></audio>
+          </div>
+          <div class="acting-side">
+            <div class="side-title">
+              <span style="color:#aaa;">Previous Flat Reading (Stability 0.55)</span>
+              <span class="badge badge-baseline">Baseline</span>
+            </div>
+            <p style="font-size:0.8rem; color:#a69e94;">Even reading with limited emotional variation.</p>
+            <audio controls preload="none" src="/assets/audio/voices/death/s04-09-death-outrage.mp3"></audio>
+          </div>
+        </div>
+
+        <!-- 2. Death Vulnerability -->
+        <div class="acting-row">
+          <div class="acting-header">
+            <div class="acting-char">Death — Quiet Existential Despair (Scene 04)</div>
+            <div class="acting-dir">Intensity 4/5 · Whispered · Immortality reduced to void</div>
+          </div>
+          <div class="acting-quote">"This is all I've ever done. What am I supposed to do?"</div>
+          <div class="acting-side new-performance">
+            <div class="side-title">
+              <span style="color:var(--accent);">⭐ New Dynamic Acting (Lily · Stability 0.38, Style 0.50)</span>
+              <span class="badge badge-eleven">Audio Experience 2.0</span>
+            </div>
+            <p style="font-size:0.8rem; color:#a69e94;">Trembling low register, hollow exhale, vulnerable crack on question.</p>
+            <audio controls preload="none" src="/assets/audio/auditions/acting/acting-s04-11-death.mp3"></audio>
+          </div>
+          <div class="acting-side">
+            <div class="side-title">
+              <span style="color:#aaa;">Previous Flat Reading (Stability 0.55)</span>
+              <span class="badge badge-baseline">Baseline</span>
+            </div>
+            <p style="font-size:0.8rem; color:#a69e94;">Stiff tone without existential weight.</p>
+            <audio controls preload="none" src="/assets/audio/voices/death/s04-11-death-lost.mp3"></audio>
+          </div>
+        </div>
+
+        <!-- 3. Laila Awakening -->
+        <div class="acting-row">
+          <div class="acting-header">
+            <div class="acting-char">Laila Starr — Confused Awakening (Scene 07)</div>
+            <div class="acting-dir">Intensity 4/5 · Whispered Groan · Physical mortal pain</div>
+          </div>
+          <div class="acting-quote">"Ohhhhh, that feels awful."</div>
+          <div class="acting-side new-performance">
+            <div class="side-title">
+              <span style="color:var(--accent);">⭐ New Dynamic Acting (Alice · Stability 0.28, Style 0.60)</span>
+              <span class="badge badge-eleven">Audio Experience 2.0</span>
+            </div>
+            <p style="font-size:0.8rem; color:#a69e94;">Long pained groaning vocal fry, dry mouth rasp, disoriented struggle.</p>
+            <audio controls preload="none" src="/assets/audio/auditions/acting/acting-s07-01-laila.mp3"></audio>
+          </div>
+          <div class="acting-side">
+            <div class="side-title">
+              <span style="color:#aaa;">Previous Flat Reading</span>
+              <span class="badge badge-baseline">Baseline</span>
+            </div>
+            <p style="font-size:0.8rem; color:#a69e94;">Clean textbook pronunciation without bodily agony.</p>
+            <audio controls preload="none" src="/assets/audio/voices/laila/s07-01-laila-awful.mp3"></audio>
+          </div>
+        </div>
+
+        <!-- 4. Laila Resistance -->
+        <div class="acting-row">
+          <div class="acting-header">
+            <div class="acting-char">Laila Starr — Horrified Resistance & Guilt (Scene 08)</div>
+            <div class="acting-dir">Intensity 5/5 · Breathless Panic · Crushing moral agony</div>
+          </div>
+          <div class="acting-quote">"What? W-why did you tell me that? I... I can't!"</div>
+          <div class="acting-side new-performance">
+            <div class="side-title">
+              <span style="color:var(--accent);">⭐ New Dynamic Acting (Alice · Stability 0.22, Style 0.75)</span>
+              <span class="badge badge-eleven">Audio Experience 2.0</span>
+            </div>
+            <p style="font-size:0.8rem; color:#a69e94;">Choked stutter on "W-why", fractured sobbing pause before "I can't!".</p>
+            <audio controls preload="none" src="/assets/audio/auditions/acting/acting-s08-02-laila.mp3"></audio>
+          </div>
+          <div class="acting-side">
+            <div class="side-title">
+              <span style="color:#aaa;">Previous Flat Reading</span>
+              <span class="badge badge-baseline">Baseline</span>
+            </div>
+            <p style="font-size:0.8rem; color:#a69e94;">Controlled articulation missing the moral crisis.</p>
+            <audio controls preload="none" src="/assets/audio/voices/laila/s08-02-laila-cant.mp3"></audio>
+          </div>
+        </div>
+
+        <!-- 5. Munmun Urgency -->
+        <div class="acting-row">
+          <div class="acting-header">
+            <div class="acting-char">Munmun — Frightened Urgency (Scene 08)</div>
+            <div class="acting-dir">Intensity 5/5 · Breathless Scream · Boy ghost moral plea</div>
+          </div>
+          <div class="acting-quote">"His name is Darius. He's got a name! You can't kill someone with a name!"</div>
+          <div class="acting-side new-performance">
+            <div class="side-title">
+              <span style="color:var(--accent);">⭐ New Dynamic Acting (Jessica · Stability 0.20, Style 0.70)</span>
+              <span class="badge badge-eleven">Audio Experience 2.0</span>
+            </div>
+            <p style="font-size:0.8rem; color:#a69e94;">Shrill breaking panic, tearful desperation, gasping staccato.</p>
+            <audio controls preload="none" src="/assets/audio/auditions/acting/acting-s08-01-munmun.mp3"></audio>
+          </div>
+          <div class="acting-side">
+            <div class="side-title">
+              <span style="color:#aaa;">Previous Flat Reading</span>
+              <span class="badge badge-baseline">Baseline</span>
+            </div>
+            <p style="font-size:0.8rem; color:#a69e94;">Even reading without genuine fear.</p>
+            <audio controls preload="none" src="/assets/audio/voices/munmun/s08-01-munmun-darius.mp3"></audio>
+          </div>
+        </div>
+
+        <!-- 6. God Dismissal -->
+        <div class="acting-row">
+          <div class="acting-header">
+            <div class="acting-char">Purveyor of All Goodness (God) — Corporate Dismissal (Scene 04)</div>
+            <div class="acting-dir">Intensity 3/5 · Grounded · Executive breezy indifference</div>
+          </div>
+          <div class="acting-quote">"Yes, Death. I'm afraid we're letting you go." &bull; "You know how corporate feels about that kind of stuff."</div>
+          <div class="acting-side new-performance">
+            <div class="side-title">
+              <span style="color:var(--accent);">⭐ New Dynamic Acting (Adam · Stability 0.65, Style 0.20)</span>
+              <span class="badge badge-eleven">Audio Experience 2.0</span>
+            </div>
+            <p style="font-size:0.8rem; color:#a69e94;">Casual boardroom finality; brushing off plagues like minor PR.</p>
+            <audio controls preload="none" src="/assets/audio/auditions/acting/acting-s04-08-god.mp3" style="margin-bottom:0.5rem;"></audio>
+            <audio controls preload="none" src="/assets/audio/auditions/acting/acting-s04-10-god.mp3"></audio>
+          </div>
+          <div class="acting-side">
+            <div class="side-title">
+              <span style="color:#aaa;">Previous Flat Reading</span>
+              <span class="badge badge-baseline">Baseline</span>
+            </div>
+            <p style="font-size:0.8rem; color:#a69e94;">Generic monotone speech.</p>
+            <audio controls preload="none" src="/assets/audio/voices/supporting/s04-08-god-fired.mp3" style="margin-bottom:0.5rem;"></audio>
+            <audio controls preload="none" src="/assets/audio/voices/supporting/s04-10-god-corporate.mp3"></audio>
+          </div>
+        </div>
+
+        <!-- 7. Supporting Conversation -->
+        <div class="acting-row">
+          <div class="acting-header">
+            <div class="acting-char">Scene 02 Conversation: Mrs. Shah & Cab Driver</div>
+            <div class="acting-dir">Labor Contraction Urgency vs Stressed Cab Driver</div>
+          </div>
+          <div class="acting-quote">
+            Mrs. Shah: "I told you we should have left an hour ago! Do you hear this traffic?!"<br>
+            Driver: "Madam, hold on—every lane is locked solid across B.K.C.!"
+          </div>
+          <div class="acting-side new-performance">
+            <div class="side-title">
+              <span style="color:var(--accent);">⭐ New Dynamic Acting (Sarah & Charlie)</span>
+              <span class="badge badge-eleven">Audio Experience 2.0</span>
+            </div>
+            <p style="font-size:0.8rem; color:#a69e94;">Mrs. Shah breath strain; Driver shouting over ambient horns.</p>
+            <audio controls preload="none" src="/assets/audio/auditions/acting/acting-s02-01-mrs_shah.mp3" style="margin-bottom:0.5rem;"></audio>
+            <audio controls preload="none" src="/assets/audio/auditions/acting/acting-s02-02-driver.mp3"></audio>
+          </div>
+          <div class="acting-side">
+            <div class="side-title">
+              <span style="color:#aaa;">Previous Flat Reading</span>
+              <span class="badge badge-baseline">Baseline</span>
+            </div>
+            <p style="font-size:0.8rem; color:#a69e94;">Previous dialogue tracks.</p>
+            <audio controls preload="none" src="/assets/audio/voices/supporting/s02-01-mrs-shah.mp3" style="margin-bottom:0.5rem;"></audio>
+            <audio controls preload="none" src="/assets/audio/voices/supporting/s02-02-driver.mp3"></audio>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 3: CINEMATIC SCENE SOUNDSCAPES -->
+    <section id="soundscapes">
+      <div class="section-header">
+        <h2 class="section-title">
+          <span>Phase 4 — 10 Cinematic Scene Soundscapes</span>
+        </h2>
+        <p class="section-desc">
+          Individually synthesized atmospheric environments for every scene in Chapter 01, replacing generic 4-second loops.
+        </p>
+      </div>
+
+      <div class="soundscapes-grid">
+        <div class="soundscape-card">
+          <div class="scene-num">Scene 01 · Sunset</div>
+          <div class="scene-title">Mumbai Sunset Horizon</div>
+          <div class="soundscape-layers">Warm atmospheric dusk drone, shimmering evening wind, distant street traffic harmonics, subtle distant horns.</div>
+          <audio controls loop preload="none" src="/assets/audio/soundscapes/scene_01_mumbai.wav"></audio>
+        </div>
+
+        <div class="soundscape-card">
+          <div class="scene-num">Scene 02 · Traffic</div>
+          <div class="scene-title">B.K.C. Overpass Gridlock</div>
+          <div class="soundscape-layers">Layered vehicle asphalt movement, rhythmic diesel engine idle, multiple horn honks at varied distances, police whistle.</div>
+          <audio controls loop preload="none" src="/assets/audio/soundscapes/scene_02_traffic.wav"></audio>
+        </div>
+
+        <div class="soundscape-card">
+          <div class="scene-num">Scene 03 · Party</div>
+          <div class="scene-title">Aria Towers College Party</div>
+          <div class="soundscape-layers">Muffled 4-on-the-floor dance bass through walls, diffuse room chatter murmur, high glass clink transients.</div>
+          <audio controls loop preload="none" src="/assets/audio/soundscapes/scene_03_party.wav"></audio>
+        </div>
+
+        <div class="soundscape-card">
+          <div class="scene-num">Scene 04 · Realm</div>
+          <div class="scene-title">Death's Cosmic Office</div>
+          <div class="soundscape-layers">Sub-bass cosmic drone (44Hz/88Hz), shimmering celestial pad harmonics (Major 9th), expansive hall reverberation.</div>
+          <audio controls loop preload="none" src="/assets/audio/soundscapes/scene_04_death_world.wav"></audio>
+        </div>
+
+        <div class="soundscape-card">
+          <div class="scene-num">Scene 05 · Convergence</div>
+          <div class="scene-title">Fall & Birth Convergence</div>
+          <div class="soundscape-layers">Visceral accelerating heartbeat pulse (64 BPM), ascending string tension crescendo, syncopated clock tick.</div>
+          <audio controls loop preload="none" src="/assets/audio/soundscapes/scene_05_convergence.wav"></audio>
+        </div>
+
+        <div class="soundscape-card">
+          <div class="scene-num">Scene 06 · Bargain</div>
+          <div class="scene-title">Transformation Bargain</div>
+          <div class="soundscape-layers">Radiant celestial bell harmonics (C# major), phase-shifted magical resonance, sweeping atmospheric wind.</div>
+          <audio controls loop preload="none" src="/assets/audio/soundscapes/scene_06_transformation.wav"></audio>
+        </div>
+
+        <div class="soundscape-card">
+          <div class="scene-num">Scene 07 · Hospital</div>
+          <div class="scene-title">Amravati Hospital ICU</div>
+          <div class="soundscape-layers">Sterile clinical air-con hum, room tone, rhythmic 70 BPM heart monitor beeps (1050Hz sine pulse).</div>
+          <audio controls loop preload="none" src="/assets/audio/soundscapes/scene_07_hospital.wav"></audio>
+        </div>
+
+        <div class="soundscape-card">
+          <div class="scene-num">Scene 08 · Chase</div>
+          <div class="scene-title">Corridor Flight & Escape</div>
+          <div class="soundscape-layers">Driving suspense bass pulse, echoing corridor footstep transients, hollow hospital reverb, rushing air.</div>
+          <audio controls loop preload="none" src="/assets/audio/soundscapes/scene_08_escape.wav"></audio>
+        </div>
+
+        <div class="soundscape-card">
+          <div class="scene-num">Scene 09 · Impact</div>
+          <div class="scene-title">Twelve-Wheeler Night Rain</div>
+          <div class="soundscape-layers">Heavy wet rain on asphalt hiss, low 38Hz truck engine growl, screeching pneumatic air brakes, horn blast.</div>
+          <audio controls loop preload="none" src="/assets/audio/soundscapes/scene_09_truck.wav"></audio>
+        </div>
+
+        <div class="soundscape-card">
+          <div class="scene-num">Scene 10 · Epilogue</div>
+          <div class="scene-title">Eight Years Later Morning</div>
+          <div class="soundscape-layers">Warm acoustic morning sunlight tone, peaceful morning bird song chirps (3.4kHz), gentle room tone, tea cup clink.</div>
+          <audio controls loop preload="none" src="/assets/audio/soundscapes/scene_10_eight_years_later.wav"></audio>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 4: VOICE ACTING BIBLE TABLE -->
+    <section id="bible">
+      <div class="section-header">
+        <h2 class="section-title">
+          <span>Phase 2 — Voice Acting Bible (All 34 Dialogue Lines)</span>
+        </h2>
+        <p class="section-desc">
+          Detailed psychological, vocal energy, and timing directions for every spoken dialogue line in Chapter 01.
+        </p>
+      </div>
+
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Scene</th>
+              <th>Character</th>
+              <th>Dialogue Text</th>
+              <th>Primary Emotion</th>
+              <th>Intensity</th>
+              <th>Pace & Energy</th>
+              <th>Acting Directions & Vocal Cues</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>s02-01</code></td>
+              <td>Scene 02</td>
+              <td><strong>Mrs. Shah</strong></td>
+              <td>"I told you we should have left an hour ago! Do you hear this traffic?!"</td>
+              <td>Frustration</td>
+              <td><span class="intensity-badge intensity-4">4/5</span></td>
+              <td>Rapid · Projected</td>
+              <td>Sharp rising pitch on "hour ago"; breathless strain through clenched teeth fighting sudden labor contraction.</td>
+            </tr>
+            <tr>
+              <td><code>s02-02</code></td>
+              <td>Scene 02</td>
+              <td><strong>Cab Driver</strong></td>
+              <td>"Madam, hold on—every lane is locked solid across B.K.C.!"</td>
+              <td>Stress</td>
+              <td><span class="intensity-badge intensity-3">3/5</span></td>
+              <td>Rapid · Projected</td>
+              <td>Strained voice fighting street traffic; defensive grunt on wheel turn; genuine helplessness.</td>
+            </tr>
+            <tr>
+              <td><code>s02-03</code></td>
+              <td>Scene 02</td>
+              <td><strong>Mrs. Shah</strong></td>
+              <td>"...The baby is coming."</td>
+              <td>Vulnerability</td>
+              <td><span class="intensity-badge intensity-5">5/5</span></td>
+              <td>Slow · Whispered</td>
+              <td>Drop to low register; trembling whisper; sudden stillness cutting through traffic chaos; wet breath catch.</td>
+            </tr>
+            <tr>
+              <td><code>s03-01</code></td>
+              <td>Scene 03</td>
+              <td><strong>Dhiraj</strong></td>
+              <td>"Listen, the whole discourse still reproduces the same patriarchal power equations..."</td>
+              <td>Pretentiousness</td>
+              <td><span class="intensity-badge intensity-2">2/5</span></td>
+              <td>Moderate · Grounded</td>
+              <td>Slightly nasal mid-tone; patronizing casual party lecture; smug half-breath chuckle before "nobody actually examines".</td>
+            </tr>
+            <tr>
+              <td><code>s04-01</code></td>
+              <td>Scene 04</td>
+              <td><strong>Death</strong></td>
+              <td>"Hold the door!"</td>
+              <td>Authority</td>
+              <td><span class="intensity-badge intensity-3">3/5</span></td>
+              <td>Rapid · Projected</td>
+              <td>Regal, sharp command; rushing heel footsteps; swift, resonant breath; expecting elevators to wait.</td>
+            </tr>
+            <tr>
+              <td><code>s04-02</code></td>
+              <td>Scene 04</td>
+              <td><strong>Agni</strong></td>
+              <td>"This way, please. He is expecting you."</td>
+              <td>Bureaucracy</td>
+              <td><span class="intensity-badge intensity-2">2/5</span></td>
+              <td>Measured · Grounded</td>
+              <td>Smooth corporate receptionist tone; deference on "He is expecting you"; neutral professionalism concealing ambush.</td>
+            </tr>
+            <tr>
+              <td><code>s04-03</code></td>
+              <td>Scene 04</td>
+              <td><strong>God</strong></td>
+              <td>"Come, come. Have a seat."</td>
+              <td>Warmth</td>
+              <td><span class="intensity-badge intensity-1">1/5</span></td>
+              <td>Moderate · Grounded</td>
+              <td>Booming affable executive baritone; warm descent on "Have a seat"; disarming faux-paternal friendliness.</td>
+            </tr>
+            <tr>
+              <td><code>s04-04</code></td>
+              <td>Scene 04</td>
+              <td><strong>God</strong></td>
+              <td>"So, Death... tell me, how're things? Work, life, friendships... hobbies?"</td>
+              <td>Small Talk</td>
+              <td><span class="intensity-badge intensity-2">2/5</span></td>
+              <td>Moderate · Grounded</td>
+              <td>Inquisitive upward inflection; playful enumeration on "hobbies?"; leisurely chair swivel; executive detachment.</td>
+            </tr>
+            <tr>
+              <td><code>s04-05</code></td>
+              <td>Scene 04</td>
+              <td><strong>Death</strong></td>
+              <td>"W-what am I doing here, Sir?"</td>
+              <td>Suspicion</td>
+              <td><span class="intensity-badge intensity-3">3/5</span></td>
+              <td>Measured · Intimate</td>
+              <td>Stutter on "W-what"; guarded hesitation on formal "Sir"; subtle throat swallow as instinct detects danger.</td>
+            </tr>
+            <tr>
+              <td><code>s04-06</code></td>
+              <td>Scene 04</td>
+              <td><strong>God</strong></td>
+              <td>"How long have you been with us, Death? Feels like an eternity, doesn't it?"</td>
+              <td>Nostalgia</td>
+              <td><span class="intensity-badge intensity-2">2/5</span></td>
+              <td>Measured · Grounded</td>
+              <td>Wistful pitch slide on "eternity"; gentle smile in tone; setting up semantic joke before dropping the axe.</td>
+            </tr>
+            <tr>
+              <td><code>s04-07</code></td>
+              <td>Scene 04</td>
+              <td><strong>Death</strong></td>
+              <td>"I have actually been here for an eternity."</td>
+              <td>Deadpan</td>
+              <td><span class="intensity-badge intensity-2">2/5</span></td>
+              <td>Slow · Grounded</td>
+              <td>Flat, dry, aristocratic delivery; deliberate emphasis on "actually" and "eternity"; stating ontological fact.</td>
+            </tr>
+            <tr>
+              <td><code>s04-08</code></td>
+              <td>Scene 04</td>
+              <td><strong>God</strong></td>
+              <td>"Yes, Death. I'm afraid we're letting you go."</td>
+              <td>Indifference</td>
+              <td><span class="intensity-badge intensity-3">3/5</span></td>
+              <td>Measured · Grounded</td>
+              <td>Downward final cadence on "letting you go"; calm boardroom finality; soft sigh of mild managerial inconvenience.</td>
+            </tr>
+            <tr>
+              <td><code>s04-09</code></td>
+              <td>Scene 04</td>
+              <td><strong>Death</strong></td>
+              <td>"WHAT?! I'm an absolute consequence. It's in the job description! Send down a plague! Strike the child with lightning!"</td>
+              <td>Outrage</td>
+              <td><span class="intensity-badge intensity-5">5/5</span></td>
+              <td>Rapid · Explosive</td>
+              <td>Screamed high-register "WHAT?!"; furious staccato; voice cracking with celestial rage; fierce air blast.</td>
+            </tr>
+            <tr>
+              <td><code>s04-10</code></td>
+              <td>Scene 04</td>
+              <td><strong>God</strong></td>
+              <td>"You know how corporate feels about that kind of stuff."</td>
+              <td>Amusement</td>
+              <td><span class="intensity-badge intensity-2">2/5</span></td>
+              <td>Moderate · Grounded</td>
+              <td>Casual shrug in tone; dismissive slur on "that kind of stuff"; brushing off plagues as minor PR.</td>
+            </tr>
+            <tr>
+              <td><code>s04-11</code></td>
+              <td>Scene 04</td>
+              <td><strong>Death</strong></td>
+              <td>"This is all I've ever done. What am I supposed to do?"</td>
+              <td>Despair</td>
+              <td><span class="intensity-badge intensity-4">4/5</span></td>
+              <td>Slow · Whispered</td>
+              <td>Low, hollow register; vulnerable rising query on "supposed to do?"; trembling voice; tears held back.</td>
+            </tr>
+            <tr>
+              <td><code>s06-01</code></td>
+              <td>Scene 06</td>
+              <td><strong>Death</strong></td>
+              <td>"Agni?"</td>
+              <td>Manipulation</td>
+              <td><span class="intensity-badge intensity-2">2/5</span></td>
+              <td>Slow · Intimate</td>
+              <td>Soft questioning inflection; unusually gentle; single word lingering in corridor.</td>
+            </tr>
+            <tr>
+              <td><code>s06-02</code></td>
+              <td>Scene 06</td>
+              <td><strong>Agni</strong></td>
+              <td>"I know what you're thinking and the answer is no."</td>
+              <td>Resistance</td>
+              <td><span class="intensity-badge intensity-3">3/5</span></td>
+              <td>Rapid · Grounded</td>
+              <td>Flat refusal; hard emphasis on "no"; preemptive cut-off before she can speak.</td>
+            </tr>
+            <tr>
+              <td><code>s06-03</code></td>
+              <td>Scene 06</td>
+              <td><strong>Agni</strong></td>
+              <td>"Oh, fiiiine... fine, what do you want?"</td>
+              <td>Exasperation</td>
+              <td><span class="intensity-badge intensity-3">3/5</span></td>
+              <td>Moderate · Grounded</td>
+              <td>Drawn out groan on "fiiiine"; resigned descent; heavy defeated sigh; folding under former boss.</td>
+            </tr>
+            <tr>
+              <td><code>s06-04</code></td>
+              <td>Scene 06</td>
+              <td><strong>Death</strong></td>
+              <td>"When you send me down and give me a mortal body, can you put me close to the child?"</td>
+              <td>Determination</td>
+              <td><span class="intensity-badge intensity-3">3/5</span></td>
+              <td>Measured · Intimate</td>
+              <td>Conspiratorial whisper; subtle emphasis on "close to the child"; disguising assassination as a favor.</td>
+            </tr>
+            <tr>
+              <td><code>s06-05</code></td>
+              <td>Scene 06</td>
+              <td><strong>Death</strong></td>
+              <td>"I'll be a mortal then. My actions. My consequences."</td>
+              <td>Defiance</td>
+              <td><span class="intensity-badge intensity-4">4/5</span></td>
+              <td>Slow · Projected</td>
+              <td>Staccato, oath-like rhythm on "My actions. My consequences."; heavy pauses; loophole for revenge.</td>
+            </tr>
+            <tr>
+              <td><code>s07-01</code></td>
+              <td>Scene 07</td>
+              <td><strong>Laila Starr</strong></td>
+              <td>"Ohhhhh, that feels awful."</td>
+              <td>Agony</td>
+              <td><span class="intensity-badge intensity-4">4/5</span></td>
+              <td>Slow · Whispered</td>
+              <td>Long groaning vocal fry on "Ohhhhh"; raspy dry emphasis on "awful"; waking agony of mortal nerve endings.</td>
+            </tr>
+            <tr>
+              <td><code>s07-02</code></td>
+              <td>Scene 07</td>
+              <td><strong>Munmun</strong></td>
+              <td>"Yeah, well... you were dead for a good twenty minutes or so."</td>
+              <td>Casuallness</td>
+              <td><span class="intensity-badge intensity-2">2/5</span></td>
+              <td>Moderate · Grounded</td>
+              <td>Breezy boyish shrug; casual emphasis on "twenty minutes or so"; airy spectral timbre.</td>
+            </tr>
+            <tr>
+              <td><code>s07-03</code></td>
+              <td>Scene 07</td>
+              <td><strong>Laila Starr</strong></td>
+              <td>"Who're you?"</td>
+              <td>Disorientation</td>
+              <td><span class="intensity-badge intensity-3">3/5</span></td>
+              <td>Slow · Intimate</td>
+              <td>Hoarse, rasping whisper; guarded rise on "you?"; trying to focus blurry eyes on glowing boy ghost.</td>
+            </tr>
+            <tr>
+              <td><code>s07-04</code></td>
+              <td>Scene 07</td>
+              <td><strong>Munmun</strong></td>
+              <td>"I-I'm a ghost! And your name... it's on your wrist."</td>
+              <td>Excitement</td>
+              <td><span class="intensity-badge intensity-3">3/5</span></td>
+              <td>Rapid · Grounded</td>
+              <td>Proud stutter on "I-I'm a ghost!"; enthusiastic whisper; pointing to hospital wristband.</td>
+            </tr>
+            <tr>
+              <td><code>s07-05</code></td>
+              <td>Scene 07</td>
+              <td><strong>Laila Starr</strong></td>
+              <td>"L-Laila Starr..."</td>
+              <td>Disbelief</td>
+              <td><span class="intensity-badge intensity-3">3/5</span></td>
+              <td>Slow · Whispered</td>
+              <td>Unfamiliar mouth shape on "L-Laila"; trailing murmur; testing new mortal name on tongue.</td>
+            </tr>
+            <tr>
+              <td><code>s07-06</code></td>
+              <td>Scene 07</td>
+              <td><strong>Munmun</strong></td>
+              <td>"So... what next, Laila Starr?"</td>
+              <td>Curiosity</td>
+              <td><span class="intensity-badge intensity-3">3/5</span></td>
+              <td>Moderate · Grounded</td>
+              <td>Playful lilt on "what next"; inviting her into whatever adventure comes next.</td>
+            </tr>
+            <tr>
+              <td><code>s08-01</code></td>
+              <td>Scene 08</td>
+              <td><strong>Munmun</strong></td>
+              <td>"His name is Darius. He's got a name! You can't kill someone with a name!"</td>
+              <td>Panic</td>
+              <td><span class="intensity-badge intensity-5">5/5</span></td>
+              <td>Breathless · Explosive</td>
+              <td>Shrill, frantic pitch on "Darius"; breaking voice on "someone with a name!"; tearful desperate plea.</td>
+            </tr>
+            <tr>
+              <td><code>s08-02</code></td>
+              <td>Scene 08</td>
+              <td><strong>Laila Starr</strong></td>
+              <td>"What? W-why did you tell me that? I... I can't!"</td>
+              <td>Guilt</td>
+              <td><span class="intensity-badge intensity-5">5/5</span></td>
+              <td>Breathless · Projected</td>
+              <td>Choked stutter on "W-why"; breaking falter on "I... I can't!"; sudden sharp sob holding baby.</td>
+            </tr>
+            <tr>
+              <td><code>s08-03</code></td>
+              <td>Scene 08</td>
+              <td><strong>Guard</strong></td>
+              <td>"There she is! Oh my God—she's alive! Hey you! Put that baby down!"</td>
+              <td>Alarm</td>
+              <td><span class="intensity-badge intensity-4">4/5</span></td>
+              <td>Rapid · Explosive</td>
+              <td>Stunned gasp on "alive!"; harsh commanding bark on "Put that baby down!"; heavy running boots.</td>
+            </tr>
+            <tr>
+              <td><code>s10-01</code></td>
+              <td>Scene 10</td>
+              <td><strong>Laila Starr</strong></td>
+              <td>"Have you been standing there watching me sleep this whole time? Ugggh... what happened? How did I get here?"</td>
+              <td>Irritation</td>
+              <td><span class="intensity-badge intensity-3">3/5</span></td>
+              <td>Moderate · Grounded</td>
+              <td>Dry waking morning rasp; grumbling groan on "Ugggh..."; rubbing eyes sound in voice.</td>
+            </tr>
+            <tr>
+              <td><code>s10-02</code></td>
+              <td>Scene 10</td>
+              <td><strong>Pranah</strong></td>
+              <td>"You died. Run over by a twelve-wheeler. But I brought you back."</td>
+              <td>Calm</td>
+              <td><span class="intensity-badge intensity-2">2/5</span></td>
+              <td>Slow · Grounded</td>
+              <td>Gentle, warm, steady baritone; matter-of-fact drop on "twelve-wheeler"; tender warmth on "brought you back".</td>
+            </tr>
+            <tr>
+              <td><code>s10-03</code></td>
+              <td>Scene 10</td>
+              <td><strong>Laila Starr</strong></td>
+              <td>"I couldn't do it, Pran. He was just a baby... How could you bring someone like that into being?"</td>
+              <td>Grief</td>
+              <td><span class="intensity-badge intensity-4">4/5</span></td>
+              <td>Slow · Intimate</td>
+              <td>Soft, tender, vulnerable drop on "Pran"; heavy mournful question on "into being?"; aching quiet exhale.</td>
+            </tr>
+            <tr>
+              <td><code>s10-04</code></td>
+              <td>Scene 10</td>
+              <td><strong>Pranah</strong></td>
+              <td>"Hey, I only give them a lifetime, every one of them. What they do with it is between them and... you, I suppose."</td>
+              <td>Warmth</td>
+              <td><span class="intensity-badge intensity-2">2/5</span></td>
+              <td>Measured · Grounded</td>
+              <td>Soft, soothing reassurance on "lifetime"; playful fond emphasis on "...you, I suppose"; morning tea steam.</td>
+            </tr>
+            <tr>
+              <td><code>s10-05</code></td>
+              <td>Scene 10</td>
+              <td><strong>Laila Starr</strong></td>
+              <td>"...he's not a baby anymore."</td>
+              <td>Resolve</td>
+              <td><span class="intensity-badge intensity-4">4/5</span></td>
+              <td>Slow · Whispered</td>
+              <td>Quiet, cool, razor-sharp whisper; deliberate emphasis on "anymore"; sharp focused intake; the hunt resumes.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </div>
+</body>
+</html>
