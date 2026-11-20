@@ -159,11 +159,11 @@ class SceneAudioManager {
   private scoreCrossfadeTimers = new Map<ScoreTrackId, number>();
   private listeners = new Set<() => void>();
 
-  private masterMuted = true;
-  private ambienceVolume = 0.42;
-  private scoreVolume = 0.65;
-  private sfxVolume = 0.65;
-  private voiceVolume = 0.9;
+  private masterMuted = false;
+  private ambienceVolume = 0.10;
+  private scoreVolume = 0.30;
+  private sfxVolume = 0.45;
+  private voiceVolume = 0.95;
   private ambienceMuted = false;
   private scoreMuted = false;
   private sfxMuted = false;
@@ -644,15 +644,61 @@ class SceneAudioManager {
     this.playScoreTrack(toTrack);
   }
 
+  private autoplayListenersBound = false;
+
+  public ensureAutoplayUnlocked(onUnlocked?: () => void): void {
+    if (typeof window === 'undefined') return;
+    this.ensureInitialized();
+
+    const tryResumeAndPlay = () => {
+      if (Howler.ctx && Howler.ctx.state === 'suspended') {
+        void Howler.ctx.resume().then(() => {
+          this.playAmbienceTrack(this.activeAmbienceTrack);
+          this.playScoreTrack(this.activeScoreTrack);
+          this.applyMixLevels();
+          onUnlocked?.();
+          this.emit();
+        });
+      } else {
+        this.playAmbienceTrack(this.activeAmbienceTrack);
+        this.playScoreTrack(this.activeScoreTrack);
+        this.applyMixLevels();
+        onUnlocked?.();
+        this.emit();
+      }
+    };
+
+    if (Howler.ctx && Howler.ctx.state === 'running') {
+      tryResumeAndPlay();
+      return;
+    }
+
+    if (this.autoplayListenersBound) return;
+    this.autoplayListenersBound = true;
+
+    const events = ['pointerdown', 'touchstart', 'keydown', 'wheel', 'scroll'];
+    const unlockHandler = () => {
+      events.forEach((evt) => window.removeEventListener(evt, unlockHandler));
+      this.autoplayListenersBound = false;
+      tryResumeAndPlay();
+    };
+
+    events.forEach((evt) =>
+      window.addEventListener(evt, unlockHandler, { once: true, passive: true }),
+    );
+  }
+
   private applyMixLevels(): void {
     const mix = computeAudioMixLevels(this.getBusSettings());
+    // Speech entry: 280ms ducking attack; Speech exit: 1400ms gradual release swell
+    const fadeDuration = this.isVoiceActive ? 280 : 1400;
 
     const activeAmb = this.ambienceHowls.get(this.activeAmbienceTrack);
     if (activeAmb) {
       if (!this.masterMuted && !this.ambienceMuted && !activeAmb.playing()) {
         activeAmb.play();
       }
-      activeAmb.fade(activeAmb.volume(), mix.ambienceGain, 260);
+      activeAmb.fade(activeAmb.volume(), mix.ambienceGain, fadeDuration);
     }
 
     const activeScore = this.scoreHowls.get(this.activeScoreTrack);
@@ -660,7 +706,7 @@ class SceneAudioManager {
       if (!this.masterMuted && !this.scoreMuted && !activeScore.playing()) {
         activeScore.play();
       }
-      activeScore.fade(activeScore.volume(), mix.scoreGain, 260);
+      activeScore.fade(activeScore.volume(), mix.scoreGain, fadeDuration);
     }
   }
 }

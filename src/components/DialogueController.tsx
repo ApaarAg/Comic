@@ -68,6 +68,7 @@ export const DialogueController: React.FC<DialogueControllerProps> = ({
   const activeIndexRef = useRef(0);
   const isStageActiveRef = useRef(reducedMotion);
   const lastTriggeredLineIdRef = useRef<string | null>(null);
+  const triggeredLineIdsRef = useRef<Set<string>>(new Set());
 
   const beatSpecs = useMemo(
     () =>
@@ -155,9 +156,7 @@ export const DialogueController: React.FC<DialogueControllerProps> = ({
           if (activeSequenceOwner === sequenceId) {
             setPlaybackState('idle');
             setIsPaused(false);
-            if (lineIndex >= lines.length - 1) {
-              narrative?.setDialogueActive(false);
-            }
+            narrative?.setDialogueActive(false);
           }
         },
       });
@@ -183,6 +182,52 @@ export const DialogueController: React.FC<DialogueControllerProps> = ({
     const isTallStage = triggerEl.offsetHeight > 380;
 
     const ctx = gsap.context(() => {
+      // 1. Panel-specific triggers for exact visual comic synchronization
+      const panelTriggers: Array<{ lineIndex: number; line: DialogueLine; element: HTMLElement }> = [];
+      lines.forEach((line, idx) => {
+        if (line.panelTarget) {
+          const found =
+            (triggerEl.querySelector(`img[src*="${line.panelTarget}"]`) as HTMLElement | null) ??
+            (document.querySelector(`img[src*="${line.panelTarget}"]`) as HTMLElement | null);
+          if (found) {
+            const triggerTarget =
+              (found.closest('.comic-panel-frame, [data-traffic-beat], .relative') as HTMLElement | null) ??
+              found;
+            panelTriggers.push({ lineIndex: idx, line, element: triggerTarget });
+          }
+        }
+      });
+
+      if (panelTriggers.length > 0) {
+        panelTriggers.forEach(({ lineIndex, line, element }) => {
+          ScrollTrigger.create({
+            trigger: element,
+            start: 'top 65%',
+            end: 'bottom 35%',
+            onEnter: () => {
+              isStageActiveRef.current = true;
+              setIsStageActive(true);
+              setIsPastStage(false);
+              activeIndexRef.current = lineIndex;
+              setActiveIndex(lineIndex);
+              if (!triggeredLineIdsRef.current.has(line.id)) {
+                triggeredLineIdsRef.current.add(line.id);
+                startLinePlayback(lineIndex, false);
+              }
+            },
+            onEnterBack: () => {
+              isStageActiveRef.current = true;
+              setIsStageActive(true);
+              setIsPastStage(false);
+              // Focus speech bubble text without restarting completed voice
+              activeIndexRef.current = lineIndex;
+              setActiveIndex(lineIndex);
+            },
+          });
+        });
+      }
+
+      // 2. Stage container lifecycle trigger (for active stage bounds, clean exit, and fallback)
       ScrollTrigger.create({
         trigger: triggerEl,
         start: isTallStage ? 'top 66%' : 'top 76%',
@@ -191,32 +236,39 @@ export const DialogueController: React.FC<DialogueControllerProps> = ({
           isStageActiveRef.current = true;
           setIsStageActive(true);
           setIsPastStage(false);
-          const nextIdx = resolveScrollDialogueBeat(
-            self.progress,
-            beatSpecs,
-            activeIndexRef.current,
-            0.025,
-          );
-          activeIndexRef.current = nextIdx;
-          setActiveIndex(nextIdx);
-          startLinePlayback(nextIdx, false);
+          if (panelTriggers.length === 0) {
+            const nextIdx = resolveScrollDialogueBeat(
+              self.progress,
+              beatSpecs,
+              activeIndexRef.current,
+              0.025,
+            );
+            activeIndexRef.current = nextIdx;
+            setActiveIndex(nextIdx);
+            const targetLine = lines[nextIdx];
+            if (targetLine && !triggeredLineIdsRef.current.has(targetLine.id)) {
+              triggeredLineIdsRef.current.add(targetLine.id);
+              startLinePlayback(nextIdx, false);
+            }
+          }
         },
         onEnterBack: (self) => {
           isStageActiveRef.current = true;
           setIsStageActive(true);
           setIsPastStage(false);
-          const nextIdx = resolveScrollDialogueBeat(
-            self.progress,
-            beatSpecs,
-            activeIndexRef.current,
-            0.025,
-          );
-          activeIndexRef.current = nextIdx;
-          setActiveIndex(nextIdx);
-          startLinePlayback(nextIdx, true);
+          if (panelTriggers.length === 0) {
+            const nextIdx = resolveScrollDialogueBeat(
+              self.progress,
+              beatSpecs,
+              activeIndexRef.current,
+              0.025,
+            );
+            activeIndexRef.current = nextIdx;
+            setActiveIndex(nextIdx);
+          }
         },
         onUpdate: (self) => {
-          if (!self.isActive) return;
+          if (!self.isActive || panelTriggers.length > 0) return;
           const nextIdx = resolveScrollDialogueBeat(
             self.progress,
             beatSpecs,
@@ -226,7 +278,11 @@ export const DialogueController: React.FC<DialogueControllerProps> = ({
           if (nextIdx !== activeIndexRef.current) {
             activeIndexRef.current = nextIdx;
             setActiveIndex(nextIdx);
-            startLinePlayback(nextIdx, true);
+            const targetLine = lines[nextIdx];
+            if (targetLine && !triggeredLineIdsRef.current.has(targetLine.id)) {
+              triggeredLineIdsRef.current.add(targetLine.id);
+              startLinePlayback(nextIdx, false);
+            }
           }
         },
         onLeave: () => {

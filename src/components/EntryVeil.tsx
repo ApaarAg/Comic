@@ -45,6 +45,7 @@ export const EntryVeil: React.FC<EntryVeilProps> = ({
 
   const exitedRef = useRef(false);
   const lastNarrationIdRef = useRef<string | null>(null);
+  const hasTriggeredOpeningRef = useRef(false);
 
   const [scrollProgress, setScrollProgress] = useState(0);
   const [exiting, setExiting] = useState(false);
@@ -252,7 +253,7 @@ export const EntryVeil: React.FC<EntryVeilProps> = ({
     };
   }, [isMuted, reducedMotion, triggerEnter]);
 
-  // Audio ambience state synchronization
+  // Audio ambience state synchronization & opening unlock
   useEffect(() => {
     if (visual.momentIndex >= 1) {
       sceneAudioManager.setMood('sunset');
@@ -261,21 +262,7 @@ export const EntryVeil: React.FC<EntryVeilProps> = ({
     }
   }, [visual.momentIndex]);
 
-  // Start looping video when Mumbai emerges (Scene B+)
-  useEffect(() => {
-    if (reducedMotion || videoError || !videoRef.current) return;
-    const video = videoRef.current;
-    if (visual.mumbaiReveal > 0.04 || scrollProgress > 0.18) {
-      if (video.paused) {
-        const p = video.play();
-        if (p && typeof p.catch === 'function') p.catch(() => {});
-      }
-    } else if (!video.paused) {
-      video.pause();
-    }
-  }, [reducedMotion, scrollProgress, videoError, visual.mumbaiReveal]);
-
-  // Narration playback for Scene C (The Chronicle / Prabhat Neural)
+  // Narration playback (The Chronicle · George / ElevenLabs)
   const playNarrationBeat = useCallback(
     (beat: (typeof PROLOGUE_NARRATION_BEATS)[number]) => {
       setNarrationProgress(0.12);
@@ -295,15 +282,30 @@ export const EntryVeil: React.FC<EntryVeilProps> = ({
     [],
   );
 
+  // Autoplay unlock listener to start opening ambience, score and narration from frame 0
   useEffect(() => {
-    // When user enters Scene C (narrationOpacity active)
-    if (visual.narrationOpacity > 0.35) {
-      if (lastNarrationIdRef.current !== activeBeat.id) {
+    sceneAudioManager.ensureAutoplayUnlocked(() => {
+      if (!hasTriggeredOpeningRef.current && !exitedRef.current) {
+        hasTriggeredOpeningRef.current = true;
         lastNarrationIdRef.current = activeBeat.id;
         playNarrationBeat(activeBeat);
       }
-    } else if (visual.narrationOpacity < 0.1) {
-      lastNarrationIdRef.current = null;
+    });
+
+    // Start immediately if audio is already unlocked or supported
+    if (!hasTriggeredOpeningRef.current && !exitedRef.current) {
+      hasTriggeredOpeningRef.current = true;
+      lastNarrationIdRef.current = activeBeat.id;
+      playNarrationBeat(activeBeat);
+    }
+  }, [activeBeat, playNarrationBeat]);
+
+  useEffect(() => {
+    // When user enters Scene C directly (e.g. via jump or autoplay)
+    if (visual.narrationOpacity > 0.35 && !hasTriggeredOpeningRef.current) {
+      hasTriggeredOpeningRef.current = true;
+      lastNarrationIdRef.current = activeBeat.id;
+      playNarrationBeat(activeBeat);
     }
   }, [activeBeat, playNarrationBeat, visual.narrationOpacity]);
 
@@ -625,6 +627,20 @@ export const EntryVeil: React.FC<EntryVeilProps> = ({
           </div>
         )}
 
+        {/* Opening Narration Subtitle in Scene A / B */}
+        {visual.momentIndex <= 1 && (
+          <div className="absolute inset-x-0 bottom-24 sm:bottom-28 z-30 mx-auto max-w-2xl px-5 transition-opacity duration-500">
+            <div className="border border-[#f28b50]/40 bg-[#0b0e1b]/90 px-6 py-4 shadow-2xl backdrop-blur-md text-center">
+              <span className="font-mono text-[10px] uppercase tracking-[0.24em] text-[#f28b50] font-semibold">
+                The Chronicle · George
+              </span>
+              <p className="font-display mt-1 text-base sm:text-lg italic text-[#fbf6ee]">
+                &ldquo;{activeBeat.text}&rdquo;
+              </p>
+            </div>
+          </div>
+        )}
+
         {/* ── SCENE B: MUMBAI SKYLINE REVEALED (0.20 – 0.40) ─────────────── */}
         {visual.momentIndex === 1 && (
           <div className="absolute inset-0 z-20 flex flex-col items-center justify-end px-6 pb-28 text-center pointer-events-none">
@@ -639,7 +655,7 @@ export const EntryVeil: React.FC<EntryVeilProps> = ({
           </div>
         )}
 
-        {/* ── SCENE C: NARRATION WITH PRABHAT NEURAL (0.40 – 0.65) ───────── */}
+        {/* ── SCENE C: NARRATION WITH THE CHRONICLE (0.40 – 0.65) ───────── */}
         {visual.narrationOpacity > 0.05 && (
           <div
             className="absolute inset-x-0 bottom-24 sm:bottom-28 z-30 mx-auto max-w-3xl px-5 transition-transform"
@@ -655,7 +671,7 @@ export const EntryVeil: React.FC<EntryVeilProps> = ({
                     Scene C · The Chronicle
                   </span>
                   <span className="font-mono text-[10px] text-[#cfc5b9]/70">
-                    (Prabhat Neural · Indian Baritone)
+                    (George · ElevenLabs)
                   </span>
                 </div>
                 <div className="flex items-center gap-2">

@@ -4,7 +4,6 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { ComicPanel } from '../ComicPanel';
 import { InteractiveHotspot } from '../InteractiveHotspot';
 import { SceneVideoBackdrop } from '../SceneVideoBackdrop';
-import { DialogueController } from '../DialogueController';
 import { computeImpactZoom } from '../../story/scrollMath';
 import { soundscape } from '../../audio/soundscape';
 import { useOptionalNarrative } from '../../narrative/NarrativeEngine';
@@ -137,12 +136,14 @@ export const Scene09SecondDeath: React.FC<SceneProps> = ({
 
           <div className="relative z-20 mt-5 flex flex-wrap items-center justify-between gap-4">
             <div className="flex-1 min-w-[260px] max-w-xl">
-              <DialogueController
-                sequenceId="seq-09-narrator"
-                reducedMotion={reducedMotion}
-                scrollStageRef={zoomStageRef}
-                onSkipNextScene={onSkipNextScene}
-              />
+              <div className="border border-white/10 bg-[#12101e]/80 p-4 backdrop-blur-md">
+                <span className="font-mono text-[10px] uppercase tracking-[0.24em] text-[#f5b041]">
+                  The Chronicle · Midnight Impact
+                </span>
+                <p className="mt-1 font-display text-sm italic text-[#ece3d7]/90">
+                  &ldquo;And there, on a quiet midnight road in Mumbai, Death died for the second time in a single day.&rdquo;
+                </p>
+              </div>
             </div>
             <span className="font-mono text-xs uppercase tracking-[0.2em] text-[#f5b041]">
               {isImpactWindow ? '11:54 PM · Impact' : '11:53 PM'}

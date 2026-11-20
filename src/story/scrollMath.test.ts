@@ -209,8 +209,8 @@ test('computeAudioMixLevels respects mute toggles and ducks ambience under activ
     voiceMuted: false,
     isVoiceActive: true,
   });
-  assert.equal(active.duckFactor, 0.42);
-  assert.equal(active.ambienceGain, 0.21);
+  assert.equal(active.duckFactor, 0.38);
+  assert.equal(active.ambienceGain, 0.275);
   assert.equal(active.voiceGain, 0.9);
 });
 

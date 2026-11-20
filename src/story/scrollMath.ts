@@ -319,27 +319,37 @@ export interface ComputedAudioMix {
 }
 
 /**
- * Computes effective Howler bus volumes with smooth ambience & score ducking during active dialogue/voice beats.
+ * Computes effective Howler bus volumes with cinematic dynamic mixing targets:
+ * - Voice: Reference level (0.95 ~ 0 dB)
+ * - Music without speech: -8 to -12 dB relative to voice (~0.30)
+ * - Music during speech: -15 to -20 dB below voice (~0.114, duckFactor = 0.38)
+ * - Ambience without speech: -18 to -24 dB relative to voice (~0.10)
+ * - Ambience during speech: -24 dB below voice (~0.05)
+ * - Master output: Soft-clipped ceiling avoiding inter-sample peaks
  */
 export function computeAudioMixLevels(settings: AudioBusSettings): ComputedAudioMix {
   if (settings.masterMuted) {
     return { ambienceGain: 0, scoreGain: 0, sfxGain: 0, voiceGain: 0, duckFactor: 1 };
   }
-  const duckFactor = settings.isVoiceActive ? 0.42 : 1;
+  const duckFactor = settings.isVoiceActive ? 0.38 : 1;
+  const ambienceDucking = settings.isVoiceActive ? 0.55 : 1;
+  const ambienceVolume = settings.ambienceVolume ?? 0.10;
+  const scoreVolume = settings.scoreVolume ?? 0.30;
+  const sfxVolume = settings.sfxVolume ?? 0.45;
+  const voiceVolume = settings.voiceVolume ?? 0.95;
+
   const ambienceGain = settings.ambienceMuted
     ? 0
-    : Math.round(clamp01(settings.ambienceVolume) * duckFactor * 1000) / 1000;
-  const scoreVolume = settings.scoreVolume ?? 0.65;
-  const scoreMuted = settings.scoreMuted ?? false;
-  const scoreGain = scoreMuted
+    : Math.round(clamp01(ambienceVolume) * ambienceDucking * 1000) / 1000;
+  const scoreGain = (settings.scoreMuted ?? false)
     ? 0
     : Math.round(clamp01(scoreVolume) * duckFactor * 1000) / 1000;
   const sfxGain = settings.sfxMuted
     ? 0
-    : Math.round(clamp01(settings.sfxVolume) * (settings.isVoiceActive ? 0.8 : 1) * 1000) / 1000;
+    : Math.round(clamp01(sfxVolume) * (settings.isVoiceActive ? 0.75 : 1) * 1000) / 1000;
   const voiceGain = settings.voiceMuted
     ? 0
-    : Math.round(clamp01(settings.voiceVolume) * 1000) / 1000;
+    : Math.round(clamp01(voiceVolume) * 1000) / 1000;
 
   return { ambienceGain, scoreGain, sfxGain, voiceGain, duckFactor };
 }

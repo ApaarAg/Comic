@@ -4,7 +4,6 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { ComicPanel } from '../ComicPanel';
 import { SceneVideoBackdrop } from '../SceneVideoBackdrop';
 import { InteractiveHotspot } from '../InteractiveHotspot';
-import { DialogueController } from '../DialogueController';
 import { computeParallelEditState } from '../../story/scrollMath';
 import { useOptionalNarrative } from '../../narrative/NarrativeEngine';
 import type { InspectedPanelData } from '../PanelInspectorModal';
@@ -253,14 +252,7 @@ export const Scene05TwoEvents: React.FC<SceneProps> = ({
             </div>
           </div>
 
-          <div className="mt-6">
-            <DialogueController
-              sequenceId="seq-05-narrator"
-              reducedMotion={reducedMotion}
-              scrollStageRef={stageRef}
-              onSkipNextScene={onSkipNextScene}
-            />
-          </div>
+
 
           <div className="mt-6">
             <InteractiveHotspot

@@ -128,7 +128,7 @@ export const NarrativeProvider: React.FC<NarrativeProviderProps> = ({
   const isDialogueActiveRef = useRef(false);
   const activeBeatRef = useRef<NarrationBeat | null>(null);
   const lastTriggeredIdxRef = useRef<number>(-1);
-  const triggeredBeatIdsRef = useRef<Set<string>>(new Set());
+  const triggeredBeatIdsRef = useRef<Set<string>>(new Set(['s01-01']));
   const lastProgressRef = useRef<number>(0);
   const interruptedSeekRef = useRef<number | null>(null);
   const cadenceRafRef = useRef<number | null>(null);
@@ -307,19 +307,13 @@ export const NarrativeProvider: React.FC<NarrativeProviderProps> = ({
         return;
       }
 
-      // Backward scroll hysteresis: only allow re-trigger if user scrolled
-      // backwards by a significant threshold (at least 10% of chapter scroll)
-      if (delta < -0.10 && candidateIdx < lastTriggeredIdxRef.current) {
-        // Clear latches for beats beyond candidateIdx
-        for (let i = candidateIdx + 1; i < sortedBeats.length; i++) {
-          triggeredBeatIdsRef.current.delete(sortedBeats[i].id);
-        }
+      // Backward scroll: update visual caption focus without restarting completed audio
+      if (candidateIdx < lastTriggeredIdxRef.current) {
         lastTriggeredIdxRef.current = candidateIdx;
         const targetBeat = sortedBeats[candidateIdx];
-        if (!isDialogueActiveRef.current) {
-          characterVoicePlayer.stop(160);
-          playBeat(targetBeat);
-        }
+        activeBeatRef.current = targetBeat;
+        setActiveBeat(targetBeat);
+        setNarratorProgress(1);
       }
     },
     [playBeat, sortedBeats],

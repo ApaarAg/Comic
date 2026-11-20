@@ -70,10 +70,10 @@ export const PROLOGUE_MOMENTS: ReadonlyArray<PrologueMomentMeta> = [
 export const PROLOGUE_NARRATION_BEATS: ReadonlyArray<PrologueNarrationBeat> = [
   {
     id: 'prologue-narration-01',
-    momentIndex: 2,
+    momentIndex: 0,
     label: 'The Chronicle · Mumbai, Late December',
     text: 'It began on a Wednesday afternoon as a late December sun was just dipping below the Mumbai skyline.',
     durationMs: 4800,
-    voiceAsset: '/assets/audio/voices/narrator/sample-prabhat-baritone.mp3',
+    voiceAsset: '/assets/audio/voices/narrator/scene-01-opening.mp3',
   },
 ];
