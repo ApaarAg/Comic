@@ -16,7 +16,7 @@ import {
 } from './story/scrollMath';
 import { soundscape } from './audio/soundscape';
 import { characterVoicePlayer } from './audio/CharacterVoicePlayer';
-import { EntryVeil } from './components/EntryVeil';
+import { Scene00Prologue } from './components/scenes/Scene00Prologue';
 import { AtmosphereOverlay } from './components/AtmosphereOverlay';
 import { ChapterChrome } from './components/ChapterChrome';
 import { CinematicTransition } from './components/CinematicTransition';
@@ -48,7 +48,7 @@ function getPrefersReducedMotion(): boolean {
 }
 
 export default function App() {
-  const [hasEntered, setHasEntered] = useState<boolean>(getInitialAutostart);
+  const [hasEntered, setHasEntered] = useState<boolean>(true);
   const [reducedMotion, setReducedMotion] = useState<boolean>(getPrefersReducedMotion);
   const [scrollProgress, setScrollProgress] = useState<number>(0);
   const [activeSceneIndex, setActiveSceneIndex] = useState<number>(0);
@@ -152,27 +152,6 @@ export default function App() {
     };
   }, []);
 
-  const handleEnterChapter = useCallback((options?: { withAudio?: boolean }) => {
-    window.scrollTo(0, 0);
-    setScrollProgress(0);
-    setActiveSceneIndex(0);
-    setHasEntered(true);
-    if (options?.withAudio) {
-      soundscape.unmute();
-      setIsMuted(false);
-      soundscape.playMotif('motif_storyverse');
-    }
-  }, []);
-
-  const handleReplayPrologue = useCallback(() => {
-    characterVoicePlayer.stop(160);
-    window.scrollTo(0, 0);
-    setScrollProgress(0);
-    setActiveSceneIndex(0);
-    setHasEntered(false);
-    soundscape.setMood('prologue');
-  }, []);
-
   const handleToggleMute = useCallback(() => {
     const nextMuted = soundscape.toggleMute();
     setIsMuted(nextMuted);
@@ -193,6 +172,21 @@ export default function App() {
     [reducedMotion],
   );
 
+  const handleEnterChapter = useCallback((options?: { withAudio?: boolean }) => {
+    handleJumpToScene('scene-01');
+    if (options?.withAudio) {
+      soundscape.unmute();
+      setIsMuted(false);
+      soundscape.playMotif('motif_storyverse');
+    }
+  }, [handleJumpToScene]);
+
+  const handleReplayPrologue = useCallback(() => {
+    characterVoicePlayer.stop(160);
+    handleJumpToScene('scene-00');
+    soundscape.setMood('prologue');
+  }, [handleJumpToScene]);
+
   const handleReplayChapter = useCallback(() => {
     handleJumpToScene('scene-01');
   }, [handleJumpToScene]);
@@ -208,39 +202,37 @@ export default function App() {
           reducedMotion={reducedMotion}
         />
 
-        {!hasEntered ? (
-          <EntryVeil
-            onEnter={handleEnterChapter}
+        <ChapterChrome
+          scenes={CHAPTER_SCENES}
+          activeSceneIndex={activeSceneIndex}
+          progress={scrollProgress}
+          sceneBounds={sceneBounds}
+          isMuted={isMuted}
+          onToggleMute={handleToggleMute}
+          onJumpToScene={handleJumpToScene}
+          onReplayPrologue={handleReplayPrologue}
+          hasEntered={hasEntered}
+        />
+
+        <PanelInspectorModal
+          panel={inspectedPanel}
+          onClose={() => setInspectedPanel(null)}
+        />
+
+        <main className="relative z-20">
+          <Scene00Prologue
             reducedMotion={reducedMotion}
             isMuted={isMuted}
             onToggleMute={handleToggleMute}
+            onUnlockAudio={() => setIsMuted(false)}
           />
-        ) : (
-          <>
-            <ChapterChrome
-              scenes={CHAPTER_SCENES}
-              activeSceneIndex={activeSceneIndex}
-              progress={scrollProgress}
-              sceneBounds={sceneBounds}
-              isMuted={isMuted}
-              onToggleMute={handleToggleMute}
-              onJumpToScene={handleJumpToScene}
-              onReplayPrologue={handleReplayPrologue}
-              hasEntered={hasEntered}
-            />
 
-            <PanelInspectorModal
-              panel={inspectedPanel}
-              onClose={() => setInspectedPanel(null)}
-            />
-
-            <main className="relative z-20">
-              <Scene01Mumbai
-                reducedMotion={reducedMotion}
-                activeSceneIndex={activeSceneIndex}
-                onInspectPanel={setInspectedPanel}
-                onSkipNextScene={() => handleJumpToScene('scene-02')}
-              />
+          <Scene01Mumbai
+            reducedMotion={reducedMotion}
+            activeSceneIndex={activeSceneIndex}
+            onInspectPanel={setInspectedPanel}
+            onSkipNextScene={() => handleJumpToScene('scene-02')}
+          />
 
               <CinematicTransition
                 kind="ink-spread"
@@ -378,8 +370,6 @@ export default function App() {
             </main>
 
             <CinematicCaptionBar />
-          </>
-        )}
       </div>
     </NarrativeProvider>
   );

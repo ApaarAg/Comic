@@ -78,10 +78,10 @@ export const ChapterChrome: React.FC<ChapterChromeProps> = ({
         <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-5 py-2.5 md:px-8">
           {/* Zone 1: Brand Wordmark */}
           <a
-            href="#scene-01"
+            href="#scene-00"
             onClick={(e) => {
               e.preventDefault();
-              onJumpToScene('scene-01');
+              onJumpToScene('scene-00');
             }}
             className="font-display text-lg md:text-xl font-semibold tracking-wide text-[#f6efe5] whitespace-nowrap shrink-0 hover:opacity-85 transition-opacity focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#f28b50]"
           >
@@ -94,7 +94,9 @@ export const ChapterChrome: React.FC<ChapterChromeProps> = ({
               className="font-mono tabular-nums shrink-0"
               style={{ color: activeScene.theme.accent }}
             >
-              {String(activeScene.index).padStart(2, '0')} / {String(scenes.length).padStart(2, '0')}
+              {activeScene.index === 0
+                ? 'Prologue'
+                : `${String(activeScene.index).padStart(2, '0')} / 10`}
             </span>
             <span aria-hidden="true" className="text-[#e6ddd0]/35">/</span>
             <span className="truncate font-medium">{activeScene.title}</span>
