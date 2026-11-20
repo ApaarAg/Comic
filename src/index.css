@@ -1,0 +1,209 @@
+@import "tailwindcss";
+
+@theme {
+  --font-display: "Cormorant Garamond", Georgia, serif;
+  --font-sans: "Plus Jakarta Sans", system-ui, -apple-system, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, monospace;
+}
+
+@layer base {
+  html {
+    background-color: #0b0d17;
+    color: #f4efe6;
+    font-family: var(--font-sans);
+    scroll-behavior: auto;
+    overflow-x: clip;
+  }
+
+  body {
+    background-color: #0b0d17;
+    color: #f4efe6;
+    margin: 0;
+    padding: 0;
+    overflow-x: clip;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  ::selection {
+    background-color: rgba(235, 118, 92, 0.35);
+    color: #fff7ed;
+  }
+}
+
+/* Editorial comic panel frame with crisp border & subtle atmospheric shadow */
+.comic-panel-frame {
+  position: relative;
+  overflow: hidden;
+  border: 1.5px solid rgba(12, 14, 24, 0.9);
+  box-shadow:
+    0 24px 60px -18px rgba(4, 6, 14, 0.72),
+    0 0 0 1px rgba(255, 245, 232, 0.08);
+  background-color: #101322;
+}
+
+.comic-panel-frame img {
+  display: block;
+  width: 100%;
+  height: auto;
+  image-rendering: auto;
+}
+
+/* Authentic narrative caption styling echoing Filipe Andrade & Deron Bennett's caption cards */
+.story-caption {
+  background: rgba(250, 244, 234, 0.96);
+  color: #151722;
+  border: 1.5px solid #151722;
+  box-shadow: 4px 5px 0 rgba(10, 12, 22, 0.85);
+}
+
+.story-caption-dark {
+  background: rgba(15, 18, 34, 0.92);
+  color: #f5efe6;
+  border: 1px solid rgba(255, 245, 232, 0.22);
+  box-shadow: 0 18px 42px -12px rgba(0, 0, 0, 0.7);
+}
+
+.story-dialogue {
+  background: rgba(252, 249, 243, 0.97);
+  color: #141622;
+  border: 1.5px solid #141622;
+  box-shadow: 0 12px 30px -10px rgba(0, 0, 0, 0.55);
+}
+
+.story-dialogue-ghost {
+  background: rgba(24, 52, 76, 0.94);
+  color: #dff4ff;
+  border: 1.5px solid rgba(153, 224, 255, 0.55);
+  box-shadow: 0 12px 32px -8px rgba(20, 110, 150, 0.45);
+}
+
+/* Subtle film grain animation */
+@keyframes grainShift {
+  0%, 100% { transform: translate(0, 0); }
+  20% { transform: translate(-1.5%, 1%); }
+  40% { transform: translate(1%, -1.5%); }
+  60% { transform: translate(-1%, -1%); }
+  80% { transform: translate(1.5%, 1%); }
+}
+
+.film-grain {
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.35'/%3E%3C/svg%3E");
+  animation: grainShift 8s steps(6) infinite;
+}
+
+@keyframes bubblePop {
+  0% { transform: translateY(8px) scale(0.96); }
+  65% { transform: translateY(-2px) scale(1.01); }
+  100% { transform: translateY(0) scale(1); }
+}
+
+@keyframes charBreathe {
+  0%, 100% { transform: scale(1) translateY(0px); }
+  50% { transform: scale(1.007) translateY(-1.5px); }
+}
+
+@keyframes charFloat {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-4px); }
+}
+
+@keyframes charSpectral {
+  0%, 100% { transform: translateY(0px) scale(1); filter: drop-shadow(0 0 0 rgba(109, 196, 224, 0)); }
+  50% { transform: translateY(-3px) scale(1.008); filter: drop-shadow(0 0 10px rgba(109, 196, 224, 0.2)); }
+}
+
+@keyframes charPulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.012); }
+}
+
+.char-breathe {
+  animation: charBreathe 6.5s ease-in-out infinite;
+}
+
+.char-float {
+  animation: charFloat 5.5s ease-in-out infinite;
+}
+
+.char-spectral {
+  animation: charSpectral 4.8s ease-in-out infinite;
+}
+
+.char-pulse {
+  animation: charPulse 3.6s ease-in-out infinite;
+}
+
+@keyframes cloudDriftSlow {
+  0%, 100% { transform: translate3d(-2.5%, 0, 0) scale(1.06); }
+  50% { transform: translate3d(2.5%, -0.8%, 0) scale(1.09); }
+}
+
+@keyframes cloudDriftReverse {
+  0%, 100% { transform: translate3d(2.5%, 0.5%, 0) scale(1.08); }
+  50% { transform: translate3d(-2.5%, -0.5%, 0) scale(1.05); }
+}
+
+@keyframes sunCoronaPulse {
+  0%, 100% { opacity: 0.72; transform: scale(1); }
+  50% { opacity: 0.94; transform: scale(1.06); }
+}
+
+@keyframes trafficStreamEast {
+  0% { transform: translateX(-18%); opacity: 0; }
+  12% { opacity: 0.9; }
+  88% { opacity: 0.85; }
+  100% { transform: translateX(118%); opacity: 0; }
+}
+
+@keyframes trafficStreamWest {
+  0% { transform: translateX(118%); opacity: 0; }
+  12% { opacity: 0.85; }
+  88% { opacity: 0.9; }
+  100% { transform: translateX(-18%); opacity: 0; }
+}
+
+@keyframes duskMoteFloat {
+  0%, 100% { transform: translate3d(0, 0, 0); opacity: 0.25; }
+  50% { transform: translate3d(8px, -16px, 0); opacity: 0.75; }
+}
+
+.mumbai-cloud-a {
+  animation: cloudDriftSlow 34s ease-in-out infinite;
+}
+
+.mumbai-cloud-b {
+  animation: cloudDriftReverse 42s ease-in-out infinite;
+}
+
+.mumbai-sun-glow {
+  animation: sunCoronaPulse 9s ease-in-out infinite;
+}
+
+.mumbai-traffic-east {
+  animation: trafficStreamEast 11s linear infinite;
+}
+
+.mumbai-traffic-west {
+  animation: trafficStreamWest 14s linear infinite;
+}
+
+.mumbai-mote {
+  animation: duskMoteFloat 7.5s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .film-grain,
+  .char-breathe,
+  .char-float,
+  .char-spectral,
+  .char-pulse,
+  .mumbai-cloud-a,
+  .mumbai-cloud-b,
+  .mumbai-sun-glow,
+  .mumbai-traffic-east,
+  .mumbai-traffic-west,
+  .mumbai-mote {
+    animation: none;
+  }
+}

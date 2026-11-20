@@ -1,0 +1,6 @@
+{
+  "name": "The Many Deaths of Laila Starr — Chapter 01",
+  "description": "Once Upon a Falling Starr — A cinematic interactive graphic novel experience adapted from Chapter 1 of The Many Deaths of Laila Starr.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
