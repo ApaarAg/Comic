@@ -398,3 +398,38 @@
 - **Emotional Arc**: Realizing eight years have passed: Darius is no longer an innocent infant. The hunt resumes.
 - **ElevenLabs Engine Settings**: Stability: `0.45`, Similarity: `0.88`, Style: `0.4`, Speaker Boost: `true`
 
+---
+
+## LOCKED NARRATOR SPECIFICATION (AUDIO EXPERIENCE 2.1)
+
+- **Casting Decision:** APPROVED & LOCKED
+- **Narrator Identity:** George — ElevenLabs (`JBFqnCBsd6RMkjVDRZzb`)
+- **Acoustic Profile:** Deep, warm, gravelly cinematic storytelling baritone with textured chest resonance, measured cadence, and atmospheric weight.
+- **Engine Hyperparameters:**
+  - `stability`: `0.40`
+  - `similarity_boost`: `0.85`
+  - `style`: `0.35`
+  - `use_speaker_boost`: `true`
+- **Total Narration Beats:** 14 (100% of all narrative bridges in Chapter 01)
+- **Production Status:** Auditions approved; production locked until final mix sign-off.
+
+### Complete 14-Beat Narration Performance Table
+
+| ID | Scene | Source Origin | Narration Text | Primary Emotion & Delivery Direction |
+| :--- | :--- | :--- | :--- | :--- |
+| `s01-01` | `scene-01` | comic | *"It began on a Wednesday afternoon as a late December sun was just dipping below the Mumbai skyline."* | Atmospheric wonder & reverence; slow expansive opening with warm chest resonance. |
+| `s01-02` | `scene-01` | connective | *"Down where the elevated highway curves between glass towers, the city exhaled in horns and heat."* | World-weary urban observation; tactile vocal rasp on "exhaled", gentle downward cadence. |
+| `s02-conn-01` | `scene-02` | connective | *"On the B.K.C. overpass, one city became many cities — each trapped inside its own small metal shell."* | Philosophical contemplation; deliberate pause before "each trapped inside". |
+| `s03-02` | `scene-03` | comic | *"...Beneath gentle curls of raven hair, her eyes stayed fixed on distant city lights while her thoughts drifted like cigarette smoke."* | Poetic melancholy & intimacy; hushed trailing breath on "cigarette smoke". |
+| `s04-conn-01` | `scene-04` | connective | *"Beyond the mortal clouds, in a place where endings are drafted like memos, something unprecedented was happening."* | Dry cosmic irony; solemn baritone gravity contrasted with bureaucratic wit. |
+| `s05-01` | `scene-05` | comic | *"It was around that time that the girl from the window at the party was falling through the air — two floors down and fast approaching the ground."* | Taut dramatic suspense; decelerating delivery, suspending time on the plummeting girl. |
+| `s05-02` | `scene-05` | comic | *"Just as she hit the ground, Mrs. Shah was in the Amravati Hospital squeezing her husband's hand with such strength that he was screaming louder than her."* | Tragicomic convergence; solemn mortal impact followed by affectionate human humor. |
+| `s05-03` | `scene-05` | comic | *"As the midwife urged her into one last push, a new life came into being. A beautiful thing that would go on to be the cause of much consternation in his many years to come."* | Prophetic mythological portent; stately, majestic resonance with fateful weight on "many years to come". |
+| `s06-conn-01` | `scene-06` | connective | *"A deal was being struck — the kind that bends the fabric of everything."* | Cosmic consequence & weight; deep rumbling gravel with a 0.4s breathless pause at the dash. |
+| `s07-conn-01` | `scene-07` | connective | *"She woke up in a body that felt borrowed, in a room that smelled of antiseptic and second chances."* | Fragile mortal awakening; intimate close-mic rasp, compassionate human observation. |
+| `s08-conn-01` | `scene-08` | connective | *"The neo-natal ward held its breath. Death held a baby."* | Breathless stillness & paradoxical tenderness; reverent hushed whisper with solemn stillness between sentences. |
+| `s09-01` | `scene-09` | comic | *"And in Mumbai, even at that late hour, great thundering wheels of commerce rolled on unfettered."* | Inexorable momentum; deep driving baritone projection echoing heavy diesel truck tires. |
+| `s09-02` | `scene-09` | comic | *"And so, only a few minutes away from midnight, Laila Starr met her death once again."* | Poetic fatalism & quiet tragedy; slow descent toward finality with a soft trailing vocal decay. |
+| `s10-conn-01` | `scene-10` | connective | *"Eight years later, the sun rose anyway — as it always has, as it always will."* | Enduring peace & philosophical timelessness; sunlit baritone resolution, gentle lingering fade on "always will". |
+
+

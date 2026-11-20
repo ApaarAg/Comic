@@ -18,7 +18,7 @@ export interface VoiceAssetRequirement {
 }
 
 const CHARACTER_DIRECTION: Record<CharacterId, string> = {
-  narrator: 'Deep, powerful Indian-English male baritone storyteller; rich chest resonance, natural Indian pronunciation, slow and deliberate cinematic pacing.',
+  narrator: 'APPROVED NARRATOR: George (ElevenLabs JBFqnCBsd6RMkjVDRZzb) — Deep, warm, gravelly, cinematic storytelling baritone with textured rasp, measured cadence, and atmospheric weight.',
   mrs_shah: 'Urgent, breathless Mumbai upper-middle-class cadence rising into panic.',
   driver: 'Flustered, harried street urgency over traffic noise.',
   dhiraj: 'Animated, slightly pretentious Indian college film-student cadence.',

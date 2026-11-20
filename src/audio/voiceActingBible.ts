@@ -785,3 +785,208 @@ export const VOICE_ACTING_BIBLE: ReadonlyArray<ActingDirection> = [
 export function getActingDirection(dialogueId: string): ActingDirection | undefined {
   return VOICE_ACTING_BIBLE.find((d) => d.dialogueId === dialogueId);
 }
+
+// ─────────────────────────────────────────────────────────────────────────────
+// LOCKED NARRATOR PRODUCTION CONFIGURATION (Audio Experience 2.1)
+// ─────────────────────────────────────────────────────────────────────────────
+
+export interface NarratorConfig {
+  provider: 'elevenlabs';
+  voiceName: string;
+  voiceId: string;
+  settings: {
+    stability: number;
+    similarity_boost: number;
+    style: number;
+    use_speaker_boost: boolean;
+  };
+  description: string;
+}
+
+export const NARRATOR_APPROVED_CONFIG: NarratorConfig = {
+  provider: 'elevenlabs',
+  voiceName: 'George',
+  voiceId: 'JBFqnCBsd6RMkjVDRZzb',
+  settings: {
+    stability: 0.40,
+    similarity_boost: 0.85,
+    style: 0.35,
+    use_speaker_boost: true,
+  },
+  description:
+    'APPROVED FINAL NARRATOR: Deep, warm, gravelly cinematic storytelling baritone with textured rasp, measured cadence, and atmospheric weight.',
+};
+
+export interface NarrationActingDirection {
+  id: string;
+  sceneId: string;
+  originalText: string;
+  audioSrc: string;
+  primaryEmotion: string;
+  toneAndTexture: string;
+  pacing: string;
+  vocalCues: string;
+  voiceSettings: NarratorConfig['settings'];
+}
+
+export const NARRATION_ACTING_BIBLE: ReadonlyArray<NarrationActingDirection> = [
+  {
+    id: 's01-01',
+    sceneId: 'scene-01',
+    originalText: 'It began on a Wednesday afternoon as a late December sun was just dipping below the Mumbai skyline.',
+    audioSrc: '/assets/audio/voices/narrator/scene-01-opening.mp3',
+    primaryEmotion: 'Atmospheric Wonder & Mythological Reverence',
+    toneAndTexture: 'Deep, rich chest baritone with textured vocal rasp; warm dusk resonance.',
+    pacing: 'Slow, expansive cinematic storytelling pace; relaxed breathing.',
+    vocalCues: 'Soft acoustic breath intake before "It began"; slight lingering warmth on "Mumbai skyline".',
+    voiceSettings: { stability: 0.40, similarity_boost: 0.85, style: 0.35, use_speaker_boost: true },
+  },
+  {
+    id: 's01-02',
+    sceneId: 'scene-01',
+    originalText: 'Down where the elevated highway curves between glass towers, the city exhaled in horns and heat.',
+    audioSrc: '/assets/audio/voices/narrator/scene-01-highway.mp3',
+    primaryEmotion: 'Grounded Urban Observation',
+    toneAndTexture: 'World-weary warmth; textured vocal rasp on "exhaled", gentle downward lilt.',
+    pacing: 'Measured, flowing cadence matching the curving highway visual.',
+    vocalCues: 'Acoustic breath catch on "exhaled"; sensory weight on "horns and heat".',
+    voiceSettings: { stability: 0.40, similarity_boost: 0.85, style: 0.35, use_speaker_boost: true },
+  },
+  {
+    id: 's02-conn-01',
+    sceneId: 'scene-02',
+    originalText: 'On the B.K.C. overpass, one city became many cities — each trapped inside its own small metal shell.',
+    audioSrc: '/assets/audio/voices/narrator/scene-02-connector.mp3',
+    primaryEmotion: 'Philosophical Detachment',
+    toneAndTexture: 'Contemplative, low resonant timbre; reflective observation of mortal isolation.',
+    pacing: 'Deliberate mid-sentence pause before "each trapped inside".',
+    vocalCues: '0.3s caesura after the em-dash; intimate close-mic delivery.',
+    voiceSettings: { stability: 0.42, similarity_boost: 0.85, style: 0.30, use_speaker_boost: true },
+  },
+  {
+    id: 's03-02',
+    sceneId: 'scene-03',
+    originalText: '...Beneath gentle curls of raven hair, her eyes stayed fixed on distant city lights while her thoughts drifted like cigarette smoke.',
+    audioSrc: '/assets/audio/voices/narrator/s03-02-window.mp3',
+    primaryEmotion: 'Poetic Melancholy & Quiet Longing',
+    toneAndTexture: 'Soft, intimate baritone register; velvety gravel with tender vulnerability.',
+    pacing: 'Slow, floating cadence mimicking drifting smoke.',
+    vocalCues: 'Hushed breath out on "cigarette smoke"; gentle vocal trailing.',
+    voiceSettings: { stability: 0.38, similarity_boost: 0.85, style: 0.40, use_speaker_boost: true },
+  },
+  {
+    id: 's04-conn-01',
+    sceneId: 'scene-04',
+    originalText: 'Beyond the mortal clouds, in a place where endings are drafted like memos, something unprecedented was happening.',
+    audioSrc: '/assets/audio/voices/narrator/scene-04-connector.mp3',
+    primaryEmotion: 'Dry Cosmic Irony & Mythological Scale',
+    toneAndTexture: 'Solemn baritone gravity undercut by subtle dry wit on "drafted like memos".',
+    pacing: 'Grand opening cadence transitioning into wry observation.',
+    vocalCues: 'Micro-pause before "unprecedented"; subtle vocal arch.',
+    voiceSettings: { stability: 0.40, similarity_boost: 0.85, style: 0.35, use_speaker_boost: true },
+  },
+  {
+    id: 's05-01',
+    sceneId: 'scene-05',
+    originalText: 'It was around that time that the girl from the window at the party was falling through the air — two floors down and fast approaching the ground.',
+    audioSrc: '/assets/audio/voices/narrator/s05-01-fall.mp3',
+    primaryEmotion: 'Dramatic Suspense & Inevitability',
+    toneAndTexture: 'Tightening vocal tension; chest resonance held taut.',
+    pacing: 'Decelerating delivery, suspending time on "falling through the air".',
+    vocalCues: 'Held breath through "approaching the ground"; chilling calm.',
+    voiceSettings: { stability: 0.38, similarity_boost: 0.85, style: 0.42, use_speaker_boost: true },
+  },
+  {
+    id: 's05-02',
+    sceneId: 'scene-05',
+    originalText: "Just as she hit the ground, Mrs. Shah was in the Amravati Hospital squeezing her husband's hand with such strength that he was screaming louder than her.",
+    audioSrc: '/assets/audio/voices/narrator/s05-02-birth.mp3',
+    primaryEmotion: 'Tragicomic Convergence',
+    toneAndTexture: 'Dual emotional texture: solemn mortal impact on "hit the ground", warm human humor on "screaming louder".',
+    pacing: 'Dynamic tempo shift between the two halves of the sentence.',
+    vocalCues: 'Subtle affectionate warmth on "screaming louder than her".',
+    voiceSettings: { stability: 0.40, similarity_boost: 0.85, style: 0.35, use_speaker_boost: true },
+  },
+  {
+    id: 's05-03',
+    sceneId: 'scene-05',
+    originalText: 'As the midwife urged her into one last push, a new life came into being. A beautiful thing that would go on to be the cause of much consternation in his many years to come.',
+    audioSrc: '/assets/audio/voices/narrator/s05-03-darius.mp3',
+    primaryEmotion: 'Prophetic Portent & Mythological Grandeur',
+    toneAndTexture: 'Full, resonant chest baritone; majestic, timeless storytelling presence.',
+    pacing: 'Stately, measured pacing with lingering emphasis on "consternation".',
+    vocalCues: 'Deep chest resonance on "A beautiful thing"; fateful drop on "many years to come".',
+    voiceSettings: { stability: 0.40, similarity_boost: 0.85, style: 0.35, use_speaker_boost: true },
+  },
+  {
+    id: 's06-conn-01',
+    sceneId: 'scene-06',
+    originalText: 'A deal was being struck — the kind that bends the fabric of everything.',
+    audioSrc: '/assets/audio/voices/narrator/scene-06-connector.mp3',
+    primaryEmotion: 'Cosmic Weight & Irreversible Consequence',
+    toneAndTexture: 'Low, rumbling baritone gravel; cosmic quietude.',
+    pacing: 'Deliberate pause at em-dash; heavy, downward-pitch conclusion.',
+    vocalCues: '0.4s breathless pause; deep gravel on "everything".',
+    voiceSettings: { stability: 0.42, similarity_boost: 0.85, style: 0.32, use_speaker_boost: true },
+  },
+  {
+    id: 's07-conn-01',
+    sceneId: 'scene-07',
+    originalText: 'She woke up in a body that felt borrowed, in a room that smelled of antiseptic and second chances.',
+    audioSrc: '/assets/audio/voices/narrator/scene-07-connector.mp3',
+    primaryEmotion: 'Fragile Mortal Awakening',
+    toneAndTexture: 'Intimate, close-mic rasp; soft, compassionate observation.',
+    pacing: 'Gentle, unhurried cadence with tactile pauses.',
+    vocalCues: 'Subtle vocal breathiness on "borrowed"; warm acoustic landing on "second chances".',
+    voiceSettings: { stability: 0.38, similarity_boost: 0.85, style: 0.38, use_speaker_boost: true },
+  },
+  {
+    id: 's08-conn-01',
+    sceneId: 'scene-08',
+    originalText: 'The neo-natal ward held its breath. Death held a baby.',
+    audioSrc: '/assets/audio/voices/narrator/scene-08-connector.mp3',
+    primaryEmotion: 'Breathless Stillness & Paradoxical Tenderness',
+    toneAndTexture: 'Very quiet, hushed baritone whisper; reverent awe.',
+    pacing: 'Substantial pause between the two short sentences; immense stillness.',
+    vocalCues: 'Acoustic inhale during pause; gentle drop in pitch on "held a baby".',
+    voiceSettings: { stability: 0.40, similarity_boost: 0.85, style: 0.35, use_speaker_boost: true },
+  },
+  {
+    id: 's09-01',
+    sceneId: 'scene-09',
+    originalText: 'And in Mumbai, even at that late hour, great thundering wheels of commerce rolled on unfettered.',
+    audioSrc: '/assets/audio/voices/narrator/s09-01-commerce.mp3',
+    primaryEmotion: 'Inexorable Mechanical Momentum',
+    toneAndTexture: 'Deep, driving baritone projection; heavy acoustic weight.',
+    pacing: 'Rhythmic, inexorable cadence mirroring heavy truck tires on wet highway.',
+    vocalCues: 'Strong chest resonance on "thundering wheels"; cutting clarity on "unfettered".',
+    voiceSettings: { stability: 0.40, similarity_boost: 0.85, style: 0.35, use_speaker_boost: true },
+  },
+  {
+    id: 's09-02',
+    sceneId: 'scene-09',
+    originalText: 'And so, only a few minutes away from midnight, Laila Starr met her death once again.',
+    audioSrc: '/assets/audio/voices/narrator/s09-02-midnight.mp3',
+    primaryEmotion: 'Poetic Fatalism & Tragedy',
+    toneAndTexture: 'Somber, melancholic baritone; quiet grief overlaid with destiny.',
+    pacing: 'Slow, deliberate descent toward finality.',
+    vocalCues: 'Soft trailing vocal decay on "once again"; quiet acoustic landing.',
+    voiceSettings: { stability: 0.38, similarity_boost: 0.85, style: 0.40, use_speaker_boost: true },
+  },
+  {
+    id: 's10-conn-01',
+    sceneId: 'scene-10',
+    originalText: 'Eight years later, the sun rose anyway — as it always has, as it always will.',
+    audioSrc: '/assets/audio/voices/narrator/scene-10-connector.mp3',
+    primaryEmotion: 'Enduring Peace & Philosophical Timelessness',
+    toneAndTexture: 'Warm, sunlit baritone resolution; comforting acoustic warmth and peace.',
+    pacing: 'Expansive, peaceful, rhythmic cadence.',
+    vocalCues: 'Gentle warm sigh in the voice on "anyway"; lingering serene fade on "always will".',
+    voiceSettings: { stability: 0.42, similarity_boost: 0.85, style: 0.30, use_speaker_boost: true },
+  },
+];
+
+export function getNarrationDirection(narrationId: string): NarrationActingDirection | undefined {
+  return NARRATION_ACTING_BIBLE.find((n) => n.id === narrationId);
+}
+

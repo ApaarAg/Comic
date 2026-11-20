@@ -64,9 +64,9 @@ export const VOICE_PROFILES: Record<string, CharacterVoiceProfile> = {
   narrator: {
     characterId: 'narrator',
     name: 'The Chronicle',
-    preferredProvider: 'edge', // MANDATORY: Indian English Narrator uses en-IN-PrabhatNeural. Never replace with ElevenLabs.
-    elevenLabsVoiceId: 'nPczCjzI2devNBz1zQrb', // Deprecated fallback
-    elevenLabsSettings: { stability: 0.60, similarity_boost: 0.88, style: 0.20, use_speaker_boost: true },
+    preferredProvider: 'elevenlabs', // APPROVED FINAL NARRATOR (Audio Experience 2.1): George (ElevenLabs JBFqnCBsd6RMkjVDRZzb)
+    elevenLabsVoiceId: process.env.ELEVENLABS_VOICE_NARRATOR || 'JBFqnCBsd6RMkjVDRZzb', // George
+    elevenLabsSettings: { stability: 0.40, similarity_boost: 0.85, style: 0.35, use_speaker_boost: true },
     googleTtsVoice: { languageCode: 'en-IN', name: 'en-IN-Wavenet-B', ssmlGender: 'MALE' },
     googleAudioConfig: { speakingRate: 0.90, pitch: -3.0 },
     edgeVoice: {
@@ -75,7 +75,7 @@ export const VOICE_PROFILES: Record<string, CharacterVoiceProfile> = {
       rate: '-10%',
       volume: '+10%',
     },
-    emotionGuidance: 'Deep, powerful, mature Indian English male baritone with rich chest resonance. Slow and deliberate pacing, subtle warmth, commanding presence.',
+    emotionGuidance: 'APPROVED NARRATOR: George (ElevenLabs JBFqnCBsd6RMkjVDRZzb). Deep, warm, gravelly, cinematic storytelling baritone with textured rasp, measured cadence, and atmospheric weight.',
   },
   death: {
     characterId: 'death',
