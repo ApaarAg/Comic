@@ -31,6 +31,8 @@ import {
 } from '../story/storyTimeline';
 import { characterVoicePlayer, type VoicePlaybackSnapshot } from '../audio/CharacterVoicePlayer';
 import { sceneAudioManager } from '../audio/SceneAudioManager';
+import { soundscape } from '../audio/soundscape';
+import { useOptionalNarrative } from '../narrative/NarrativeEngine';
 import { SyncedSpeechBubble } from './SyncedSpeechBubble';
 import { CHARACTER_STYLES, type DialogueLine } from '../story/dialogueManifest';
 import { Volume2, VolumeX } from 'lucide-react';
@@ -128,6 +130,8 @@ export const CinematicViewportStage: React.FC<CinematicViewportStageProps> = ({
     return unsub;
   }, [visualState.speechBubble?.id]);
 
+  const narrative = useOptionalNarrative();
+
   // Audio trigger arbitration
   const handleAudioUpdate = useCallback(
     (currProgress: number, prevProgress: number) => {
@@ -144,6 +148,21 @@ export const CinematicViewportStage: React.FC<CinematicViewportStageProps> = ({
         const speech = audioAction.speechToPlay;
         globalLatchState.currentlyPlayingId = speech.id;
 
+        if (speech.mode === 'dialogue') {
+          narrative?.setDialogueActive(true);
+        } else if (speech.mode === 'narration') {
+          narrative?.triggerNarrationBeat(speech.id);
+        }
+
+        // Trigger accompanying audio cues (leitmotifs or SFX)
+        if (audioAction.cueToPlay) {
+          if (audioAction.cueToPlay.type === 'leitmotif') {
+            soundscape.playMotif(audioAction.cueToPlay.cueId as any);
+          } else {
+            sceneAudioManager.triggerCue(audioAction.cueToPlay.cueId as any);
+          }
+        }
+
         // Duck background music and ambience
         sceneAudioManager.duckBuses(audioAction.ducking.duckFactor, 280);
 
@@ -152,6 +171,9 @@ export const CinematicViewportStage: React.FC<CinematicViewportStageProps> = ({
             globalLatchState.completedSpeechIds.add(speech.id);
             if (globalLatchState.currentlyPlayingId === speech.id) {
               globalLatchState.currentlyPlayingId = null;
+              if (speech.mode === 'dialogue') {
+                narrative?.setDialogueActive(false);
+              }
               sceneAudioManager.unduckBuses(1400);
             }
           },
@@ -160,11 +182,12 @@ export const CinematicViewportStage: React.FC<CinematicViewportStageProps> = ({
         if (globalLatchState.currentlyPlayingId) {
           characterVoicePlayer.stop(120);
           globalLatchState.currentlyPlayingId = null;
+          narrative?.setDialogueActive(false);
           sceneAudioManager.unduckBuses(600);
         }
       }
     },
-    [reducedMotion, sceneId],
+    [narrative, reducedMotion, sceneId],
   );
 
   // GSAP ScrollTrigger to track normalized stageProgress cleanly
@@ -197,9 +220,9 @@ export const CinematicViewportStage: React.FC<CinematicViewportStageProps> = ({
     return () => ctx.revert();
   }, [handleAudioUpdate, onProgressChange, reducedMotion, sceneId]);
 
-  // Convert embedded speech bubble into DialogueLine interface for SyncedSpeechBubble
+  // Convert embedded speech bubble into DialogueLine interface for SyncedSpeechBubble (dialogue mode only)
   const activeLine: DialogueLine | null = useMemo(() => {
-    if (!visualState.speechBubble) return null;
+    if (!visualState.speechBubble || visualState.speechBubble.mode !== 'dialogue') return null;
     const sb = visualState.speechBubble;
     return {
       id: sb.id,
@@ -304,9 +327,29 @@ export const CinematicViewportStage: React.FC<CinematicViewportStageProps> = ({
           <div
             className="absolute z-40 pointer-events-auto transition-opacity duration-300"
             style={{
-              left: isMobile ? '5%' : activeLine.side === 'left' ? '12%' : activeLine.side === 'right' ? '55%' : '25%',
+              left: isMobile
+                ? '5%'
+                : visualState.speechBubble?.anchor
+                  ? `${Math.round(visualState.speechBubble.anchor.x * 100)}%`
+                  : activeLine.side === 'left'
+                    ? '10%'
+                    : activeLine.side === 'right'
+                      ? '56%'
+                      : '26%',
               right: isMobile ? '5%' : undefined,
-              bottom: isMobile ? '16%' : activeLine.side === 'bottom' ? '10%' : '22%',
+              bottom: isMobile
+                ? '16%'
+                : visualState.speechBubble?.anchor
+                  ? undefined
+                  : activeLine.side === 'bottom'
+                    ? '12%'
+                    : '22%',
+              top: !isMobile && visualState.speechBubble?.anchor
+                ? `${Math.round(visualState.speechBubble.anchor.y * 100)}%`
+                : undefined,
+              transform: !isMobile && visualState.speechBubble?.anchor
+                ? 'translate(-50%, -100%)'
+                : undefined,
               maxWidth: isMobile ? '90%' : '440px',
             }}
           >

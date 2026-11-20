@@ -114,12 +114,13 @@ export const SceneVideoBackdrop: React.FC<SceneVideoBackdropProps> = ({
 
   // Scroll-scrubbed playback synced via GSAP ScrollTrigger for narrative turns
   useEffect(() => {
+    const triggerEl = scrubTriggerRef?.current ?? containerRef.current;
     if (
       backdropMode !== 'video' ||
       !binding ||
       binding.playbackMode !== 'scrub' ||
       !videoRef.current ||
-      !scrubTriggerRef.current
+      !triggerEl
     ) {
       return;
     }
@@ -127,7 +128,6 @@ export const SceneVideoBackdrop: React.FC<SceneVideoBackdropProps> = ({
     const video = videoRef.current;
     video.pause();
 
-    const triggerEl = scrubTriggerRef.current;
     let latestProgress = 0;
 
     const applyScrub = (progress: number) => {
