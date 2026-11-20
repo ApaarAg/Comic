@@ -34,6 +34,7 @@ const MANIFEST_FILE = path.join(VOICES_DIR, 'manifest.json');
 export interface CharacterVoiceProfile {
   characterId: string;
   name: string;
+  preferredProvider: 'edge' | 'elevenlabs' | 'google';
   elevenLabsVoiceId: string;
   elevenLabsSettings: {
     stability: number;
@@ -63,7 +64,8 @@ export const VOICE_PROFILES: Record<string, CharacterVoiceProfile> = {
   narrator: {
     characterId: 'narrator',
     name: 'The Chronicle',
-    elevenLabsVoiceId: process.env.ELEVENLABS_VOICE_NARRATOR || 'nPczCjzI2devNBz1zQrb', // Brian fallback
+    preferredProvider: 'edge', // MANDATORY: Indian English Narrator uses en-IN-PrabhatNeural. Never replace with ElevenLabs.
+    elevenLabsVoiceId: 'nPczCjzI2devNBz1zQrb', // Deprecated fallback
     elevenLabsSettings: { stability: 0.60, similarity_boost: 0.88, style: 0.20, use_speaker_boost: true },
     googleTtsVoice: { languageCode: 'en-IN', name: 'en-IN-Wavenet-B', ssmlGender: 'MALE' },
     googleAudioConfig: { speakingRate: 0.90, pitch: -3.0 },
@@ -78,7 +80,8 @@ export const VOICE_PROFILES: Record<string, CharacterVoiceProfile> = {
   death: {
     characterId: 'death',
     name: 'Death',
-    elevenLabsVoiceId: process.env.ELEVENLABS_VOICE_DEATH || 'pFZP5JQG7iQjIQuC4Bku', // Lily (Velvety, dark aristocratic female poise) | Alt: XrExE9yKIg1WjnnlVkGX (Matilda)
+    preferredProvider: 'elevenlabs', // APPROVED: Lily (Velvety, dark aristocratic female poise)
+    elevenLabsVoiceId: process.env.ELEVENLABS_VOICE_DEATH || 'pFZP5JQG7iQjIQuC4Bku', // Lily
     elevenLabsSettings: { stability: 0.60, similarity_boost: 0.82, style: 0.35, use_speaker_boost: true },
     googleTtsVoice: { languageCode: 'en-GB', name: 'en-GB-Neural2-F', ssmlGender: 'FEMALE' },
     googleAudioConfig: { speakingRate: 0.94, pitch: -2.0 },
@@ -92,7 +95,8 @@ export const VOICE_PROFILES: Record<string, CharacterVoiceProfile> = {
   laila: {
     characterId: 'laila',
     name: 'Laila Starr',
-    elevenLabsVoiceId: process.env.ELEVENLABS_VOICE_LAILA || 'Xb7hH8MSUJpSbSDYk0k2', // Alice (expressive, articulate, dry mortal wit - APPROVED)
+    preferredProvider: 'elevenlabs', // APPROVED PERMANENT: Alice
+    elevenLabsVoiceId: process.env.ELEVENLABS_VOICE_LAILA || 'Xb7hH8MSUJpSbSDYk0k2', // Alice
     elevenLabsSettings: { stability: 0.50, similarity_boost: 0.80, style: 0.35, use_speaker_boost: true },
     googleTtsVoice: { languageCode: 'en-IN', name: 'en-IN-Neural2-A', ssmlGender: 'FEMALE' },
     googleAudioConfig: { speakingRate: 0.98, pitch: 0.2 },
@@ -106,7 +110,8 @@ export const VOICE_PROFILES: Record<string, CharacterVoiceProfile> = {
   god: {
     characterId: 'god',
     name: 'Purveyor of All Goodness',
-    elevenLabsVoiceId: process.env.ELEVENLABS_VOICE_GOD || 'pNInz6obpgDQGcFmaJgB', // Adam (deep, resonant, smiling divine authority)
+    preferredProvider: 'elevenlabs',
+    elevenLabsVoiceId: process.env.ELEVENLABS_VOICE_GOD || 'pNInz6obpgDQGcFmaJgB', // Adam
     elevenLabsSettings: { stability: 0.80, similarity_boost: 0.85, style: 0.10 },
     googleTtsVoice: { languageCode: 'en-IN', name: 'en-IN-Wavenet-B', ssmlGender: 'MALE' },
     googleAudioConfig: { speakingRate: 0.88, pitch: -2.2 },
@@ -115,6 +120,7 @@ export const VOICE_PROFILES: Record<string, CharacterVoiceProfile> = {
   munmun: {
     characterId: 'munmun',
     name: 'Munmun',
+    preferredProvider: 'elevenlabs',
     elevenLabsVoiceId: process.env.ELEVENLABS_VOICE_MUNMUN || 'MF3mGyEYCl7XYWbV9V6O', // Elli
     elevenLabsSettings: { stability: 0.48, similarity_boost: 0.75, style: 0.35 },
     googleTtsVoice: { languageCode: 'en-IN', name: 'en-IN-Neural2-D', ssmlGender: 'FEMALE' },
@@ -124,6 +130,7 @@ export const VOICE_PROFILES: Record<string, CharacterVoiceProfile> = {
   agni: {
     characterId: 'agni',
     name: 'Agni',
+    preferredProvider: 'elevenlabs',
     elevenLabsVoiceId: process.env.ELEVENLABS_VOICE_AGNI || 'TxGEqnHWrfWFTfGW9XjX', // Josh
     elevenLabsSettings: { stability: 0.65, similarity_boost: 0.75, style: 0.15 },
     googleTtsVoice: { languageCode: 'en-IN', name: 'en-IN-Wavenet-D', ssmlGender: 'MALE' },
@@ -133,6 +140,7 @@ export const VOICE_PROFILES: Record<string, CharacterVoiceProfile> = {
   mrs_shah: {
     characterId: 'mrs_shah',
     name: 'Mrs. Shah',
+    preferredProvider: 'elevenlabs',
     elevenLabsVoiceId: process.env.ELEVENLABS_VOICE_MRS_SHAH || 'pMsXgqR3gPkWg3m7R7wK', // Serena
     elevenLabsSettings: { stability: 0.35, similarity_boost: 0.80, style: 0.40 },
     googleTtsVoice: { languageCode: 'en-IN', name: 'en-IN-Wavenet-A', ssmlGender: 'FEMALE' },
@@ -142,6 +150,7 @@ export const VOICE_PROFILES: Record<string, CharacterVoiceProfile> = {
   driver: {
     characterId: 'driver',
     name: 'Cab Driver',
+    preferredProvider: 'elevenlabs',
     elevenLabsVoiceId: process.env.ELEVENLABS_VOICE_DRIVER || 'IKne3meq5aSn9XLyUdCD', // Charlie
     elevenLabsSettings: { stability: 0.55, similarity_boost: 0.70 },
     googleTtsVoice: { languageCode: 'en-IN', name: 'en-IN-Wavenet-C', ssmlGender: 'MALE' },
@@ -151,6 +160,7 @@ export const VOICE_PROFILES: Record<string, CharacterVoiceProfile> = {
   dhiraj: {
     characterId: 'dhiraj',
     name: 'Dhiraj',
+    preferredProvider: 'elevenlabs',
     elevenLabsVoiceId: process.env.ELEVENLABS_VOICE_DHIRAJ || 'SOYHLrjzK2X1ezoPC6cr', // Harry
     elevenLabsSettings: { stability: 0.58, similarity_boost: 0.72 },
     googleTtsVoice: { languageCode: 'en-IN', name: 'en-IN-Neural2-B', ssmlGender: 'MALE' },
@@ -160,6 +170,7 @@ export const VOICE_PROFILES: Record<string, CharacterVoiceProfile> = {
   girl: {
     characterId: 'girl',
     name: 'Girl at the Window',
+    preferredProvider: 'elevenlabs',
     elevenLabsVoiceId: process.env.ELEVENLABS_VOICE_GIRL || 'piTKgcLEGmPE4e6mEKli', // Nicole
     elevenLabsSettings: { stability: 0.75, similarity_boost: 0.82 },
     googleTtsVoice: { languageCode: 'en-IN', name: 'en-IN-Wavenet-A', ssmlGender: 'FEMALE' },
@@ -169,6 +180,7 @@ export const VOICE_PROFILES: Record<string, CharacterVoiceProfile> = {
   security: {
     characterId: 'security',
     name: 'Hospital Security',
+    preferredProvider: 'elevenlabs',
     elevenLabsVoiceId: process.env.ELEVENLABS_VOICE_SECURITY || 'N2lVS1w4EtoT3dr4eOWO', // Marcus
     elevenLabsSettings: { stability: 0.60, similarity_boost: 0.75 },
     googleTtsVoice: { languageCode: 'en-IN', name: 'en-IN-Wavenet-B', ssmlGender: 'MALE' },
@@ -178,6 +190,7 @@ export const VOICE_PROFILES: Record<string, CharacterVoiceProfile> = {
   pranah: {
     characterId: 'pranah',
     name: 'Pranah',
+    preferredProvider: 'elevenlabs',
     elevenLabsVoiceId: process.env.ELEVENLABS_VOICE_PRANAH || 'VR6AewLTigWG4xSOukaG', // Arnold
     elevenLabsSettings: { stability: 0.72, similarity_boost: 0.80 },
     googleTtsVoice: { languageCode: 'en-IN', name: 'en-IN-Wavenet-B', ssmlGender: 'MALE' },
@@ -366,16 +379,22 @@ export function buildCompleteLineCatalogue(): GenerationTarget[] {
 
 export async function generateTarget(
   target: GenerationTarget,
-  provider: 'elevenlabs' | 'google' | 'edge',
+  requestedProvider?: 'elevenlabs' | 'google' | 'edge',
 ): Promise<{ success: boolean; error?: string; bytesWritten?: number }> {
   const profile = VOICE_PROFILES[target.character] || VOICE_PROFILES.narrator;
   fs.mkdirSync(path.dirname(target.targetPath), { recursive: true });
 
+  // STRICT GUARANTEE: Narrator ALWAYS routes to Edge Neural TTS (en-IN-PrabhatNeural).
+  // Never accidentally replace Prabhat Neural with an ElevenLabs voice.
+  const activeProvider = target.character === 'narrator'
+    ? 'edge'
+    : (profile.preferredProvider || requestedProvider || 'elevenlabs');
+
   try {
     let buffer: Buffer;
-    if (provider === 'elevenlabs') {
+    if (activeProvider === 'elevenlabs') {
       buffer = await generateElevenLabsAudio(target.transcript, profile);
-    } else if (provider === 'edge') {
+    } else if (activeProvider === 'edge') {
       buffer = await generateEdgeAudio(target.transcript, profile);
     } else {
       buffer = await generateGoogleTtsAudio(target.transcript, profile);

@@ -1,43 +1,41 @@
 import 'dotenv/config';
 import { GoogleGenAI } from '@google/genai';
+import fs from 'node:fs';
 
-async function testGemini() {
+async function testTTS() {
   const apiKey = process.env.GEMINI_API_KEY;
-  console.log('Testing Gemini API key:', apiKey?.slice(0, 10));
+  const ai = new GoogleGenAI({ apiKey });
 
-  if (!apiKey || apiKey === 'MY_GEMINI_API_KEY') {
-    console.log('Gemini API key is placeholder');
-    return;
-  }
-
+  console.log('Testing gemini-2.5-flash-preview-tts...');
   try {
-    const ai = new GoogleGenAI({ apiKey });
-    const response = await ai.models.generateContent({
-      model: 'gemini-2.0-flash',
-      contents: 'Say "Storyverse cinematic audio verification" in one sentence.',
+    const res = await ai.models.generateContent({
+      model: 'gemini-2.5-flash-preview-tts',
+      contents: 'It began on a Wednesday afternoon as a late December sun was just dipping below the Mumbai skyline.',
       config: {
         responseModalities: ['AUDIO'],
         speechConfig: {
           voiceConfig: {
             prebuiltVoiceConfig: {
-              voiceName: 'Fenrir', // Deep voice
-            },
-          },
-        },
-      },
+              voiceName: 'Puck'
+            }
+          }
+        }
+      }
     });
 
-    const candidate = response.candidates?.[0];
+    console.log('Candidates count:', res.candidates?.length);
+    const candidate = res.candidates?.[0];
     const part = candidate?.content?.parts?.[0];
+    console.log('Part keys:', part ? Object.keys(part) : 'null');
     if (part?.inlineData?.data) {
-      const buffer = Buffer.from(part.inlineData.data, 'base64');
-      console.log(`[SUCCESS] Gemini generated ${buffer.length} bytes of audio (${part.inlineData.mimeType})!`);
-    } else {
-      console.log('No audio returned, response was:', JSON.stringify(response, null, 2));
+      console.log('Inline data mimeType:', part.inlineData.mimeType, 'length:', part.inlineData.data.length);
+      const buf = Buffer.from(part.inlineData.data, 'base64');
+      fs.writeFileSync('test-tts.wav', buf);
+      console.log('Wrote test-tts.wav:', buf.length, 'bytes');
     }
   } catch (err: any) {
-    console.error('Gemini error:', err.message);
+    console.error('Error with gemini-2.5-flash-preview-tts:', err);
   }
 }
 
-testGemini();
+testTTS().catch(console.error);

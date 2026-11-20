@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-11-20T09:22:14.067Z",
+  "generatedAt": "2026-11-20T10:39:59.552Z",
   "totalLines": 48,
-  "availableCount": 3,
+  "availableCount": 4,
   "records": [
     {
       "id": "s01-01",
@@ -376,8 +376,8 @@
       "transcript": "This is all I've ever done. What am I supposed to do?",
       "audioPath": "/assets/audio/voices/death/s04-11-death-lost.mp3",
       "durationMs": 3500,
-      "fileExists": false,
-      "fileSizeBytes": 0,
+      "fileExists": true,
+      "fileSizeBytes": 53123,
       "emotion": "Regal, elegant female authority with dark velvety composure—cynical confidence cracking into sheer outrage and disbelief when fired."
     },
     {

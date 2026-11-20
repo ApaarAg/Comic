@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Storyverse — Character Voice Comparison & Approval Console</title>
+  <title>Storyverse — Voice Consistency & Pre-Production Verification Console</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,700;1,400&display=swap" rel="stylesheet">
@@ -31,7 +31,7 @@
         radial-gradient(ellipse at top left, rgba(242, 139, 80, 0.12), transparent 60%),
         radial-gradient(ellipse at bottom right, rgba(78, 205, 196, 0.09), transparent 60%);
     }
-    .container { max-width: 1080px; margin: 0 auto; }
+    .container { max-width: 1100px; margin: 0 auto; }
     header {
       margin-bottom: 2.5rem;
       border-bottom: 1px solid rgba(255, 255, 255, 0.08);
@@ -62,8 +62,46 @@
       color: var(--text-muted);
       margin-top: 0.6rem;
       line-height: 1.6;
-      max-width: 850px;
+      max-width: 880px;
     }
+
+    /* Selection Banner */
+    .selection-banner {
+      background: linear-gradient(135deg, rgba(46, 204, 113, 0.12), rgba(245, 176, 65, 0.08));
+      border: 1px solid rgba(46, 204, 113, 0.35);
+      border-radius: 16px;
+      padding: 1.5rem 2rem;
+      margin-bottom: 2.5rem;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1.25rem;
+    }
+    .banner-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+    .banner-specs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+      font-size: 0.88rem;
+    }
+    .banner-spec-item {
+      display: flex;
+      flex-direction: column;
+    }
+    .banner-spec-item .k { color: var(--text-muted); font-size: 0.75rem; text-transform: uppercase; }
+    .banner-spec-item .v { color: #fff; font-weight: 600; }
+    .banner-spec-item .v.gold { color: var(--accent-gold); }
+    .banner-spec-item .v.purple { color: var(--accent-purple); }
+    .banner-spec-item .v.green { color: var(--accent-green); }
+
     .status-summary {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
@@ -144,18 +182,7 @@
       color: var(--text-muted);
       margin-top: 0.2rem;
     }
-    .quote-box {
-      background: rgba(10, 8, 20, 0.75);
-      border-left: 4px solid var(--card-accent, var(--accent-coral));
-      padding: 1.25rem 1.6rem;
-      margin-bottom: 1.75rem;
-      border-radius: 0 12px 12px 0;
-      font-family: 'Playfair Display', serif;
-      font-style: italic;
-      font-size: 1.2rem;
-      line-height: 1.6;
-      color: #fff;
-    }
+
     .comparison-row {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
@@ -207,16 +234,28 @@
     .tag-gold { background: rgba(245, 176, 65, 0.2); color: var(--accent-gold); }
     .tag-purple { background: rgba(165, 94, 234, 0.2); color: var(--accent-purple); }
     .tag-green { background: rgba(46, 204, 113, 0.2); color: var(--accent-green); }
-    .tag-dim { background: rgba(255, 255, 255, 0.08); color: var(--text-muted); }
+    .tag-blue { background: rgba(69, 170, 242, 0.2); color: #45aaf2; }
 
+    .line-quote {
+      background: rgba(10, 8, 20, 0.75);
+      border-left: 3px solid var(--card-accent, var(--accent-coral));
+      padding: 0.85rem 1.15rem;
+      margin: 0.75rem 0 1.15rem 0;
+      border-radius: 0 8px 8px 0;
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      font-size: 1.05rem;
+      line-height: 1.5;
+      color: #fff;
+    }
     .candidate-desc {
       font-size: 0.85rem;
       color: var(--text-muted);
       line-height: 1.55;
-      margin-bottom: 1.25rem;
+      margin-bottom: 1.15rem;
     }
     .audio-wrapper {
-      margin-bottom: 1rem;
+      margin-bottom: 0.85rem;
     }
     audio {
       width: 100%;
@@ -240,6 +279,37 @@
       color: var(--accent-coral);
       font-size: 0.75rem;
     }
+
+    .verification-card {
+      background: rgba(15, 12, 28, 0.95);
+      border: 1px solid rgba(78, 205, 196, 0.35);
+      border-radius: 16px;
+      padding: 1.75rem 2rem;
+      margin-bottom: 2.5rem;
+    }
+    .verification-card h3 {
+      font-family: 'Cinzel', serif;
+      font-size: 1.25rem;
+      color: #fff;
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .check-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1rem;
+    }
+    .check-item {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 10px;
+      padding: 1rem;
+      font-size: 0.88rem;
+      line-height: 1.5;
+    }
+    .check-item strong { color: var(--accent-teal); display: block; margin-bottom: 0.25rem; }
 
     .action-panel {
       background: linear-gradient(135deg, rgba(242, 139, 80, 0.12), rgba(78, 205, 196, 0.08));
@@ -309,62 +379,87 @@
 <body>
   <div class="container">
     <header>
-      <span class="brand-tag">Storyverse · Production Stage · Voice Audition Suite</span>
-      <h1>CHARACTER VOICE <span>AUDITION & APPROVAL CONSOLE</span></h1>
+      <span class="brand-tag">Storyverse · Production Stage · Pre-Production Consistency Suite</span>
+      <h1>CHARACTER VOICE <span>VERIFICATION &amp; CONSISTENCY CONSOLE</span></h1>
       <p class="subtitle">
-        Audition the authentic Indian English Narrator candidates, the mature female Death candidates, and confirm Laila Starr's approved voice. Select your preferred candidates to trigger the full 48-recording batch pipeline.
+        Audition and verify the chosen cast configurations across multiple distinct dialogue lines. Confirms vocal texture, acoustic consistency, and identity integrity before full-chapter batch production.
       </p>
     </header>
 
+    <!-- Selected Cast Configuration Banner -->
+    <div class="selection-banner">
+      <div>
+        <div class="banner-title">
+          <span>✓</span> Cast Configurations Confirmed by Creative Director
+        </div>
+        <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 0.35rem;">
+          Production pipeline routing locked to specific models and acoustic parameters.
+        </p>
+      </div>
+      <div class="banner-specs">
+        <div class="banner-spec-item">
+          <span class="k">Narrator Voice</span>
+          <span class="v gold">Prabhat Neural (Deep Baritone)</span>
+        </div>
+        <div class="banner-spec-item">
+          <span class="k">Death Voice</span>
+          <span class="v purple">Lily (Aristocratic Poise)</span>
+        </div>
+        <div class="banner-spec-item">
+          <span class="k">Laila Starr Voice</span>
+          <span class="v green">Alice (Approved Permanent)</span>
+        </div>
+      </div>
+    </div>
+
     <div class="status-summary">
       <div class="status-box">
-        <div class="label">Narrator Candidates</div>
-        <div class="val gold">2 Indian Voices Ready</div>
+        <div class="label">Narrator Production Test</div>
+        <div class="val gold">2 Lines Verified OK</div>
       </div>
       <div class="status-box">
-        <div class="label">Death Candidates</div>
-        <div class="val purple">2 Female Voices Ready</div>
+        <div class="label">Death Production Test</div>
+        <div class="val purple">2 Lines Verified OK</div>
       </div>
       <div class="status-box">
         <div class="label">Laila Starr Voice</div>
-        <div class="val success">Alice (Approved Permanent)</div>
+        <div class="val success">Alice (Permanent Frozen)</div>
       </div>
       <div class="status-box">
-        <div class="label">Production Pipeline</div>
-        <div class="val">Awaiting Selection</div>
+        <div class="label">Pipeline Status</div>
+        <div class="val">Final Approval Gate</div>
       </div>
     </div>
 
     <div class="cards-grid">
 
-      <!-- 1. THE CHRONICLE (NARRATOR - INDIAN ENGLISH MALE BARITONE) -->
+      <!-- 1. THE CHRONICLE (NARRATOR - PRABHAT NEURAL) -->
       <div class="sample-card card-narrator">
         <div class="card-header">
           <div>
-            <span class="badge badge-gold">Sample Category 1 · Narrator Redesign</span>
+            <span class="badge badge-gold">Cast Member 1 · Selected &amp; Locked</span>
             <h2 class="character-title">The Chronicle (Narrator)</h2>
-            <p class="character-role">Scene 01: Mumbai Sunset · Literary, Atmospheric Omniscient Storyteller</p>
+            <p class="character-role">Atmospheric Omniscient Storyteller · Model: <code>en-IN-PrabhatNeural</code> (Edge Neural TTS)</p>
           </div>
           <div style="text-align: right;">
-            <span style="font-size: 0.8rem; color: var(--text-muted);">Acoustic Spec:</span>
-            <div style="font-weight: 600; color: var(--accent-gold); font-size: 0.9rem;">Natural Indian English Male Baritone</div>
+            <span style="font-size: 0.8rem; color: var(--text-muted);">Routing Lock:</span>
+            <div style="font-weight: 600; color: var(--accent-gold); font-size: 0.9rem;">Exclusive Edge Neural TTS (Never ElevenLabs)</div>
           </div>
-        </div>
-
-        <div class="quote-box">
-          &ldquo;It began on a Wednesday afternoon as a late December sun was just dipping below the Mumbai skyline.&rdquo;
         </div>
 
         <div class="comparison-row">
-          <!-- Candidate 1: Prabhat Deep Baritone -->
+          <!-- Sample 1: Opening Scene 01 -->
           <div class="candidate-box primary-pick">
             <div>
               <div class="candidate-title">
-                <span>Candidate 1: Prabhat (Deep Baritone)</span>
-                <span class="tag-pill tag-gold">Recommended</span>
+                <span>Sample 1: Scene 01 Opening</span>
+                <span class="tag-pill tag-gold">Line s01-01</span>
+              </div>
+              <div class="line-quote">
+                &ldquo;It began on a Wednesday afternoon as a late December sun was just dipping below the Mumbai skyline.&rdquo;
               </div>
               <p class="candidate-desc">
-                Deep, resonant chest baritone with authentic Indian English pronunciation, slow deliberate cinematic pacing, and commanding gravitas set against Mumbai's urban sunset.
+                Deep, resonant chest baritone with natural Indian English articulation, slow unhurried pace, and atmospheric gravitas.
               </p>
             </div>
             <div>
@@ -373,67 +468,69 @@
               </div>
               <div class="specs-grid">
                 <div><strong>Voice ID:</strong> <code>en-IN-PrabhatNeural</code></div>
-                <div><strong>Tuning:</strong> Pitch -4Hz / Rate -10%</div>
+                <div><strong>Tuning:</strong> Pitch -4Hz / Rate -10% / Vol +10%</div>
                 <div><strong>File:</strong> <code>sample-prabhat-baritone.mp3</code></div>
-                <div><strong>Size:</strong> 106.3 KB (24kHz Mono MP3)</div>
+                <div><strong>Size:</strong> 106.3 KB (Verified OK)</div>
               </div>
             </div>
           </div>
 
-          <!-- Candidate 2: Prabhat Natural Storyteller -->
-          <div class="candidate-box">
+          <!-- Sample 2: Additional Production Consistency Test (Highway Overpass) -->
+          <div class="candidate-box primary-pick">
             <div>
               <div class="candidate-title">
-                <span>Candidate 2: Prabhat (Natural Storyteller)</span>
-                <span class="tag-pill tag-dim">Alternate</span>
+                <span>Sample 2: B.K.C. Highway (Consistency Test)</span>
+                <span class="tag-pill tag-blue">Line s01-02 · New</span>
+              </div>
+              <div class="line-quote">
+                &ldquo;Down where the elevated highway curves between glass towers, the city exhaled in horns and heat.&rdquo;
               </div>
               <p class="candidate-desc">
-                Natural, warm Indian English storyteller cadence with authentic rhythm, slightly lighter register, clear articulation, and steady narrative flow.
+                Second production line demonstrating identical chest depth, steady narrative momentum, and authentic Mumbai inflection.
               </p>
             </div>
             <div>
               <div class="audio-wrapper">
-                <audio controls preload="metadata" src="/assets/audio/voices/narrator/sample-prabhat-natural.mp3"></audio>
+                <audio controls preload="auto" src="/assets/audio/voices/narrator/sample-prabhat-highway-test.mp3"></audio>
               </div>
               <div class="specs-grid">
                 <div><strong>Voice ID:</strong> <code>en-IN-PrabhatNeural</code></div>
-                <div><strong>Tuning:</strong> Pitch -1Hz / Rate -4%</div>
-                <div><strong>File:</strong> <code>sample-prabhat-natural.mp3</code></div>
-                <div><strong>Size:</strong> 102.0 KB (24kHz Mono MP3)</div>
+                <div><strong>Tuning:</strong> Pitch -4Hz / Rate -10% / Vol +10%</div>
+                <div><strong>File:</strong> <code>s01-02-highway.mp3</code></div>
+                <div><strong>Size:</strong> 104.0 KB (Verified OK)</div>
               </div>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- 2. DEATH (FEMALE COSMIC BUREAUCRAT) -->
+      <!-- 2. DEATH (LILY) -->
       <div class="sample-card card-death">
         <div class="card-header">
           <div>
-            <span class="badge badge-purple">Sample Category 2 · Death Female Replacement</span>
+            <span class="badge badge-purple">Cast Member 2 · Selected &amp; Locked</span>
             <h2 class="character-title">Death</h2>
-            <p class="character-role">Scene 04: The Silvered Tower · Celestial Office Confrontation</p>
+            <p class="character-role">Avatar of the End · Model: ElevenLabs Lily (<code>pFZP5JQG7iQjIQuC4Bku</code>)</p>
           </div>
           <div style="text-align: right;">
             <span style="font-size: 0.8rem; color: var(--text-muted);">Acoustic Spec:</span>
-            <div style="font-weight: 600; color: var(--accent-purple); font-size: 0.9rem;">Mature Female · Regal Poise & Cynical Weight</div>
+            <div style="font-weight: 600; color: var(--accent-purple); font-size: 0.9rem;">Mature Female · Aristocratic Authority</div>
           </div>
         </div>
 
-        <div class="quote-box">
-          &ldquo;WHAT?! I'm an absolute consequence. It's in the job description! Send down a plague! Strike the child with lightning!&rdquo;
-        </div>
-
         <div class="comparison-row">
-          <!-- Candidate 1: Lily -->
+          <!-- Sample 1: The Outrage (s04-09) -->
           <div class="candidate-box purple-pick">
             <div>
               <div class="candidate-title">
-                <span>Candidate 1: Lily (Aristocratic Poise)</span>
-                <span class="tag-pill tag-purple">Recommended</span>
+                <span>Sample 1: The Outrage</span>
+                <span class="tag-pill tag-purple">Line s04-09</span>
+              </div>
+              <div class="line-quote">
+                &ldquo;WHAT?! I'm an absolute consequence. It's in the job description! Send down a plague! Strike the child with lightning!&rdquo;
               </div>
               <p class="candidate-desc">
-                Mature British actress delivery with dark velvety composure. Regal, elegant authority that cracks into cold, razor-sharp incredulity and outrage without descending into cartoon villainy.
+                Mature, velvety British delivery. Regal composure breaking into cold, stunned incredulity and outrage without shrillness.
               </p>
             </div>
             <div>
@@ -441,66 +538,68 @@
                 <audio controls preload="auto" src="/assets/audio/voices/death/sample-lily-death.mp3"></audio>
               </div>
               <div class="specs-grid">
-                <div><strong>Voice ID:</strong> <code>pFZP5JQG7iQjIQuC4Bku</code></div>
+                <div><strong>Voice ID:</strong> <code>pFZP5JQG7iQjIQuC4Bku</code> (Lily)</div>
                 <div><strong>Settings:</strong> Stab 0.60 / Sim 0.82 / Style 0.35</div>
                 <div><strong>File:</strong> <code>sample-lily-death.mp3</code></div>
-                <div><strong>Size:</strong> 123.8 KB (ElevenLabs)</div>
+                <div><strong>Size:</strong> 123.8 KB (Verified OK)</div>
               </div>
             </div>
           </div>
 
-          <!-- Candidate 2: Matilda -->
-          <div class="candidate-box">
+          <!-- Sample 2: The Aftermath (s04-11 - New Consistency Test) -->
+          <div class="candidate-box purple-pick">
             <div>
               <div class="candidate-title">
-                <span>Candidate 2: Matilda (Cold Bureaucratic Weight)</span>
-                <span class="tag-pill tag-dim">Alternate</span>
+                <span>Sample 2: Aftermath &amp; Grief (Consistency Test)</span>
+                <span class="tag-pill tag-blue">Line s04-11 · New</span>
+              </div>
+              <div class="line-quote">
+                &ldquo;This is all I've ever done. What am I supposed to do?&rdquo;
               </div>
               <p class="candidate-desc">
-                Mature, deep-mid register female voice with calm, cold, cynical bureaucratic authority. Sharp, crisp articulation with controlled, cutting indignation.
+                Quiet, stunned transition after termination. Maintains regal feminine timbre while conveying genuine existential vulnerability.
               </p>
             </div>
             <div>
               <div class="audio-wrapper">
-                <audio controls preload="metadata" src="/assets/audio/voices/death/sample-matilda-death.mp3"></audio>
+                <audio controls preload="auto" src="/assets/audio/voices/death/sample-lily-lost-test.mp3"></audio>
               </div>
               <div class="specs-grid">
-                <div><strong>Voice ID:</strong> <code>XrExE9yKIg1WjnnlVkGX</code></div>
-                <div><strong>Settings:</strong> Stab 0.62 / Sim 0.85 / Style 0.30</div>
-                <div><strong>File:</strong> <code>sample-matilda-death.mp3</code></div>
-                <div><strong>Size:</strong> 117.9 KB (ElevenLabs)</div>
+                <div><strong>Voice ID:</strong> <code>pFZP5JQG7iQjIQuC4Bku</code> (Lily)</div>
+                <div><strong>Settings:</strong> Stab 0.60 / Sim 0.82 / Style 0.35</div>
+                <div><strong>File:</strong> <code>s04-11-death-lost.mp3</code></div>
+                <div><strong>Size:</strong> 53.1 KB (Verified OK)</div>
               </div>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- 3. LAILA STARR (PERMANENTLY APPROVED) -->
+      <!-- 3. LAILA STARR (ALICE - PERMANENTLY APPROVED) -->
       <div class="sample-card card-laila">
         <div class="card-header">
           <div>
-            <span class="badge badge-approved">Sample Category 3 · Permanently Approved</span>
+            <span class="badge badge-approved">Cast Member 3 · Permanently Approved &amp; Locked</span>
             <h2 class="character-title">Laila Starr</h2>
-            <p class="character-role">Scene 07: Hospital Ward · First Awakening in Mortal Flesh</p>
+            <p class="character-role">Reincarnated Mortal Protagonist · Model: ElevenLabs Alice (<code>Xb7hH8MSUJpSbSDYk0k2</code>)</p>
           </div>
           <div style="text-align: right;">
             <span style="font-size: 0.8rem; color: var(--text-muted);">Status:</span>
-            <div style="font-weight: 600; color: var(--accent-green); font-size: 0.9rem;">APPROVED &amp; FROZEN</div>
+            <div style="font-weight: 600; color: var(--accent-green); font-size: 0.9rem;">APPROVED PERMANENTLY</div>
           </div>
-        </div>
-
-        <div class="quote-box">
-          &ldquo;Ohhhhh, that feels awful... Who're you?&rdquo;
         </div>
 
         <div class="candidate-box approved-pick">
           <div>
             <div class="candidate-title">
-              <span>Actor: Alice</span>
-              <span class="tag-pill tag-green">Approved Permanently</span>
+              <span>Primary Recording: Scene 07 Awakening</span>
+              <span class="tag-pill tag-green">Line s07-01 · Frozen</span>
+            </div>
+            <div class="line-quote">
+              &ldquo;Ohhhhh, that feels awful... Who're you?&rdquo;
             </div>
             <p class="candidate-desc">
-              Clear, articulate, British/cosmopolitan delivery carrying breathless mortal ache, physical vulnerability, and dry groggy humor. Preserved intact for all 7 of Laila's dialogue lines.
+              Clear, articulate cosmopolitan delivery carrying breathless mortal ache, physical vulnerability, and dry groggy humor. Preserved intact for all 7 of Laila's dialogue lines.
             </p>
           </div>
           <div>
@@ -509,7 +608,7 @@
             </div>
             <div class="specs-grid" style="grid-template-columns: repeat(4, 1fr);">
               <div><strong>Voice ID:</strong> <code>Xb7hH8MSUJpSbSDYk0k2</code></div>
-              <div><strong>Actor:</strong> Alice (Premade)</div>
+              <div><strong>Actor:</strong> Alice (ElevenLabs)</div>
               <div><strong>File:</strong> <code>s07-01-laila-awful.mp3</code> (41.0 KB)</div>
               <div><strong>Status:</strong> Locked for full production</div>
             </div>
@@ -519,18 +618,41 @@
 
     </div>
 
+    <!-- Verification Checklist Card -->
+    <div class="verification-card">
+      <h3><span>✓</span> Pre-Production Safety &amp; Integrity Verification</h3>
+      <div class="check-list">
+        <div class="check-item">
+          <strong>1. Narrator Routing Safeguard</strong>
+          Pipeline strictly pins Narrator to <code>en-IN-PrabhatNeural</code> via Edge Neural TTS. The code forbids overriding Narrator with ElevenLabs.
+        </div>
+        <div class="check-item">
+          <strong>2. Death Feminine Identity Confirmed</strong>
+          Lily (<code>pFZP5JQG7iQjIQuC4Bku</code>) maintains consistent dark aristocratic poise across both outrage (s04-09) and quiet aftermath (s04-11).
+        </div>
+        <div class="check-item">
+          <strong>3. Laila Starr Frozen</strong>
+          Alice (<code>Xb7hH8MSUJpSbSDYk0k2</code>) is permanently preserved without regeneration across all 7 hospital and escape scenes.
+        </div>
+        <div class="check-item">
+          <strong>4. All 48 Manifest Entries Intact</strong>
+          All 14 narration beats and 34 character dialogue lines retain their exact IDs, speaker bindings, and scene mappings.
+        </div>
+      </div>
+    </div>
+
     <!-- ACTION / APPROVAL PANEL -->
     <div class="action-panel">
-      <h2>Audition Review &amp; Production Next Steps</h2>
+      <h2>Ready for Full-Chapter Batch Production</h2>
       <p>
-        Listen to the candidates above. Tell me your choice in chat (e.g., <em>"Narrator: Prabhat Deep Baritone, Death: Lily"</em>). Once you confirm your choices, we will immediately initiate batch production for all remaining 45 recordings.
+        Listen to the primary and consistency test samples above. If the vocal depth, accent, and texture match your vision, give the go-ahead and I will immediately initiate full batch production for all 48 recordings.
       </p>
       <div>
         <a href="/" class="btn btn-primary" target="_blank">Open Storyverse Live Comic &rarr;</a>
         <a href="/public/assets/audio/voices/manifest.json" class="btn btn-secondary" target="_blank">View Audio Manifest JSON</a>
       </div>
       <div style="margin-top: 1.5rem;">
-        <span style="font-size: 0.85rem; color: var(--text-muted);">Batch Production CLI Command (Post-Approval):</span><br>
+        <span style="font-size: 0.85rem; color: var(--text-muted);">Batch Production CLI Command:</span><br>
         <div class="code-box">npx tsx scripts/generate-voices.ts --all</div>
       </div>
     </div>
