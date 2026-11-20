@@ -10,13 +10,13 @@
   <style>
     :root {
       --bg: #090714;
-      --card-bg: rgba(22, 18, 38, 0.85);
+      --card-bg: rgba(22, 18, 38, 0.88);
       --card-border: rgba(242, 139, 80, 0.25);
       --accent-coral: #f28b50;
       --accent-teal: #4ecdc4;
       --accent-gold: #f5b041;
       --accent-purple: #a55eea;
-      --accent-blue: #45aaf2;
+      --accent-green: #2ecc71;
       --text-main: #f5f3fa;
       --text-muted: #9c97b0;
     }
@@ -28,10 +28,10 @@
       min-height: 100vh;
       padding: 3rem 1.5rem;
       background-image: 
-        radial-gradient(ellipse at top left, rgba(242, 139, 80, 0.10), transparent 60%),
-        radial-gradient(ellipse at bottom right, rgba(78, 205, 196, 0.08), transparent 60%);
+        radial-gradient(ellipse at top left, rgba(242, 139, 80, 0.12), transparent 60%),
+        radial-gradient(ellipse at bottom right, rgba(78, 205, 196, 0.09), transparent 60%);
     }
-    .container { max-width: 1040px; margin: 0 auto; }
+    .container { max-width: 1080px; margin: 0 auto; }
     header {
       margin-bottom: 2.5rem;
       border-bottom: 1px solid rgba(255, 255, 255, 0.08);
@@ -48,28 +48,30 @@
     }
     h1 {
       font-family: 'Cinzel', serif;
-      font-size: 2.4rem;
-      letter-spacing: 0.06em;
+      font-size: 2.3rem;
+      letter-spacing: 0.05em;
       color: #fff;
       display: flex;
       align-items: center;
       gap: 0.75rem;
+      flex-wrap: wrap;
     }
     h1 span { color: var(--accent-coral); }
     .subtitle {
       font-size: 1.05rem;
       color: var(--text-muted);
-      margin-top: 0.5rem;
+      margin-top: 0.6rem;
       line-height: 1.6;
+      max-width: 850px;
     }
     .status-summary {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
       gap: 1rem;
       margin-bottom: 2.5rem;
     }
     .status-box {
-      background: rgba(18, 14, 32, 0.9);
+      background: rgba(18, 14, 32, 0.92);
       border: 1px solid rgba(255, 255, 255, 0.1);
       border-radius: 12px;
       padding: 1.25rem;
@@ -77,36 +79,22 @@
     .status-box .label { font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.08em; }
     .status-box .val { font-size: 1.15rem; font-weight: 700; color: #fff; margin-top: 0.35rem; }
     .status-box .val.success { color: var(--accent-teal); }
+    .status-box .val.gold { color: var(--accent-gold); }
+    .status-box .val.purple { color: var(--accent-purple); }
     
-    .section-title {
-      font-family: 'Cinzel', serif;
-      font-size: 1.5rem;
-      color: #fff;
-      margin-bottom: 1.25rem;
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
-    }
-    .section-title::after {
-      content: '';
-      flex: 1;
-      height: 1px;
-      background: rgba(255, 255, 255, 0.1);
-    }
-
     .cards-grid {
       display: flex;
       flex-direction: column;
-      gap: 2rem;
-      margin-bottom: 3rem;
+      gap: 2.5rem;
+      margin-bottom: 3.5rem;
     }
     .sample-card {
       background: var(--card-bg);
       border: 1px solid var(--card-border);
       border-radius: 20px;
-      padding: 2rem;
+      padding: 2.25rem;
       backdrop-filter: blur(14px);
-      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.45);
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.5);
       position: relative;
       overflow: hidden;
     }
@@ -119,9 +107,9 @@
       height: 3px;
       background: var(--card-accent, var(--accent-coral));
     }
-    .card-narrator { --card-accent: var(--accent-gold); --card-border: rgba(245, 176, 65, 0.3); }
-    .card-death { --card-accent: var(--accent-purple); --card-border: rgba(165, 94, 234, 0.3); }
-    .card-laila { --card-accent: var(--accent-teal); --card-border: rgba(78, 205, 196, 0.3); }
+    .card-narrator { --card-accent: var(--accent-gold); --card-border: rgba(245, 176, 65, 0.35); }
+    .card-death { --card-accent: var(--accent-purple); --card-border: rgba(165, 94, 234, 0.35); }
+    .card-laila { --card-accent: var(--accent-teal); --card-border: rgba(78, 205, 196, 0.35); }
 
     .card-header {
       display: flex;
@@ -141,60 +129,93 @@
       border-radius: 9999px;
       margin-bottom: 0.6rem;
     }
-    .badge-gold { background: rgba(245, 176, 65, 0.18); color: var(--accent-gold); border: 1px solid rgba(245, 176, 65, 0.35); }
-    .badge-purple { background: rgba(165, 94, 234, 0.18); color: var(--accent-purple); border: 1px solid rgba(165, 94, 234, 0.35); }
-    .badge-teal { background: rgba(78, 205, 196, 0.18); color: var(--accent-teal); border: 1px solid rgba(78, 205, 196, 0.35); }
+    .badge-gold { background: rgba(245, 176, 65, 0.18); color: var(--accent-gold); border: 1px solid rgba(245, 176, 65, 0.4); }
+    .badge-purple { background: rgba(165, 94, 234, 0.18); color: var(--accent-purple); border: 1px solid rgba(165, 94, 234, 0.4); }
+    .badge-teal { background: rgba(78, 205, 196, 0.18); color: var(--accent-teal); border: 1px solid rgba(78, 205, 196, 0.4); }
+    .badge-approved { background: rgba(46, 204, 113, 0.2); color: var(--accent-green); border: 1px solid rgba(46, 204, 113, 0.4); }
 
     .character-title {
       font-family: 'Cinzel', serif;
-      font-size: 1.6rem;
+      font-size: 1.65rem;
       color: #fff;
     }
     .character-role {
       font-size: 0.9rem;
       color: var(--text-muted);
+      margin-top: 0.2rem;
     }
     .quote-box {
-      background: rgba(10, 8, 20, 0.65);
+      background: rgba(10, 8, 20, 0.75);
       border-left: 4px solid var(--card-accent, var(--accent-coral));
-      padding: 1.25rem 1.5rem;
-      margin-bottom: 1.5rem;
-      border-radius: 0 10px 10px 0;
+      padding: 1.25rem 1.6rem;
+      margin-bottom: 1.75rem;
+      border-radius: 0 12px 12px 0;
       font-family: 'Playfair Display', serif;
       font-style: italic;
-      font-size: 1.25rem;
+      font-size: 1.2rem;
       line-height: 1.6;
       color: #fff;
     }
     .comparison-row {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 1.25rem;
-      margin-bottom: 1.25rem;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 1rem;
     }
     .candidate-box {
-      background: rgba(13, 10, 24, 0.7);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: 12px;
-      padding: 1.25rem;
+      background: rgba(13, 10, 24, 0.75);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 14px;
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: border-color 0.2s, background-color 0.2s;
+    }
+    .candidate-box:hover {
+      border-color: rgba(255, 255, 255, 0.25);
     }
     .candidate-box.primary-pick {
-      border-color: rgba(245, 176, 65, 0.4);
-      background: rgba(245, 176, 65, 0.04);
+      border-color: rgba(245, 176, 65, 0.5);
+      background: rgba(245, 176, 65, 0.05);
+    }
+    .candidate-box.purple-pick {
+      border-color: rgba(165, 94, 234, 0.5);
+      background: rgba(165, 94, 234, 0.05);
+    }
+    .candidate-box.approved-pick {
+      border-color: rgba(46, 204, 113, 0.4);
+      background: rgba(46, 204, 113, 0.04);
     }
     .candidate-title {
-      font-size: 0.95rem;
+      font-size: 1.05rem;
       font-weight: 700;
       color: #fff;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 0.5rem;
+      margin-bottom: 0.6rem;
     }
+    .tag-pill {
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      padding: 0.2rem 0.5rem;
+      border-radius: 6px;
+      font-weight: 700;
+    }
+    .tag-gold { background: rgba(245, 176, 65, 0.2); color: var(--accent-gold); }
+    .tag-purple { background: rgba(165, 94, 234, 0.2); color: var(--accent-purple); }
+    .tag-green { background: rgba(46, 204, 113, 0.2); color: var(--accent-green); }
+    .tag-dim { background: rgba(255, 255, 255, 0.08); color: var(--text-muted); }
+
     .candidate-desc {
-      font-size: 0.825rem;
+      font-size: 0.85rem;
       color: var(--text-muted);
-      line-height: 1.5;
+      line-height: 1.55;
+      margin-bottom: 1.25rem;
+    }
+    .audio-wrapper {
       margin-bottom: 1rem;
     }
     audio {
@@ -205,18 +226,23 @@
     }
     .specs-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-      gap: 0.75rem;
-      font-size: 0.8rem;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.5rem;
+      font-size: 0.78rem;
       color: var(--text-muted);
-      margin-top: 1rem;
-      padding-top: 1rem;
+      margin-top: 0.5rem;
+      padding-top: 0.75rem;
       border-top: 1px solid rgba(255, 255, 255, 0.06);
     }
     .specs-grid strong { color: var(--text-main); }
+    .specs-grid code {
+      font-family: monospace;
+      color: var(--accent-coral);
+      font-size: 0.75rem;
+    }
 
     .action-panel {
-      background: linear-gradient(135deg, rgba(242, 139, 80, 0.15), rgba(78, 205, 196, 0.08));
+      background: linear-gradient(135deg, rgba(242, 139, 80, 0.12), rgba(78, 205, 196, 0.08));
       border: 1px solid rgba(242, 139, 80, 0.35);
       border-radius: 20px;
       padding: 2.5rem;
@@ -224,14 +250,14 @@
     }
     .action-panel h2 {
       font-family: 'Cinzel', serif;
-      font-size: 1.6rem;
+      font-size: 1.7rem;
       margin-bottom: 0.75rem;
       color: #fff;
     }
     .action-panel p {
       color: var(--text-muted);
       font-size: 1rem;
-      max-width: 720px;
+      max-width: 780px;
       margin: 0 auto 1.75rem;
       line-height: 1.6;
     }
@@ -239,8 +265,8 @@
       display: inline-flex;
       align-items: center;
       gap: 0.5rem;
-      padding: 0.9rem 2rem;
-      font-size: 1rem;
+      padding: 0.9rem 1.8rem;
+      font-size: 0.95rem;
       font-weight: 600;
       border-radius: 10px;
       cursor: pointer;
@@ -268,58 +294,60 @@
       transform: translateY(-2px);
     }
     .code-box {
-      background: rgba(0, 0, 0, 0.5);
-      padding: 0.85rem 1.25rem;
+      background: rgba(0, 0, 0, 0.55);
+      padding: 0.85rem 1.4rem;
       border-radius: 8px;
       font-family: monospace;
       font-size: 0.9rem;
       color: var(--accent-teal);
       margin-top: 1rem;
       display: inline-block;
-      border: 1px solid rgba(78, 205, 196, 0.2);
+      border: 1px solid rgba(78, 205, 196, 0.25);
     }
   </style>
 </head>
 <body>
   <div class="container">
     <header>
-      <span class="brand-tag">Storyverse · Production Stage</span>
-      <h1>CHARACTER VOICE <span>APPROVAL CONSOLE</span></h1>
-      <p class="subtitle">Listen to the redesigned deep cinematic baritone Narrator, Death, and Laila Starr. Compare candidates and approve for full 48-recording batch generation.</p>
+      <span class="brand-tag">Storyverse · Production Stage · Voice Audition Suite</span>
+      <h1>CHARACTER VOICE <span>AUDITION & APPROVAL CONSOLE</span></h1>
+      <p class="subtitle">
+        Audition the authentic Indian English Narrator candidates, the mature female Death candidates, and confirm Laila Starr's approved voice. Select your preferred candidates to trigger the full 48-recording batch pipeline.
+      </p>
     </header>
 
     <div class="status-summary">
       <div class="status-box">
-        <div class="label">Sample Recordings on Disk</div>
-        <div class="val success">3 / 3 Verified OK</div>
+        <div class="label">Narrator Candidates</div>
+        <div class="val gold">2 Indian Voices Ready</div>
       </div>
       <div class="status-box">
-        <div class="label">ElevenLabs Status</div>
-        <div class="val success">Connected (22 Voices)</div>
+        <div class="label">Death Candidates</div>
+        <div class="val purple">2 Female Voices Ready</div>
       </div>
       <div class="status-box">
-        <div class="label">Narrator Voice Identity</div>
-        <div class="val" style="color: var(--accent-gold);">Deep Cinematic Baritone</div>
+        <div class="label">Laila Starr Voice</div>
+        <div class="val success">Alice (Approved Permanent)</div>
       </div>
       <div class="status-box">
-        <div class="label">Batch Pipeline Status</div>
-        <div class="val">Awaiting User Approval</div>
+        <div class="label">Production Pipeline</div>
+        <div class="val">Awaiting Selection</div>
       </div>
     </div>
 
     <div class="cards-grid">
 
-      <!-- 1. THE CHRONICLE (NARRATOR) -->
+      <!-- 1. THE CHRONICLE (NARRATOR - INDIAN ENGLISH MALE BARITONE) -->
       <div class="sample-card card-narrator">
         <div class="card-header">
           <div>
-            <span class="badge badge-gold">Sample A · Redesigned Narrator</span>
-            <h2 class="character-title">The Chronicle</h2>
-            <p class="character-role">Scene 01: Mumbai Sunset · Whole-Chapter Continuous Witness</p>
+            <span class="badge badge-gold">Sample Category 1 · Narrator Redesign</span>
+            <h2 class="character-title">The Chronicle (Narrator)</h2>
+            <p class="character-role">Scene 01: Mumbai Sunset · Literary, Atmospheric Omniscient Storyteller</p>
           </div>
           <div style="text-align: right;">
-            <span style="font-size: 0.8rem; color: var(--text-muted);">Acoustic Profile:</span>
-            <div style="font-weight: 600; color: var(--accent-gold); font-size: 0.9rem;">Deep, Resonant Chest Baritone</div>
+            <span style="font-size: 0.8rem; color: var(--text-muted);">Acoustic Spec:</span>
+            <div style="font-weight: 600; color: var(--accent-gold); font-size: 0.9rem;">Natural Indian English Male Baritone</div>
           </div>
         </div>
 
@@ -328,51 +356,67 @@
         </div>
 
         <div class="comparison-row">
-          <!-- Candidate 1: Brian (Primary) -->
+          <!-- Candidate 1: Prabhat Deep Baritone -->
           <div class="candidate-box primary-pick">
-            <div class="candidate-title">
-              <span>Primary: Brian</span>
-              <span style="color: var(--accent-gold); font-size: 0.75rem; text-transform: uppercase;">Recommended</span>
+            <div>
+              <div class="candidate-title">
+                <span>Candidate 1: Prabhat (Deep Baritone)</span>
+                <span class="tag-pill tag-gold">Recommended</span>
+              </div>
+              <p class="candidate-desc">
+                Deep, resonant chest baritone with authentic Indian English pronunciation, slow deliberate cinematic pacing, and commanding gravitas set against Mumbai's urban sunset.
+              </p>
             </div>
-            <p class="candidate-desc">
-              Full-bodied, resonant deep baritone with strong chest resonance, deliberate unhurried pacing, and natural gravitas.
-            </p>
-            <audio controls preload="auto" src="/assets/audio/voices/narrator/scene-01-opening.mp3"></audio>
-            <div class="specs-grid">
-              <div><strong>Voice ID:</strong> <code>nPczCjzI2devNBz1zQrb</code></div>
-              <div><strong>File:</strong> <code>scene-01-opening.mp3</code> (86.5 KB)</div>
+            <div>
+              <div class="audio-wrapper">
+                <audio controls preload="auto" src="/assets/audio/voices/narrator/sample-prabhat-baritone.mp3"></audio>
+              </div>
+              <div class="specs-grid">
+                <div><strong>Voice ID:</strong> <code>en-IN-PrabhatNeural</code></div>
+                <div><strong>Tuning:</strong> Pitch -4Hz / Rate -10%</div>
+                <div><strong>File:</strong> <code>sample-prabhat-baritone.mp3</code></div>
+                <div><strong>Size:</strong> 106.3 KB (24kHz Mono MP3)</div>
+              </div>
             </div>
           </div>
 
-          <!-- Candidate 2: Adam -->
+          <!-- Candidate 2: Prabhat Natural Storyteller -->
           <div class="candidate-box">
-            <div class="candidate-title">
-              <span>Alternate: Adam</span>
-              <span style="color: var(--text-muted); font-size: 0.75rem; text-transform: uppercase;">Dominant</span>
+            <div>
+              <div class="candidate-title">
+                <span>Candidate 2: Prabhat (Natural Storyteller)</span>
+                <span class="tag-pill tag-dim">Alternate</span>
+              </div>
+              <p class="candidate-desc">
+                Natural, warm Indian English storyteller cadence with authentic rhythm, slightly lighter register, clear articulation, and steady narrative flow.
+              </p>
             </div>
-            <p class="candidate-desc">
-              Commanding, firm, punchy baritone with heavier direct presence and sharp authority.
-            </p>
-            <audio controls preload="metadata" src="/assets/audio/voices/narrator/sample-adam.mp3"></audio>
-            <div class="specs-grid">
-              <div><strong>Voice ID:</strong> <code>pNInz6obpgDQGcFmaJgB</code></div>
-              <div><strong>File:</strong> <code>sample-adam.mp3</code> (102.8 KB)</div>
+            <div>
+              <div class="audio-wrapper">
+                <audio controls preload="metadata" src="/assets/audio/voices/narrator/sample-prabhat-natural.mp3"></audio>
+              </div>
+              <div class="specs-grid">
+                <div><strong>Voice ID:</strong> <code>en-IN-PrabhatNeural</code></div>
+                <div><strong>Tuning:</strong> Pitch -1Hz / Rate -4%</div>
+                <div><strong>File:</strong> <code>sample-prabhat-natural.mp3</code></div>
+                <div><strong>Size:</strong> 102.0 KB (24kHz Mono MP3)</div>
+              </div>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- 2. DEATH -->
+      <!-- 2. DEATH (FEMALE COSMIC BUREAUCRAT) -->
       <div class="sample-card card-death">
         <div class="card-header">
           <div>
-            <span class="badge badge-purple">Sample B · Lead Protagonist</span>
+            <span class="badge badge-purple">Sample Category 2 · Death Female Replacement</span>
             <h2 class="character-title">Death</h2>
             <p class="character-role">Scene 04: The Silvered Tower · Celestial Office Confrontation</p>
           </div>
           <div style="text-align: right;">
-            <span style="font-size: 0.8rem; color: var(--text-muted);">Acoustic Profile:</span>
-            <div style="font-weight: 600; color: var(--accent-purple); font-size: 0.9rem;">Commanding Aristocratic Baritone</div>
+            <span style="font-size: 0.8rem; color: var(--text-muted);">Acoustic Spec:</span>
+            <div style="font-weight: 600; color: var(--accent-purple); font-size: 0.9rem;">Mature Female · Regal Poise & Cynical Weight</div>
           </div>
         </div>
 
@@ -380,35 +424,68 @@
           &ldquo;WHAT?! I'm an absolute consequence. It's in the job description! Send down a plague! Strike the child with lightning!&rdquo;
         </div>
 
-        <div class="candidate-box" style="background: rgba(165, 94, 234, 0.04); border-color: rgba(165, 94, 234, 0.3);">
-          <div class="candidate-title">
-            <span>Actor: Daniel</span>
-            <span style="color: var(--accent-purple); font-size: 0.75rem; text-transform: uppercase;">Aristocratic Poise</span>
+        <div class="comparison-row">
+          <!-- Candidate 1: Lily -->
+          <div class="candidate-box purple-pick">
+            <div>
+              <div class="candidate-title">
+                <span>Candidate 1: Lily (Aristocratic Poise)</span>
+                <span class="tag-pill tag-purple">Recommended</span>
+              </div>
+              <p class="candidate-desc">
+                Mature British actress delivery with dark velvety composure. Regal, elegant authority that cracks into cold, razor-sharp incredulity and outrage without descending into cartoon villainy.
+              </p>
+            </div>
+            <div>
+              <div class="audio-wrapper">
+                <audio controls preload="auto" src="/assets/audio/voices/death/sample-lily-death.mp3"></audio>
+              </div>
+              <div class="specs-grid">
+                <div><strong>Voice ID:</strong> <code>pFZP5JQG7iQjIQuC4Bku</code></div>
+                <div><strong>Settings:</strong> Stab 0.60 / Sim 0.82 / Style 0.35</div>
+                <div><strong>File:</strong> <code>sample-lily-death.mp3</code></div>
+                <div><strong>Size:</strong> 123.8 KB (ElevenLabs)</div>
+              </div>
+            </div>
           </div>
-          <p class="candidate-desc">
-            Aristocratic British baritone delivering dignified celestial authority cracking into sheer disbelief upon termination.
-          </p>
-          <audio controls preload="auto" src="/assets/audio/voices/death/s04-09-death-outrage.mp3"></audio>
-          <div class="specs-grid">
-            <div><strong>Voice ID:</strong> <code>onwK4e9ZLuTAKqWW03F9</code></div>
-            <div><strong>File:</strong> <code>s04-09-death-outrage.mp3</code> (133.3 KB)</div>
-            <div><strong>Stability / Style:</strong> 0.65 / 0.25</div>
-            <div><strong>Status:</strong> Ready for approval</div>
+
+          <!-- Candidate 2: Matilda -->
+          <div class="candidate-box">
+            <div>
+              <div class="candidate-title">
+                <span>Candidate 2: Matilda (Cold Bureaucratic Weight)</span>
+                <span class="tag-pill tag-dim">Alternate</span>
+              </div>
+              <p class="candidate-desc">
+                Mature, deep-mid register female voice with calm, cold, cynical bureaucratic authority. Sharp, crisp articulation with controlled, cutting indignation.
+              </p>
+            </div>
+            <div>
+              <div class="audio-wrapper">
+                <audio controls preload="metadata" src="/assets/audio/voices/death/sample-matilda-death.mp3"></audio>
+              </div>
+              <div class="specs-grid">
+                <div><strong>Voice ID:</strong> <code>XrExE9yKIg1WjnnlVkGX</code></div>
+                <div><strong>Settings:</strong> Stab 0.62 / Sim 0.85 / Style 0.30</div>
+                <div><strong>File:</strong> <code>sample-matilda-death.mp3</code></div>
+                <div><strong>Size:</strong> 117.9 KB (ElevenLabs)</div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
 
-      <!-- 3. LAILA STARR -->
+      <!-- 3. LAILA STARR (PERMANENTLY APPROVED) -->
       <div class="sample-card card-laila">
         <div class="card-header">
           <div>
-            <span class="badge badge-teal">Sample C · Reincarnated Mortal</span>
+            <span class="badge badge-approved">Sample Category 3 · Permanently Approved</span>
             <h2 class="character-title">Laila Starr</h2>
             <p class="character-role">Scene 07: Hospital Ward · First Awakening in Mortal Flesh</p>
           </div>
           <div style="text-align: right;">
-            <span style="font-size: 0.8rem; color: var(--text-muted);">Acoustic Profile:</span>
-            <div style="font-weight: 600; color: var(--accent-teal); font-size: 0.9rem;">Articulate, Breathless, Dry Mortal Wit</div>
+            <span style="font-size: 0.8rem; color: var(--text-muted);">Status:</span>
+            <div style="font-weight: 600; color: var(--accent-green); font-size: 0.9rem;">APPROVED &amp; FROZEN</div>
           </div>
         </div>
 
@@ -416,36 +493,25 @@
           &ldquo;Ohhhhh, that feels awful... Who're you?&rdquo;
         </div>
 
-        <div class="comparison-row">
-          <!-- Candidate 1: Alice (Primary) -->
-          <div class="candidate-box primary-pick" style="border-color: rgba(78, 205, 196, 0.4); background: rgba(78, 205, 196, 0.04);">
+        <div class="candidate-box approved-pick">
+          <div>
             <div class="candidate-title">
-              <span>Primary: Alice</span>
-              <span style="color: var(--accent-teal); font-size: 0.75rem; text-transform: uppercase;">Recommended</span>
+              <span>Actor: Alice</span>
+              <span class="tag-pill tag-green">Approved Permanently</span>
             </div>
             <p class="candidate-desc">
-              Clear, articulate, British/cosmopolitan delivery carrying breathless mortal ache and dry groggy humor.
+              Clear, articulate, British/cosmopolitan delivery carrying breathless mortal ache, physical vulnerability, and dry groggy humor. Preserved intact for all 7 of Laila's dialogue lines.
             </p>
-            <audio controls preload="auto" src="/assets/audio/voices/laila/s07-01-laila-awful.mp3"></audio>
-            <div class="specs-grid">
-              <div><strong>Voice ID:</strong> <code>Xb7hH8MSUJpSbSDYk0k2</code></div>
-              <div><strong>File:</strong> <code>s07-01-laila-awful.mp3</code> (41.0 KB)</div>
-            </div>
           </div>
-
-          <!-- Candidate 2: Lily -->
-          <div class="candidate-box">
-            <div class="candidate-title">
-              <span>Alternate: Lily</span>
-              <span style="color: var(--text-muted); font-size: 0.75rem; text-transform: uppercase;">Velvety</span>
+          <div>
+            <div class="audio-wrapper">
+              <audio controls preload="auto" src="/assets/audio/voices/laila/s07-01-laila-awful.mp3"></audio>
             </div>
-            <p class="candidate-desc">
-              Velvety, softer British actress cadence with slightly more lyrical theatrical softness.
-            </p>
-            <audio controls preload="metadata" src="/assets/audio/voices/laila/sample-lily.mp3"></audio>
-            <div class="specs-grid">
-              <div><strong>Voice ID:</strong> <code>pFZP5JQG7iQjIQuC4Bku</code></div>
-              <div><strong>File:</strong> <code>sample-lily.mp3</code> (37.6 KB)</div>
+            <div class="specs-grid" style="grid-template-columns: repeat(4, 1fr);">
+              <div><strong>Voice ID:</strong> <code>Xb7hH8MSUJpSbSDYk0k2</code></div>
+              <div><strong>Actor:</strong> Alice (Premade)</div>
+              <div><strong>File:</strong> <code>s07-01-laila-awful.mp3</code> (41.0 KB)</div>
+              <div><strong>Status:</strong> Locked for full production</div>
             </div>
           </div>
         </div>
@@ -455,16 +521,16 @@
 
     <!-- ACTION / APPROVAL PANEL -->
     <div class="action-panel">
-      <h2>Sample Approval & Batch Generation Gate</h2>
+      <h2>Audition Review &amp; Production Next Steps</h2>
       <p>
-        Listen to the sample voice delivery, resonant timbre, and emotional inflection above. Once you confirm these voices represent the vision for Storyverse, reply to approve them and we will trigger the full batch generation across all 48 recordings.
+        Listen to the candidates above. Tell me your choice in chat (e.g., <em>"Narrator: Prabhat Deep Baritone, Death: Lily"</em>). Once you confirm your choices, we will immediately initiate batch production for all remaining 45 recordings.
       </p>
       <div>
-        <a href="/" class="btn btn-primary" target="_blank">Experience in Storyverse Live Reader &rarr;</a>
+        <a href="/" class="btn btn-primary" target="_blank">Open Storyverse Live Comic &rarr;</a>
         <a href="/public/assets/audio/voices/manifest.json" class="btn btn-secondary" target="_blank">View Audio Manifest JSON</a>
       </div>
       <div style="margin-top: 1.5rem;">
-        <span style="font-size: 0.85rem; color: var(--text-muted);">Batch CLI Command (After Approval):</span><br>
+        <span style="font-size: 0.85rem; color: var(--text-muted);">Batch Production CLI Command (Post-Approval):</span><br>
         <div class="code-box">npx tsx scripts/generate-voices.ts --all</div>
       </div>
     </div>

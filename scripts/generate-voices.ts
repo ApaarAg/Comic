@@ -50,6 +50,12 @@ export interface CharacterVoiceProfile {
     speakingRate: number;
     pitch: number;
   };
+  edgeVoice?: {
+    shortName: string;
+    pitch?: string;
+    rate?: string;
+    volume?: string;
+  };
   emotionGuidance: string;
 }
 
@@ -57,28 +63,44 @@ export const VOICE_PROFILES: Record<string, CharacterVoiceProfile> = {
   narrator: {
     characterId: 'narrator',
     name: 'The Chronicle',
-    elevenLabsVoiceId: process.env.ELEVENLABS_VOICE_NARRATOR || 'nPczCjzI2devNBz1zQrb', // Brian (Deep, resonant, legendary male baritone)
+    elevenLabsVoiceId: process.env.ELEVENLABS_VOICE_NARRATOR || 'nPczCjzI2devNBz1zQrb', // Brian fallback
     elevenLabsSettings: { stability: 0.60, similarity_boost: 0.88, style: 0.20, use_speaker_boost: true },
     googleTtsVoice: { languageCode: 'en-IN', name: 'en-IN-Wavenet-B', ssmlGender: 'MALE' },
     googleAudioConfig: { speakingRate: 0.90, pitch: -3.0 },
-    emotionGuidance: 'Deep, resonant, full-bodied male baritone with strong chest resonance. Slow and deliberate pacing, subtle warmth, commanding presence.',
+    edgeVoice: {
+      shortName: 'en-IN-PrabhatNeural',
+      pitch: '-4Hz',
+      rate: '-10%',
+      volume: '+10%',
+    },
+    emotionGuidance: 'Deep, powerful, mature Indian English male baritone with rich chest resonance. Slow and deliberate pacing, subtle warmth, commanding presence.',
   },
   death: {
     characterId: 'death',
     name: 'Death',
-    elevenLabsVoiceId: process.env.ELEVENLABS_VOICE_DEATH || 'onwK4e9ZLuTAKqWW03F9', // Daniel
-    elevenLabsSettings: { stability: 0.65, similarity_boost: 0.80, style: 0.25 },
-    googleTtsVoice: { languageCode: 'en-GB', name: 'en-GB-Neural2-D', ssmlGender: 'MALE' },
-    googleAudioConfig: { speakingRate: 0.96, pitch: -2.8 },
-    emotionGuidance: 'Commanding, velvety baritone with crisp poise cracking into incredulity.',
+    elevenLabsVoiceId: process.env.ELEVENLABS_VOICE_DEATH || 'pFZP5JQG7iQjIQuC4Bku', // Lily (Velvety, dark aristocratic female poise) | Alt: XrExE9yKIg1WjnnlVkGX (Matilda)
+    elevenLabsSettings: { stability: 0.60, similarity_boost: 0.82, style: 0.35, use_speaker_boost: true },
+    googleTtsVoice: { languageCode: 'en-GB', name: 'en-GB-Neural2-F', ssmlGender: 'FEMALE' },
+    googleAudioConfig: { speakingRate: 0.94, pitch: -2.0 },
+    edgeVoice: {
+      shortName: 'en-GB-SoniaNeural',
+      pitch: '-2Hz',
+      rate: '-5%',
+    },
+    emotionGuidance: 'Regal, elegant female authority with dark velvety composure—cynical confidence cracking into sheer outrage and disbelief when fired.',
   },
   laila: {
     characterId: 'laila',
     name: 'Laila Starr',
-    elevenLabsVoiceId: process.env.ELEVENLABS_VOICE_LAILA || 'Xb7hH8MSUJpSbSDYk0k2', // Alice (expressive, articulate, dry mortal wit)
+    elevenLabsVoiceId: process.env.ELEVENLABS_VOICE_LAILA || 'Xb7hH8MSUJpSbSDYk0k2', // Alice (expressive, articulate, dry mortal wit - APPROVED)
     elevenLabsSettings: { stability: 0.50, similarity_boost: 0.80, style: 0.35, use_speaker_boost: true },
     googleTtsVoice: { languageCode: 'en-IN', name: 'en-IN-Neural2-A', ssmlGender: 'FEMALE' },
     googleAudioConfig: { speakingRate: 0.98, pitch: 0.2 },
+    edgeVoice: {
+      shortName: 'en-GB-LibbyNeural',
+      pitch: '+0Hz',
+      rate: '+0%',
+    },
     emotionGuidance: 'Husky, breathless, mortal aches, dry mordant humor concealing empathy.',
   },
   god: {
@@ -172,7 +194,8 @@ export interface CredentialStatus {
   hasElevenLabs: boolean;
   hasGoogleTts: boolean;
   hasGemini: boolean;
-  activeProvider: 'elevenlabs' | 'google' | 'none';
+  hasEdge: boolean;
+  activeProvider: 'elevenlabs' | 'google' | 'edge' | 'none';
 }
 
 export function checkCredentials(): CredentialStatus {
@@ -185,9 +208,10 @@ export function checkCredentials(): CredentialStatus {
   const geminiKey = process.env.GEMINI_API_KEY;
   const hasGemini = Boolean(geminiKey && geminiKey.trim().length > 10 && geminiKey !== 'MY_GEMINI_API_KEY');
 
-  const activeProvider = hasElevenLabs ? 'elevenlabs' : hasGoogleTts ? 'google' : 'none';
+  const hasEdge = true; // MsEdgeTTS available locally for Indian English & global neural voices
+  const activeProvider = hasElevenLabs ? 'elevenlabs' : hasEdge ? 'edge' : hasGoogleTts ? 'google' : 'none';
 
-  return { hasElevenLabs, hasGoogleTts, hasGemini, activeProvider };
+  return { hasElevenLabs, hasGoogleTts, hasGemini, hasEdge, activeProvider };
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -266,6 +290,32 @@ async function generateGoogleTtsAudio(
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
+// Microsoft Edge TTS Client (High Fidelity Neural Voices / en-IN Indian English)
+// ─────────────────────────────────────────────────────────────────────────────
+
+async function generateEdgeAudio(
+  text: string,
+  voiceProfile: CharacterVoiceProfile,
+): Promise<Buffer> {
+  const { MsEdgeTTS, OUTPUT_FORMAT } = await import('msedge-tts');
+  const tts = new MsEdgeTTS();
+  const voiceName = voiceProfile.edgeVoice?.shortName || 'en-IN-PrabhatNeural';
+  await tts.setMetadata(voiceName, OUTPUT_FORMAT.AUDIO_24KHZ_96KBITRATE_MONO_MP3);
+  const { audioStream } = tts.toStream(text, {
+    pitch: voiceProfile.edgeVoice?.pitch,
+    rate: voiceProfile.edgeVoice?.rate,
+    volume: voiceProfile.edgeVoice?.volume,
+  });
+
+  const chunks: Buffer[] = [];
+  return new Promise<Buffer>((resolve, reject) => {
+    audioStream.on('data', (chunk: Buffer) => chunks.push(chunk));
+    audioStream.on('end', () => resolve(Buffer.concat(chunks)));
+    audioStream.on('error', reject);
+  });
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
 // Batch Generator Core
 // ─────────────────────────────────────────────────────────────────────────────
 
@@ -316,7 +366,7 @@ export function buildCompleteLineCatalogue(): GenerationTarget[] {
 
 export async function generateTarget(
   target: GenerationTarget,
-  provider: 'elevenlabs' | 'google',
+  provider: 'elevenlabs' | 'google' | 'edge',
 ): Promise<{ success: boolean; error?: string; bytesWritten?: number }> {
   const profile = VOICE_PROFILES[target.character] || VOICE_PROFILES.narrator;
   fs.mkdirSync(path.dirname(target.targetPath), { recursive: true });
@@ -325,6 +375,8 @@ export async function generateTarget(
     let buffer: Buffer;
     if (provider === 'elevenlabs') {
       buffer = await generateElevenLabsAudio(target.transcript, profile);
+    } else if (provider === 'edge') {
+      buffer = await generateEdgeAudio(target.transcript, profile);
     } else {
       buffer = await generateGoogleTtsAudio(target.transcript, profile);
     }
@@ -403,6 +455,7 @@ async function main() {
   if (args.includes('--check-credentials') || args.length === 0) {
     console.log('CREDENTIAL CHECK:');
     console.log(`- ElevenLabs API:   ${creds.hasElevenLabs ? 'CONFIGURED [OK]' : 'MISSING'}`);
+    console.log(`- Edge Neural TTS:  ${creds.hasEdge ? 'CONFIGURED [OK]' : 'MISSING'}`);
     console.log(`- Google TTS API:   ${creds.hasGoogleTts ? 'CONFIGURED [OK]' : 'MISSING'}`);
     console.log(`- Gemini API:       ${creds.hasGemini ? 'CONFIGURED [OK]' : 'MISSING'}`);
     console.log(`- Active Provider:  ${creds.activeProvider.toUpperCase()}`);
@@ -432,7 +485,7 @@ async function main() {
       process.exit(1);
     }
 
-    const provider = args.find((a) => a.startsWith('--provider='))?.split('=')[1] as 'elevenlabs' | 'google' || creds.activeProvider as 'elevenlabs' | 'google';
+    const provider = (args.find((a) => a.startsWith('--provider='))?.split('=')[1] as 'elevenlabs' | 'google' | 'edge') || (creds.activeProvider as 'elevenlabs' | 'google' | 'edge');
     const samples = [
       {
         id: 's01-01',
@@ -486,7 +539,7 @@ async function main() {
       process.exit(1);
     }
 
-    const provider = args.find((a) => a.startsWith('--provider='))?.split('=')[1] as 'elevenlabs' | 'google' || creds.activeProvider as 'elevenlabs' | 'google';
+    const provider = (args.find((a) => a.startsWith('--provider='))?.split('=')[1] as 'elevenlabs' | 'google' | 'edge') || (creds.activeProvider as 'elevenlabs' | 'google' | 'edge');
     const catalogue = buildCompleteLineCatalogue();
     console.log(`Processing ${catalogue.length} lines with ${provider.toUpperCase()}...`);
 
