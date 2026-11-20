@@ -121,7 +121,7 @@ export const VOICE_PROFILES: Record<string, CharacterVoiceProfile> = {
     characterId: 'munmun',
     name: 'Munmun',
     preferredProvider: 'elevenlabs',
-    elevenLabsVoiceId: process.env.ELEVENLABS_VOICE_MUNMUN || 'MF3mGyEYCl7XYWbV9V6O', // Elli
+    elevenLabsVoiceId: process.env.ELEVENLABS_VOICE_MUNMUN || 'cgSgspJ2msm6clMCkdW9', // Jessica (playful, bright, warm)
     elevenLabsSettings: { stability: 0.48, similarity_boost: 0.75, style: 0.35 },
     googleTtsVoice: { languageCode: 'en-IN', name: 'en-IN-Neural2-D', ssmlGender: 'FEMALE' },
     googleAudioConfig: { speakingRate: 1.08, pitch: 3.2 },
@@ -131,7 +131,7 @@ export const VOICE_PROFILES: Record<string, CharacterVoiceProfile> = {
     characterId: 'agni',
     name: 'Agni',
     preferredProvider: 'elevenlabs',
-    elevenLabsVoiceId: process.env.ELEVENLABS_VOICE_AGNI || 'TxGEqnHWrfWFTfGW9XjX', // Josh
+    elevenLabsVoiceId: process.env.ELEVENLABS_VOICE_AGNI || 'cjVigY5qzO86Huf0OWal', // Eric (smooth, polite, diplomatic)
     elevenLabsSettings: { stability: 0.65, similarity_boost: 0.75, style: 0.15 },
     googleTtsVoice: { languageCode: 'en-IN', name: 'en-IN-Wavenet-D', ssmlGender: 'MALE' },
     googleAudioConfig: { speakingRate: 1.02, pitch: 0.8 },
@@ -141,7 +141,7 @@ export const VOICE_PROFILES: Record<string, CharacterVoiceProfile> = {
     characterId: 'mrs_shah',
     name: 'Mrs. Shah',
     preferredProvider: 'elevenlabs',
-    elevenLabsVoiceId: process.env.ELEVENLABS_VOICE_MRS_SHAH || 'pMsXgqR3gPkWg3m7R7wK', // Serena
+    elevenLabsVoiceId: process.env.ELEVENLABS_VOICE_MRS_SHAH || 'EXAVITQu4vr4xnSDxMaL', // Sarah (mature, expressive)
     elevenLabsSettings: { stability: 0.35, similarity_boost: 0.80, style: 0.40 },
     googleTtsVoice: { languageCode: 'en-IN', name: 'en-IN-Wavenet-A', ssmlGender: 'FEMALE' },
     googleAudioConfig: { speakingRate: 1.15, pitch: 2.0 },
@@ -171,7 +171,7 @@ export const VOICE_PROFILES: Record<string, CharacterVoiceProfile> = {
     characterId: 'girl',
     name: 'Girl at the Window',
     preferredProvider: 'elevenlabs',
-    elevenLabsVoiceId: process.env.ELEVENLABS_VOICE_GIRL || 'piTKgcLEGmPE4e6mEKli', // Nicole
+    elevenLabsVoiceId: process.env.ELEVENLABS_VOICE_GIRL || 'XrExE9yKIg1WjnnlVkGX', // Matilda
     elevenLabsSettings: { stability: 0.75, similarity_boost: 0.82 },
     googleTtsVoice: { languageCode: 'en-IN', name: 'en-IN-Wavenet-A', ssmlGender: 'FEMALE' },
     googleAudioConfig: { speakingRate: 0.88, pitch: -0.8 },
@@ -181,7 +181,7 @@ export const VOICE_PROFILES: Record<string, CharacterVoiceProfile> = {
     characterId: 'security',
     name: 'Hospital Security',
     preferredProvider: 'elevenlabs',
-    elevenLabsVoiceId: process.env.ELEVENLABS_VOICE_SECURITY || 'N2lVS1w4EtoT3dr4eOWO', // Marcus
+    elevenLabsVoiceId: process.env.ELEVENLABS_VOICE_SECURITY || 'N2lVS1w4EtoT3dr4eOWO', // Callum
     elevenLabsSettings: { stability: 0.60, similarity_boost: 0.75 },
     googleTtsVoice: { languageCode: 'en-IN', name: 'en-IN-Wavenet-B', ssmlGender: 'MALE' },
     googleAudioConfig: { speakingRate: 1.18, pitch: -1.0 },
@@ -191,7 +191,7 @@ export const VOICE_PROFILES: Record<string, CharacterVoiceProfile> = {
     characterId: 'pranah',
     name: 'Pranah',
     preferredProvider: 'elevenlabs',
-    elevenLabsVoiceId: process.env.ELEVENLABS_VOICE_PRANAH || 'VR6AewLTigWG4xSOukaG', // Arnold
+    elevenLabsVoiceId: process.env.ELEVENLABS_VOICE_PRANAH || 'nPczCjzI2devNBz1zQrb', // Brian (deep, warm, paternal)
     elevenLabsSettings: { stability: 0.72, similarity_boost: 0.80 },
     googleTtsVoice: { languageCode: 'en-IN', name: 'en-IN-Wavenet-B', ssmlGender: 'MALE' },
     googleAudioConfig: { speakingRate: 0.86, pitch: -3.5 },
@@ -380,7 +380,16 @@ export function buildCompleteLineCatalogue(): GenerationTarget[] {
 export async function generateTarget(
   target: GenerationTarget,
   requestedProvider?: 'elevenlabs' | 'google' | 'edge',
-): Promise<{ success: boolean; error?: string; bytesWritten?: number }> {
+  skipExisting: boolean = true,
+): Promise<{ success: boolean; skipped?: boolean; error?: string; bytesWritten?: number }> {
+  // Never regenerate valid existing approved recordings
+  if (skipExisting && fs.existsSync(target.targetPath)) {
+    const size = fs.statSync(target.targetPath).size;
+    if (size > 1000) {
+      return { success: true, skipped: true, bytesWritten: size };
+    }
+  }
+
   const profile = VOICE_PROFILES[target.character] || VOICE_PROFILES.narrator;
   fs.mkdirSync(path.dirname(target.targetPath), { recursive: true });
 
@@ -562,22 +571,51 @@ async function main() {
     const catalogue = buildCompleteLineCatalogue();
     console.log(`Processing ${catalogue.length} lines with ${provider.toUpperCase()}...`);
 
-    let successCount = 0;
+    let newlyGenerated = 0;
+    let skippedCount = 0;
+    let failedCount = 0;
+    const failedLines: { id: string; character: string; error?: string }[] = [];
+    const generatedLines: { id: string; character: string; bytesWritten?: number }[] = [];
+    const skippedLines: { id: string; character: string; bytesWritten?: number }[] = [];
+
     for (let i = 0; i < catalogue.length; i++) {
       const item = catalogue[i];
-      process.stdout.write(`[${i + 1}/${catalogue.length}] ${item.character} - ${item.id}... `);
-      const res = await generateTarget(item, provider);
+      const prefix = `[${String(i + 1).padStart(2, '0')}/${catalogue.length}] ${item.character.padEnd(10)} - ${item.id.padEnd(14)}... `;
+      process.stdout.write(prefix);
+      const res = await generateTarget(item, provider, true);
       if (res.success) {
-        console.log(`OK (${res.bytesWritten} B)`);
-        successCount++;
+        if (res.skipped) {
+          console.log(`REUSED EXISTING (${res.bytesWritten} B)`);
+          skippedCount++;
+          skippedLines.push({ id: item.id, character: item.character, bytesWritten: res.bytesWritten });
+        } else {
+          console.log(`GENERATED OK (${res.bytesWritten} B)`);
+          newlyGenerated++;
+          generatedLines.push({ id: item.id, character: item.character, bytesWritten: res.bytesWritten });
+        }
       } else {
         console.log(`FAIL (${res.error})`);
+        failedCount++;
+        failedLines.push({ id: item.id, character: item.character, error: res.error });
       }
-      // Small delay between calls to respect rate limits
+      // Delay between calls to respect API rate limits
       await new Promise((r) => setTimeout(r, 250));
     }
 
-    console.log(`\nBatch complete: ${successCount}/${catalogue.length} audio files generated.`);
+    console.log('\n======================================================');
+    console.log(' BATCH AUDIO PRODUCTION REPORT');
+    console.log('======================================================');
+    console.log(`Total Manifest Lines:   ${catalogue.length}`);
+    console.log(`Newly Generated:        ${newlyGenerated}`);
+    console.log(`Reused Valid Existing:  ${skippedCount}`);
+    console.log(`Failed:                 ${failedCount}`);
+    if (failedLines.length > 0) {
+      console.log('\nFailed Entries:');
+      for (const f of failedLines) {
+        console.log(`- [${f.character}] ${f.id}: ${f.error}`);
+      }
+    }
+    console.log('======================================================\n');
     generateVoiceManifest();
   }
 }

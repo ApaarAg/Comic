@@ -643,19 +643,161 @@
 
     <!-- ACTION / APPROVAL PANEL -->
     <div class="action-panel">
-      <h2>Ready for Full-Chapter Batch Production</h2>
+      <h2>Chapter 01 Full Audio Production Complete</h2>
       <p>
-        Listen to the primary and consistency test samples above. If the vocal depth, accent, and texture match your vision, give the go-ahead and I will immediately initiate full batch production for all 48 recordings.
+        All 48 recordings across all 10 scenes have been generated, verified on disk, and tested via the local web server. Filter and play any recording from the full production catalogue below, or open the Storyverse live reader.
       </p>
       <div>
-        <a href="/" class="btn btn-primary" target="_blank">Open Storyverse Live Comic &rarr;</a>
-        <a href="/public/assets/audio/voices/manifest.json" class="btn btn-secondary" target="_blank">View Audio Manifest JSON</a>
+        <a href="/" class="btn btn-primary" target="_blank">Experience in Storyverse Live Reader &rarr;</a>
+        <a href="/public/assets/audio/voices/manifest.json" class="btn btn-secondary" target="_blank">View Audio Manifest JSON (48 Entries)</a>
       </div>
-      <div style="margin-top: 1.5rem;">
-        <span style="font-size: 0.85rem; color: var(--text-muted);">Batch Production CLI Command:</span><br>
-        <div class="code-box">npx tsx scripts/generate-voices.ts --all</div>
+    </div>
+
+    <!-- COMPLETE PRODUCTION CATALOGUE (ALL 48 RECORDINGS) -->
+    <div style="margin-top: 3.5rem;">
+      <h2 style="font-family: 'Cinzel', serif; font-size: 1.8rem; color: #fff; margin-bottom: 0.5rem;">
+        COMPLETE PRODUCTION AUDIO CATALOGUE (48 / 48)
+      </h2>
+      <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 1.5rem;">
+        Filter by character or scene to audition every spoken line across the entire chapter.
+      </p>
+
+      <!-- Filter Controls -->
+      <div id="filter-controls" style="display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1.5rem;">
+        <button class="filter-btn active" data-filter="all">All (48)</button>
+        <button class="filter-btn" data-filter="narrator">Narrator (14)</button>
+        <button class="filter-btn" data-filter="death">Death (8)</button>
+        <button class="filter-btn" data-filter="laila">Laila Starr (7)</button>
+        <button class="filter-btn" data-filter="god">God (5)</button>
+        <button class="filter-btn" data-filter="munmun">Munmun (4)</button>
+        <button class="filter-btn" data-filter="agni">Agni (3)</button>
+        <button class="filter-btn" data-filter="mrs_shah">Mrs. Shah (2)</button>
+        <button class="filter-btn" data-filter="pranah">Pranah (2)</button>
+        <button class="filter-btn" data-filter="driver">Driver (1)</button>
+        <button class="filter-btn" data-filter="dhiraj">Dhiraj (1)</button>
+        <button class="filter-btn" data-filter="girl">Girl (1)</button>
+        <button class="filter-btn" data-filter="security">Security (1)</button>
+      </div>
+
+      <!-- Catalogue Container -->
+      <div id="catalogue-container" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1rem;">
+        <p style="color: var(--text-muted);">Loading catalogue records...</p>
       </div>
     </div>
   </div>
+
+  <style>
+    .filter-btn {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      color: var(--text-muted);
+      padding: 0.45rem 0.9rem;
+      border-radius: 8px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .filter-btn:hover {
+      background: rgba(255, 255, 255, 0.12);
+      color: #fff;
+    }
+    .filter-btn.active {
+      background: var(--accent-coral);
+      color: #141225;
+      border-color: var(--accent-coral);
+    }
+    .catalogue-item {
+      background: rgba(18, 14, 32, 0.88);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 12px;
+      padding: 1.25rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 0.75rem;
+    }
+    .catalogue-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.75rem;
+    }
+    .catalogue-speaker {
+      font-weight: 700;
+      color: #fff;
+      font-size: 0.9rem;
+    }
+    .catalogue-quote {
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      color: #e5e0f0;
+      font-size: 0.95rem;
+      line-height: 1.45;
+      flex: 1;
+    }
+    .catalogue-meta {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      display: flex;
+      justify-content: space-between;
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+      padding-top: 0.5rem;
+    }
+  </style>
+
+  <script>
+    async function loadCatalogue() {
+      try {
+        const res = await fetch('/assets/audio/voices/manifest.json');
+        const data = await res.json();
+        const records = data.records || [];
+        const container = document.getElementById('catalogue-container');
+        
+        function render(filter) {
+          container.innerHTML = '';
+          const filtered = filter === 'all' 
+            ? records 
+            : records.filter(r => r.characterId === filter);
+
+          for (const r of filtered) {
+            const el = document.createElement('div');
+            el.className = 'catalogue-item';
+            el.innerHTML = `
+              <div>
+                <div class="catalogue-header">
+                  <span class="catalogue-speaker">${r.characterName}</span>
+                  <span style="color: var(--accent-gold);">${r.sceneId.toUpperCase()}</span>
+                </div>
+                <div class="catalogue-quote">&ldquo;${r.transcript}&rdquo;</div>
+              </div>
+              <div>
+                <audio controls preload="none" src="${r.audioPath}" style="width: 100%; height: 36px;"></audio>
+                <div class="catalogue-meta">
+                  <span><code>${r.id}</code></span>
+                  <span>${(r.fileSizeBytes / 1024).toFixed(1)} KB</span>
+                </div>
+              </div>
+            `;
+            container.appendChild(el);
+          }
+        }
+
+        render('all');
+
+        const buttons = document.querySelectorAll('.filter-btn');
+        buttons.forEach(btn => {
+          btn.addEventListener('click', () => {
+            buttons.forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            render(btn.getAttribute('data-filter'));
+          });
+        });
+      } catch (e) {
+        console.error('Failed to load catalogue:', e);
+      }
+    }
+    loadCatalogue();
+  </script>
 </body>
 </html>
