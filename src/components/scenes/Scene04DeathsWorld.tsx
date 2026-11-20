@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { ComicPanel } from '../ComicPanel';
+import { useOptionalNarrative } from '../../narrative/NarrativeEngine';
 import { CharacterAnimator } from '../CharacterAnimator';
 import { DialogueController } from '../DialogueController';
 import { InteractiveHotspot } from '../InteractiveHotspot';
@@ -31,6 +32,10 @@ export const Scene04DeathsWorld: React.FC<SceneProps> = ({
   const officeStageRef = useRef<HTMLDivElement>(null);
   const [elevatorSpeaker, setElevatorSpeaker] = useState<CharacterId | null>('death');
   const [officeSpeaker, setOfficeSpeaker] = useState<CharacterId | null>('god');
+
+  const narrative = useOptionalNarrative();
+  const isSceneActive = narrative?.activeBeat?.sceneId === 'scene-04';
+  const choreography = isSceneActive ? narrative?.activeVisualChoreography : null;
 
   useEffect(() => {
     if (!sectionRef.current) return;
@@ -200,6 +205,10 @@ export const Scene04DeathsWorld: React.FC<SceneProps> = ({
           ref={officeStageRef}
           data-testid="scene-04-termination-stage"
           className="grid grid-cols-1 gap-8 border-t border-white/12 pt-12 lg:grid-cols-12 lg:items-start"
+          style={{
+            transform: choreography?.cameraZoom ? `scale(${choreography.cameraZoom})` : undefined,
+            transition: 'transform 850ms cubic-bezier(0.16, 1, 0.3, 1)',
+          }}
         >
           <div className="lg:col-span-7 space-y-8">
             <CharacterAnimator

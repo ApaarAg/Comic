@@ -11,6 +11,7 @@ import { soundscape } from '../../audio/soundscape';
 import type { CharacterId } from '../../story/dialogueManifest';
 import type { InspectedPanelData } from '../PanelInspectorModal';
 import { getScenePacingProfile } from '../../story/motionSystem';
+import { useOptionalNarrative } from '../../narrative/NarrativeEngine';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -33,6 +34,10 @@ export const Scene10EightYearsLater: React.FC<SceneProps> = ({
   const pranahStageRef = useRef<HTMLDivElement>(null);
   const balconyRef = useRef<HTMLDivElement>(null);
   const [activeSpeaker, setActiveSpeaker] = useState<CharacterId | null>('pranah');
+
+  const narrative = useOptionalNarrative();
+  const isSceneActive = narrative?.activeBeat?.sceneId === 'scene-10';
+  const choreography = isSceneActive ? narrative?.activeVisualChoreography : null;
 
   useEffect(() => {
     if (!sectionRef.current) return;
@@ -162,6 +167,10 @@ export const Scene10EightYearsLater: React.FC<SceneProps> = ({
         <div
           ref={pranahStageRef}
           className="grid grid-cols-1 gap-8 lg:grid-cols-12 lg:items-start mb-20"
+          style={{
+            transform: choreography?.cameraZoom ? `scale(${choreography.cameraZoom})` : undefined,
+            transition: 'transform 900ms cubic-bezier(0.16, 1, 0.3, 1)',
+          }}
         >
           <div className="lg:col-span-7 space-y-8">
             <ComicPanel

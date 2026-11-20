@@ -7,6 +7,7 @@ import { SceneVideoBackdrop } from '../SceneVideoBackdrop';
 import { DialogueController } from '../DialogueController';
 import { computeImpactZoom } from '../../story/scrollMath';
 import { soundscape } from '../../audio/soundscape';
+import { useOptionalNarrative } from '../../narrative/NarrativeEngine';
 import type { InspectedPanelData } from '../PanelInspectorModal';
 
 gsap.registerPlugin(ScrollTrigger);
@@ -27,6 +28,10 @@ export const Scene09SecondDeath: React.FC<SceneProps> = ({
   const sectionRef = useRef<HTMLElement>(null);
   const zoomStageRef = useRef<HTMLDivElement>(null);
   const [localProgress, setLocalProgress] = useState(0);
+
+  const narrative = useOptionalNarrative();
+  const isSceneActive = narrative?.activeBeat?.sceneId === 'scene-09';
+  const choreography = isSceneActive ? narrative?.activeVisualChoreography : null;
 
   useEffect(() => {
     if (!sectionRef.current) return;
@@ -57,7 +62,8 @@ export const Scene09SecondDeath: React.FC<SceneProps> = ({
   const { scale, headlightIntensity, isImpactWindow } = computeImpactZoom(
     reducedMotion ? 0.5 : localProgress,
   );
-  const clampedScale = Math.min(1.08, scale);
+  const baseScale = choreography?.cameraZoom ? scale * (choreography.cameraZoom / 1.05) : scale;
+  const clampedScale = Math.min(1.14, baseScale);
 
   return (
     <section

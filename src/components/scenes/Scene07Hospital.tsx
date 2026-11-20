@@ -10,6 +10,7 @@ import { soundscape } from '../../audio/soundscape';
 import type { CharacterId } from '../../story/dialogueManifest';
 import type { InspectedPanelData } from '../PanelInspectorModal';
 import { getScenePacingProfile } from '../../story/motionSystem';
+import { useOptionalNarrative } from '../../narrative/NarrativeEngine';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -30,6 +31,10 @@ export const Scene07Hospital: React.FC<SceneProps> = ({
   const wakeRef = useRef<HTMLDivElement>(null);
   const awakeningStageRef = useRef<HTMLDivElement>(null);
   const [activeSpeaker, setActiveSpeaker] = useState<CharacterId | null>('laila');
+
+  const narrative = useOptionalNarrative();
+  const isSceneActive = narrative?.activeBeat?.sceneId === 'scene-07';
+  const choreography = isSceneActive ? narrative?.activeVisualChoreography : null;
 
   useEffect(() => {
     if (!sectionRef.current) return;
@@ -166,6 +171,10 @@ export const Scene07Hospital: React.FC<SceneProps> = ({
             <div
               ref={awakeningStageRef}
               className="grid grid-cols-1 gap-8 lg:grid-cols-12 lg:items-start"
+              style={{
+                transform: choreography?.cameraZoom ? `scale(${choreography.cameraZoom})` : undefined,
+                transition: 'transform 850ms cubic-bezier(0.16, 1, 0.3, 1)',
+              }}
             >
               <div className="lg:col-span-5 lg:sticky lg:top-32">
                 <DialogueController

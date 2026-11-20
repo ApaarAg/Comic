@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-20T07:28:34.817Z",
+  "generatedAt": "2026-11-20T08:40:58.326Z",
   "totalLines": 48,
   "availableCount": 0,
   "records": [
@@ -48,7 +48,7 @@
       "characterName": "The Chronicle",
       "sceneId": "scene-03",
       "category": "narration",
-      "transcript": "…Beneath gentle curls of raven hair, her eyes stayed fixed on distant city lights while her thoughts drifted like cigarette smoke.",
+      "transcript": "...Beneath gentle curls of raven hair, her eyes stayed fixed on distant city lights while her thoughts drifted like cigarette smoke.",
       "audioPath": "/assets/audio/voices/narrator/s03-02-window.mp3",
       "durationMs": 4800,
       "fileExists": false,

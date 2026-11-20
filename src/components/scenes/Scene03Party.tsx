@@ -9,6 +9,7 @@ import { SceneVideoBackdrop } from '../SceneVideoBackdrop';
 import type { CharacterId } from '../../story/dialogueManifest';
 import type { InspectedPanelData } from '../PanelInspectorModal';
 import { getScenePacingProfile } from '../../story/motionSystem';
+import { useOptionalNarrative } from '../../narrative/NarrativeEngine';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -30,6 +31,10 @@ export const Scene03Party: React.FC<SceneProps> = ({
   const smokeRef = useRef<HTMLDivElement>(null);
   const closeupRef = useRef<HTMLDivElement>(null);
   const [activeSpeaker, setActiveSpeaker] = useState<CharacterId | null>('dhiraj');
+
+  const narrative = useOptionalNarrative();
+  const isSceneActive = narrative?.activeBeat?.sceneId === 'scene-03';
+  const choreography = isSceneActive ? narrative?.activeVisualChoreography : null;
 
   useEffect(() => {
     if (reducedMotion || !sectionRef.current) return;
@@ -190,7 +195,14 @@ export const Scene03Party: React.FC<SceneProps> = ({
                 />
               </div>
 
-              <div ref={closeupRef} className="relative pt-2 space-y-6">
+              <div
+                ref={closeupRef}
+                className="relative pt-2 space-y-6"
+                style={{
+                  transform: choreography?.cameraZoom ? `scale(${choreography.cameraZoom})` : undefined,
+                  transition: 'transform 900ms cubic-bezier(0.16, 1, 0.3, 1)',
+                }}
+              >
                 <CharacterAnimator
                   src="/assets/chapter1/p08_panel06.webp"
                   alt="Close-up of the girl's eyes reflecting distant Mumbai city lights through curling cigarette smoke"

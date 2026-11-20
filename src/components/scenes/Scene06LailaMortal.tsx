@@ -10,6 +10,7 @@ import { soundscape } from '../../audio/soundscape';
 import type { CharacterId } from '../../story/dialogueManifest';
 import type { InspectedPanelData } from '../PanelInspectorModal';
 import { getScenePacingProfile } from '../../story/motionSystem';
+import { useOptionalNarrative } from '../../narrative/NarrativeEngine';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -31,6 +32,10 @@ export const Scene06LailaMortal: React.FC<SceneProps> = ({
   const stormRef = useRef<HTMLDivElement>(null);
   const transformRef = useRef<HTMLDivElement>(null);
   const [activeSpeaker, setActiveSpeaker] = useState<CharacterId | null>('death');
+
+  const narrative = useOptionalNarrative();
+  const isSceneActive = narrative?.activeBeat?.sceneId === 'scene-06';
+  const choreography = isSceneActive ? narrative?.activeVisualChoreography : null;
 
   useEffect(() => {
     if (!sectionRef.current) return;
@@ -118,6 +123,10 @@ export const Scene06LailaMortal: React.FC<SceneProps> = ({
         <div
           ref={bargainStageRef}
           className="grid grid-cols-1 gap-8 lg:grid-cols-12 lg:items-start mb-14"
+          style={{
+            transform: choreography?.cameraZoom ? `scale(${choreography.cameraZoom})` : undefined,
+            transition: 'transform 850ms cubic-bezier(0.16, 1, 0.3, 1)',
+          }}
         >
           <div className="lg:col-span-7 space-y-6">
             <div className="grid grid-cols-2 gap-4">

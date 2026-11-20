@@ -75,8 +75,8 @@ export const VOICE_PROFILES: Record<string, CharacterVoiceProfile> = {
   laila: {
     characterId: 'laila',
     name: 'Laila Starr',
-    elevenLabsVoiceId: process.env.ELEVENLABS_VOICE_LAILA || '21m00Tcm4TlvDq8ikWAM', // Rachel
-    elevenLabsSettings: { stability: 0.45, similarity_boost: 0.78, style: 0.30 },
+    elevenLabsVoiceId: process.env.ELEVENLABS_VOICE_LAILA || 'oWAxZDx7w5VEj9dCyTeq', // Alice (expressive, articulate, dry mortal wit)
+    elevenLabsSettings: { stability: 0.50, similarity_boost: 0.80, style: 0.35 },
     googleTtsVoice: { languageCode: 'en-IN', name: 'en-IN-Neural2-A', ssmlGender: 'FEMALE' },
     googleAudioConfig: { speakingRate: 0.98, pitch: 0.2 },
     emotionGuidance: 'Husky, breathless, mortal aches, dry mordant humor concealing empathy.',
@@ -84,7 +84,7 @@ export const VOICE_PROFILES: Record<string, CharacterVoiceProfile> = {
   god: {
     characterId: 'god',
     name: 'Purveyor of All Goodness',
-    elevenLabsVoiceId: process.env.ELEVENLABS_VOICE_GOD || 'ErXwobaYiN019PkySvjV', // Antony
+    elevenLabsVoiceId: process.env.ELEVENLABS_VOICE_GOD || 'pNInz6obpgDQGcFmaJgB', // Adam (deep, resonant, smiling divine authority)
     elevenLabsSettings: { stability: 0.80, similarity_boost: 0.85, style: 0.10 },
     googleTtsVoice: { languageCode: 'en-IN', name: 'en-IN-Wavenet-B', ssmlGender: 'MALE' },
     googleAudioConfig: { speakingRate: 0.88, pitch: -2.2 },

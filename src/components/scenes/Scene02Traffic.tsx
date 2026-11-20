@@ -10,6 +10,7 @@ import { soundscape } from '../../audio/soundscape';
 import type { CharacterId } from '../../story/dialogueManifest';
 import type { InspectedPanelData } from '../PanelInspectorModal';
 import { getScenePacingProfile } from '../../story/motionSystem';
+import { useOptionalNarrative } from '../../narrative/NarrativeEngine';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -30,6 +31,10 @@ export const Scene02Traffic: React.FC<SceneProps> = ({
   const trackRef = useRef<HTMLDivElement>(null);
   const sfxRef = useRef<HTMLDivElement>(null);
   const [activeSpeaker, setActiveSpeaker] = useState<CharacterId | null>('mrs_shah');
+
+  const narrative = useOptionalNarrative();
+  const isSceneActive = narrative?.activeBeat?.sceneId === 'scene-02';
+  const choreography = isSceneActive ? narrative?.activeVisualChoreography : null;
 
   useEffect(() => {
     if (!sectionRef.current) return;
@@ -120,7 +125,14 @@ export const Scene02Traffic: React.FC<SceneProps> = ({
         </div>
 
         {/* Kinetic Panel Choreography + Scroll-Driven Sequential Dialogue */}
-        <div ref={trackRef} className="grid grid-cols-1 gap-8 lg:grid-cols-12 lg:items-start">
+        <div
+          ref={trackRef}
+          className="grid grid-cols-1 gap-8 lg:grid-cols-12 lg:items-start"
+          style={{
+            transform: choreography?.cameraZoom ? `scale(${choreography.cameraZoom})` : undefined,
+            transition: 'transform 800ms cubic-bezier(0.16, 1, 0.3, 1)',
+          }}
+        >
           <div className="lg:col-span-7 space-y-10 md:space-y-14">
             {/* Beat 1: Mrs. Shah screaming on the phone */}
             <div data-traffic-beat>

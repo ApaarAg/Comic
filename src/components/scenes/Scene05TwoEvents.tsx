@@ -6,6 +6,7 @@ import { SceneVideoBackdrop } from '../SceneVideoBackdrop';
 import { InteractiveHotspot } from '../InteractiveHotspot';
 import { DialogueController } from '../DialogueController';
 import { computeParallelEditState } from '../../story/scrollMath';
+import { useOptionalNarrative } from '../../narrative/NarrativeEngine';
 import type { InspectedPanelData } from '../PanelInspectorModal';
 
 gsap.registerPlugin(ScrollTrigger);
@@ -27,6 +28,10 @@ export const Scene05TwoEvents: React.FC<SceneProps> = ({
   const stageRef = useRef<HTMLDivElement>(null);
   const [localProgress, setLocalProgress] = useState(0);
   const [manualScrub, setManualScrub] = useState<number | null>(null);
+
+  const narrative = useOptionalNarrative();
+  const isSceneActive = narrative?.activeBeat?.sceneId === 'scene-05';
+  const choreography = isSceneActive ? narrative?.activeVisualChoreography : null;
 
   useEffect(() => {
     if (reducedMotion || !sectionRef.current || !stageRef.current) return;
@@ -100,6 +105,10 @@ export const Scene05TwoEvents: React.FC<SceneProps> = ({
           ref={stageRef}
           data-testid="parallel-edit-stage"
           className="relative border border-white/12 bg-[#141022]/90 p-4 sm:p-6 md:p-8"
+          style={{
+            transform: choreography?.cameraZoom ? `scale(${choreography.cameraZoom})` : undefined,
+            transition: 'transform 850ms cubic-bezier(0.16, 1, 0.3, 1)',
+          }}
         >
           {/* Synchronization Convergence Bar */}
           <div className="mb-5 flex flex-wrap items-center justify-between gap-4 border-b border-white/10 pb-3">

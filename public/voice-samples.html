@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Storyverse — Voice Sample Approval & Production Console</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,700;1,400&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0d0b18;
+      --card-bg: rgba(26, 23, 44, 0.75);
+      --card-border: rgba(242, 139, 80, 0.2);
+      --accent-coral: #f28b50;
+      --accent-teal: #4ecdc4;
+      --accent-gold: #e8a84a;
+      --accent-purple: #9b5de5;
+      --text-main: #f0edf6;
+      --text-muted: #9590a8;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background-color: var(--bg);
+      color: var(--text-main);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      min-height: 100vh;
+      padding: 2.5rem 1.5rem;
+      background-image: 
+        radial-gradient(ellipse at top left, rgba(242, 139, 80, 0.08), transparent 60%),
+        radial-gradient(ellipse at bottom right, rgba(78, 205, 196, 0.06), transparent 60%);
+    }
+    .container { max-width: 960px; margin: 0 auto; }
+    header {
+      margin-bottom: 2.5rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      padding-bottom: 1.5rem;
+    }
+    h1 {
+      font-family: 'Cinzel', serif;
+      font-size: 2.2rem;
+      letter-spacing: 0.08em;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    h1 span {
+      color: var(--accent-coral);
+    }
+    .subtitle {
+      font-size: 1rem;
+      color: var(--text-muted);
+      margin-top: 0.5rem;
+    }
+    .badge {
+      display: inline-block;
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      padding: 0.25rem 0.65rem;
+      border-radius: 9999px;
+      margin-bottom: 0.75rem;
+    }
+    .badge-amber {
+      background: rgba(232, 168, 74, 0.15);
+      color: var(--accent-gold);
+      border: 1px solid rgba(232, 168, 74, 0.35);
+    }
+    .badge-teal {
+      background: rgba(78, 205, 196, 0.15);
+      color: var(--accent-teal);
+      border: 1px solid rgba(78, 205, 196, 0.35);
+    }
+    .badge-purple {
+      background: rgba(155, 93, 229, 0.15);
+      color: var(--accent-purple);
+      border: 1px solid rgba(155, 93, 229, 0.35);
+    }
+    .status-panel {
+      background: rgba(20, 18, 35, 0.85);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 12px;
+      padding: 1.25rem 1.5rem;
+      margin-bottom: 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+    .status-item { font-size: 0.875rem; }
+    .status-item strong { color: #fff; }
+    .cards-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+      margin-bottom: 2.5rem;
+    }
+    .sample-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      padding: 1.75rem;
+      backdrop-filter: blur(12px);
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.35);
+      transition: transform 0.2s ease, border-color 0.2s ease;
+    }
+    .sample-card:hover {
+      border-color: rgba(242, 139, 80, 0.45);
+      transform: translateY(-2px);
+    }
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 1rem;
+    }
+    .character-title {
+      font-family: 'Cinzel', serif;
+      font-size: 1.4rem;
+      color: #fff;
+    }
+    .character-role {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+    .quote-box {
+      background: rgba(10, 8, 20, 0.6);
+      border-left: 3px solid var(--accent-coral);
+      padding: 1rem 1.25rem;
+      margin-bottom: 1.25rem;
+      border-radius: 0 8px 8px 0;
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      font-size: 1.15rem;
+      line-height: 1.6;
+      color: #fff;
+    }
+    .specs-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 0.75rem;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-bottom: 1.25rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    }
+    .specs-grid strong { color: var(--text-main); }
+    .audio-wrapper {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+    audio {
+      flex: 1;
+      min-width: 260px;
+      height: 40px;
+      border-radius: 8px;
+    }
+    .action-panel {
+      background: linear-gradient(135deg, rgba(242, 139, 80, 0.12), rgba(78, 205, 196, 0.08));
+      border: 1px solid rgba(242, 139, 80, 0.3);
+      border-radius: 16px;
+      padding: 2rem;
+      text-align: center;
+    }
+    .action-panel h2 {
+      font-family: 'Cinzel', serif;
+      font-size: 1.4rem;
+      margin-bottom: 0.75rem;
+      color: #fff;
+    }
+    .action-panel p {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      max-width: 650px;
+      margin: 0 auto 1.5rem;
+      line-height: 1.6;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.85rem 1.75rem;
+      font-size: 0.95rem;
+      font-weight: 600;
+      border-radius: 8px;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.2s ease;
+      border: none;
+    }
+    .btn-primary {
+      background: var(--accent-coral);
+      color: #141225;
+    }
+    .btn-primary:hover {
+      background: #f59e6c;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 16px rgba(242, 139, 80, 0.4);
+    }
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.08);
+      color: #fff;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      margin-left: 0.75rem;
+    }
+    .btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.15);
+    }
+    .code-box {
+      background: rgba(0, 0, 0, 0.4);
+      padding: 0.75rem 1rem;
+      border-radius: 8px;
+      font-family: monospace;
+      font-size: 0.85rem;
+      color: var(--accent-teal);
+      margin-top: 1rem;
+      display: inline-block;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>STORY<span>VERSE</span> · Voice Production Console</h1>
+      <p class="subtitle">Sample Review & Quality Approval Stage — <em>The Many Deaths of Laila Starr</em> (Chapter 01)</p>
+    </header>
+
+    <div class="status-panel">
+      <div class="status-item">
+        <strong>Provider:</strong> ElevenLabs Multilingual v2
+      </div>
+      <div class="status-item">
+        <strong>API Key:</strong> <span style="color: #4ecdc4;">Configured</span> (Requires <code>text_to_speech</code> permission)
+      </div>
+      <div class="status-item">
+        <strong>Batch Target:</strong> 48 recordings across 10 scenes
+      </div>
+      <div class="status-item">
+        <strong>Approval Gate:</strong> 3 Initial Samples
+      </div>
+    </div>
+
+    <div class="cards-grid">
+      <!-- 1. The Chronicle (Narrator) -->
+      <div class="sample-card">
+        <div class="card-header">
+          <div>
+            <span class="badge badge-amber">Sample 01 · Narrator</span>
+            <h2 class="character-title">The Chronicle</h2>
+            <p class="character-role">Scene 01: Opening Splash · Bandra-Kurla Sunset</p>
+          </div>
+          <div style="text-align: right;">
+            <span style="font-size: 0.8rem; color: var(--text-muted);">Voice ID:</span>
+            <div style="font-family: monospace; color: var(--accent-gold); font-size: 0.85rem;">JBFqnCBsd6RMkjVDRZzb (George)</div>
+          </div>
+        </div>
+
+        <div class="quote-box">
+          &ldquo;It began on a Wednesday afternoon as a late December sun was just dipping below the Mumbai skyline.&rdquo;
+        </div>
+
+        <div class="specs-grid">
+          <div><strong>Acoustic Profile:</strong> Warm, literary witness</div>
+          <div><strong>Pacing:</strong> 0.92x (Measured, unhurried)</div>
+          <div><strong>Stability / Style:</strong> 0.75 / 0.15</div>
+          <div><strong>Target File:</strong> <code>/assets/audio/voices/narrator/scene-01-opening.mp3</code></div>
+        </div>
+
+        <div class="audio-wrapper">
+          <audio controls preload="metadata" src="/assets/audio/voices/narrator/scene-01-opening.mp3">
+            Your browser does not support audio element.
+          </audio>
+        </div>
+      </div>
+
+      <!-- 2. Death -->
+      <div class="sample-card">
+        <div class="card-header">
+          <div>
+            <span class="badge badge-purple">Sample 02 · Lead Protagonist</span>
+            <h2 class="character-title">Death</h2>
+            <p class="character-role">Scene 04: The Silvered Tower · Celestial Office Confrontation</p>
+          </div>
+          <div style="text-align: right;">
+            <span style="font-size: 0.8rem; color: var(--text-muted);">Voice ID:</span>
+            <div style="font-family: monospace; color: var(--accent-purple); font-size: 0.85rem;">onwK4e9ZLuTAKqWW03F9 (Daniel)</div>
+          </div>
+        </div>
+
+        <div class="quote-box">
+          &ldquo;WHAT?! I'm an absolute consequence. It's in the job description! Send down a plague! Strike the child with lightning!&rdquo;
+        </div>
+
+        <div class="specs-grid">
+          <div><strong>Acoustic Profile:</strong> Velvety, aristocratic baritone cracking into outrage</div>
+          <div><strong>Pacing:</strong> 0.96x (Crisp, dramatic)</div>
+          <div><strong>Stability / Style:</strong> 0.65 / 0.25</div>
+          <div><strong>Target File:</strong> <code>/assets/audio/voices/death/s04-09-death-consequence.mp3</code></div>
+        </div>
+
+        <div class="audio-wrapper">
+          <audio controls preload="metadata" src="/assets/audio/voices/death/s04-09-death-consequence.mp3">
+            Your browser does not support audio element.
+          </audio>
+        </div>
+      </div>
+
+      <!-- 3. Laila Starr -->
+      <div class="sample-card">
+        <div class="card-header">
+          <div>
+            <span class="badge badge-teal">Sample 03 · Reincarnated Mortal</span>
+            <h2 class="character-title">Laila Starr</h2>
+            <p class="character-role">Scene 07: Hospital Ward · First Awakening in a Mortal Body</p>
+          </div>
+          <div style="text-align: right;">
+            <span style="font-size: 0.8rem; color: var(--text-muted);">Voice ID:</span>
+            <div style="font-family: monospace; color: var(--accent-teal); font-size: 0.85rem;">oWAxZDx7w5VEj9dCyTeq (Alice)</div>
+          </div>
+        </div>
+
+        <div class="quote-box">
+          &ldquo;Ohhhhh, that feels awful... Who're you?&rdquo;
+        </div>
+
+        <div class="specs-grid">
+          <div><strong>Acoustic Profile:</strong> Husky, breathless, mortal aches, dry mordant humor</div>
+          <div><strong>Pacing:</strong> 0.98x (Vulnerable, groggy)</div>
+          <div><strong>Stability / Style:</strong> 0.50 / 0.35</div>
+          <div><strong>Target File:</strong> <code>/assets/audio/voices/laila/s07-01-laila-who.mp3</code></div>
+        </div>
+
+        <div class="audio-wrapper">
+          <audio controls preload="metadata" src="/assets/audio/voices/laila/s07-01-laila-who.mp3">
+            Your browser does not support audio element.
+          </audio>
+        </div>
+      </div>
+    </div>
+
+    <div class="action-panel">
+      <h2>Sample Approval & Batch Generation Pipeline</h2>
+      <p>
+        Listen to the sample voice delivery, pacing, and tone above. Once you confirm the aesthetic quality of these three character voices, trigger the full batch pipeline to generate all 48 recordings.
+      </p>
+      <div>
+        <a href="/" class="btn btn-primary" target="_blank">Experience in Storyverse Reader &rarr;</a>
+        <a href="/public/assets/audio/voices/manifest.json" class="btn btn-secondary" target="_blank">View Audio Manifest JSON</a>
+      </div>
+      <div style="margin-top: 1.5rem;">
+        <span style="font-size: 0.85rem; color: var(--text-muted);">Batch CLI Command:</span><br>
+        <div class="code-box">npx tsx scripts/generate-voices.ts --all</div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

@@ -9,6 +9,7 @@ import { SceneVideoBackdrop } from '../SceneVideoBackdrop';
 import type { CharacterId } from '../../story/dialogueManifest';
 import type { InspectedPanelData } from '../PanelInspectorModal';
 import { getScenePacingProfile } from '../../story/motionSystem';
+import { useOptionalNarrative } from '../../narrative/NarrativeEngine';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -29,6 +30,10 @@ export const Scene08Escape: React.FC<SceneProps> = ({
   const graceStageRef = useRef<HTMLDivElement>(null);
   const chaseRef = useRef<HTMLDivElement>(null);
   const [activeSpeaker, setActiveSpeaker] = useState<CharacterId | null>('munmun');
+
+  const narrative = useOptionalNarrative();
+  const isSceneActive = narrative?.activeBeat?.sceneId === 'scene-08';
+  const choreography = isSceneActive ? narrative?.activeVisualChoreography : null;
 
   useEffect(() => {
     if (reducedMotion || !sectionRef.current || !chaseRef.current) return;
@@ -105,6 +110,10 @@ export const Scene08Escape: React.FC<SceneProps> = ({
           <div
             ref={graceStageRef}
             className="grid grid-cols-1 gap-8 lg:grid-cols-12 lg:items-start"
+            style={{
+              transform: choreography?.cameraZoom ? `scale(${choreography.cameraZoom})` : undefined,
+              transition: 'transform 850ms cubic-bezier(0.16, 1, 0.3, 1)',
+            }}
           >
             <div className="lg:col-span-7 space-y-6">
               <CharacterAnimator

@@ -141,7 +141,7 @@ export const SCENE_NARRATION_BEATS: NarrationBeat[] = [
   {
     id: 's03-02',
     sceneId: 'scene-03',
-    text: '…Beneath gentle curls of raven hair, her eyes stayed fixed on distant city lights while her thoughts drifted like cigarette smoke.',
+    text: '...Beneath gentle curls of raven hair, her eyes stayed fixed on distant city lights while her thoughts drifted like cigarette smoke.',
     audioSrc: '/assets/audio/voices/narrator/s03-02-window.mp3',
     triggerProgress: remap('scene-03', 0.58),
     durationMs: 4800,
