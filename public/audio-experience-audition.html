@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Storyverse — Audio Experience 2.1: Approved Casting & Cinematic Score Audition Suite</title>
+  <title>Storyverse — Audio Experience 2.2: Cinematic Score Diversity & Audition Console</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,400;1,600&family=IBM+Plex+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -17,6 +17,7 @@
       --accent-glow: rgba(242, 139, 80, 0.25);
       --approved: #10b981;
       --approved-glow: rgba(16, 185, 129, 0.25);
+      --highlight: #38bdf8;
       --text: #f6efe6;
       --muted: #a69e94;
       --card-highlight: #1b223d;
@@ -29,7 +30,7 @@
       padding: 2.5rem 1.5rem 5rem;
       line-height: 1.5;
     }
-    .container { max-width: 1280px; margin: 0 auto; }
+    .container { max-width: 1320px; margin: 0 auto; }
     header {
       border-bottom: 1px solid var(--border);
       padding-bottom: 2rem;
@@ -45,7 +46,7 @@
     }
     h1 {
       font-family: 'Cormorant Garamond', serif;
-      font-size: 2.85rem;
+      font-size: 2.95rem;
       font-weight: 700;
       letter-spacing: -0.02em;
       color: #fff;
@@ -55,7 +56,7 @@
     .subtitle {
       color: var(--muted);
       font-size: 1.05rem;
-      max-width: 860px;
+      max-width: 900px;
     }
     .status-banner {
       margin-top: 1.25rem;
@@ -74,6 +75,20 @@
       font-family: 'IBM Plex Mono', monospace;
       text-transform: uppercase;
       letter-spacing: 0.1em;
+    }
+    .diversity-notice {
+      margin-top: 0.75rem;
+      padding: 0.85rem 1.25rem;
+      background: rgba(56, 189, 248, 0.08);
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      border-radius: 6px;
+      font-size: 0.88rem;
+      color: #e0f2fe;
+    }
+    .diversity-notice strong {
+      color: var(--highlight);
+      font-family: 'IBM Plex Mono', monospace;
+      text-transform: uppercase;
     }
     nav.pills {
       display: flex;
@@ -113,11 +128,12 @@
     }
     .section-title {
       font-family: 'Cormorant Garamond', serif;
-      font-size: 2.15rem;
+      font-size: 2.25rem;
       color: #fff;
       display: flex;
       align-items: center;
       gap: 0.75rem;
+      flex-wrap: wrap;
     }
     .section-desc {
       color: var(--muted);
@@ -133,51 +149,16 @@
       border-radius: 3px;
       letter-spacing: 0.1em;
     }
-    .badge-approved { background: rgba(16, 185, 129, 0.2); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.5); box-shadow: 0 0 10px rgba(16, 185, 129, 0.2); }
-    .badge-gemini { background: rgba(66, 133, 244, 0.2); color: #8ab4f8; border: 1px solid rgba(66, 133, 244, 0.4); }
+    .badge-approved { background: rgba(16, 185, 129, 0.2); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.5); }
     .badge-eleven { background: rgba(242, 139, 80, 0.2); color: #f28b50; border: 1px solid rgba(242, 139, 80, 0.4); }
+    .badge-gemini { background: rgba(66, 133, 244, 0.2); color: #8ab4f8; border: 1px solid rgba(66, 133, 244, 0.4); }
+    .badge-diversity { background: rgba(56, 189, 248, 0.2); color: #38bdf8; border: 1px solid rgba(56, 189, 248, 0.5); }
     .badge-baseline { background: rgba(160, 160, 160, 0.15); color: #aaa; border: 1px solid rgba(160, 160, 160, 0.3); }
 
-    /* 3-Layer Audio Architecture Cards */
-    .layers-container {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-      gap: 1.25rem;
-      margin-bottom: 2rem;
-    }
-    .layer-card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 1.25rem;
-      border-top: 3px solid var(--muted);
-    }
-    .layer-card.layer-ambience { border-top-color: #38bdf8; }
-    .layer-card.layer-score { border-top-color: #f28b50; }
-    .layer-card.layer-sfx { border-top-color: #a855f7; }
-    .layer-tag {
-      font-family: 'IBM Plex Mono', monospace;
-      font-size: 0.7rem;
-      text-transform: uppercase;
-      letter-spacing: 0.12em;
-      margin-bottom: 0.35rem;
-    }
-    .layer-title {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 1.35rem;
-      color: #fff;
-      margin-bottom: 0.5rem;
-    }
-    .layer-desc {
-      font-size: 0.85rem;
-      color: var(--muted);
-      line-height: 1.45;
-    }
-
-    /* Leitmotifs Suite */
+    /* Leitmotifs Versatile Grid */
     .motifs-container {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
       gap: 1.25rem;
       margin-bottom: 2.5rem;
     }
@@ -210,7 +191,7 @@
     .music-scenes-grid {
       display: flex;
       flex-direction: column;
-      gap: 2rem;
+      gap: 2.25rem;
     }
     .music-scene-card {
       background: var(--surface);
@@ -220,14 +201,14 @@
       display: flex;
       flex-direction: column;
       gap: 1.25rem;
-      transition: border-color 0.2s;
+      transition: border-color 0.2s, box-shadow 0.2s;
     }
     .music-scene-card:hover {
       border-color: rgba(242, 139, 80, 0.4);
     }
     .music-scene-card.dual-active {
       border-color: var(--accent);
-      box-shadow: 0 0 24px rgba(242, 139, 80, 0.12);
+      box-shadow: 0 0 24px rgba(242, 139, 80, 0.15);
     }
     .scene-header-row {
       display: flex;
@@ -240,7 +221,7 @@
     }
     .scene-name-large {
       font-family: 'Cormorant Garamond', serif;
-      font-size: 1.6rem;
+      font-size: 1.65rem;
       color: #fff;
     }
     .scene-mood-tag {
@@ -249,10 +230,30 @@
       color: var(--accent);
     }
     .narrative-context {
-      font-size: 0.9rem;
+      font-size: 0.92rem;
       color: #d1c7bc;
       font-style: italic;
     }
+
+    /* Trait Pills for Musical Diversity */
+    .diversity-traits-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-top: 0.25rem;
+    }
+    .trait-pill {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.68rem;
+      padding: 0.25rem 0.6rem;
+      border-radius: 4px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      color: #dbeafe;
+    }
+    .trait-pill.tempo { border-color: rgba(242, 139, 80, 0.35); color: #fed7aa; }
+    .trait-pill.inst { border-color: rgba(56, 189, 248, 0.35); color: #bae6fd; }
+    .trait-pill.harmony { border-color: rgba(168, 85, 247, 0.35); color: #e9d5ff; }
 
     /* Dual Console Grid (Ambience + Score + Master Mix) */
     .dual-console-grid {
@@ -280,19 +281,22 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
+      flex-wrap: wrap;
+      gap: 0.5rem;
     }
     .player-box-title.amb-title { color: #38bdf8; }
     .player-box-title.music-title { color: #f28b50; }
     .approach-selector {
       display: flex;
-      gap: 0.5rem;
+      flex-wrap: wrap;
+      gap: 0.4rem;
       margin-bottom: 0.25rem;
     }
     .approach-btn {
       font-family: 'IBM Plex Mono', monospace;
-      font-size: 0.7rem;
+      font-size: 0.68rem;
       text-transform: uppercase;
-      padding: 0.35rem 0.75rem;
+      padding: 0.35rem 0.65rem;
       background: rgba(255, 255, 255, 0.05);
       border: 1px solid rgba(255, 255, 255, 0.15);
       color: var(--text);
@@ -308,7 +312,16 @@
       background: var(--accent);
       color: #070912;
       border-color: var(--accent);
-      font-weight: 600;
+      font-weight: 700;
+    }
+    .approach-btn.btn-v21 {
+      border-color: rgba(160, 160, 160, 0.3);
+      color: #aaa;
+    }
+    .approach-btn.btn-v21.active {
+      background: #4b5563;
+      color: #fff;
+      border-color: #9ca3af;
     }
     .vol-row {
       display: flex;
@@ -362,20 +375,20 @@
       color: #fff;
     }
     .mix-note {
-      font-size: 0.8rem;
-      color: var(--muted);
+      font-size: 0.82rem;
+      color: #cbd5e1;
     }
     .score-orchestration-notes {
       font-size: 0.85rem;
       color: #b5aca0;
-      line-height: 1.45;
-      background: rgba(0, 0, 0, 0.2);
-      padding: 0.85rem 1rem;
-      border-left: 3px solid var(--accent);
+      line-height: 1.5;
+      background: rgba(0, 0, 0, 0.25);
+      padding: 0.85rem 1.15rem;
+      border-left: 3px solid var(--highlight);
       border-radius: 0 4px 4px 0;
     }
 
-    /* Narrator Candidates Grid */
+    /* Cards, Grids, and Audio styling */
     .narrator-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
@@ -390,11 +403,6 @@
       flex-direction: column;
       gap: 1rem;
       position: relative;
-      transition: border-color 0.2s, transform 0.2s;
-    }
-    .card:hover {
-      border-color: rgba(242, 139, 80, 0.4);
-      transform: translateY(-2px);
     }
     .card.approved {
       border-color: var(--approved);
@@ -409,7 +417,7 @@
     }
     .candidate-name {
       font-family: 'Cormorant Garamond', serif;
-      font-size: 1.4rem;
+      font-size: 1.45rem;
       font-weight: 600;
       color: #fff;
     }
@@ -465,7 +473,7 @@
       filter: invert(0.9) hue-rotate(180deg);
     }
 
-    /* Acting Comparison Layout */
+    /* Acting Grid */
     .acting-grid {
       display: flex;
       flex-direction: column;
@@ -487,7 +495,6 @@
       grid-column: 1 / -1;
       border-bottom: 1px solid rgba(255, 255, 255, 0.08);
       padding-bottom: 0.75rem;
-      margin-bottom: 0.25rem;
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -619,657 +626,734 @@
 <body>
   <div class="container">
     <header>
-      <div class="eyebrow">Storyverse Chapter 01 · Audio Experience 2.1</div>
-      <h1>Approved Voice Casting & Cinematic Film Score Console</h1>
+      <div class="eyebrow">Storyverse Chapter 01 · Audio Experience 2.2</div>
+      <h1>Cinematic Score Diversity & Scene-Specific Identity</h1>
       <p class="subtitle">
-        Review the locked narrator voice (George · ElevenLabs), inspect approved character acting performances, preview the new 3-layer cinematic film score with thematic leitmotifs, and audition simultaneous ambient/music mixes across all 10 scenes.
+        Audition the reworked 15-track cinematic film score with authentic instrumental diversity across every scene: Fender Rhodes downtempo in Scene 03, 112 BPM syncopated urban thriller in Scene 02, low brass & gong monolith in Scene 04, felt piano in Scene 07, 132 BPM spiccato suspense in Scene 08, and acoustic fingerstyle folk in Scene 10.
       </p>
 
       <div class="status-banner">
         <strong>Status · Locked & Approved</strong>
-        <span>Narrator locked to <strong>George (ElevenLabs JBFqnCBsd6RMkjVDRZzb)</strong> · All 9 Character Acting performances approved · Full chapter production remains locked awaiting cinematic score approval.</span>
+        <span>Narrator locked to <strong>George (ElevenLabs JBFqnCBsd6RMkjVDRZzb)</strong> · All 9 Acting Auditions approved · Full production remains locked awaiting music approval.</span>
+      </div>
+
+      <div class="diversity-notice">
+        <strong>Audio Experience 2.2 Upgrade:</strong> Each scene now possesses its own recognizable musical identity, distinct primary instruments (electric bass, Rhodes, bansuri, sitar, solo cello, low brass, taiko, felt piano), custom tempos, and harmonic textures. <strong>You can toggle between v2.2 and v2.1 baseline on any scene to compare directly.</strong>
       </div>
 
       <nav class="pills">
-        <a href="#cinematic-music" class="active">★ 1. Cinematic Film Score & Motifs (NEW)</a>
-        <a href="#narrator" class="pill-approved">✓ 2. Narrator (Approved: George)</a>
-        <a href="#acting" class="pill-approved">✓ 3. Character Acting (Approved)</a>
-        <a href="#soundscapes">4. Environmental Ambience (10 Scenes)</a>
-        <a href="#bible">5. Voice Acting & Narration Bible</a>
+        <a href="#cinematic-music" class="active">★ 1. Diverse Cinematic Score (v2.2 Rework)</a>
+        <a href="#motifs">2. Versatile Leitmotif Suite (7 Variations)</a>
+        <a href="#narrator" class="pill-approved">✓ 3. Narrator (Approved: George)</a>
+        <a href="#acting" class="pill-approved">✓ 4. Character Acting (Approved)</a>
+        <a href="#soundscapes">5. Environmental Ambience (10 Scenes)</a>
+        <a href="#bible">6. Complete Performance Bible</a>
       </nav>
     </header>
 
     <!-- ─────────────────────────────────────────────────────────────────── -->
-    <!-- SECTION 1: CINEMATIC FILM SCORE & MOTIFS (PHASE 3, 4, 5, 6) -->
+    <!-- SECTION 1: DIVERSE CINEMATIC FILM SCORE (AUDIO EXPERIENCE 2.2) -->
     <!-- ─────────────────────────────────────────────────────────────────── -->
     <section id="cinematic-music">
       <div class="section-header">
         <h2 class="section-title">
-          Cinematic Film Score Suite & 3-Layer Architecture
-          <span class="badge badge-eleven">Audio Experience 2.1</span>
+          Scene-by-Scene Film Score Console
+          <span class="badge badge-diversity">v2.2 Diverse Rework</span>
         </h2>
         <p class="section-desc">
-          Separating Storyverse audio into three distinct operational layers: physical environmental ambience, an original orchestral film score, and dynamic sound effects. Test individual tracks, compare musical approaches, or play the dual-layer mix in real-time.
+          Compare the new distinct scene compositions against their alternatives and the original v2.1 baseline. Click <strong>"Play Simultaneous Mix"</strong> to audition how the music interlocks with the physical soundscape.
         </p>
       </div>
 
-      <!-- 3-Layer Architecture Overview -->
-      <div class="layers-container">
-        <div class="layer-card layer-ambience">
-          <div class="layer-tag" style="color: #38bdf8;">Layer 1 · Physical Reality</div>
-          <h3 class="layer-title">Environmental Ambience</h3>
-          <p class="layer-desc">
-            Bespoke 12-second soundscapes establishing the tactile geographic acoustic space: Mumbai highway asphalt, BKC diesel gridlock, rain on metal, sterile hospital AC hum, and dawn ocean breeze.
-          </p>
+      <div class="music-scenes-grid">
+
+        <!-- SCENE 01: MUMBAI SKYLINE -->
+        <div class="music-scene-card" id="card-scene-01">
+          <div class="scene-header-row">
+            <div>
+              <span class="scene-num">Scene 01 · 0.00 – 0.09 Scroll</span>
+              <div class="scene-name-large">The City of Mumbai (The Beginning)</div>
+              <div class="diversity-traits-row">
+                <span class="trait-pill inst">Bansuri Flute · Tanpura Drone · Sitar Harmonics</span>
+                <span class="trait-pill tempo">Rubato / Unmetered</span>
+                <span class="trait-pill harmony">Indian Modal D Dorian / Phrygian</span>
+              </div>
+            </div>
+            <span class="scene-mood-tag">Mysterious Wonder · Vast Living City</span>
+          </div>
+          <div class="narrative-context">
+            "It began on a Wednesday afternoon as a late December sun was just dipping below the Mumbai skyline..."
+          </div>
+          <div class="dual-console-grid">
+            <div class="player-box">
+              <div class="player-box-title amb-title">
+                <span>Layer 1 · Environmental Ambience</span>
+                <span>12s Loop</span>
+              </div>
+              <audio id="amb-scene-01" loop preload="none" src="/assets/audio/soundscapes/scene_01_mumbai.wav"></audio>
+              <div class="vol-row">
+                <span>Vol</span>
+                <input type="range" class="vol-slider" min="0" max="1" step="0.05" value="0.75" oninput="setVol('amb-scene-01', this.value)">
+              </div>
+            </div>
+
+            <div class="player-box">
+              <div class="player-box-title music-title">
+                <span>Layer 2 · Cinematic Score</span>
+                <div class="approach-selector">
+                  <button class="approach-btn active" id="btn-01-a" onclick="switchScore('scene-01', 'a', '/assets/audio/music/scene_01_music_a.wav')">2.2A: Symphonic Dawn</button>
+                  <button class="approach-btn" id="btn-01-b" onclick="switchScore('scene-01', 'b', '/assets/audio/music/scene_01_music_b.wav')">2.2B: Raga Dusk</button>
+                  <button class="approach-btn btn-v21" id="btn-01-old" onclick="switchScore('scene-01', 'old', '/assets/audio/music/v2_1/scene_01_music_a.wav')">v2.1 Baseline</button>
+                </div>
+              </div>
+              <audio id="music-scene-01" loop preload="none" src="/assets/audio/music/scene_01_music_a.wav"></audio>
+              <div class="vol-row">
+                <span>Vol</span>
+                <input type="range" class="vol-slider" min="0" max="1" step="0.05" value="0.80" oninput="setVol('music-scene-01', this.value)">
+              </div>
+            </div>
+
+            <div class="master-mix-bar">
+              <button class="dual-play-btn" id="dual-btn-scene-01" onclick="toggleDualMix('scene-01')">
+                ▶ Play Simultaneous Mix
+              </button>
+              <div class="mix-note">
+                <strong>2.2A:</strong> Orchestral strings with bansuri swells introducing Storyverse theme · <strong>2.2B:</strong> Pure Indian neo-classical solo bansuri & meditative tanpura.
+              </div>
+            </div>
+          </div>
+          <div class="score-orchestration-notes">
+            <strong>Diversity Profile:</strong> Avoids early percussion entirely. Introduces the Storyverse theme through authentic breath-modeled bansuri flute over resonant tanpura, establishing a mystical Indian cinematic horizon.
+          </div>
         </div>
-        <div class="layer-card layer-score">
-          <div class="layer-tag" style="color: #f28b50;">Layer 2 · Psychological Reality</div>
-          <h3 class="layer-title">Cinematic Film Score</h3>
-          <p class="layer-desc">
-            Orchestral instrumentation (warm strings, low brass, concert grand piano, bansuri flute, celestial choir, and taiko percussion) carrying subtext, emotional tension, and narrative leitmotifs.
-          </p>
+
+        <!-- SCENE 02: TRAFFIC -->
+        <div class="music-scene-card" id="card-scene-02">
+          <div class="scene-header-row">
+            <div>
+              <span class="scene-num">Scene 02 · 0.09 – 0.18 Scroll</span>
+              <div class="scene-name-large">The Chaotic Journey (BKC Overpass)</div>
+              <div class="diversity-traits-row">
+                <span class="trait-pill inst">Electric Bass · Metallic Clangs · Muted Brass</span>
+                <span class="trait-pill tempo">112 BPM Syncopated (3+3+2)</span>
+                <span class="trait-pill harmony">C Minor Abrasive Dissonance</span>
+              </div>
+            </div>
+            <span class="scene-mood-tag">Urban Chaos · Frustration & Heat</span>
+          </div>
+          <div class="narrative-context">
+            Mrs. Shah in sudden labor, stuck in gridlock: "I told you we should have left an hour ago!"
+          </div>
+          <div class="dual-console-grid">
+            <div class="player-box">
+              <div class="player-box-title amb-title">
+                <span>Layer 1 · Environmental Ambience</span>
+                <span>12s Loop</span>
+              </div>
+              <audio id="amb-scene-02" loop preload="none" src="/assets/audio/soundscapes/scene_02_traffic.wav"></audio>
+              <div class="vol-row">
+                <span>Vol</span>
+                <input type="range" class="vol-slider" min="0" max="1" step="0.05" value="0.70" oninput="setVol('amb-scene-02', this.value)">
+              </div>
+            </div>
+
+            <div class="player-box">
+              <div class="player-box-title music-title">
+                <span>Layer 2 · Cinematic Score: Urban Chaos</span>
+                <div class="approach-selector">
+                  <button class="approach-btn active" id="btn-02-a" onclick="switchScore('scene-02', 'a', '/assets/audio/music/scene_02_music.wav')">2.2: Urban Thriller</button>
+                  <button class="approach-btn btn-v21" id="btn-02-old" onclick="switchScore('scene-02', 'old', '/assets/audio/music/v2_1/scene_02_music.wav')">v2.1 Baseline</button>
+                </div>
+              </div>
+              <audio id="music-scene-02" loop preload="none" src="/assets/audio/music/scene_02_music.wav"></audio>
+              <div class="vol-row">
+                <span>Vol</span>
+                <input type="range" class="vol-slider" min="0" max="1" step="0.05" value="0.80" oninput="setVol('music-scene-02', this.value)">
+              </div>
+            </div>
+
+            <div class="master-mix-bar">
+              <button class="dual-play-btn" id="dual-btn-scene-02" onclick="toggleDualMix('scene-02')">
+                ▶ Play Simultaneous Mix
+              </button>
+              <div class="mix-note">
+                112 BPM syncopated electric bass stabs, industrial metallic clangs, and biting brass rips simulating trapped urban pressure.
+              </div>
+            </div>
+          </div>
+          <div class="score-orchestration-notes">
+            <strong>Diversity Profile:</strong> Zero flute, zero choir. A harsh contemporary urban thriller score that interlocks with asphalt tire rumble and horns rather than competing with them.
+          </div>
         </div>
-        <div class="layer-card layer-sfx">
-          <div class="layer-tag" style="color: #a855f7;">Layer 3 · Physical Impacts</div>
-          <h3 class="layer-title">Dynamic Sound Effects</h3>
-          <p class="layer-desc">
-            Transient narrative cues synchronized with panel actions: traffic horns, elevator chimes, sudden flatline recovery beeps, distant thunder, and the fatal truck collision.
-          </p>
+
+        <!-- SCENE 03: COLLEGE PARTY -->
+        <div class="music-scene-card" id="card-scene-03">
+          <div class="scene-header-row">
+            <div>
+              <span class="scene-num">Scene 03 · 0.18 – 0.27 Scroll</span>
+              <div class="scene-name-large">The Rooftop Party (6th Floor Window)</div>
+              <div class="diversity-traits-row">
+                <span class="trait-pill inst">Fender Rhodes · Electric Bass · Lo-Fi Drums</span>
+                <span class="trait-pill tempo">118 BPM Downtempo Groove</span>
+                <span class="trait-pill harmony">Lush Jazz 9ths (Fmaj9 - Dm9 - Gm9)</span>
+              </div>
+            </div>
+            <span class="scene-mood-tag">Youthful Detachment · Indie Lo-Fi</span>
+          </div>
+          <div class="narrative-context">
+            A crowded student apartment; Dhiraj lectures pretentiously while a girl stares out the open window.
+          </div>
+          <div class="dual-console-grid">
+            <div class="player-box">
+              <div class="player-box-title amb-title">
+                <span>Layer 1 · Environmental Ambience</span>
+                <span>12s Loop</span>
+              </div>
+              <audio id="amb-scene-03" loop preload="none" src="/assets/audio/soundscapes/scene_03_party.wav"></audio>
+              <div class="vol-row">
+                <span>Vol</span>
+                <input type="range" class="vol-slider" min="0" max="1" step="0.05" value="0.75" oninput="setVol('amb-scene-03', this.value)">
+              </div>
+            </div>
+
+            <div class="player-box">
+              <div class="player-box-title music-title">
+                <span>Layer 2 · Cinematic Score: Rooftop Life</span>
+                <div class="approach-selector">
+                  <button class="approach-btn active" id="btn-03-a" onclick="switchScore('scene-03', 'a', '/assets/audio/music/scene_03_music.wav')">2.2: Downtempo Rhodes</button>
+                  <button class="approach-btn btn-v21" id="btn-03-old" onclick="switchScore('scene-03', 'old', '/assets/audio/music/v2_1/scene_03_music.wav')">v2.1 Baseline</button>
+                </div>
+              </div>
+              <audio id="music-scene-03" loop preload="none" src="/assets/audio/music/scene_03_music.wav"></audio>
+              <div class="vol-row">
+                <span>Vol</span>
+                <input type="range" class="vol-slider" min="0" max="1" step="0.05" value="0.80" oninput="setVol('music-scene-03', this.value)">
+              </div>
+            </div>
+
+            <div class="master-mix-bar">
+              <button class="dual-play-btn" id="dual-btn-scene-03" onclick="toggleDualMix('scene-03')">
+                ▶ Play Simultaneous Mix
+              </button>
+              <div class="mix-note">
+                118 BPM warm electric Rhodes piano with stereo tremolo, walking electric bassline, and filtered lo-fi drums.
+              </div>
+            </div>
+          </div>
+          <div class="score-orchestration-notes">
+            <strong>Diversity Profile:</strong> Completely removes orchestral strings. Replaces them with authentic indie electronic keys and a walking bassline, creating an intoxicating, detached rooftop atmosphere.
+          </div>
         </div>
+
+        <!-- SCENE 04: DEATH'S REALM -->
+        <div class="music-scene-card" id="card-scene-04">
+          <div class="scene-header-row">
+            <div>
+              <span class="scene-num">Scene 04 · 0.27 – 0.39 Scroll</span>
+              <div class="scene-name-large">Death's Realm (The Celestial Department)</div>
+              <div class="diversity-traits-row">
+                <span class="trait-pill inst">Low Brass Monolith · Tam-Tam Gong · Liturgical Choir</span>
+                <span class="trait-pill tempo">Solemn Unmetered Funeral March</span>
+                <span class="trait-pill harmony">D Minor Existential Gravity</span>
+              </div>
+            </div>
+            <span class="scene-mood-tag">Dark Cosmic Fantasy · Existential Dread</span>
+          </div>
+          <div class="narrative-context">
+            Death enters the corporate offices of the Purveyor of All Goodness and is abruptly fired.
+          </div>
+          <div class="dual-console-grid">
+            <div class="player-box">
+              <div class="player-box-title amb-title">
+                <span>Layer 1 · Environmental Ambience</span>
+                <span>12s Loop</span>
+              </div>
+              <audio id="amb-scene-04" loop preload="none" src="/assets/audio/soundscapes/scene_04_death_world.wav"></audio>
+              <div class="vol-row">
+                <span>Vol</span>
+                <input type="range" class="vol-slider" min="0" max="1" step="0.05" value="0.75" oninput="setVol('amb-scene-04', this.value)">
+              </div>
+            </div>
+
+            <div class="player-box">
+              <div class="player-box-title music-title">
+                <span>Layer 2 · Cinematic Score</span>
+                <div class="approach-selector">
+                  <button class="approach-btn active" id="btn-04-a" onclick="switchScore('scene-04', 'a', '/assets/audio/music/scene_04_music_a.wav')">2.2A: Cosmic Requiem</button>
+                  <button class="approach-btn" id="btn-04-b" onclick="switchScore('scene-04', 'b', '/assets/audio/music/scene_04_music_b.wav')">2.2B: Avant-Garde Celeste</button>
+                  <button class="approach-btn btn-v21" id="btn-04-old" onclick="switchScore('scene-04', 'old', '/assets/audio/music/v2_1/scene_04_music_a.wav')">v2.1 Baseline</button>
+                </div>
+              </div>
+              <audio id="music-scene-04" loop preload="none" src="/assets/audio/music/scene_04_music_a.wav"></audio>
+              <div class="vol-row">
+                <span>Vol</span>
+                <input type="range" class="vol-slider" min="0" max="1" step="0.05" value="0.84" oninput="setVol('music-scene-04', this.value)">
+              </div>
+            </div>
+
+            <div class="master-mix-bar">
+              <button class="dual-play-btn" id="dual-btn-scene-04" onclick="toggleDualMix('scene-04')">
+                ▶ Play Simultaneous Mix
+              </button>
+              <div class="mix-note">
+                <strong>2.2A:</strong> Massive gong impact, low brass choir, and heavy echoing piano · <strong>2.2B:</strong> Clockwork celeste and chilling string harmonics.
+              </div>
+            </div>
+          </div>
+          <div class="score-orchestration-notes">
+            <strong>Diversity Profile:</strong> Features Death's Motif in crushing low-register brass and cathedral choir. Space and silence between notes convey the staggering scale of divine bureaucracy.
+          </div>
+        </div>
+
+        <!-- SCENE 05: CONVERGENCE -->
+        <div class="music-scene-card" id="card-scene-05">
+          <div class="scene-header-row">
+            <div>
+              <span class="scene-num">Scene 05 · 0.39 – 0.51 Scroll</span>
+              <div class="scene-name-large">Two Events, One Moment (Convergence)</div>
+              <div class="diversity-traits-row">
+                <span class="trait-pill inst">Dual Contrapuntal Strings · Cardiac Kick · Timpani</span>
+                <span class="trait-pill tempo">68 BPM Visceral Heartbeat Pulse</span>
+                <span class="trait-pill harmony">Colliding Dm & F Major Polyphony</span>
+              </div>
+            </div>
+            <span class="scene-mood-tag">Psychological Thriller · Two Worlds Colliding</span>
+          </div>
+          <div class="narrative-context">
+            A girl falls from the window while Mrs. Shah delivers Darius in the hospital ward.
+          </div>
+          <div class="dual-console-grid">
+            <div class="player-box">
+              <div class="player-box-title amb-title">
+                <span>Layer 1 · Environmental Ambience</span>
+                <span>12s Loop</span>
+              </div>
+              <audio id="amb-scene-05" loop preload="none" src="/assets/audio/soundscapes/scene_05_convergence.wav"></audio>
+              <div class="vol-row">
+                <span>Vol</span>
+                <input type="range" class="vol-slider" min="0" max="1" step="0.05" value="0.75" oninput="setVol('amb-scene-05', this.value)">
+              </div>
+            </div>
+
+            <div class="player-box">
+              <div class="player-box-title music-title">
+                <span>Layer 2 · Cinematic Score</span>
+                <div class="approach-selector">
+                  <button class="approach-btn active" id="btn-05-a" onclick="switchScore('scene-05', 'a', '/assets/audio/music/scene_05_music_a.wav')">2.2A: Convergence Fugue</button>
+                  <button class="approach-btn" id="btn-05-b" onclick="switchScore('scene-05', 'b', '/assets/audio/music/scene_05_music_b.wav')">2.2B: Dual Destinies</button>
+                  <button class="approach-btn btn-v21" id="btn-05-old" onclick="switchScore('scene-05', 'old', '/assets/audio/music/v2_1/scene_05_music_a.wav')">v2.1 Baseline</button>
+                </div>
+              </div>
+              <audio id="music-scene-05" loop preload="none" src="/assets/audio/music/scene_05_music_a.wav"></audio>
+              <div class="vol-row">
+                <span>Vol</span>
+                <input type="range" class="vol-slider" min="0" max="1" step="0.05" value="0.82" oninput="setVol('music-scene-05', this.value)">
+              </div>
+            </div>
+
+            <div class="master-mix-bar">
+              <button class="dual-play-btn" id="dual-btn-scene-05" onclick="toggleDualMix('scene-05')">
+                ▶ Play Simultaneous Mix
+              </button>
+              <div class="mix-note">
+                <strong>2.2A:</strong> Descending falling spiccato vs ascending birth cello interlock at 10.5s · <strong>2.2B:</strong> Syncopated timpani impacts and soaring French horn cliffhanger.
+              </div>
+            </div>
+          </div>
+          <div class="score-orchestration-notes">
+            <strong>Diversity Profile:</strong> Genuinely contrapuntal. Two independent melodic ideas play simultaneously and converge, building psychological tension through arrangement rather than volume alone.
+          </div>
+        </div>
+
+        <!-- SCENE 06: TRANSFORMATION -->
+        <div class="music-scene-card" id="card-scene-06">
+          <div class="scene-header-row">
+            <div>
+              <span class="scene-num">Scene 06 · 0.51 – 0.61 Scroll</span>
+              <div class="scene-name-large">Laila Becomes Mortal (The Fall & Rebirth)</div>
+              <div class="diversity-traits-row">
+                <span class="trait-pill inst">Bell Choir · Sweeping Harp · Ethereal Soprano</span>
+                <span class="trait-pill tempo">Floating Lydian Release</span>
+                <span class="trait-pill harmony">Radiant D Lydian / F# Major</span>
+              </div>
+            </div>
+            <span class="scene-mood-tag">Ethereal Wonder · Supernatural Release</span>
+          </div>
+          <div class="narrative-context">
+            Death strikes her deal with Agni and is cast down into a human body close to the child.
+          </div>
+          <div class="dual-console-grid">
+            <div class="player-box">
+              <div class="player-box-title amb-title">
+                <span>Layer 1 · Environmental Ambience</span>
+                <span>12s Loop</span>
+              </div>
+              <audio id="amb-scene-06" loop preload="none" src="/assets/audio/soundscapes/scene_06_transformation.wav"></audio>
+              <div class="vol-row">
+                <span>Vol</span>
+                <input type="range" class="vol-slider" min="0" max="1" step="0.05" value="0.75" oninput="setVol('amb-scene-06', this.value)">
+              </div>
+            </div>
+
+            <div class="player-box">
+              <div class="player-box-title music-title">
+                <span>Layer 2 · Cinematic Score</span>
+                <div class="approach-selector">
+                  <button class="approach-btn active" id="btn-06-a" onclick="switchScore('scene-06', 'a', '/assets/audio/music/scene_06_music_a.wav')">2.2A: Celestial Fall</button>
+                  <button class="approach-btn" id="btn-06-b" onclick="switchScore('scene-06', 'b', '/assets/audio/music/scene_06_music_b.wav')">2.2B: The Weight of Clay</button>
+                  <button class="approach-btn btn-v21" id="btn-06-old" onclick="switchScore('scene-06', 'old', '/assets/audio/music/v2_1/scene_06_music_a.wav')">v2.1 Baseline</button>
+                </div>
+              </div>
+              <audio id="music-scene-06" loop preload="none" src="/assets/audio/music/scene_06_music_a.wav"></audio>
+              <div class="vol-row">
+                <span>Vol</span>
+                <input type="range" class="vol-slider" min="0" max="1" step="0.05" value="0.80" oninput="setVol('music-scene-06', this.value)">
+              </div>
+            </div>
+
+            <div class="master-mix-bar">
+              <button class="dual-play-btn" id="dual-btn-scene-06" onclick="toggleDualMix('scene-06')">
+                ▶ Play Simultaneous Mix
+              </button>
+              <div class="mix-note">
+                <strong>2.2A:</strong> Cascading multi-octave bells, harp glissandi, and choral swell · <strong>2.2B:</strong> Delicate acoustic harp with cello descending into earthy human warmth.
+              </div>
+            </div>
+          </div>
+          <div class="score-orchestration-notes">
+            <strong>Diversity Profile:</strong> Radiant and weightless. Antagonistic to the cold brass of Scene 04, this track uses ascending harp glissandi and crystalline bells to express the dissolution of divinity.
+          </div>
+        </div>
+
+        <!-- SCENE 07: THE HOSPITAL -->
+        <div class="music-scene-card" id="card-scene-07">
+          <div class="scene-header-row">
+            <div>
+              <span class="scene-num">Scene 07 · 0.61 – 0.72 Scroll</span>
+              <div class="scene-name-large">The Hospital Awakening (Room 7)</div>
+              <div class="diversity-traits-row">
+                <span class="trait-pill inst">Minimalist Felt Piano · Solo Cello · Celeste</span>
+                <span class="trait-pill tempo">Sparse & Unmetered (Silence as Instrument)</span>
+                <span class="trait-pill harmony">D Minor / A Minor Fragility</span>
+              </div>
+            </div>
+            <span class="scene-mood-tag">Vulnerability & Fragility · Intimate Drama</span>
+          </div>
+          <div class="narrative-context">
+            Death awakens in Laila Starr's mortal body, feeling human nerve pain for the very first time.
+          </div>
+          <div class="dual-console-grid">
+            <div class="player-box">
+              <div class="player-box-title amb-title">
+                <span>Layer 1 · Environmental Ambience</span>
+                <span>12s Loop</span>
+              </div>
+              <audio id="amb-scene-07" loop preload="none" src="/assets/audio/soundscapes/scene_07_hospital.wav"></audio>
+              <div class="vol-row">
+                <span>Vol</span>
+                <input type="range" class="vol-slider" min="0" max="1" step="0.05" value="0.75" oninput="setVol('amb-scene-07', this.value)">
+              </div>
+            </div>
+
+            <div class="player-box">
+              <div class="player-box-title music-title">
+                <span>Layer 2 · Cinematic Score: Hospital Awakening</span>
+                <div class="approach-selector">
+                  <button class="approach-btn active" id="btn-07-a" onclick="switchScore('scene-07', 'a', '/assets/audio/music/scene_07_music.wav')">2.2: Felt Piano & Cello</button>
+                  <button class="approach-btn btn-v21" id="btn-07-old" onclick="switchScore('scene-07', 'old', '/assets/audio/music/v2_1/scene_07_music.wav')">v2.1 Baseline</button>
+                </div>
+              </div>
+              <audio id="music-scene-07" loop preload="none" src="/assets/audio/music/scene_07_music.wav"></audio>
+              <div class="vol-row">
+                <span>Vol</span>
+                <input type="range" class="vol-slider" min="0" max="1" step="0.05" value="0.76" oninput="setVol('music-scene-07', this.value)">
+              </div>
+            </div>
+
+            <div class="master-mix-bar">
+              <button class="dual-play-btn" id="dual-btn-scene-07" onclick="toggleDualMix('scene-07')">
+                ▶ Play Simultaneous Mix
+              </button>
+              <div class="mix-note">
+                Isolated felt piano playing Laila's Motif with deliberate 1.5s silences, joined by a tender solo cello.
+              </div>
+            </div>
+          </div>
+          <div class="score-orchestration-notes">
+            <strong>Diversity Profile:</strong> The most intimate track in the novel. No brass, no drums, no choir. Uses open space and room tone so Laila's pained groans and Munmun's voice float naturally.
+          </div>
+        </div>
+
+        <!-- SCENE 08: THE ESCAPE -->
+        <div class="music-scene-card" id="card-scene-08">
+          <div class="scene-header-row">
+            <div>
+              <span class="scene-num">Scene 08 · 0.72 – 0.83 Scroll</span>
+              <div class="scene-name-large">The Escape & Hesitation (Neo-Natal Ward)</div>
+              <div class="diversity-traits-row">
+                <span class="trait-pill inst">Spiccato 16th Strings · Kicks · High Harmonic</span>
+                <span class="trait-pill tempo">132 BPM Ostinato with Sudden Moral Dropout</span>
+                <span class="trait-pill harmony">Urgent Chromaticism to Hollow Octave</span>
+              </div>
+            </div>
+            <span class="scene-mood-tag">Suspense Thriller · Moral Conflict</span>
+          </div>
+          <div class="narrative-context">
+            Laila holds the infant Darius; Munmun screams: "You can't kill someone with a name!"
+          </div>
+          <div class="dual-console-grid">
+            <div class="player-box">
+              <div class="player-box-title amb-title">
+                <span>Layer 1 · Environmental Ambience</span>
+                <span>12s Loop</span>
+              </div>
+              <audio id="amb-scene-08" loop preload="none" src="/assets/audio/soundscapes/scene_08_escape.wav"></audio>
+              <div class="vol-row">
+                <span>Vol</span>
+                <input type="range" class="vol-slider" min="0" max="1" step="0.05" value="0.70" oninput="setVol('amb-scene-08', this.value)">
+              </div>
+            </div>
+
+            <div class="player-box">
+              <div class="player-box-title music-title">
+                <span>Layer 2 · Cinematic Score: Fugitive Shadows</span>
+                <div class="approach-selector">
+                  <button class="approach-btn active" id="btn-08-a" onclick="switchScore('scene-08', 'a', '/assets/audio/music/scene_08_music.wav')">2.2: Spiccato with Moral Cut</button>
+                  <button class="approach-btn btn-v21" id="btn-08-old" onclick="switchScore('scene-08', 'old', '/assets/audio/music/v2_1/scene_08_music.wav')">v2.1 Baseline</button>
+                </div>
+              </div>
+              <audio id="music-scene-08" loop preload="none" src="/assets/audio/music/scene_08_music.wav"></audio>
+              <div class="vol-row">
+                <span>Vol</span>
+                <input type="range" class="vol-slider" min="0" max="1" step="0.05" value="0.82" oninput="setVol('music-scene-08', this.value)">
+              </div>
+            </div>
+
+            <div class="master-mix-bar">
+              <button class="dual-play-btn" id="dual-btn-scene-08" onclick="toggleDualMix('scene-08')">
+                ▶ Play Simultaneous Mix
+              </button>
+              <div class="mix-note">
+                132 BPM spiccato ostinato building to 10.5s, then ABRUPTLY CUTTING to a single suspended violin harmonic.
+              </div>
+            </div>
+          </div>
+          <div class="score-orchestration-notes">
+            <strong>Diversity Profile:</strong> Fastest tempo in the entire score. Features an intentional total musical interruption at 10.5s when Death chooses not to kill the baby, mirroring her paralyzed conscience.
+          </div>
+        </div>
+
+        <!-- SCENE 09: THE FATAL TRUCK -->
+        <div class="music-scene-card" id="card-scene-09">
+          <div class="scene-header-row">
+            <div>
+              <span class="scene-num">Scene 09 · 0.83 – 0.91 Scroll</span>
+              <div class="scene-name-large">The Second Death (Midnight Impact)</div>
+              <div class="diversity-traits-row">
+                <span class="trait-pill inst">32Hz Sub-Bass Drone · Low Brass · Accelerating Timpani · Gong</span>
+                <span class="trait-pill tempo">Funeral Dread building to DEAD SILENCE (12.5s)</span>
+                <span class="trait-pill harmony">D - Ab Tritone Clash (Fatal Inevitability)</span>
+              </div>
+            </div>
+            <span class="scene-mood-tag">Foreboding Tragedy · Climax & Blackout</span>
+          </div>
+          <div class="narrative-context">
+            Laila flees into the midnight rain; a twelve-wheel freight truck strikes her in the darkness.
+          </div>
+          <div class="dual-console-grid">
+            <div class="player-box">
+              <div class="player-box-title amb-title">
+                <span>Layer 1 · Environmental Ambience</span>
+                <span>12s Loop</span>
+              </div>
+              <audio id="amb-scene-09" loop preload="none" src="/assets/audio/soundscapes/scene_09_truck.wav"></audio>
+              <div class="vol-row">
+                <span>Vol</span>
+                <input type="range" class="vol-slider" min="0" max="1" step="0.05" value="0.75" oninput="setVol('amb-scene-09', this.value)">
+              </div>
+            </div>
+
+            <div class="player-box">
+              <div class="player-box-title music-title">
+                <span>Layer 2 · Cinematic Score: Midnight Impact</span>
+                <div class="approach-selector">
+                  <button class="approach-btn active" id="btn-09-a" onclick="switchScore('scene-09', 'a', '/assets/audio/music/scene_09_music.wav')">2.2: Dread & Impact Silence</button>
+                  <button class="approach-btn btn-v21" id="btn-09-old" onclick="switchScore('scene-09', 'old', '/assets/audio/music/v2_1/scene_09_music.wav')">v2.1 Baseline</button>
+                </div>
+              </div>
+              <audio id="music-scene-09" loop preload="none" src="/assets/audio/music/scene_09_music.wav"></audio>
+              <div class="vol-row">
+                <span>Vol</span>
+                <input type="range" class="vol-slider" min="0" max="1" step="0.05" value="0.85" oninput="setVol('music-scene-09', this.value)">
+              </div>
+            </div>
+
+            <div class="master-mix-bar">
+              <button class="dual-play-btn" id="dual-btn-scene-09" onclick="toggleDualMix('scene-09')">
+                ▶ Play Simultaneous Mix
+              </button>
+              <div class="mix-note">
+                Deep sub-bass growl, tritone brass clash, crushing gong impact at 11.8s, followed by complete dead silence.
+              </div>
+            </div>
+          </div>
+          <div class="score-orchestration-notes">
+            <strong>Diversity Profile:</strong> Massive dynamic range. Does not rely solely on noise; the sudden transition into dead silence after the 11.8s impact creates an unforgettable physical blackout.
+          </div>
+        </div>
+
+        <!-- SCENE 10: EIGHT YEARS LATER -->
+        <div class="music-scene-card" id="card-scene-10">
+          <div class="scene-header-row">
+            <div>
+              <span class="scene-num">Scene 10 · 0.91 – 1.00 Scroll</span>
+              <div class="scene-name-large">Eight Years Later (Gateway of India)</div>
+              <div class="diversity-traits-row">
+                <span class="trait-pill inst">Warm Piano · Fingerstyle Guitar · Sitar · Bansuri</span>
+                <span class="trait-pill tempo">Peaceful Undulating Harbour Cadence</span>
+                <span class="trait-pill harmony">Bittersweet D Major (Laila Motif Resolved)</span>
+              </div>
+            </div>
+            <span class="scene-mood-tag">Bittersweet Peace · Memorable Resolution</span>
+          </div>
+          <div class="narrative-context">
+            Laila and Pranah (Life) sip morning tea over the harbour; Darius is now an eight-year-old child.
+          </div>
+          <div class="dual-console-grid">
+            <div class="player-box">
+              <div class="player-box-title amb-title">
+                <span>Layer 1 · Environmental Ambience</span>
+                <span>12s Loop</span>
+              </div>
+              <audio id="amb-scene-10" loop preload="none" src="/assets/audio/soundscapes/scene_10_eight_years_later.wav"></audio>
+              <div class="vol-row">
+                <span>Vol</span>
+                <input type="range" class="vol-slider" min="0" max="1" step="0.05" value="0.75" oninput="setVol('amb-scene-10', this.value)">
+              </div>
+            </div>
+
+            <div class="player-box">
+              <div class="player-box-title music-title">
+                <span>Layer 2 · Cinematic Score</span>
+                <div class="approach-selector">
+                  <button class="approach-btn active" id="btn-10-a" onclick="switchScore('scene-10', 'a', '/assets/audio/music/scene_10_music_a.wav')">2.2A: Gateway at Dawn</button>
+                  <button class="approach-btn" id="btn-10-b" onclick="switchScore('scene-10', 'b', '/assets/audio/music/scene_10_music_b.wav')">2.2B: Memories in Rain</button>
+                  <button class="approach-btn btn-v21" id="btn-10-old" onclick="switchScore('scene-10', 'old', '/assets/audio/music/v2_1/scene_10_music_a.wav')">v2.1 Baseline</button>
+                </div>
+              </div>
+              <audio id="music-scene-10" loop preload="none" src="/assets/audio/music/scene_10_music_a.wav"></audio>
+              <div class="vol-row">
+                <span>Vol</span>
+                <input type="range" class="vol-slider" min="0" max="1" step="0.05" value="0.80" oninput="setVol('music-scene-10', this.value)">
+              </div>
+            </div>
+
+            <div class="master-mix-bar">
+              <button class="dual-play-btn" id="dual-btn-scene-10" onclick="toggleDualMix('scene-10')">
+                ▶ Play Simultaneous Mix
+              </button>
+              <div class="mix-note">
+                <strong>2.2A:</strong> Grand piano, sitar harmonics, and morning bansuri · <strong>2.2B:</strong> Fingerstyle acoustic folk guitar, cello, and soft Rhodes warmth.
+              </div>
+            </div>
+          </div>
+          <div class="score-orchestration-notes">
+            <strong>Diversity Profile:</strong> Resolves Laila's Motif into a mature, philosophical acceptance. Concludes with a single chilling low piano note at 13.5s for her final whispered line: "...he's not a baby anymore."
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ─────────────────────────────────────────────────────────────────── -->
+    <!-- SECTION 2: VERSATILE LEITMOTIFS (VARIATIONS SHOWCASE) -->
+    <!-- ─────────────────────────────────────────────────────────────────── -->
+    <section id="motifs">
+      <div class="section-header">
+        <h2 class="section-title">
+          Versatile Leitmotif Variations
+          <span class="badge badge-eleven">7 Cinematic Arrangements</span>
+        </h2>
+        <p class="section-desc">
+          The four canonical themes arranged across different emotional contexts, demonstrating how recurring melodies evolve from grand orchestration to intimate solo instruments.
+        </p>
       </div>
 
-      <!-- Thematic Leitmotif Suite -->
-      <div style="margin-bottom: 2rem;">
-        <h3 style="font-family: 'Cormorant Garamond', serif; font-size: 1.6rem; color: #fff; margin-bottom: 0.5rem;">
-          Thematic Leitmotif Suite
-        </h3>
-        <p style="font-size: 0.9rem; color: var(--muted); margin-bottom: 1.25rem;">
-          Four recurring musical motifs woven throughout Chapter 01 to provide structural cinematic continuity across scenes.
-        </p>
-
-        <div class="motifs-container">
-          <div class="motif-card">
-            <div class="motif-meta">Core Mythological Theme</div>
-            <div class="motif-title">1. Storyverse Central Theme</div>
-            <div class="motif-desc">
-              Haunting modal Phrygian melody (D-F-G-A-F-E-D) played on warm bansuri bamboo flute over a resonant tanpura root drone and soft orchestral strings.
-            </div>
-            <audio controls preload="none" src="/assets/audio/music/motif_storyverse.wav"></audio>
+      <div class="motifs-container">
+        <!-- Storyverse Full -->
+        <div class="motif-card">
+          <div class="motif-meta">Motif 1 · Arrangement A</div>
+          <div class="motif-title">Storyverse Central (Full Orchestral)</div>
+          <div class="motif-desc">
+            Modal Phrygian melody on bansuri bamboo flute with full tanpura drone and sitar resonance.
           </div>
-
-          <div class="motif-card">
-            <div class="motif-meta">Ontological Inevitability</div>
-            <div class="motif-title">2. Death's Cosmic Requiem</div>
-            <div class="motif-desc">
-              Deep, solemn low-register French horn and trombone swell (Dm - Bbmaj7 - Gm6 - A7) paired with ethereal celestial choir and sparse, heavy piano octaves.
-            </div>
-            <audio controls preload="none" src="/assets/audio/music/motif_death.wav"></audio>
-          </div>
-
-          <div class="motif-card">
-            <div class="motif-meta">Humanity & Reluctant Mercy</div>
-            <div class="motif-title">3. Laila's Mortality & Grief</div>
-            <div class="motif-desc">
-              Fragile, lyrical felt piano and mournful cello contour (F-E-D-C#-D-A), capturing Death's disorientation inside a vulnerable mortal body.
-            </div>
-            <audio controls preload="none" src="/assets/audio/music/motif_laila.wav"></audio>
-          </div>
-
-          <div class="motif-card">
-            <div class="motif-meta">Cosmic Rebirth</div>
-            <div class="motif-title">4. Transformation Shimmer</div>
-            <div class="motif-desc">
-              Cascading celestial bell arpeggios (D5-F5-A5-D6) floating through ethereal vocal pads, marking the transition from divinity to concrete mortality.
-            </div>
-            <audio controls preload="none" src="/assets/audio/music/motif_transformation.wav"></audio>
-          </div>
+          <audio controls preload="none" src="/assets/audio/music/motif_storyverse_full.wav"></audio>
         </div>
-      </div>
 
-      <!-- Scene-by-Scene Film Score Console (All 10 Scenes) -->
-      <div>
-        <h3 style="font-family: 'Cormorant Garamond', serif; font-size: 1.6rem; color: #fff; margin-bottom: 0.5rem;">
-          Scene-by-Scene Film Score Console
-        </h3>
-        <p style="font-size: 0.9rem; color: var(--muted); margin-bottom: 1.5rem;">
-          Listen to the environmental soundscape, audition the bespoke cinematic film score (with Approach A and Approach B for key scenes), and trigger the <strong>Dual Mix</strong> to hear both layers synchronized in real-time.
-        </p>
-
-        <div class="music-scenes-grid">
-
-          <!-- SCENE 01: MUMBAI SKYLINE -->
-          <div class="music-scene-card" id="card-scene-01">
-            <div class="scene-header-row">
-              <div>
-                <span class="scene-num">Scene 01 · 0.00 – 0.09 Scroll</span>
-                <div class="scene-name-large">The City of Mumbai (Sunset Skyline)</div>
-              </div>
-              <span class="scene-mood-tag">Atmospheric Wonder · Vast Living City</span>
-            </div>
-            <div class="narrative-context">
-              "It began on a Wednesday afternoon as a late December sun was just dipping below the Mumbai skyline..."
-            </div>
-            <div class="dual-console-grid">
-              <div class="player-box">
-                <div class="player-box-title amb-title">
-                  <span>Layer 1 · Environmental Ambience</span>
-                  <span>12s Loop</span>
-                </div>
-                <audio id="amb-scene-01" loop preload="none" src="/assets/audio/soundscapes/scene_01_mumbai.wav"></audio>
-                <div class="vol-row">
-                  <span>Vol</span>
-                  <input type="range" class="vol-slider" min="0" max="1" step="0.05" value="0.75" oninput="setVol('amb-scene-01', this.value)">
-                </div>
-              </div>
-
-              <div class="player-box">
-                <div class="player-box-title music-title">
-                  <span>Layer 2 · Cinematic Score</span>
-                  <div class="approach-selector">
-                    <button class="approach-btn active" id="btn-01-a" onclick="switchApproach('scene-01', 'a', '/assets/audio/music/scene_01_music_a.wav')">Approach A (Symphonic)</button>
-                    <button class="approach-btn" id="btn-01-b" onclick="switchApproach('scene-01', 'b', '/assets/audio/music/scene_01_music_b.wav')">Approach B (Raga Noir)</button>
-                  </div>
-                </div>
-                <audio id="music-scene-01" loop preload="none" src="/assets/audio/music/scene_01_music_a.wav"></audio>
-                <div class="vol-row">
-                  <span>Vol</span>
-                  <input type="range" class="vol-slider" min="0" max="1" step="0.05" value="0.80" oninput="setVol('music-scene-01', this.value)">
-                </div>
-              </div>
-
-              <div class="master-mix-bar">
-                <div>
-                  <button class="dual-play-btn" id="dual-btn-scene-01" onclick="toggleDualMix('scene-01')">
-                    ▶ Play Simultaneous Mix
-                  </button>
-                </div>
-                <div class="mix-note">
-                  Approach A: Expansive orchestral strings with bansuri flute swells · Approach B: Low tanpura drone and dusk cello pads.
-                </div>
-              </div>
-            </div>
-            <div class="score-orchestration-notes">
-              <strong>Orchestration Analysis:</strong> Weaves the Central Storyverse Motif into a slow, majestic ascent. Voice-ducking lowers music by -5.5 dB during narrator introduction, preserving the warmth of the coastal haze.
-            </div>
+        <!-- Storyverse Minimal -->
+        <div class="motif-card">
+          <div class="motif-meta">Motif 1 · Arrangement B</div>
+          <div class="motif-title">Storyverse (Solo Bansuri Meditation)</div>
+          <div class="motif-desc">
+            Intimate solo bansuri flute with delicate microtonal ornamentation over quiet tanpura.
           </div>
+          <audio controls preload="none" src="/assets/audio/music/motif_storyverse_minimal.wav"></audio>
+        </div>
 
-          <!-- SCENE 02: TRAFFIC -->
-          <div class="music-scene-card" id="card-scene-02">
-            <div class="scene-header-row">
-              <div>
-                <span class="scene-num">Scene 02 · 0.09 – 0.18 Scroll</span>
-                <div class="scene-name-large">The Chaotic Journey (BKC Overpass)</div>
-              </div>
-              <span class="scene-mood-tag">Rhythmic Urban Tension · Impatient Gridlock</span>
-            </div>
-            <div class="narrative-context">
-              Mrs. Shah in sudden intense labor, trapped in bumper-to-bumper cab traffic on the flyover.
-            </div>
-            <div class="dual-console-grid">
-              <div class="player-box">
-                <div class="player-box-title amb-title">
-                  <span>Layer 1 · Environmental Ambience</span>
-                  <span>12s Loop</span>
-                </div>
-                <audio id="amb-scene-02" loop preload="none" src="/assets/audio/soundscapes/scene_02_traffic.wav"></audio>
-                <div class="vol-row">
-                  <span>Vol</span>
-                  <input type="range" class="vol-slider" min="0" max="1" step="0.05" value="0.70" oninput="setVol('amb-scene-02', this.value)">
-                </div>
-              </div>
-
-              <div class="player-box">
-                <div class="player-box-title music-title">
-                  <span>Layer 2 · Cinematic Score: Gridlock Tension</span>
-                  <span class="badge badge-eleven">100 BPM</span>
-                </div>
-                <audio id="music-scene-02" loop preload="none" src="/assets/audio/music/scene_02_music.wav"></audio>
-                <div class="vol-row">
-                  <span>Vol</span>
-                  <input type="range" class="vol-slider" min="0" max="1" step="0.05" value="0.80" oninput="setVol('music-scene-02', this.value)">
-                </div>
-              </div>
-
-              <div class="master-mix-bar">
-                <button class="dual-play-btn" id="dual-btn-scene-02" onclick="toggleDualMix('scene-02')">
-                  ▶ Play Simultaneous Mix
-                </button>
-                <div class="mix-note">
-                  Pulsing 100 BPM synth bass, muted taiko/dholak syncopation, and low brass swells complementing the diesel roar.
-                </div>
-              </div>
-            </div>
-            <div class="score-orchestration-notes">
-              <strong>Orchestration Analysis:</strong> Low-register rhythmic ostinato drives urgency without masking dialogue. When Mrs. Shah whispers "...The baby is coming", the percussion drops out for 1.2s into hollow string suspension.
-            </div>
+        <!-- Death Monolith -->
+        <div class="motif-card">
+          <div class="motif-meta">Motif 2 · Arrangement A</div>
+          <div class="motif-title">Death's Requiem (Low Brass Monolith)</div>
+          <div class="motif-desc">
+            Crushing low French horns, bass trombones, gong resonance, and choir mass.
           </div>
+          <audio controls preload="none" src="/assets/audio/music/motif_death_brass.wav"></audio>
+        </div>
 
-          <!-- SCENE 03: COLLEGE PARTY -->
-          <div class="music-scene-card" id="card-scene-03">
-            <div class="scene-header-row">
-              <div>
-                <span class="scene-num">Scene 03 · 0.18 – 0.27 Scroll</span>
-                <div class="scene-name-large">The Rooftop Party (6th Floor Window)</div>
-              </div>
-              <span class="scene-mood-tag">Contemporary Urban Lo-Fi · Muffled Distance</span>
-            </div>
-            <div class="narrative-context">
-              A noisy apartment gathering; Dhiraj pontificates while a young woman drifts toward the open window.
-            </div>
-            <div class="dual-console-grid">
-              <div class="player-box">
-                <div class="player-box-title amb-title">
-                  <span>Layer 1 · Environmental Ambience</span>
-                  <span>12s Loop</span>
-                </div>
-                <audio id="amb-scene-03" loop preload="none" src="/assets/audio/soundscapes/scene_03_party.wav"></audio>
-                <div class="vol-row">
-                  <span>Vol</span>
-                  <input type="range" class="vol-slider" min="0" max="1" step="0.05" value="0.75" oninput="setVol('amb-scene-03', this.value)">
-                </div>
-              </div>
-
-              <div class="player-box">
-                <div class="player-box-title music-title">
-                  <span>Layer 2 · Cinematic Score: Rooftop Reverie</span>
-                  <span class="badge badge-eleven">116 BPM Lo-Fi</span>
-                </div>
-                <audio id="music-scene-03" loop preload="none" src="/assets/audio/music/scene_03_music.wav"></audio>
-                <div class="vol-row">
-                  <span>Vol</span>
-                  <input type="range" class="vol-slider" min="0" max="1" step="0.05" value="0.75" oninput="setVol('music-scene-03', this.value)">
-                </div>
-              </div>
-
-              <div class="master-mix-bar">
-                <button class="dual-play-btn" id="dual-btn-scene-03" onclick="toggleDualMix('scene-03')">
-                  ▶ Play Simultaneous Mix
-                </button>
-                <div class="mix-note">
-                  Muffled four-on-the-floor beat filtered through drywall, melancholic electric Rhodes progression, and distant bells.
-                </div>
-              </div>
-            </div>
-            <div class="score-orchestration-notes">
-              <strong>Orchestration Analysis:</strong> Low-pass filter (cutoff 850 Hz) creates the authentic acoustic sensation of being inside the noisy party room while mentally detached, staring out into the night sky.
-            </div>
+        <!-- Death Suspended -->
+        <div class="motif-card">
+          <div class="motif-meta">Motif 2 · Arrangement B</div>
+          <div class="motif-title">Death's Requiem (Suspended Glass & Celeste)</div>
+          <div class="motif-desc">
+            Cold glass harmonics and clockwork celeste notes expressing detached divine bureaucracy.
           </div>
+          <audio controls preload="none" src="/assets/audio/music/motif_death_suspended.wav"></audio>
+        </div>
 
-          <!-- SCENE 04: DEATH'S WORLD -->
-          <div class="music-scene-card" id="card-scene-04">
-            <div class="scene-header-row">
-              <div>
-                <span class="scene-num">Scene 04 · 0.27 – 0.39 Scroll</span>
-                <div class="scene-name-large">Death's Realm (The Celestial Department)</div>
-              </div>
-              <span class="scene-mood-tag">Dark Cosmic Atmosphere · Immense Bureaucracy</span>
-            </div>
-            <div class="narrative-context">
-              Death enters the administrative offices of the Purveyor of All Goodness and is unceremoniously fired.
-            </div>
-            <div class="dual-console-grid">
-              <div class="player-box">
-                <div class="player-box-title amb-title">
-                  <span>Layer 1 · Environmental Ambience</span>
-                  <span>12s Loop</span>
-                </div>
-                <audio id="amb-scene-04" loop preload="none" src="/assets/audio/soundscapes/scene_04_death_world.wav"></audio>
-                <div class="vol-row">
-                  <span>Vol</span>
-                  <input type="range" class="vol-slider" min="0" max="1" step="0.05" value="0.75" oninput="setVol('amb-scene-04', this.value)">
-                </div>
-              </div>
-
-              <div class="player-box">
-                <div class="player-box-title music-title">
-                  <span>Layer 2 · Cinematic Score</span>
-                  <div class="approach-selector">
-                    <button class="approach-btn active" id="btn-04-a" onclick="switchApproach('scene-04', 'a', '/assets/audio/music/scene_04_music_a.wav')">Approach A (Cosmic Requiem)</button>
-                    <button class="approach-btn" id="btn-04-b" onclick="switchApproach('scene-04', 'b', '/assets/audio/music/scene_04_music_b.wav')">Approach B (Ethereal Bureaucracy)</button>
-                  </div>
-                </div>
-                <audio id="music-scene-04" loop preload="none" src="/assets/audio/music/scene_04_music_a.wav"></audio>
-                <div class="vol-row">
-                  <span>Vol</span>
-                  <input type="range" class="vol-slider" min="0" max="1" step="0.05" value="0.80" oninput="setVol('music-scene-04', this.value)">
-                </div>
-              </div>
-
-              <div class="master-mix-bar">
-                <button class="dual-play-btn" id="dual-btn-scene-04" onclick="toggleDualMix('scene-04')">
-                  ▶ Play Simultaneous Mix
-                </button>
-                <div class="mix-note">
-                  Approach A: Deep brass swells, choir pads, sparse piano octaves · Approach B: Cold sustained Dm(maj7) string cluster and hollow chimes.
-                </div>
-              </div>
-            </div>
-            <div class="score-orchestration-notes">
-              <strong>Orchestration Analysis:</strong> Features Death's Motif in its purest mythological form. When Death roars "WHAT?! I am Death!", brass swells surge, dropping to hollow choir during her quiet despair ("I loved it...").
-            </div>
+        <!-- Laila Fragile -->
+        <div class="motif-card">
+          <div class="motif-meta">Motif 3 · Arrangement A</div>
+          <div class="motif-title">Laila's Motif (Scene 07 Fragile Felt)</div>
+          <div class="motif-desc">
+            Muted felt piano and tender solo cello capturing first human pain and disorientation.
           </div>
+          <audio controls preload="none" src="/assets/audio/music/motif_laila_fragile.wav"></audio>
+        </div>
 
-          <!-- SCENE 05: TWO EVENTS, ONE MOMENT -->
-          <div class="music-scene-card" id="card-scene-05">
-            <div class="scene-header-row">
-              <div>
-                <span class="scene-num">Scene 05 · 0.39 – 0.51 Scroll</span>
-                <div class="scene-name-large">Two Events, One Moment (Convergence)</div>
-              </div>
-              <span class="scene-mood-tag">Visceral Rising Tension · Dual Climax</span>
-            </div>
-            <div class="narrative-context">
-              A woman falls from the 6th floor while Mrs. Shah delivers Darius Shah in the hospital delivery room.
-            </div>
-            <div class="dual-console-grid">
-              <div class="player-box">
-                <div class="player-box-title amb-title">
-                  <span>Layer 1 · Environmental Ambience</span>
-                  <span>12s Loop</span>
-                </div>
-                <audio id="amb-scene-05" loop preload="none" src="/assets/audio/soundscapes/scene_05_convergence.wav"></audio>
-                <div class="vol-row">
-                  <span>Vol</span>
-                  <input type="range" class="vol-slider" min="0" max="1" step="0.05" value="0.75" oninput="setVol('amb-scene-05', this.value)">
-                </div>
-              </div>
-
-              <div class="player-box">
-                <div class="player-box-title music-title">
-                  <span>Layer 2 · Cinematic Score</span>
-                  <div class="approach-selector">
-                    <button class="approach-btn active" id="btn-05-a" onclick="switchApproach('scene-05', 'a', '/assets/audio/music/scene_05_music_a.wav')">Approach A (Convergence Fugue)</button>
-                    <button class="approach-btn" id="btn-05-b" onclick="switchApproach('scene-05', 'b', '/assets/audio/music/scene_05_music_b.wav')">Approach B (Dual Destinies)</button>
-                  </div>
-                </div>
-                <audio id="music-scene-05" loop preload="none" src="/assets/audio/music/scene_05_music_a.wav"></audio>
-                <div class="vol-row">
-                  <span>Vol</span>
-                  <input type="range" class="vol-slider" min="0" max="1" step="0.05" value="0.80" oninput="setVol('music-scene-05', this.value)">
-                </div>
-              </div>
-
-              <div class="master-mix-bar">
-                <button class="dual-play-btn" id="dual-btn-scene-05" onclick="toggleDualMix('scene-05')">
-                  ▶ Play Simultaneous Mix
-                </button>
-                <div class="mix-note">
-                  Approach A: 64 BPM heartbeat pulse with accelerating ostinato strings · Approach B: Timpani strikes and contrapuntal cello/piano.
-                </div>
-              </div>
-            </div>
-            <div class="score-orchestration-notes">
-              <strong>Orchestration Analysis:</strong> Interweaves the falling motif and the birth motif into a singular harmonic convergence, climaxing precisely as the child draws his first mortal breath.
-            </div>
+        <!-- Laila Resolved -->
+        <div class="motif-card">
+          <div class="motif-meta">Motif 3 · Arrangement B</div>
+          <div class="motif-title">Laila's Motif (Scene 10 Mature Resolved)</div>
+          <div class="motif-desc">
+            Fingerstyle acoustic folk guitar, cello, and warm piano reflecting eight years of mortality.
           </div>
+          <audio controls preload="none" src="/assets/audio/music/motif_laila_resolved.wav"></audio>
+        </div>
 
-          <!-- SCENE 06: TRANSFORMATION -->
-          <div class="music-scene-card" id="card-scene-06">
-            <div class="scene-header-row">
-              <div>
-                <span class="scene-num">Scene 06 · 0.51 – 0.61 Scroll</span>
-                <div class="scene-name-large">Laila Becomes Mortal (The Fall & Rebirth)</div>
-              </div>
-              <span class="scene-mood-tag">Celestial Release · Wonder & Uncertainty</span>
-            </div>
-            <div class="narrative-context">
-              Death strikes a deal with Agni to be cast down into a human body close to the miraculous child.
-            </div>
-            <div class="dual-console-grid">
-              <div class="player-box">
-                <div class="player-box-title amb-title">
-                  <span>Layer 1 · Environmental Ambience</span>
-                  <span>12s Loop</span>
-                </div>
-                <audio id="amb-scene-06" loop preload="none" src="/assets/audio/soundscapes/scene_06_transformation.wav"></audio>
-                <div class="vol-row">
-                  <span>Vol</span>
-                  <input type="range" class="vol-slider" min="0" max="1" step="0.05" value="0.75" oninput="setVol('amb-scene-06', this.value)">
-                </div>
-              </div>
-
-              <div class="player-box">
-                <div class="player-box-title music-title">
-                  <span>Layer 2 · Cinematic Score</span>
-                  <div class="approach-selector">
-                    <button class="approach-btn active" id="btn-06-a" onclick="switchApproach('scene-06', 'a', '/assets/audio/music/scene_06_music_a.wav')">Approach A (Celestial Fall)</button>
-                    <button class="approach-btn" id="btn-06-b" onclick="switchApproach('scene-06', 'b', '/assets/audio/music/scene_06_music_b.wav')">Approach B (Transcendence)</button>
-                  </div>
-                </div>
-                <audio id="music-scene-06" loop preload="none" src="/assets/audio/music/scene_06_music_a.wav"></audio>
-                <div class="vol-row">
-                  <span>Vol</span>
-                  <input type="range" class="vol-slider" min="0" max="1" step="0.05" value="0.80" oninput="setVol('music-scene-06', this.value)">
-                </div>
-              </div>
-
-              <div class="master-mix-bar">
-                <button class="dual-play-btn" id="dual-btn-scene-06" onclick="toggleDualMix('scene-06')">
-                  ▶ Play Simultaneous Mix
-                </button>
-                <div class="mix-note">
-                  Approach A: C# major choir pads, bell cascades, and warm string release · Approach B: Major-seventh strings and delicate glockenspiel.
-                </div>
-              </div>
-            </div>
-            <div class="score-orchestration-notes">
-              <strong>Orchestration Analysis:</strong> Transitions from cold divine brass into sparkling bell cascades (Transformation Motif), symbolizing the cosmic dissolution of divinity into human flesh.
-            </div>
+        <!-- Transformation Radiant -->
+        <div class="motif-card" style="grid-column: 1 / -1;">
+          <div class="motif-meta">Motif 4 · Full Arrangement</div>
+          <div class="motif-title">Transformation Shimmer (Radiant Bell Choir & Sweeping Harp)</div>
+          <div class="motif-desc">
+            Cascading multi-octave crystalline bells and ascending harp glissandi floating into celestial vocal shimmer.
           </div>
-
-          <!-- SCENE 07: THE HOSPITAL -->
-          <div class="music-scene-card" id="card-scene-07">
-            <div class="scene-header-row">
-              <div>
-                <span class="scene-num">Scene 07 · 0.61 – 0.72 Scroll</span>
-                <div class="scene-name-large">The Hospital Awakening (Room 7)</div>
-              </div>
-              <span class="scene-mood-tag">Minimalist Vulnerability · Clinical Isolation</span>
-            </div>
-            <div class="narrative-context">
-              Death wakes up in Laila Starr's mortal body, feeling physical pain for the first time; Munmun floats above.
-            </div>
-            <div class="dual-console-grid">
-              <div class="player-box">
-                <div class="player-box-title amb-title">
-                  <span>Layer 1 · Environmental Ambience</span>
-                  <span>12s Loop</span>
-                </div>
-                <audio id="amb-scene-07" loop preload="none" src="/assets/audio/soundscapes/scene_07_hospital.wav"></audio>
-                <div class="vol-row">
-                  <span>Vol</span>
-                  <input type="range" class="vol-slider" min="0" max="1" step="0.05" value="0.75" oninput="setVol('amb-scene-07', this.value)">
-                </div>
-              </div>
-
-              <div class="player-box">
-                <div class="player-box-title music-title">
-                  <span>Layer 2 · Cinematic Score: Neonatal Sanctuary</span>
-                  <span class="badge badge-eleven">Minimalist Piano</span>
-                </div>
-                <audio id="music-scene-07" loop preload="none" src="/assets/audio/music/scene_07_music.wav"></audio>
-                <div class="vol-row">
-                  <span>Vol</span>
-                  <input type="range" class="vol-slider" min="0" max="1" step="0.05" value="0.75" oninput="setVol('music-scene-07', this.value)">
-                </div>
-              </div>
-
-              <div class="master-mix-bar">
-                <button class="dual-play-btn" id="dual-btn-scene-07" onclick="toggleDualMix('scene-07')">
-                  ▶ Play Simultaneous Mix
-                </button>
-                <div class="mix-note">
-                  Sparse, poignant felt piano playing Laila's Motif over a 70 BPM clinical telemetry pulse and quiet violin harmonics.
-                </div>
-              </div>
-            </div>
-            <div class="score-orchestration-notes">
-              <strong>Orchestration Analysis:</strong> Stripped of all grandeur. The piano notes hang in cold space, perfectly synchronized around Laila's pained groans ("Ohhhhh, that feels awful").
-            </div>
-          </div>
-
-          <!-- SCENE 08: THE ESCAPE -->
-          <div class="music-scene-card" id="card-scene-08">
-            <div class="scene-header-row">
-              <div>
-                <span class="scene-num">Scene 08 · 0.72 – 0.83 Scroll</span>
-                <div class="scene-name-large">The Escape & Hesitation (Neo-Natal Ward)</div>
-              </div>
-              <span class="scene-mood-tag">Controlled Suspense · Moral Paralyzation</span>
-            </div>
-            <div class="narrative-context">
-              Laila holds the infant Darius; Munmun begs her not to kill him; hospital security corners them.
-            </div>
-            <div class="dual-console-grid">
-              <div class="player-box">
-                <div class="player-box-title amb-title">
-                  <span>Layer 1 · Environmental Ambience</span>
-                  <span>12s Loop</span>
-                </div>
-                <audio id="amb-scene-08" loop preload="none" src="/assets/audio/soundscapes/scene_08_escape.wav"></audio>
-                <div class="vol-row">
-                  <span>Vol</span>
-                  <input type="range" class="vol-slider" min="0" max="1" step="0.05" value="0.70" oninput="setVol('amb-scene-08', this.value)">
-                </div>
-              </div>
-
-              <div class="player-box">
-                <div class="player-box-title music-title">
-                  <span>Layer 2 · Cinematic Score: Fugitive Shadows</span>
-                  <span class="badge badge-eleven">120 BPM Ostinato</span>
-                </div>
-                <audio id="music-scene-08" loop preload="none" src="/assets/audio/music/scene_08_music.wav"></audio>
-                <div class="vol-row">
-                  <span>Vol</span>
-                  <input type="range" class="vol-slider" min="0" max="1" step="0.05" value="0.80" oninput="setVol('music-scene-08', this.value)">
-                </div>
-              </div>
-
-              <div class="master-mix-bar">
-                <button class="dual-play-btn" id="dual-btn-scene-08" onclick="toggleDualMix('scene-08')">
-                  ▶ Play Simultaneous Mix
-                </button>
-                <div class="mix-note">
-                  Urgent 120 BPM string spiccato, driving low percussion, and low brass swells suddenly cutting to silence when Death holds the baby.
-                </div>
-              </div>
-            </div>
-            <div class="score-orchestration-notes">
-              <strong>Orchestration Analysis:</strong> High-tempo cinematic thriller drive that abruptly halts when Munmun cries: "He's got a name! You can't kill someone with a name!", leaving only an acoustic room drone.
-            </div>
-          </div>
-
-          <!-- SCENE 09: THE FATAL TRUCK -->
-          <div class="music-scene-card" id="card-scene-09">
-            <div class="scene-header-row">
-              <div>
-                <span class="scene-num">Scene 09 · 0.83 – 0.91 Scroll</span>
-                <div class="scene-name-large">The Second Death (Midnight Impact)</div>
-              </div>
-              <span class="scene-mood-tag">Dark Cinematic Dread · Dramatic Climax</span>
-            </div>
-            <div class="narrative-context">
-              Laila flees into the midnight downpour; a massive twelve-wheel freight truck bears down on her.
-            </div>
-            <div class="dual-console-grid">
-              <div class="player-box">
-                <div class="player-box-title amb-title">
-                  <span>Layer 1 · Environmental Ambience</span>
-                  <span>12s Loop</span>
-                </div>
-                <audio id="amb-scene-09" loop preload="none" src="/assets/audio/soundscapes/scene_09_truck.wav"></audio>
-                <div class="vol-row">
-                  <span>Vol</span>
-                  <input type="range" class="vol-slider" min="0" max="1" step="0.05" value="0.75" oninput="setVol('amb-scene-09', this.value)">
-                </div>
-              </div>
-
-              <div class="player-box">
-                <div class="player-box-title music-title">
-                  <span>Layer 2 · Cinematic Score: Midnight Impact</span>
-                  <span class="badge badge-eleven">Orchestral Crescendo</span>
-                </div>
-                <audio id="music-scene-09" loop preload="none" src="/assets/audio/music/scene_09_music.wav"></audio>
-                <div class="vol-row">
-                  <span>Vol</span>
-                  <input type="range" class="vol-slider" min="0" max="1" step="0.05" value="0.85" oninput="setVol('music-scene-09', this.value)">
-                </div>
-              </div>
-
-              <div class="master-mix-bar">
-                <button class="dual-play-btn" id="dual-btn-scene-09" onclick="toggleDualMix('scene-09')">
-                  ▶ Play Simultaneous Mix
-                </button>
-                <div class="mix-note">
-                  Sub-bass 38Hz diesel growl, relentless rain hiss, rising brass dissonance, and a massive orchestral impact hit at 13.5s.
-                </div>
-              </div>
-            </div>
-            <div class="score-orchestration-notes">
-              <strong>Orchestration Analysis:</strong> Accelerating timpani and dissonance build to a catastrophic sonic peak, which abruptly cuts to pure silence on impact as the screen blacks out.
-            </div>
-          </div>
-
-          <!-- SCENE 10: EIGHT YEARS LATER -->
-          <div class="music-scene-card" id="card-scene-10">
-            <div class="scene-header-row">
-              <div>
-                <span class="scene-num">Scene 10 · 0.91 – 1.00 Scroll</span>
-                <div class="scene-name-large">Eight Years Later (Gateway of India)</div>
-              </div>
-              <span class="scene-mood-tag">Bittersweet Peace · Memorable Ending Motif</span>
-            </div>
-            <div class="narrative-context">
-              Laila sits over morning tea with Pranah (Life) by the Mumbai harbour; eight years have passed.
-            </div>
-            <div class="dual-console-grid">
-              <div class="player-box">
-                <div class="player-box-title amb-title">
-                  <span>Layer 1 · Environmental Ambience</span>
-                  <span>12s Loop</span>
-                </div>
-                <audio id="amb-scene-10" loop preload="none" src="/assets/audio/soundscapes/scene_10_eight_years_later.wav"></audio>
-                <div class="vol-row">
-                  <span>Vol</span>
-                  <input type="range" class="vol-slider" min="0" max="1" step="0.05" value="0.75" oninput="setVol('amb-scene-10', this.value)">
-                </div>
-              </div>
-
-              <div class="player-box">
-                <div class="player-box-title music-title">
-                  <span>Layer 2 · Cinematic Score</span>
-                  <div class="approach-selector">
-                    <button class="approach-btn active" id="btn-10-a" onclick="switchApproach('scene-10', 'a', '/assets/audio/music/scene_10_music_a.wav')">Approach A (Gateway Dawn)</button>
-                    <button class="approach-btn" id="btn-10-b" onclick="switchApproach('scene-10', 'b', '/assets/audio/music/scene_10_music_b.wav')">Approach B (Eternal Return)</button>
-                  </div>
-                </div>
-                <audio id="music-scene-10" loop preload="none" src="/assets/audio/music/scene_10_music_a.wav"></audio>
-                <div class="vol-row">
-                  <span>Vol</span>
-                  <input type="range" class="vol-slider" min="0" max="1" step="0.05" value="0.80" oninput="setVol('music-scene-10', this.value)">
-                </div>
-              </div>
-
-              <div class="master-mix-bar">
-                <button class="dual-play-btn" id="dual-btn-scene-10" onclick="toggleDualMix('scene-10')">
-                  ▶ Play Simultaneous Mix
-                </button>
-                <div class="mix-note">
-                  Approach A: Warm piano, bansuri warmth, and gentle sitar harmonics · Approach B: Solo cello carrying Laila's motif with Rhodes warmth.
-                </div>
-              </div>
-            </div>
-            <div class="score-orchestration-notes">
-              <strong>Orchestration Analysis:</strong> Resolves the Central Storyverse Motif into a major-key harmonic peace, before dropping to a single chilling bass note on Laila's final whisper: "...he's not a baby anymore."
-            </div>
-          </div>
-
+          <audio controls preload="none" src="/assets/audio/music/motif_transformation_radiant.wav"></audio>
         </div>
       </div>
     </section>
 
     <!-- ─────────────────────────────────────────────────────────────────── -->
-    <!-- SECTION 2: NARRATOR (APPROVED: GEORGE · ELEVENLABS) -->
+    <!-- SECTION 3: NARRATOR (LOCKED: GEORGE · ELEVENLABS) -->
     <!-- ─────────────────────────────────────────────────────────────────── -->
     <section id="narrator">
       <div class="section-header">
@@ -1283,7 +1367,6 @@
       </div>
 
       <div class="narrator-grid">
-        <!-- APPROVED NARRATOR: GEORGE -->
         <div class="card approved" style="grid-column: 1 / -1;">
           <div class="card-top">
             <div>
@@ -1315,54 +1398,11 @@
             </div>
           </div>
         </div>
-
-        <!-- Archival Reference Candidates -->
-        <div class="card" style="opacity: 0.75;">
-          <div class="card-top">
-            <div>
-              <div class="candidate-name">Reference: Google Gemini Charon</div>
-              <div class="candidate-meta">gemini-2.5-flash-preview-tts · 24kHz Studio PCM</div>
-            </div>
-            <span class="badge badge-gemini">Audition Runner-Up</span>
-          </div>
-          <div class="candidate-desc">
-            Deep, resonant Indian English baritone with natural breath cues and authentic place-name cadence.
-          </div>
-          <audio controls preload="none" src="/assets/audio/auditions/narrator/cand1-gemini-charon-a.wav"></audio>
-        </div>
-
-        <div class="card" style="opacity: 0.75;">
-          <div class="card-top">
-            <div>
-              <div class="candidate-name">Reference: ElevenLabs Daniel</div>
-              <div class="candidate-meta">onwK4e9ZLuTAKqWW03F9 · Broadcaster Baritone</div>
-            </div>
-            <span class="badge badge-eleven">Audition Alternate</span>
-          </div>
-          <div class="candidate-desc">
-            Authoritative broadcaster baritone with crisp, formal studio enunciation.
-          </div>
-          <audio controls preload="none" src="/assets/audio/auditions/narrator/cand2-eleven-daniel-a.mp3"></audio>
-        </div>
-
-        <div class="card" style="opacity: 0.65;">
-          <div class="card-top">
-            <div>
-              <div class="candidate-name">Baseline: Prabhat Neural</div>
-              <div class="candidate-meta">Microsoft Edge TTS · en-IN-PrabhatNeural</div>
-            </div>
-            <span class="badge badge-baseline">REPLACED</span>
-          </div>
-          <div class="candidate-desc">
-            Flat, synthetic legacy reading with mechanical cadence and robotic artifacts.
-          </div>
-          <audio controls preload="none" src="/assets/audio/auditions/narrator/sample-prabhat-baritone.mp3"></audio>
-        </div>
       </div>
     </section>
 
     <!-- ─────────────────────────────────────────────────────────────────── -->
-    <!-- SECTION 3: EMOTIONAL ACTING AUDITIONS (APPROVED) -->
+    <!-- SECTION 4: EMOTIONAL ACTING AUDITIONS (APPROVED) -->
     <!-- ─────────────────────────────────────────────────────────────────── -->
     <section id="acting">
       <div class="section-header">
@@ -1371,7 +1411,7 @@
           <span class="badge badge-approved">★ LOCKED & APPROVED</span>
         </h2>
         <p class="section-desc">
-          <strong>Decisions Approved:</strong> All 9 high-stakes character performances approved. Preserves line-by-line emotional intensity, dynamic stability (<code>0.20 – 0.35</code>), and exact source text for all 34 dialogue lines.
+          <strong>Decisions Approved:</strong> All 9 high-stakes character performances approved. Preserves line-by-line emotional intensity, dynamic stability (<code>0.20 – 0.38</code>), and exact source text for all 34 dialogue lines.
         </p>
       </div>
 
@@ -1467,37 +1507,7 @@
           </div>
         </div>
 
-        <!-- 4. Laila Resistance -->
-        <div class="acting-row">
-          <div class="acting-header">
-            <div>
-              <span class="acting-char">Laila Starr (Alice)</span>
-              <span class="badge badge-approved" style="margin-left: 0.5rem;">Approved Performance</span>
-            </div>
-            <span class="acting-dir">Scene 08 · Line s08-02 · Moral Paralyzation</span>
-          </div>
-          <div class="acting-quote">
-            "What? W-why did you tell me that? I... I can't!"
-          </div>
-          <div class="acting-side">
-            <div class="side-title">
-              <span style="color: var(--muted);">Flat TTS Baseline</span>
-              <span class="badge badge-baseline">Default</span>
-            </div>
-            <p style="font-size: 0.8rem; color: var(--muted);">Neutral conversational pace without moral panic.</p>
-            <audio controls preload="none" src="/assets/audio/voices/laila/laila_awakening_sample.mp3"></audio>
-          </div>
-          <div class="acting-side new-performance">
-            <div class="side-title">
-              <span style="color: #34d399;">Acted Audition (Approved)</span>
-              <span class="badge badge-approved">Stability 0.22 · Style 0.75</span>
-            </div>
-            <p style="font-size: 0.8rem; color: #d1fae5;">Sudden sharp sob, stuttered intake, hands visibly shaking as she looks at the newborn child.</p>
-            <audio controls preload="none" src="/assets/audio/auditions/acting/acting-s08-02-laila.mp3"></audio>
-          </div>
-        </div>
-
-        <!-- 5. Munmun Panic -->
+        <!-- 4. Munmun Panic -->
         <div class="acting-row">
           <div class="acting-header">
             <div>
@@ -1527,41 +1537,11 @@
           </div>
         </div>
 
-        <!-- 6. God Indifference -->
-        <div class="acting-row">
-          <div class="acting-header">
-            <div>
-              <span class="acting-char">Purveyor of All Goodness (Adam)</span>
-              <span class="badge badge-approved" style="margin-left: 0.5rem;">Approved Performance</span>
-            </div>
-            <span class="acting-dir">Scene 04 · Line s04-08 · Corporate Termination</span>
-          </div>
-          <div class="acting-quote">
-            "Yes, Death. I'm afraid we're letting you go."
-          </div>
-          <div class="acting-side">
-            <div class="side-title">
-              <span style="color: var(--muted);">Flat TTS Baseline</span>
-              <span class="badge badge-baseline">Default</span>
-            </div>
-            <p style="font-size: 0.8rem; color: var(--muted);">Standard reading without corporate nuance.</p>
-            <audio controls preload="none" src="/assets/audio/auditions/narrator/cand5-eleven-adam-a.mp3"></audio>
-          </div>
-          <div class="acting-side new-performance">
-            <div class="side-title">
-              <span style="color: #34d399;">Acted Audition (Approved)</span>
-              <span class="badge badge-approved">Stability 0.65 · Style 0.20</span>
-            </div>
-            <p style="font-size: 0.8rem; color: #d1fae5;">Chillingly relaxed executive tone, mild sigh of managerial inconvenience, firing Death like a SaaS contract.</p>
-            <audio controls preload="none" src="/assets/audio/auditions/acting/acting-s04-08-god.mp3"></audio>
-          </div>
-        </div>
-
       </div>
     </section>
 
     <!-- ─────────────────────────────────────────────────────────────────── -->
-    <!-- SECTION 4: ENVIRONMENTAL SOUNDSCAPES -->
+    <!-- SECTION 5: ENVIRONMENTAL SOUNDSCAPES -->
     <!-- ─────────────────────────────────────────────────────────────────── -->
     <section id="soundscapes">
       <div class="section-header">
@@ -1648,7 +1628,7 @@
     </section>
 
     <!-- ─────────────────────────────────────────────────────────────────── -->
-    <!-- SECTION 5: VOICE ACTING & NARRATION BIBLE -->
+    <!-- SECTION 6: COMPLETE PERFORMANCE BIBLE (AUDIT) -->
     <!-- ─────────────────────────────────────────────────────────────────── -->
     <section id="bible">
       <div class="section-header">
@@ -1661,7 +1641,6 @@
         </p>
       </div>
 
-      <!-- 14 NARRATION BEATS (GEORGE) -->
       <h3 style="font-family: 'Cormorant Garamond', serif; font-size: 1.5rem; color: #fff; margin-bottom: 0.75rem;">
         Part 1 · The 14 Narration Beats (George · ElevenLabs)
       </h3>
@@ -1793,401 +1772,35 @@
           </tbody>
         </table>
       </div>
-
-      <!-- 34 CHARACTER DIALOGUE LINES -->
-      <h3 style="font-family: 'Cormorant Garamond', serif; font-size: 1.5rem; color: #fff; margin-bottom: 0.75rem;">
-        Part 2 · The 34 Character Spoken Lines
-      </h3>
-      <div class="table-container">
-        <table>
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>Scene</th>
-              <th>Character</th>
-              <th>Exact Original Spoken Dialogue</th>
-              <th>Primary Emotion</th>
-              <th>Intensity</th>
-              <th>Pacing & Energy</th>
-              <th>Acting Directions & Physicality</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td><code>s02-01</code></td>
-              <td>Scene 02</td>
-              <td><strong>Mrs. Shah</strong></td>
-              <td>"I told you we should have left an hour ago! Do you hear this traffic?!"</td>
-              <td>Frustration</td>
-              <td><span class="intensity-badge intensity-4">4/5</span></td>
-              <td>Rapid · Projected</td>
-              <td>Starts with accusatory marital irritation, immediately overwhelmed by a sudden labor contraction.</td>
-            </tr>
-            <tr>
-              <td><code>s02-02</code></td>
-              <td>Scene 02</td>
-              <td><strong>Cab Driver</strong></td>
-              <td>"Madam, hold on—every lane is locked solid across B.K.C.!"</td>
-              <td>Stress</td>
-              <td><span class="intensity-badge intensity-3">3/5</span></td>
-              <td>Rapid · Projected</td>
-              <td>Instinctive defense against customer yelling, turning into genuine helplessness about the traffic jam.</td>
-            </tr>
-            <tr>
-              <td><code>s02-03</code></td>
-              <td>Scene 02</td>
-              <td><strong>Mrs. Shah</strong></td>
-              <td>"...The baby is coming."</td>
-              <td>Vulnerability</td>
-              <td><span class="intensity-badge intensity-5">5/5</span></td>
-              <td>Slow · Whispered</td>
-              <td>Sudden stillness cutting through traffic chaos; realization that labor has begun right in the cab.</td>
-            </tr>
-            <tr>
-              <td><code>s03-01</code></td>
-              <td>Scene 03</td>
-              <td><strong>Dhiraj</strong></td>
-              <td>"Listen, the whole discourse still reproduces the same patriarchal power equations—nobody actually examines who holds the lens."</td>
-              <td>Pretentiousness</td>
-              <td><span class="intensity-badge intensity-2">2/5</span></td>
-              <td>Moderate · Grounded</td>
-              <td>Unprompted lecture at a noisy party, completely oblivious to his listener drifting toward the window.</td>
-            </tr>
-            <tr>
-              <td><code>s04-01</code></td>
-              <td>Scene 04</td>
-              <td><strong>Death</strong></td>
-              <td>"Hold the door!"</td>
-              <td>Impatience</td>
-              <td><span class="intensity-badge intensity-3">3/5</span></td>
-              <td>Rapid · Projected</td>
-              <td>The absolute ruler of mortal endings expecting corporate elevators to wait for her.</td>
-            </tr>
-            <tr>
-              <td><code>s04-02</code></td>
-              <td>Scene 04</td>
-              <td><strong>Agni</strong></td>
-              <td>"This way, please. He is expecting you."</td>
-              <td>Bureaucracy</td>
-              <td><span class="intensity-badge intensity-2">2/5</span></td>
-              <td>Measured · Grounded</td>
-              <td>Carefully neutral administrative professionalism concealing the impending disaster.</td>
-            </tr>
-            <tr>
-              <td><code>s04-03</code></td>
-              <td>Scene 04</td>
-              <td><strong>Purveyor of Goodness</strong></td>
-              <td>"Come, come. Have a seat."</td>
-              <td>Warmth</td>
-              <td><span class="intensity-badge intensity-1">1/5</span></td>
-              <td>Moderate · Grounded</td>
-              <td>Disarming faux-paternal friendliness designed to cushion an execution.</td>
-            </tr>
-            <tr>
-              <td><code>s04-04</code></td>
-              <td>Scene 04</td>
-              <td><strong>Purveyor of Goodness</strong></td>
-              <td>"So, Death... tell me, how're things? Work, life, friendships... hobbies?"</td>
-              <td>Small Talk</td>
-              <td><span class="intensity-badge intensity-2">2/5</span></td>
-              <td>Moderate · Grounded</td>
-              <td>Superficial 1-on-1 performance review checklist before dropping the hammer.</td>
-            </tr>
-            <tr>
-              <td><code>s04-05</code></td>
-              <td>Scene 04</td>
-              <td><strong>Death</strong></td>
-              <td>"W-what am I doing here, Sir?"</td>
-              <td>Suspicion</td>
-              <td><span class="intensity-badge intensity-3">3/5</span></td>
-              <td>Measured · Intimate</td>
-              <td>Regal confidence faltering as instinct detects an existential ambush.</td>
-            </tr>
-            <tr>
-              <td><code>s04-06</code></td>
-              <td>Scene 04</td>
-              <td><strong>Purveyor of Goodness</strong></td>
-              <td>"How long have you been with us, Death? Feels like an eternity, doesn't it?"</td>
-              <td>Nostalgia</td>
-              <td><span class="intensity-badge intensity-2">2/5</span></td>
-              <td>Measured · Grounded</td>
-              <td>Setting up the semantic joke before pulling the rug out.</td>
-            </tr>
-            <tr>
-              <td><code>s04-07</code></td>
-              <td>Scene 04</td>
-              <td><strong>Death</strong></td>
-              <td>"I have actually been here for an eternity."</td>
-              <td>Literalism</td>
-              <td><span class="intensity-badge intensity-2">2/5</span></td>
-              <td>Slow · Grounded</td>
-              <td>Stating ontological fact to remind him who he is speaking to. Zero amusement.</td>
-            </tr>
-            <tr>
-              <td><code>s04-08</code></td>
-              <td>Scene 04</td>
-              <td><strong>Purveyor of Goodness</strong></td>
-              <td>"Yes, Death. I'm afraid we're letting you go."</td>
-              <td>Indifference</td>
-              <td><span class="intensity-badge intensity-3">3/5</span></td>
-              <td>Measured · Grounded</td>
-              <td>Firing an immortal cosmic consequence as if cancelling a software subscription.</td>
-            </tr>
-            <tr>
-              <td><code>s04-09</code></td>
-              <td>Scene 04</td>
-              <td><strong>Death</strong></td>
-              <td>"WHAT?! I'm an absolute consequence. It's in the job description! Send down a plague! Strike the child with lightning!"</td>
-              <td>Outrage</td>
-              <td><span class="intensity-badge intensity-5">5/5</span></td>
-              <td>Rapid · Explosive</td>
-              <td>Cosmic authority shattered in an instant, exploding into pure indignant rebellion.</td>
-            </tr>
-            <tr>
-              <td><code>s04-10</code></td>
-              <td>Scene 04</td>
-              <td><strong>Purveyor of Goodness</strong></td>
-              <td>"You know how corporate feels about that kind of stuff."</td>
-              <td>Dismissive</td>
-              <td><span class="intensity-badge intensity-2">2/5</span></td>
-              <td>Moderate · Grounded</td>
-              <td>Brushing off apocalyptic plagues as a minor PR headache.</td>
-            </tr>
-            <tr>
-              <td><code>s04-11</code></td>
-              <td>Scene 04</td>
-              <td><strong>Death</strong></td>
-              <td>"This is all I've ever done. What am I supposed to do?"</td>
-              <td>Despair</td>
-              <td><span class="intensity-badge intensity-4">4/5</span></td>
-              <td>Slow · Whispered</td>
-              <td>The goddess of death reduced to an unemployed mortal, staring into an empty void.</td>
-            </tr>
-            <tr>
-              <td><code>s06-01</code></td>
-              <td>Scene 06</td>
-              <td><strong>Death</strong></td>
-              <td>"Agni?"</td>
-              <td>Manipulation</td>
-              <td><span class="intensity-badge intensity-2">2/5</span></td>
-              <td>Slow · Intimate</td>
-              <td>Probing her subordinate to see if loyalty still survives termination.</td>
-            </tr>
-            <tr>
-              <td><code>s06-02</code></td>
-              <td>Scene 06</td>
-              <td><strong>Agni</strong></td>
-              <td>"I know what you're thinking and the answer is no."</td>
-              <td>Resistance</td>
-              <td><span class="intensity-badge intensity-3">3/5</span></td>
-              <td>Rapid · Grounded</td>
-              <td>Trying to protect his own job by shutting down treason immediately.</td>
-            </tr>
-            <tr>
-              <td><code>s06-03</code></td>
-              <td>Scene 06</td>
-              <td><strong>Agni</strong></td>
-              <td>"Oh, fiiiine... fine, what do you want?"</td>
-              <td>Exasperation</td>
-              <td><span class="intensity-badge intensity-3">3/5</span></td>
-              <td>Moderate · Grounded</td>
-              <td>Inevitably folding under his former boss's imposing presence. Heavy defeated sigh.</td>
-            </tr>
-            <tr>
-              <td><code>s06-04</code></td>
-              <td>Scene 06</td>
-              <td><strong>Death</strong></td>
-              <td>"When you send me down and give me a mortal body, can you put me close to the child?"</td>
-              <td>Determination</td>
-              <td><span class="intensity-badge intensity-3">3/5</span></td>
-              <td>Measured · Intimate</td>
-              <td>Laying the trap — disguising an assassination mission as a relocation favor.</td>
-            </tr>
-            <tr>
-              <td><code>s06-05</code></td>
-              <td>Scene 06</td>
-              <td><strong>Death</strong></td>
-              <td>"I'll be a mortal then. My actions. My consequences."</td>
-              <td>Pride</td>
-              <td><span class="intensity-badge intensity-4">4/5</span></td>
-              <td>Slow · Projected</td>
-              <td>Accepting mortality not as a punishment, but as a loophole for revenge.</td>
-            </tr>
-            <tr>
-              <td><code>s07-01</code></td>
-              <td>Scene 07</td>
-              <td><strong>Laila Starr</strong></td>
-              <td>"Ohhhhh, that feels awful."</td>
-              <td>Agony</td>
-              <td><span class="intensity-badge intensity-4">4/5</span></td>
-              <td>Slow · Whispered</td>
-              <td>First sensation of human nerve endings after falling six stories: pure blunt agony.</td>
-            </tr>
-            <tr>
-              <td><code>s07-02</code></td>
-              <td>Scene 07</td>
-              <td><strong>Munmun</strong></td>
-              <td>"Yeah, well... you were dead for a good twenty minutes or so."</td>
-              <td>Casuallness</td>
-              <td><span class="intensity-badge intensity-2">2/5</span></td>
-              <td>Moderate · Grounded</td>
-              <td>A ghost boy stating medical resuscitation as if discussing yesterday's cartoon.</td>
-            </tr>
-            <tr>
-              <td><code>s07-03</code></td>
-              <td>Scene 07</td>
-              <td><strong>Laila Starr</strong></td>
-              <td>"Who're you?"</td>
-              <td>Disorientation</td>
-              <td><span class="intensity-badge intensity-3">3/5</span></td>
-              <td>Slow · Intimate</td>
-              <td>Trying to focus blurry mortal vision on a glowing spectral child floating above her bed.</td>
-            </tr>
-            <tr>
-              <td><code>s07-04</code></td>
-              <td>Scene 07</td>
-              <td><strong>Munmun</strong></td>
-              <td>"I-I'm a ghost! And your name... it's on your wrist."</td>
-              <td>Curiosity</td>
-              <td><span class="intensity-badge intensity-3">3/5</span></td>
-              <td>Rapid · Grounded</td>
-              <td>Thrilled to meet someone who can actually see and hear him in the hospital ward.</td>
-            </tr>
-            <tr>
-              <td><code>s07-05</code></td>
-              <td>Scene 07</td>
-              <td><strong>Laila Starr</strong></td>
-              <td>"L-Laila Starr..."</td>
-              <td>Disbelief</td>
-              <td><span class="intensity-badge intensity-3">3/5</span></td>
-              <td>Slow · Whispered</td>
-              <td>Death testing her new human name for the very first time on her tongue.</td>
-            </tr>
-            <tr>
-              <td><code>s07-06</code></td>
-              <td>Scene 07</td>
-              <td><strong>Munmun</strong></td>
-              <td>"So... what next, Laila Starr?"</td>
-              <td>Excitement</td>
-              <td><span class="intensity-badge intensity-3">3/5</span></td>
-              <td>Moderate · Grounded</td>
-              <td>Inviting her into whatever wild scheme comes next. Eager boyish smile.</td>
-            </tr>
-            <tr>
-              <td><code>s08-01</code></td>
-              <td>Scene 08</td>
-              <td><strong>Munmun</strong></td>
-              <td>"His name is Darius. He's got a name! You can't kill someone with a name!"</td>
-              <td>Panic</td>
-              <td><span class="intensity-badge intensity-5">5/5</span></td>
-              <td>Breathless · Explosive</td>
-              <td>A terrified child screaming the ultimate moral barrier to stop an executioner.</td>
-            </tr>
-            <tr>
-              <td><code>s08-02</code></td>
-              <td>Scene 08</td>
-              <td><strong>Laila Starr</strong></td>
-              <td>"What? W-why did you tell me that? I... I can't!"</td>
-              <td>Guilt</td>
-              <td><span class="intensity-badge intensity-5">5/5</span></td>
-              <td>Breathless · Projected</td>
-              <td>Her cold cosmic purpose destroyed by the weight of a baby's humanity. Sharp sob.</td>
-            </tr>
-            <tr>
-              <td><code>s08-03</code></td>
-              <td>Scene 08</td>
-              <td><strong>Hospital Guard</strong></td>
-              <td>"There she is! Oh my God—she's alive! Hey you! Put that baby down!"</td>
-              <td>Alarm</td>
-              <td><span class="intensity-badge intensity-4">4/5</span></td>
-              <td>Rapid · Explosive</td>
-              <td>Seeing a dead patient resurrected and holding a baby; law enforcement crisis mode.</td>
-            </tr>
-            <tr>
-              <td><code>s10-01</code></td>
-              <td>Scene 10</td>
-              <td><strong>Laila Starr</strong></td>
-              <td>"Have you been standing there watching me sleep this whole time? Ugggh... what happened? How did I get here?"</td>
-              <td>Irritation</td>
-              <td><span class="intensity-badge intensity-3">3/5</span></td>
-              <td>Moderate · Grounded</td>
-              <td>Dry waking morning rasp; grumbling groan on "Ugggh..."; rubbing eyes sound in voice.</td>
-            </tr>
-            <tr>
-              <td><code>s10-02</code></td>
-              <td>Scene 10</td>
-              <td><strong>Pranah</strong></td>
-              <td>"You died. Run over by a twelve-wheeler. But I brought you back."</td>
-              <td>Calm</td>
-              <td><span class="intensity-badge intensity-2">2/5</span></td>
-              <td>Slow · Grounded</td>
-              <td>Gentle, warm, steady baritone; matter-of-fact drop on "twelve-wheeler"; tender warmth on "brought you back".</td>
-            </tr>
-            <tr>
-              <td><code>s10-03</code></td>
-              <td>Scene 10</td>
-              <td><strong>Laila Starr</strong></td>
-              <td>"I couldn't do it, Pran. He was just a baby... How could you bring someone like that into being?"</td>
-              <td>Grief</td>
-              <td><span class="intensity-badge intensity-4">4/5</span></td>
-              <td>Slow · Intimate</td>
-              <td>Soft, tender, vulnerable drop on "Pran"; heavy mournful question on "into being?"; aching quiet exhale.</td>
-            </tr>
-            <tr>
-              <td><code>s10-04</code></td>
-              <td>Scene 10</td>
-              <td><strong>Pranah</strong></td>
-              <td>"Hey, I only give them a lifetime, every one of them. What they do with it is between them and... you, I suppose."</td>
-              <td>Warmth</td>
-              <td><span class="intensity-badge intensity-2">2/5</span></td>
-              <td>Measured · Grounded</td>
-              <td>Soft, soothing reassurance on "lifetime"; playful fond emphasis on "...you, I suppose"; morning tea steam.</td>
-            </tr>
-            <tr>
-              <td><code>s10-05</code></td>
-              <td>Scene 10</td>
-              <td><strong>Laila Starr</strong></td>
-              <td>"...he's not a baby anymore."</td>
-              <td>Resolve</td>
-              <td><span class="intensity-badge intensity-4">4/5</span></td>
-              <td>Slow · Whispered</td>
-              <td>Quiet, cool, razor-sharp whisper; deliberate emphasis on "anymore"; sharp focused intake; the hunt resumes.</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
     </section>
 
   </div>
 
-  <!-- Real-Time Interactive Script for Dual Mixer & Approach Toggles -->
+  <!-- Interactive Audio Switching & Dual-Mix Engine Script -->
   <script>
     function setVol(audioId, val) {
       const el = document.getElementById(audioId);
       if (el) el.volume = parseFloat(val);
     }
 
-    function switchApproach(sceneId, approach, srcUrl) {
+    function switchScore(sceneId, approachKey, srcUrl) {
       const musicEl = document.getElementById('music-' + sceneId);
-      const btnA = document.getElementById('btn-' + sceneId.replace('scene-', '') + '-a');
-      const btnB = document.getElementById('btn-' + sceneId.replace('scene-', '') + '-b');
-      const wasPlaying = musicEl && !musicEl.paused;
+      const card = document.getElementById('card-' + sceneId);
+      if (!musicEl || !card) return;
 
-      if (musicEl) {
-        musicEl.src = srcUrl;
-        if (wasPlaying) {
-          musicEl.currentTime = 0;
-          musicEl.play();
-        }
+      const wasPlaying = !musicEl.paused;
+      musicEl.src = srcUrl;
+      if (wasPlaying) {
+        musicEl.currentTime = 0;
+        musicEl.play();
       }
 
-      if (approach === 'a') {
-        if (btnA) btnA.classList.add('active');
-        if (btnB) btnB.classList.remove('active');
-      } else {
-        if (btnB) btnB.classList.add('active');
-        if (btnA) btnA.classList.remove('active');
-      }
+      // Update active button state
+      const buttons = card.querySelectorAll('.approach-btn');
+      buttons.forEach(btn => btn.classList.remove('active'));
+
+      const activeBtn = card.querySelector('#btn-' + sceneId.replace('scene-', '') + '-' + approachKey);
+      if (activeBtn) activeBtn.classList.add('active');
     }
 
     function toggleDualMix(sceneId) {
@@ -2207,7 +1820,6 @@
         btn.classList.remove('playing');
         if (card) card.classList.remove('dual-active');
       } else {
-        // Synchronized start
         ambEl.currentTime = 0;
         musicEl.currentTime = 0;
         ambEl.play();
@@ -2216,7 +1828,6 @@
         btn.classList.add('playing');
         if (card) card.classList.add('dual-active');
 
-        // Loop management
         ambEl.onended = () => { if (btn.classList.contains('playing')) ambEl.play(); };
         musicEl.onended = () => { if (btn.classList.contains('playing')) musicEl.play(); };
       }
