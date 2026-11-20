@@ -57,11 +57,11 @@ export const VOICE_PROFILES: Record<string, CharacterVoiceProfile> = {
   narrator: {
     characterId: 'narrator',
     name: 'The Chronicle',
-    elevenLabsVoiceId: process.env.ELEVENLABS_VOICE_NARRATOR || 'JBFqnCBsd6RMkjVDRZzb', // George
-    elevenLabsSettings: { stability: 0.75, similarity_boost: 0.85, style: 0.15 },
+    elevenLabsVoiceId: process.env.ELEVENLABS_VOICE_NARRATOR || 'nPczCjzI2devNBz1zQrb', // Brian (Deep, resonant, legendary male baritone)
+    elevenLabsSettings: { stability: 0.60, similarity_boost: 0.88, style: 0.20, use_speaker_boost: true },
     googleTtsVoice: { languageCode: 'en-IN', name: 'en-IN-Wavenet-B', ssmlGender: 'MALE' },
-    googleAudioConfig: { speakingRate: 0.92, pitch: -1.5 },
-    emotionGuidance: 'Measured, warm, literary observer. Intimate close-mic, no rush.',
+    googleAudioConfig: { speakingRate: 0.90, pitch: -3.0 },
+    emotionGuidance: 'Deep, resonant, full-bodied male baritone with strong chest resonance. Slow and deliberate pacing, subtle warmth, commanding presence.',
   },
   death: {
     characterId: 'death',
@@ -75,8 +75,8 @@ export const VOICE_PROFILES: Record<string, CharacterVoiceProfile> = {
   laila: {
     characterId: 'laila',
     name: 'Laila Starr',
-    elevenLabsVoiceId: process.env.ELEVENLABS_VOICE_LAILA || 'oWAxZDx7w5VEj9dCyTeq', // Alice (expressive, articulate, dry mortal wit)
-    elevenLabsSettings: { stability: 0.50, similarity_boost: 0.80, style: 0.35 },
+    elevenLabsVoiceId: process.env.ELEVENLABS_VOICE_LAILA || 'Xb7hH8MSUJpSbSDYk0k2', // Alice (expressive, articulate, dry mortal wit)
+    elevenLabsSettings: { stability: 0.50, similarity_boost: 0.80, style: 0.35, use_speaker_boost: true },
     googleTtsVoice: { languageCode: 'en-IN', name: 'en-IN-Neural2-A', ssmlGender: 'FEMALE' },
     googleAudioConfig: { speakingRate: 0.98, pitch: 0.2 },
     emotionGuidance: 'Husky, breathless, mortal aches, dry mordant humor concealing empathy.',
@@ -434,29 +434,46 @@ async function main() {
 
     const provider = args.find((a) => a.startsWith('--provider='))?.split('=')[1] as 'elevenlabs' | 'google' || creds.activeProvider as 'elevenlabs' | 'google';
     const samples = [
-      { id: 's01-01', character: 'narrator', text: 'It began on a Wednesday afternoon as a late December sun was just dipping below the Mumbai skyline.' },
-      { id: 's04-09', character: 'death', text: "WHAT?! I'm an absolute consequence. It's in the job description! Send down a plague! Strike the child with lightning!" },
-      { id: 's07-01', character: 'laila', text: 'Ohhhhh, that feels awful... Who\'re you?' },
+      {
+        id: 's01-01',
+        character: 'narrator',
+        transcript: 'It began on a Wednesday afternoon as a late December sun was just dipping below the Mumbai skyline.',
+        targetRelPath: 'assets/audio/voices/narrator/scene-01-opening.mp3',
+      },
+      {
+        id: 's04-09',
+        character: 'death',
+        transcript: "WHAT?! I'm an absolute consequence. It's in the job description! Send down a plague! Strike the child with lightning!",
+        targetRelPath: 'assets/audio/voices/death/s04-09-death-outrage.mp3',
+      },
+      {
+        id: 's07-01',
+        character: 'laila',
+        transcript: "Ohhhhh, that feels awful... Who're you?",
+        targetRelPath: 'assets/audio/voices/laila/s07-01-laila-awful.mp3',
+      },
     ];
 
     for (const sample of samples) {
-      const target = manifestResult.records.find((r) => r.id === sample.id);
-      if (!target) continue;
-      console.log(`Generating sample: [${sample.character}] ${sample.id}...`);
-      const fullTarget: GenerationTarget = {
-        id: target.id,
-        character: target.characterId,
-        sceneId: target.sceneId,
-        transcript: target.transcript,
-        targetPath: path.resolve(ROOT_DIR, `public${target.audioPath}`),
-        durationMs: target.durationMs,
-        category: target.category,
-      };
-      const res = await generateTarget(fullTarget, provider);
-      if (res.success) {
-        console.log(`  -> Wrote ${res.bytesWritten} bytes to ${target.audioPath}`);
-      } else {
-        console.error(`  -> Failed: ${res.error}`);
+      console.log(`\nGenerating sample: [${sample.character.toUpperCase()}] ${sample.id}...`);
+      try {
+        const fullTarget: GenerationTarget = {
+          id: sample.id,
+          character: sample.character,
+          sceneId: sample.id.split('-')[0],
+          transcript: sample.transcript,
+          targetPath: path.resolve(ROOT_DIR, 'public', sample.targetRelPath),
+          durationMs: 4000,
+          category: sample.character === 'narrator' ? 'narration' : 'dialogue',
+        };
+        const res = await generateTarget(fullTarget, provider);
+        if (res.success) {
+          console.log(`  -> SUCCESS: Wrote ${res.bytesWritten} bytes to /${sample.targetRelPath}`);
+        } else {
+          console.error(`  -> ERROR: ${res.error}`);
+        }
+      } catch (err: any) {
+        console.error(`  -> EXCEPTION for ${sample.character}: ${err.message}`);
       }
     }
   }

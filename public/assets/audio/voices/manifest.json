@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-11-20T08:40:58.326Z",
+  "generatedAt": "2026-11-20T08:57:00.761Z",
   "totalLines": 48,
-  "availableCount": 0,
+  "availableCount": 3,
   "records": [
     {
       "id": "s01-01",
@@ -12,9 +12,9 @@
       "transcript": "It began on a Wednesday afternoon as a late December sun was just dipping below the Mumbai skyline.",
       "audioPath": "/assets/audio/voices/narrator/scene-01-opening.mp3",
       "durationMs": 4800,
-      "fileExists": false,
-      "fileSizeBytes": 0,
-      "emotion": "Measured, warm, literary observer. Intimate close-mic, no rush."
+      "fileExists": true,
+      "fileSizeBytes": 86560,
+      "emotion": "Deep, resonant, full-bodied male baritone with strong chest resonance. Slow and deliberate pacing, subtle warmth, commanding presence."
     },
     {
       "id": "s01-02",
@@ -27,7 +27,7 @@
       "durationMs": 4400,
       "fileExists": false,
       "fileSizeBytes": 0,
-      "emotion": "Measured, warm, literary observer. Intimate close-mic, no rush."
+      "emotion": "Deep, resonant, full-bodied male baritone with strong chest resonance. Slow and deliberate pacing, subtle warmth, commanding presence."
     },
     {
       "id": "s02-conn-01",
@@ -40,7 +40,7 @@
       "durationMs": 4000,
       "fileExists": false,
       "fileSizeBytes": 0,
-      "emotion": "Measured, warm, literary observer. Intimate close-mic, no rush."
+      "emotion": "Deep, resonant, full-bodied male baritone with strong chest resonance. Slow and deliberate pacing, subtle warmth, commanding presence."
     },
     {
       "id": "s03-02",
@@ -53,7 +53,7 @@
       "durationMs": 4800,
       "fileExists": false,
       "fileSizeBytes": 0,
-      "emotion": "Measured, warm, literary observer. Intimate close-mic, no rush."
+      "emotion": "Deep, resonant, full-bodied male baritone with strong chest resonance. Slow and deliberate pacing, subtle warmth, commanding presence."
     },
     {
       "id": "s04-conn-01",
@@ -66,7 +66,7 @@
       "durationMs": 4600,
       "fileExists": false,
       "fileSizeBytes": 0,
-      "emotion": "Measured, warm, literary observer. Intimate close-mic, no rush."
+      "emotion": "Deep, resonant, full-bodied male baritone with strong chest resonance. Slow and deliberate pacing, subtle warmth, commanding presence."
     },
     {
       "id": "s05-01",
@@ -79,7 +79,7 @@
       "durationMs": 5200,
       "fileExists": false,
       "fileSizeBytes": 0,
-      "emotion": "Measured, warm, literary observer. Intimate close-mic, no rush."
+      "emotion": "Deep, resonant, full-bodied male baritone with strong chest resonance. Slow and deliberate pacing, subtle warmth, commanding presence."
     },
     {
       "id": "s05-02",
@@ -92,7 +92,7 @@
       "durationMs": 5400,
       "fileExists": false,
       "fileSizeBytes": 0,
-      "emotion": "Measured, warm, literary observer. Intimate close-mic, no rush."
+      "emotion": "Deep, resonant, full-bodied male baritone with strong chest resonance. Slow and deliberate pacing, subtle warmth, commanding presence."
     },
     {
       "id": "s05-03",
@@ -105,7 +105,7 @@
       "durationMs": 5800,
       "fileExists": false,
       "fileSizeBytes": 0,
-      "emotion": "Measured, warm, literary observer. Intimate close-mic, no rush."
+      "emotion": "Deep, resonant, full-bodied male baritone with strong chest resonance. Slow and deliberate pacing, subtle warmth, commanding presence."
     },
     {
       "id": "s06-conn-01",
@@ -118,7 +118,7 @@
       "durationMs": 3200,
       "fileExists": false,
       "fileSizeBytes": 0,
-      "emotion": "Measured, warm, literary observer. Intimate close-mic, no rush."
+      "emotion": "Deep, resonant, full-bodied male baritone with strong chest resonance. Slow and deliberate pacing, subtle warmth, commanding presence."
     },
     {
       "id": "s07-conn-01",
@@ -131,7 +131,7 @@
       "durationMs": 3800,
       "fileExists": false,
       "fileSizeBytes": 0,
-      "emotion": "Measured, warm, literary observer. Intimate close-mic, no rush."
+      "emotion": "Deep, resonant, full-bodied male baritone with strong chest resonance. Slow and deliberate pacing, subtle warmth, commanding presence."
     },
     {
       "id": "s08-conn-01",
@@ -144,7 +144,7 @@
       "durationMs": 3000,
       "fileExists": false,
       "fileSizeBytes": 0,
-      "emotion": "Measured, warm, literary observer. Intimate close-mic, no rush."
+      "emotion": "Deep, resonant, full-bodied male baritone with strong chest resonance. Slow and deliberate pacing, subtle warmth, commanding presence."
     },
     {
       "id": "s09-01",
@@ -157,7 +157,7 @@
       "durationMs": 4200,
       "fileExists": false,
       "fileSizeBytes": 0,
-      "emotion": "Measured, warm, literary observer. Intimate close-mic, no rush."
+      "emotion": "Deep, resonant, full-bodied male baritone with strong chest resonance. Slow and deliberate pacing, subtle warmth, commanding presence."
     },
     {
       "id": "s09-02",
@@ -170,7 +170,7 @@
       "durationMs": 4000,
       "fileExists": false,
       "fileSizeBytes": 0,
-      "emotion": "Measured, warm, literary observer. Intimate close-mic, no rush."
+      "emotion": "Deep, resonant, full-bodied male baritone with strong chest resonance. Slow and deliberate pacing, subtle warmth, commanding presence."
     },
     {
       "id": "s10-conn-01",
@@ -183,7 +183,7 @@
       "durationMs": 3400,
       "fileExists": false,
       "fileSizeBytes": 0,
-      "emotion": "Measured, warm, literary observer. Intimate close-mic, no rush."
+      "emotion": "Deep, resonant, full-bodied male baritone with strong chest resonance. Slow and deliberate pacing, subtle warmth, commanding presence."
     },
     {
       "id": "s02-01",
@@ -350,8 +350,8 @@
       "transcript": "WHAT?! I'm an absolute consequence. It's in the job description! Send down a plague! Strike the child with lightning!",
       "audioPath": "/assets/audio/voices/death/s04-09-death-outrage.mp3",
       "durationMs": 3500,
-      "fileExists": false,
-      "fileSizeBytes": 0,
+      "fileExists": true,
+      "fileSizeBytes": 133372,
       "emotion": "Commanding, velvety baritone with crisp poise cracking into incredulity."
     },
     {
@@ -454,8 +454,8 @@
       "transcript": "Ohhhhh, that feels awful.",
       "audioPath": "/assets/audio/voices/laila/s07-01-laila-awful.mp3",
       "durationMs": 3500,
-      "fileExists": false,
-      "fileSizeBytes": 0,
+      "fileExists": true,
+      "fileSizeBytes": 41003,
       "emotion": "Husky, breathless, mortal aches, dry mordant humor concealing empathy."
     },
     {
