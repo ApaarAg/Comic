@@ -186,18 +186,22 @@ export const Scene10EightYearsLater: React.FC<SceneProps> = ({
             />
 
             {/* Filipe Andrade's Deliberate Grounding Sequence: Hands, Feet & Morning Tea */}
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
               <CharacterAnimator
                 src="/assets/chapter1/p26_panel03.webp"
                 alt="Pranah looking back calmly: You died."
                 character="pranah"
                 activeSpeaker={activeSpeaker}
                 reducedMotion={reducedMotion}
+                caption="You died."
+                subtitle="You died."
                 onInspect={onInspectPanel}
               />
               <ComicPanel
                 src="/assets/chapter1/p26_panel04.webp"
                 alt="Laila's bare feet touching the woven morning rug: Run over by a twelve-wheeler."
+                caption="Run over by a twelve-wheeler."
+                subtitle="Run over by a twelve-wheeler."
                 onInspect={onInspectPanel}
               />
               <CharacterAnimator
@@ -206,11 +210,15 @@ export const Scene10EightYearsLater: React.FC<SceneProps> = ({
                 character="pranah"
                 activeSpeaker={activeSpeaker}
                 reducedMotion={reducedMotion}
+                caption="But I brought you back."
+                subtitle="But I brought you back."
                 onInspect={onInspectPanel}
               />
               <ComicPanel
                 src="/assets/chapter1/p26_panel06.webp"
                 alt="Laila's feet stepping onto the sunlit floor: I couldn't do it, Pran."
+                caption="I couldn't do it, Pran."
+                subtitle="I couldn't do it, Pran."
                 onInspect={onInspectPanel}
               />
             </div>

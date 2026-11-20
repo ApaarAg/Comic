@@ -66,7 +66,7 @@ export default function App() {
     return () => mql.removeEventListener('change', onChange);
   }, []);
 
-  // Initialize Lenis smooth scroll + GSAP ScrollTrigger synchronization for both Prologue & Chapter
+  // Initialize Single Coordinated Scroll Architecture: Lenis smooth scroll + GSAP ScrollTrigger
   useEffect(() => {
     const updateProgress = () => {
       if (!hasEntered) return;
@@ -88,11 +88,11 @@ export default function App() {
       }
     };
 
-    window.addEventListener('scroll', updateProgress, { passive: true });
-    window.addEventListener('resize', updateProgress, { passive: true });
-    updateProgress();
-
+    // If user prefers reduced motion, disable Lenis completely and run native instant scrolling
     if (reducedMotion) {
+      window.addEventListener('scroll', updateProgress, { passive: true });
+      window.addEventListener('resize', updateProgress, { passive: true });
+      updateProgress();
       ScrollTrigger.refresh();
       return () => {
         window.removeEventListener('scroll', updateProgress);
@@ -100,11 +100,15 @@ export default function App() {
       };
     }
 
+    // Single source of truth: Lenis drives ScrollTrigger updates and progress
+    window.addEventListener('resize', updateProgress, { passive: true });
+    updateProgress();
+
     const lenis = new Lenis({
       duration: 1.15,
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       smoothWheel: true,
-      touchMultiplier: 1.5,
+      touchMultiplier: 1.4,
     });
     lenisRef.current = lenis;
 
@@ -122,11 +126,10 @@ export default function App() {
     const refreshTimer = window.setTimeout(() => {
       ScrollTrigger.refresh();
       updateProgress();
-    }, 320);
+    }, 280);
 
     return () => {
       window.clearTimeout(refreshTimer);
-      window.removeEventListener('scroll', updateProgress);
       window.removeEventListener('resize', updateProgress);
       gsap.ticker.remove(tick);
       lenis.destroy();

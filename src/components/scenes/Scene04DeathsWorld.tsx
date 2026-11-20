@@ -146,7 +146,8 @@ export const Scene04DeathsWorld: React.FC<SceneProps> = ({
               onInspect={onInspectPanel}
             />
 
-            <div className="grid grid-cols-1 gap-5 sm:grid-cols-3">
+            {/* Elevator Arrival & Corridor Walk (Generous Focal Presentation) */}
+            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
               <ComicPanel
                 src="/assets/chapter1/p10_panel01.webp"
                 alt="Elevator doors opening with a sharp DING!"
@@ -157,16 +158,18 @@ export const Scene04DeathsWorld: React.FC<SceneProps> = ({
                 alt="Death striding across the luminous sky-blue corridor"
                 onInspect={onInspectPanel}
               />
-              <CharacterAnimator
-                src="/assets/chapter1/p10_panel03.webp"
-                alt="Agni with flame hair waiting in a bowtie: This way please"
-                character="agni"
-                activeSpeaker={elevatorSpeaker}
-                reducedMotion={reducedMotion}
-                subtleMotion="float"
-                onInspect={onInspectPanel}
-              />
             </div>
+
+            <CharacterAnimator
+              src="/assets/chapter1/p10_panel03.webp"
+              alt="Agni with flame hair waiting in a bowtie: This way please"
+              character="agni"
+              activeSpeaker={elevatorSpeaker}
+              reducedMotion={reducedMotion}
+              subtleMotion="float"
+              caption="This way, please. He is expecting you."
+              onInspect={onInspectPanel}
+            />
 
             <ComicPanel
               src="/assets/chapter1/p10_panel04.webp"
@@ -174,19 +177,12 @@ export const Scene04DeathsWorld: React.FC<SceneProps> = ({
               onInspect={onInspectPanel}
             />
 
-            <div className="grid grid-cols-1 gap-5 md:grid-cols-3">
+            {/* CEO Suite Introduction */}
+            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
               <CharacterAnimator
                 src="/assets/chapter1/p10_panel06.webp"
                 alt="Agni introducing Death for the morning meeting"
                 character="agni"
-                activeSpeaker={elevatorSpeaker}
-                reducedMotion={reducedMotion}
-                onInspect={onInspectPanel}
-              />
-              <CharacterAnimator
-                src="/assets/chapter1/p10_panel07.webp"
-                alt="The Three-Headed God welcoming Death: Come, come. Have a seat."
-                character="god"
                 activeSpeaker={elevatorSpeaker}
                 reducedMotion={reducedMotion}
                 onInspect={onInspectPanel}
@@ -197,6 +193,16 @@ export const Scene04DeathsWorld: React.FC<SceneProps> = ({
                 onInspect={onInspectPanel}
               />
             </div>
+
+            <CharacterAnimator
+              src="/assets/chapter1/p10_panel07.webp"
+              alt="The Three-Headed God welcoming Death: Come, come. Have a seat."
+              character="god"
+              activeSpeaker={elevatorSpeaker}
+              reducedMotion={reducedMotion}
+              caption="Come, come. Have a seat."
+              onInspect={onInspectPanel}
+            />
           </div>
         </div>
 
@@ -265,28 +271,33 @@ export const Scene04DeathsWorld: React.FC<SceneProps> = ({
               </div>
             </div>
 
-            {/* Her Outrage & The Prophecy File */}
-            <div className="grid grid-cols-1 gap-5 md:grid-cols-3 pt-2">
-              <CharacterAnimator
-                src="/assets/chapter1/p12_panel01.webp"
-                alt="Death slamming her hands onto the desk shouting WHAT?!"
-                character="death"
-                activeSpeaker={officeSpeaker}
-                reducedMotion={reducedMotion}
-                subtleMotion="pulse"
-                onInspect={onInspectPanel}
-              />
-              <ComicPanel
-                src="/assets/chapter1/p12_panel02.webp"
-                alt="The God opening a dark blue prophecy file"
-                onInspect={onInspectPanel}
-              />
+            {/* Her Outrage & The Prophecy File (High-Impact Sequential Flow) */}
+            <div className="space-y-8 pt-2">
+              <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
+                <CharacterAnimator
+                  src="/assets/chapter1/p12_panel01.webp"
+                  alt="Death slamming her hands onto the desk shouting WHAT?!"
+                  character="death"
+                  activeSpeaker={officeSpeaker}
+                  reducedMotion={reducedMotion}
+                  subtleMotion="pulse"
+                  caption="WHAT?!"
+                  onInspect={onInspectPanel}
+                />
+                <ComicPanel
+                  src="/assets/chapter1/p12_panel02.webp"
+                  alt="The God opening a dark blue prophecy file"
+                  onInspect={onInspectPanel}
+                />
+              </div>
+
               <CharacterAnimator
                 src="/assets/chapter1/p12_panel03.webp"
                 alt="Death furious: I'm an absolute consequence. It's in the job description."
                 character="death"
                 activeSpeaker={officeSpeaker}
                 reducedMotion={reducedMotion}
+                caption="I'm an absolute consequence. It's in the job description!"
                 onInspect={onInspectPanel}
               />
             </div>
@@ -311,17 +322,23 @@ export const Scene04DeathsWorld: React.FC<SceneProps> = ({
               </div>
             </div>
 
-            <div className="grid grid-cols-1 gap-5 md:grid-cols-3">
-              <ComicPanel
-                src="/assets/chapter1/p12_panel05.webp"
-                alt="Death throwing up all six arms: Send down a plague! Strike the child with lightning!"
-                onInspect={onInspectPanel}
-              />
-              <ComicPanel
-                src="/assets/chapter1/p12_panel06.webp"
-                alt="The Three-Headed God calmly declining: You know how corporate feels about that kind of stuff."
-                onInspect={onInspectPanel}
-              />
+            {/* Climax of the Firing: Plague, Lightning, Corporate Policy, and Grief */}
+            <div className="space-y-8">
+              <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
+                <ComicPanel
+                  src="/assets/chapter1/p12_panel05.webp"
+                  alt="Death throwing up all six arms: Send down a plague! Strike the child with lightning!"
+                  caption="Send down a plague! Strike the child with lightning!"
+                  onInspect={onInspectPanel}
+                />
+                <ComicPanel
+                  src="/assets/chapter1/p12_panel06.webp"
+                  alt="The Three-Headed God calmly declining: You know how corporate feels about that kind of stuff."
+                  caption="You know how corporate feels about that kind of stuff."
+                  onInspect={onInspectPanel}
+                />
+              </div>
+
               <CharacterAnimator
                 src="/assets/chapter1/p12_panel07.webp"
                 alt="Death quiet and devastated: This is all I've ever done. What am I supposed to do?"
@@ -329,6 +346,7 @@ export const Scene04DeathsWorld: React.FC<SceneProps> = ({
                 activeSpeaker={officeSpeaker}
                 reducedMotion={reducedMotion}
                 subtleMotion="breathe"
+                caption="This is all I've ever done. What am I supposed to do?"
                 onInspect={onInspectPanel}
               />
             </div>

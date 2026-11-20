@@ -128,8 +128,9 @@ export const Scene06LailaMortal: React.FC<SceneProps> = ({
             transition: 'transform 850ms cubic-bezier(0.16, 1, 0.3, 1)',
           }}
         >
-          <div className="lg:col-span-7 space-y-6">
-            <div className="grid grid-cols-2 gap-4">
+          <div className="lg:col-span-7 space-y-8">
+            {/* The Descending Elevator */}
+            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
               <ComicPanel
                 src="/assets/chapter1/p14_panel01.webp"
                 alt="Elevator panel glowing DOWN"
@@ -143,12 +144,17 @@ export const Scene06LailaMortal: React.FC<SceneProps> = ({
                 reducedMotion={reducedMotion}
                 onInspect={onInspectPanel}
               />
+            </div>
+
+            {/* The Bargain Begins */}
+            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
               <CharacterAnimator
                 src="/assets/chapter1/p14_panel03.webp"
                 alt="Death calling out: Agni?"
                 character="death"
                 activeSpeaker={activeSpeaker}
                 reducedMotion={reducedMotion}
+                caption="Agni?"
                 onInspect={onInspectPanel}
               />
               <CharacterAnimator
@@ -157,6 +163,7 @@ export const Scene06LailaMortal: React.FC<SceneProps> = ({
                 character="agni"
                 activeSpeaker={activeSpeaker}
                 reducedMotion={reducedMotion}
+                caption="I know what you're thinking and the answer is no."
                 onInspect={onInspectPanel}
               />
             </div>
@@ -171,13 +178,15 @@ export const Scene06LailaMortal: React.FC<SceneProps> = ({
               onInspect={onInspectPanel}
             />
 
-            <div className="grid grid-cols-1 gap-5 sm:grid-cols-3">
+            {/* The Terms: Put Me Close To The Child */}
+            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
               <CharacterAnimator
                 src="/assets/chapter1/p15_panel01.webp"
                 alt="Death leaning close to Agni to ask for the child's location"
                 character="death"
                 activeSpeaker={activeSpeaker}
                 reducedMotion={reducedMotion}
+                caption="When you send me down and give me a mortal body, can you put me close to the child?"
                 onInspect={onInspectPanel}
               />
               <CharacterAnimator
@@ -186,18 +195,20 @@ export const Scene06LailaMortal: React.FC<SceneProps> = ({
                 character="death"
                 activeSpeaker={activeSpeaker}
                 reducedMotion={reducedMotion}
-                onInspect={onInspectPanel}
-              />
-              <CharacterAnimator
-                src="/assets/chapter1/p15_panel03.webp"
-                alt="Close-up of Death's dark resolute eyes"
-                character="death"
-                activeSpeaker={activeSpeaker}
-                reducedMotion={reducedMotion}
-                subtleMotion="pulse"
+                caption="I'll be a mortal then. My actions. My consequences."
                 onInspect={onInspectPanel}
               />
             </div>
+
+            <CharacterAnimator
+              src="/assets/chapter1/p15_panel03.webp"
+              alt="Close-up of Death's dark resolute eyes"
+              character="death"
+              activeSpeaker={activeSpeaker}
+              reducedMotion={reducedMotion}
+              subtleMotion="pulse"
+              onInspect={onInspectPanel}
+            />
           </div>
 
           <div className="lg:col-span-5 lg:sticky lg:top-32">

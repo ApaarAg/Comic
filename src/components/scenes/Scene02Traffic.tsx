@@ -166,19 +166,19 @@ export const Scene02Traffic: React.FC<SceneProps> = ({
             />
           </div>
 
-          {/* Beat 3 & 4: Dangerous driving & driver pointing back */}
-          <div data-traffic-beat className="grid grid-cols-1 gap-6 md:grid-cols-12 md:items-stretch">
-            <div className="md:col-span-7 flex flex-col justify-between gap-4">
+          {/* Beat 3 & 4: Dangerous driving & driver pointing back (Focused Sequential Progression) */}
+          <div data-traffic-beat className="space-y-8">
+            <div className="space-y-3">
               <ComicPanel
                 src="/assets/chapter1/p07_panel03.webp"
                 alt="Cars squeezed side-by-side through narrow lanes on the overpass"
+                caption="Each time they yelled at him for his dangerous driving..."
+                subtitle="Each time they yelled at him for his dangerous driving..."
                 onInspect={onInspectPanel}
               />
-              <p className="text-sm italic text-[#e5dccf]/80 px-1">
-                Each time they yelled at him for his dangerous driving...
-              </p>
             </div>
-            <div className="md:col-span-5 flex flex-col justify-between gap-4">
+
+            <div className="space-y-3">
               <CharacterAnimator
                 src="/assets/chapter1/p07_panel04.webp"
                 alt="Panicked driver gesturing over his shoulder toward Mrs. Shah in the backseat"
@@ -186,11 +186,9 @@ export const Scene02Traffic: React.FC<SceneProps> = ({
                 activeSpeaker={activeSpeaker}
                 reducedMotion={reducedMotion}
                 subtleMotion="breathe"
+                caption="...he pointed to a volatile Mrs. Shah in the back, and said..."
                 onInspect={onInspectPanel}
               />
-              <p className="text-sm italic text-[#e5dccf]/80 px-1">
-                ...he pointed to a volatile Mrs. Shah in the back, and said...
-              </p>
             </div>
           </div>
 

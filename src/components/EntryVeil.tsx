@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import * as THREE from 'three';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { ArrowDown, ArrowRight, RotateCcw, Volume2, VolumeX } from 'lucide-react';
+import { ArrowDown, ArrowRight, Play, Pause, RotateCcw, Volume2, VolumeX, Sparkles } from 'lucide-react';
 import mumbaiSkylineUrl from '../assets/images/mumbai_skyline_backdrop_1795078714752.jpg';
 import mumbaiCloudsUrl from '../assets/images/mumbai_clouds_haze_1795078713772.jpg';
 import mumbaiSilhouettesUrl from '../assets/images/mumbai_foreground_silhouettes_1795078713773.jpg';
@@ -40,16 +40,15 @@ export const EntryVeil: React.FC<EntryVeilProps> = ({
   const leftSilhouetteRef = useRef<HTMLDivElement>(null);
   const rightSilhouetteRef = useRef<HTMLDivElement>(null);
   const portalBloomRef = useRef<HTMLDivElement>(null);
-  const introTitleRef = useRef<HTMLDivElement>(null);
   const particleHostRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
 
   const exitedRef = useRef(false);
-  const lastCueMomentRef = useRef<number>(-1);
   const lastNarrationIdRef = useRef<string | null>(null);
 
   const [scrollProgress, setScrollProgress] = useState(0);
   const [exiting, setExiting] = useState(false);
+  const [isPlayingAutoplay, setIsPlayingAutoplay] = useState(false);
   const [narrationProgress, setNarrationProgress] = useState(0);
   const [videoReady, setVideoReady] = useState(false);
   const [videoError, setVideoError] = useState(false);
@@ -58,10 +57,9 @@ export const EntryVeil: React.FC<EntryVeilProps> = ({
 
   const visual = computePrologueVisualState(scrollProgress, PROLOGUE_MOMENTS);
   const currentMoment = PROLOGUE_MOMENTS[visual.momentIndex] ?? PROLOGUE_MOMENTS[0];
-  const activeBeat =
-    PROLOGUE_NARRATION_BEATS[visual.activeNarrationIndex] ?? PROLOGUE_NARRATION_BEATS[0];
+  const activeBeat = PROLOGUE_NARRATION_BEATS[0];
 
-  // Choreographed multi-plane camera portal transition into Scene 01
+  // Choreographed multi-plane camera portal transition into Scene 01 original comic artwork
   const triggerEnter = useCallback(
     (withAudio = !isMuted) => {
       if (exitedRef.current) return;
@@ -88,62 +86,40 @@ export const EntryVeil: React.FC<EntryVeilProps> = ({
       if (leftSilhouetteRef.current) {
         tl.to(
           leftSilhouetteRef.current,
-          { xPercent: -28, opacity: 0, duration: 0.68, ease: MOTION_EASING.cinematic },
+          { xPercent: -35, opacity: 0, duration: 0.72, ease: MOTION_EASING.cinematic },
           0,
         );
       }
       if (rightSilhouetteRef.current) {
         tl.to(
           rightSilhouetteRef.current,
-          { xPercent: 28, opacity: 0, duration: 0.68, ease: MOTION_EASING.cinematic },
+          { xPercent: 35, opacity: 0, duration: 0.72, ease: MOTION_EASING.cinematic },
           0,
         );
       }
       if (cameraStageRef.current) {
         tl.to(
           cameraStageRef.current,
-          { scale: 1.24, duration: 0.72, ease: MOTION_EASING.cinematic },
+          { scale: 1.35, duration: 0.76, ease: MOTION_EASING.cinematic },
           0,
         );
       }
       if (portalBloomRef.current) {
         tl.fromTo(
           portalBloomRef.current,
-          { opacity: 0, scale: 0.7 },
-          { opacity: 1, scale: 1.35, duration: 0.56, ease: MOTION_EASING.editorial },
+          { opacity: 0, scale: 0.75 },
+          { opacity: 1, scale: 1.4, duration: 0.6, ease: MOTION_EASING.editorial },
           0.08,
         );
       }
       tl.to(
         stageRef.current,
-        { opacity: 0, duration: 0.28, ease: 'power2.in' },
-        0.48,
+        { opacity: 0, duration: 0.32, ease: 'power2.in' },
+        0.52,
       );
     },
     [isMuted, onEnter, reducedMotion],
   );
-
-  // Subtle opening GSAP choreography in Moment I so initial dark screen feels alive immediately
-  useEffect(() => {
-    if (reducedMotion || !introTitleRef.current) return;
-    const ctx = gsap.context(() => {
-      const items = introTitleRef.current?.querySelectorAll('[data-intro-reveal]');
-      if (!items || items.length === 0) return;
-      gsap.fromTo(
-        items,
-        { opacity: 0, y: 18 },
-        {
-          opacity: 1,
-          y: 0,
-          duration: 1.15,
-          stagger: 0.18,
-          ease: MOTION_EASING.editorial,
-          delay: 0.22,
-        },
-      );
-    }, introTitleRef);
-    return () => ctx.revert();
-  }, [reducedMotion]);
 
   // Subtle pointer parallax on desktop when motion is allowed
   useEffect(() => {
@@ -157,7 +133,7 @@ export const EntryVeil: React.FC<EntryVeilProps> = ({
     return () => window.removeEventListener('mousemove', onMove);
   }, [reducedMotion]);
 
-  // Three.js falling starlight & ember field with Software-WebGL guard + afterDraw pacing
+  // Three.js falling starlight & ember field
   useEffect(() => {
     if (reducedMotion || exiting || !particleHostRef.current) return;
     const host = particleHostRef.current;
@@ -173,14 +149,9 @@ export const EntryVeil: React.FC<EntryVeilProps> = ({
       return;
     }
 
-    const gl = renderer.getContext() as WebGL2RenderingContext;
-    const dbg = gl.getExtension('WEBGL_debug_renderer_info');
-    const glRenderer = dbg ? String(gl.getParameter(dbg.UNMASKED_RENDERER_WEBGL)) : '';
-    const isSoftwareGl = /SwiftShader|llvmpipe|softpipe|Software|Basic Render/i.test(glRenderer);
-
     const w = Math.max(1, host.clientWidth);
     const h = Math.max(1, host.clientHeight);
-    renderer.setPixelRatio(isSoftwareGl ? 0.5 : Math.min(window.devicePixelRatio || 1, 1.5));
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.5));
     renderer.setSize(w, h, false);
     renderer.domElement.style.width = '100%';
     renderer.domElement.style.height = '100%';
@@ -191,7 +162,7 @@ export const EntryVeil: React.FC<EntryVeilProps> = ({
     const camera = new THREE.PerspectiveCamera(54, w / h, 0.1, 50);
     camera.position.z = 7;
 
-    const count = isSoftwareGl ? 48 : 140;
+    const count = 120;
     const positions = new Float32Array(count * 3);
     const colors = new Float32Array(count * 3);
     const cWarm = new THREE.Color('#f7a06d');
@@ -216,7 +187,7 @@ export const EntryVeil: React.FC<EntryVeilProps> = ({
       size: 0.085,
       vertexColors: true,
       transparent: true,
-      opacity: 0.78,
+      opacity: 0.75,
       blending: THREE.AdditiveBlending,
       depthWrite: false,
     });
@@ -228,44 +199,13 @@ export const EntryVeil: React.FC<EntryVeilProps> = ({
     let disposed = false;
     const start = performance.now();
 
-    const afterDraw = (cb: () => void) => {
-      if (typeof gl.fenceSync === 'function') {
-        const sync = gl.fenceSync(gl.SYNC_GPU_COMMANDS_COMPLETE, 0);
-        gl.flush();
-        const poll = () => {
-          if (disposed) {
-            if (sync) gl.deleteSync(sync);
-            return;
-          }
-          const state = sync ? gl.getSyncParameter(sync, gl.SYNC_STATUS) : gl.SIGNALED;
-          if (state === gl.UNSIGNALED) {
-            frameId = window.setTimeout(poll, 12);
-          } else {
-            if (sync) gl.deleteSync(sync);
-            frameId = window.setTimeout(cb, 180);
-          }
-        };
-        frameId = window.setTimeout(poll, 12);
-      } else {
-        frameId = window.setTimeout(cb, 180);
-      }
-    };
-
     const tick = () => {
       if (disposed || !renderer) return;
-      if (document.hidden) {
-        frameId = window.setTimeout(tick, 300);
-        return;
-      }
       const t = (performance.now() - start) * 0.001;
       points.rotation.y = t * 0.025;
       points.position.y = Math.sin(t * 0.35) * 0.14;
       renderer.render(scene, camera);
-      if (isSoftwareGl) {
-        afterDraw(tick);
-      } else {
-        frameId = window.requestAnimationFrame(tick);
-      }
+      frameId = window.requestAnimationFrame(tick);
     };
 
     const onResize = () => {
@@ -281,7 +221,6 @@ export const EntryVeil: React.FC<EntryVeilProps> = ({
 
     return () => {
       disposed = true;
-      window.clearTimeout(frameId);
       window.cancelAnimationFrame(frameId);
       window.removeEventListener('resize', onResize);
       geometry.dispose();
@@ -293,26 +232,10 @@ export const EntryVeil: React.FC<EntryVeilProps> = ({
     };
   }, [exiting, reducedMotion]);
 
-  // GSAP ScrollTrigger scrub across the 6 prologue moments
+  // Scroll sync across the 5 prologue moments
   useEffect(() => {
     if (reducedMotion || !trackRef.current) return;
-
-    window.scrollTo(0, 0);
     const triggerEl = trackRef.current;
-
-    const st = ScrollTrigger.create({
-      trigger: triggerEl,
-      start: 'top top',
-      end: 'bottom bottom',
-      scrub: 0.35,
-      onUpdate: (self) => {
-        const p = clamp01(self.progress);
-        setScrollProgress(p);
-        if (p >= 0.985 && !exitedRef.current) {
-          triggerEnter(!isMuted);
-        }
-      },
-    });
 
     const onScroll = () => {
       const maxScroll = Math.max(1, triggerEl.scrollHeight - window.innerHeight);
@@ -326,31 +249,19 @@ export const EntryVeil: React.FC<EntryVeilProps> = ({
     window.addEventListener('scroll', onScroll, { passive: true });
     return () => {
       window.removeEventListener('scroll', onScroll);
-      st.kill();
     };
   }, [isMuted, reducedMotion, triggerEnter]);
 
-  // Synchronize audio mood & subtle cues across prologue moments
+  // Audio ambience state synchronization
   useEffect(() => {
-    if (visual.momentIndex >= 2) {
+    if (visual.momentIndex >= 1) {
       sceneAudioManager.setMood('sunset');
     } else {
       sceneAudioManager.setMood('prologue');
     }
-
-    if (visual.momentIndex !== lastCueMomentRef.current) {
-      const prev = lastCueMomentRef.current;
-      lastCueMomentRef.current = visual.momentIndex;
-      if (
-        prev >= 0 &&
-        (visual.momentIndex === 1 || visual.momentIndex === 3 || visual.momentIndex === 5)
-      ) {
-        sceneAudioManager.triggerCue('discover');
-      }
-    }
   }, [visual.momentIndex]);
 
-  // Start looping Mumbai video cleanly once Mumbai horizon begins emerging (Moment 02+)
+  // Start looping video when Mumbai emerges (Scene B+)
   useEffect(() => {
     if (reducedMotion || videoError || !videoRef.current) return;
     const video = videoRef.current;
@@ -364,15 +275,20 @@ export const EntryVeil: React.FC<EntryVeilProps> = ({
     }
   }, [reducedMotion, scrollProgress, videoError, visual.mumbaiReveal]);
 
+  // Narration playback for Scene C (The Chronicle / Prabhat Neural)
   const playNarrationBeat = useCallback(
     (beat: (typeof PROLOGUE_NARRATION_BEATS)[number]) => {
-      setNarrationProgress(0.14);
+      setNarrationProgress(0.12);
       void characterVoicePlayer.playLine(beat.id, beat.voiceAsset, beat.durationMs, {
         onStart: (state) => {
           setVoiceMode(state === 'playing-recording' ? 'recorded' : 'cadence');
         },
+        onProgress: (elapsed, total) => {
+          setNarrationProgress(total > 0 ? Math.min(1, Math.max(0, elapsed / total)) : 1);
+        },
         onComplete: () => {
           setVoiceMode('idle');
+          setNarrationProgress(1);
         },
       });
     },
@@ -380,37 +296,18 @@ export const EntryVeil: React.FC<EntryVeilProps> = ({
   );
 
   useEffect(() => {
-    if (visual.narrationOpacity < 0.25) {
+    // When user enters Scene C (narrationOpacity active)
+    if (visual.narrationOpacity > 0.35) {
+      if (lastNarrationIdRef.current !== activeBeat.id) {
+        lastNarrationIdRef.current = activeBeat.id;
+        playNarrationBeat(activeBeat);
+      }
+    } else if (visual.narrationOpacity < 0.1) {
       lastNarrationIdRef.current = null;
-      return;
-    }
-    if (lastNarrationIdRef.current !== activeBeat.id) {
-      lastNarrationIdRef.current = activeBeat.id;
-      playNarrationBeat(activeBeat);
     }
   }, [activeBeat, playNarrationBeat, visual.narrationOpacity]);
 
-  useEffect(() => {
-    if (reducedMotion || visual.narrationOpacity < 0.2) {
-      setNarrationProgress(1);
-      return;
-    }
-    setNarrationProgress(0.22);
-    const totalMs = Math.min(1800, Math.max(950, activeBeat.text.length * 14));
-    const start = performance.now();
-    let rafId = 0;
-
-    const step = (now: number) => {
-      const next = Math.min(1, 0.22 + ((now - start) / totalMs) * 0.78);
-      setNarrationProgress(next);
-      if (next < 1) {
-        rafId = window.requestAnimationFrame(step);
-      }
-    };
-    rafId = window.requestAnimationFrame(step);
-    return () => window.cancelAnimationFrame(rafId);
-  }, [activeBeat.id, activeBeat.text.length, reducedMotion, visual.narrationOpacity]);
-
+  // Cleanup audio on unmount
   useEffect(() => {
     return () => {
       characterVoicePlayer.stop();
@@ -421,12 +318,38 @@ export const EntryVeil: React.FC<EntryVeilProps> = ({
     if (!trackRef.current) return;
     const maxScroll = Math.max(1, trackRef.current.scrollHeight - window.innerHeight);
     window.scrollTo({
-      top: Math.round(maxScroll * Math.min(0.96, momentStart + 0.03)),
+      top: Math.round(maxScroll * Math.min(0.96, momentStart + 0.02)),
       behavior: reducedMotion ? 'auto' : 'smooth',
     });
   };
 
-  // Reduced-motion calm editorial alternative
+  // Optional Cinematic Auto-play: gently increments scroll position through the 5 scenes
+  useEffect(() => {
+    if (!isPlayingAutoplay || !trackRef.current || reducedMotion) return;
+    let animId = 0;
+    const maxScroll = Math.max(1, trackRef.current.scrollHeight - window.innerHeight);
+    const scrollPerSec = maxScroll / 22; // ~22 seconds total cinematic presentation
+
+    let lastTime = performance.now();
+    const step = (now: number) => {
+      const dt = (now - lastTime) / 1000;
+      lastTime = now;
+      const currentY = window.scrollY;
+      const nextY = currentY + scrollPerSec * dt;
+      window.scrollTo(0, nextY);
+
+      if (nextY >= maxScroll * 0.98) {
+        setIsPlayingAutoplay(false);
+        triggerEnter(!isMuted);
+      } else {
+        animId = window.requestAnimationFrame(step);
+      }
+    };
+    animId = window.requestAnimationFrame(step);
+    return () => window.cancelAnimationFrame(animId);
+  }, [isPlayingAutoplay, isMuted, reducedMotion, triggerEnter]);
+
+  // Reduced motion accessible fallback
   if (reducedMotion) {
     return (
       <section
@@ -452,14 +375,9 @@ export const EntryVeil: React.FC<EntryVeilProps> = ({
             Once Upon a Falling Starr
           </h1>
           <div className="mt-8 space-y-4 text-left border-y border-white/12 py-6">
-            {PROLOGUE_NARRATION_BEATS.map((beat) => (
-              <p
-                key={beat.id}
-                className="font-display text-xl italic leading-relaxed text-[#ece3d7]/90"
-              >
-                &ldquo;{beat.text}&rdquo;
-              </p>
-            ))}
+            <p className="font-display text-xl italic leading-relaxed text-[#ece3d7]/90">
+              &ldquo;{activeBeat.text}&rdquo;
+            </p>
           </div>
           <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
             <button
@@ -494,15 +412,11 @@ export const EntryVeil: React.FC<EntryVeilProps> = ({
   const visibleNarrationCount = computeVisibleWordCount(activeBeat.text, narrationProgress);
 
   const leftSilhouetteShift = Math.round(
-    -8 - visual.mumbaiReveal * 8 - visual.portalProgress * 32 - pointerOffset.x * 0.25,
+    -10 - visual.mumbaiReveal * 8 - visual.portalProgress * 36 - pointerOffset.x * 0.25,
   );
   const rightSilhouetteShift = Math.round(
-    8 + visual.mumbaiReveal * 8 + visual.portalProgress * 32 - pointerOffset.x * 0.25,
+    10 + visual.mumbaiReveal * 8 + visual.portalProgress * 36 - pointerOffset.x * 0.25,
   );
-
-  // Opening title gently yields to the Moment 02 editorial mask title, then parts for Mumbai
-  const momentOneTitleFade = Math.max(0, 1 - clamp01((visual.progress - 0.08) / 0.09));
-  const combinedTitleOpacity = Math.max(momentOneTitleFade, visual.titleReveal);
 
   return (
     <section
@@ -511,7 +425,7 @@ export const EntryVeil: React.FC<EntryVeilProps> = ({
       data-testid="cinematic-prologue"
       data-prologue-moment={currentMoment.id}
       data-prologue-progress={Math.round(visual.progress * 100)}
-      className="relative h-[580vh] bg-[#070912] text-[#fbf6ee]"
+      className="relative h-[550vh] bg-[#070912] text-[#fbf6ee]"
     >
       {/* Sticky Full-Viewport Film Stage */}
       <div
@@ -520,28 +434,60 @@ export const EntryVeil: React.FC<EntryVeilProps> = ({
           exiting ? 'pointer-events-none' : ''
         }`}
       >
-        {/* Top Unobtrusive Prologue Bar */}
+        {/* Top Cinematic Navigation & Unobtrusive Controls */}
         <header className="absolute top-0 inset-x-0 z-40 flex items-center justify-between gap-3 px-4 py-3.5 md:px-10">
-          <div className="flex items-center gap-2.5 text-[11px] sm:text-xs tracking-[0.2em] uppercase text-[#e7ddd0]/80 min-w-0">
-            <span className="h-[1.5px] w-4 shrink-0 bg-[#f28b50]" aria-hidden="true" />
-            <span className="font-mono text-[#f28b50] tabular-nums shrink-0">
-              {currentMoment.code} / VI
+          <div className="flex items-center gap-2.5 text-[11px] sm:text-xs tracking-[0.2em] uppercase text-[#e7ddd0]/85 min-w-0">
+            <span className="h-[2px] w-4 shrink-0 bg-[#f28b50]" aria-hidden="true" />
+            <span className="font-mono text-[#f28b50] font-semibold tabular-nums shrink-0">
+              SCENE {currentMoment.code}
             </span>
-            <span aria-hidden="true" className="hidden sm:inline text-white/25">
+            <span aria-hidden="true" className="text-white/25">
               ·
             </span>
-            <span className="hidden sm:inline truncate font-medium text-[#f5efe6]/90">
+            <span className="truncate font-medium text-[#f5efe6]/90">
               {currentMoment.title}
             </span>
           </div>
 
           <div className="flex items-center gap-2 sm:gap-3 shrink-0">
+            {/* Auto Play / Pause Toggle */}
+            <button
+              type="button"
+              onClick={() => setIsPlayingAutoplay((prev) => !prev)}
+              aria-label={isPlayingAutoplay ? 'Pause cinematic intro' : 'Auto-play cinematic intro'}
+              className="inline-flex h-9 sm:h-10 items-center gap-2 border border-white/20 bg-[#0b0e1b]/85 px-3 sm:px-3.5 text-[11px] font-medium uppercase tracking-[0.16em] text-[#f5efe6] backdrop-blur-md transition-colors hover:border-[#f28b50] cursor-pointer"
+            >
+              {isPlayingAutoplay ? (
+                <>
+                  <Pause className="h-3.5 w-3.5 text-[#f28b50]" />
+                  <span className="hidden md:inline">Pause</span>
+                </>
+              ) : (
+                <>
+                  <Play className="h-3.5 w-3.5 text-[#f28b50]" />
+                  <span className="hidden md:inline">Auto Play</span>
+                </>
+              )}
+            </button>
+
+            {/* Replay Intro */}
+            <button
+              type="button"
+              onClick={() => jumpToMoment(0)}
+              title="Restart from Scene A"
+              aria-label="Restart from Scene A"
+              className="inline-flex h-9 sm:h-10 w-9 sm:w-10 items-center justify-center border border-white/20 bg-[#0b0e1b]/85 text-[#f5efe6] backdrop-blur-md transition-colors hover:border-[#f28b50] hover:text-[#f28b50] cursor-pointer"
+            >
+              <RotateCcw className="h-3.5 w-3.5" />
+            </button>
+
+            {/* Mute / Unmute Toggle */}
             <button
               type="button"
               onClick={onToggleMute}
-              aria-label={isMuted ? 'Enable prologue sound' : 'Mute prologue sound'}
+              aria-label={isMuted ? 'Enable sound' : 'Mute sound'}
               aria-pressed={!isMuted}
-              className="inline-flex h-9 sm:h-10 items-center gap-2 border border-white/18 bg-[#0b0e1b]/82 px-3 sm:px-3.5 text-[11px] font-medium uppercase tracking-[0.16em] text-[#f5efe6] transition-colors hover:border-[#f28b50]/75 cursor-pointer whitespace-nowrap"
+              className="inline-flex h-9 sm:h-10 items-center gap-2 border border-white/20 bg-[#0b0e1b]/85 px-3 sm:px-3.5 text-[11px] font-medium uppercase tracking-[0.16em] text-[#f5efe6] backdrop-blur-md transition-colors hover:border-[#f28b50] cursor-pointer whitespace-nowrap"
             >
               {isMuted ? (
                 <VolumeX className="h-3.5 w-3.5 text-[#cfc5b9]/80" />
@@ -551,19 +497,20 @@ export const EntryVeil: React.FC<EntryVeilProps> = ({
               <span className="hidden sm:inline">{isMuted ? 'Sound Off' : 'Sound On'}</span>
             </button>
 
+            {/* Skip Intro */}
             <button
               type="button"
               data-testid="skip-prologue-btn"
               onClick={() => triggerEnter(!isMuted)}
-              className="inline-flex h-9 sm:h-10 items-center gap-2 border border-white/20 bg-[#0b0e1b]/82 px-3.5 sm:px-4 text-[11px] font-medium uppercase tracking-[0.18em] text-[#fbf6ee] transition-colors hover:border-[#f28b50] hover:text-[#f28b50] cursor-pointer whitespace-nowrap"
+              className="inline-flex h-9 sm:h-10 items-center gap-2 border border-[#f28b50]/60 bg-[#f28b50]/20 px-3.5 sm:px-4 text-[11px] font-medium uppercase tracking-[0.18em] text-[#fbf6ee] backdrop-blur-md transition-all hover:bg-[#f28b50] hover:text-[#090d1a] cursor-pointer whitespace-nowrap"
             >
-              <span>Skip</span>
+              <span>Skip Intro</span>
               <ArrowRight className="h-3.5 w-3.5" />
             </button>
           </div>
         </header>
 
-        {/* Camera Stage Container with 32px bleed margin (-inset-8) to eliminate edge slivers */}
+        {/* Camera Stage Container */}
         <div
           ref={cameraStageRef}
           aria-hidden="true"
@@ -571,14 +518,14 @@ export const EntryVeil: React.FC<EntryVeilProps> = ({
           style={{
             transform: `translate3d(${-pointerOffset.x * 0.4}px, ${
               visual.cameraPanY - pointerOffset.y * 0.35
-            }px, 0) scale(${visual.cameraZoom + visual.portalProgress * 0.14})`,
+            }px, 0) scale(${visual.cameraZoom + visual.portalProgress * 0.18})`,
             transition: `transform 160ms ${MOTION_EASING.cssSettle}`,
           }}
         >
-          {/* Layer 1: Mumbai Dusk Horizon Skyline + Sharp 1080p Video */}
+          {/* Layer 1: Mumbai Dusk Horizon Skyline + Video */}
           <div
-            className="absolute inset-0 transition-opacity duration-300"
-            style={{ opacity: Math.max(0.14, visual.mumbaiReveal) }}
+            className="absolute inset-0 transition-opacity duration-500"
+            style={{ opacity: Math.max(0.04, visual.mumbaiReveal) }}
           >
             <img
               src={mumbaiSkylineUrl}
@@ -602,10 +549,10 @@ export const EntryVeil: React.FC<EntryVeilProps> = ({
             )}
           </div>
 
-          {/* Layer 2: Soft Watercolor Dusk Cloud Haze (Counter-Drifting) */}
+          {/* Layer 2: Watercolor Dusk Cloud Haze */}
           <div
             className="mumbai-cloud-a pointer-events-none absolute inset-0"
-            style={{ opacity: 0.24 + visual.mumbaiReveal * 0.26 }}
+            style={{ opacity: 0.15 + visual.mumbaiReveal * 0.35 }}
           >
             <img
               src={mumbaiCloudsUrl}
@@ -614,12 +561,12 @@ export const EntryVeil: React.FC<EntryVeilProps> = ({
             />
           </div>
 
-          {/* Layer 3: Parting Foreground Mumbai Rooftop Silhouettes Framing the City Portal */}
+          {/* Layer 3: Foreground Mumbai Silhouettes */}
           <div
             ref={leftSilhouetteRef}
             className="pointer-events-none absolute inset-y-0 -left-16 w-[48%] overflow-hidden will-change-transform"
             style={{
-              opacity: Math.max(0.18, 0.85 - visual.portalProgress * 0.68),
+              opacity: Math.max(0.12, 0.85 - visual.portalProgress * 0.68),
               transform: `translate3d(${leftSilhouetteShift}%, 2%, 0) scale(1.06)`,
               WebkitMaskImage:
                 'linear-gradient(90deg, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.68) 40%, rgba(0,0,0,0.18) 70%, rgba(0,0,0,0) 88%)',
@@ -638,7 +585,7 @@ export const EntryVeil: React.FC<EntryVeilProps> = ({
             ref={rightSilhouetteRef}
             className="pointer-events-none absolute inset-y-0 -right-16 w-[48%] overflow-hidden will-change-transform"
             style={{
-              opacity: Math.max(0.18, 0.85 - visual.portalProgress * 0.68),
+              opacity: Math.max(0.12, 0.85 - visual.portalProgress * 0.68),
               transform: `translate3d(${rightSilhouetteShift}%, 2%, 0) scale(1.06) scaleX(-1)`,
               WebkitMaskImage:
                 'linear-gradient(90deg, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.68) 40%, rgba(0,0,0,0.18) 70%, rgba(0,0,0,0) 88%)',
@@ -653,140 +600,105 @@ export const EntryVeil: React.FC<EntryVeilProps> = ({
             />
           </div>
 
-          {/* Layer 4: Scroll-Linked Lighting Wash (Nocturnal Indigo -> Late December Coral Glow) */}
+          {/* Layer 4: Late December Coral Glow Lighting */}
           <div
             className="absolute inset-0"
             style={{
-              opacity: 0.35 + visual.mumbaiReveal * 0.65,
+              opacity: 0.25 + visual.mumbaiReveal * 0.75,
               background:
-                'radial-gradient(ellipse 76% 58% at 50% 46%, rgba(242, 139, 80, 0.22), rgba(217, 91, 102, 0.1) 48%, rgba(7, 9, 18, 0.78) 100%)',
+                'radial-gradient(ellipse 76% 58% at 50% 46%, rgba(242, 139, 80, 0.26), rgba(217, 91, 102, 0.12) 48%, rgba(7, 9, 18, 0.82) 100%)',
             }}
           />
         </div>
 
-        {/* External Full-Bleed Moment 01 Darkness Veil (sits outside camera transform for zero edge bleed) */}
+        {/* Scene A Darkness Veil */}
         <div
           aria-hidden="true"
-          className="pointer-events-none absolute inset-0 bg-[#070912]"
+          className="pointer-events-none absolute inset-0 bg-[#070912] transition-opacity duration-500"
           style={{
-            opacity: visual.darknessVeilOpacity * (1 - visual.portalProgress * 0.85) * 0.88,
+            opacity: visual.darknessVeilOpacity,
           }}
         />
 
-        {/* Portal Light Aperture Overlay (animates on activation into Scene 01) */}
+        {/* Portal Light Aperture Overlay */}
         <div
           ref={portalBloomRef}
           aria-hidden="true"
           className="pointer-events-none absolute inset-0 z-30 opacity-0"
           style={{
             background:
-              'radial-gradient(circle at 50% 48%, rgba(242, 139, 80, 0.55) 0%, rgba(217, 91, 102, 0.28) 38%, rgba(20, 18, 37, 0.96) 78%)',
+              'radial-gradient(circle at 50% 48%, rgba(242, 139, 80, 0.6) 0%, rgba(217, 91, 102, 0.35) 40%, rgba(20, 18, 37, 0.98) 78%)',
           }}
         />
 
-        {/* Three.js Celestial Falling Starr Particle Field */}
+        {/* Three.js Celestial Particle Field */}
         <div
           ref={particleHostRef}
           aria-hidden="true"
           className="pointer-events-none absolute inset-0 z-10"
         />
 
-        {/* Editorial Title Sequence (Moments I & II): Crisp atmospheric reveal with immediate Begin action */}
-        {combinedTitleOpacity > 0.02 && (
-          <div
-            ref={introTitleRef}
-            className="absolute inset-0 z-20 flex flex-col items-center justify-center px-6 pt-14 pb-24 text-center pointer-events-none"
-            style={{
-              opacity: combinedTitleOpacity,
-              transform: `translate3d(0, ${Math.round(visual.progress * -48)}px, 0) scale(${
-                0.985 + visual.titleReveal * 0.025
-              })`,
-            }}
-          >
-            <p
-              data-intro-reveal
-              className="font-mono text-[11px] sm:text-xs uppercase tracking-[0.34em] text-[#f28b50]"
-            >
-              The Many Deaths of Laila Starr · Chapter 01
+        {/* ── SCENE A: THE DARKNESS (0.00 – 0.20) ────────────────────────── */}
+        {visual.momentIndex === 0 && (
+          <div className="absolute inset-0 z-20 flex flex-col items-center justify-center px-6 text-center pointer-events-none">
+            <p className="font-mono text-xs uppercase tracking-[0.38em] text-[#f28b50]/90">
+              Scene A · The Void
             </p>
-
-            <h1
-              data-intro-reveal
-              className="font-display mt-4 max-w-4xl text-4xl font-semibold leading-[1.02] tracking-tight text-[#fbf6ee] sm:text-7xl md:text-[5.25rem] [text-wrap:balance] drop-shadow-[0_6px_28px_rgba(0,0,0,0.7)]"
-            >
-              Once Upon a Falling Starr
-            </h1>
-
-            <p
-              data-intro-reveal
-              className="font-display mt-4 max-w-lg text-lg sm:text-2xl italic leading-relaxed text-[#ece3d7]/85"
-            >
-              Before the sun set over Mumbai on a Wednesday afternoon, something immortal began to fall.
+            <p className="font-display mt-5 max-w-md text-2xl sm:text-3xl italic leading-relaxed text-[#f4efe6]/85 [text-wrap:balance]">
+              &ldquo;Before the heat and horns of Mumbai, there was only silence.&rdquo;
             </p>
-
-            <div
-              data-intro-reveal
-              className="mt-5 flex flex-wrap items-center justify-center gap-x-3 gap-y-1 text-[11px] sm:text-xs tracking-[0.08em] text-[#dfd6ca]/70"
-            >
-              <span>Written by Ram V</span>
-              <span aria-hidden="true">·</span>
-              <span>Illustrated by Filipe Andrade</span>
-              <span aria-hidden="true">·</span>
-              <span>Colors by Inês Amaro</span>
+            <div className="mt-8 flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.24em] text-[#f28b50]/70 animate-pulse">
+              <span>Scroll to Begin the Journey</span>
+              <ArrowDown className="h-3.5 w-3.5" />
             </div>
-
-            {visual.progress < 0.25 && (
-              <div
-                data-intro-reveal
-                className="pointer-events-auto mt-8 flex flex-wrap items-center justify-center gap-3"
-              >
-                <button
-                  type="button"
-                  data-testid="enter-chapter-btn"
-                  onClick={() => triggerEnter(!isMuted)}
-                  className="inline-flex h-11 items-center gap-3 border border-[#f28b50] bg-[#f28b50] px-7 text-xs font-semibold uppercase tracking-[0.2em] text-[#090d1a] shadow-[0_14px_34px_-10px_rgba(242,139,80,0.65)] transition-transform duration-200 hover:scale-[1.02] cursor-pointer"
-                >
-                  <span>Enter Chapter One</span>
-                  <ArrowRight className={`h-4 w-4${visual.progress < 0.08 ? ' animate-pulse' : ''}`} />
-                </button>
-                <button
-                  type="button"
-                  onClick={() => jumpToMoment(PROLOGUE_MOMENTS[2].start)}
-                  className="inline-flex h-11 items-center gap-2 border border-white/22 bg-[#0b0e1b]/75 px-5 text-xs font-medium uppercase tracking-[0.18em] text-[#f5efe6] transition-colors hover:border-[#f28b50]/75 hover:text-[#f28b50] cursor-pointer"
-                >
-                  <span>Watch Prologue</span>
-                  <ArrowDown className="h-3.5 w-3.5" />
-                </button>
-              </div>
-            )}
           </div>
         )}
 
-        {/* Moment 04 & 05 — Synchronized Cinematic Narration Caption Cards */}
-        {visual.narrationOpacity > 0.02 && (
+        {/* ── SCENE B: MUMBAI SKYLINE REVEALED (0.20 – 0.40) ─────────────── */}
+        {visual.momentIndex === 1 && (
+          <div className="absolute inset-0 z-20 flex flex-col items-center justify-end px-6 pb-28 text-center pointer-events-none">
+            <div className="max-w-lg border border-white/12 bg-[#090d1a]/80 px-6 py-4 backdrop-blur-md">
+              <p className="font-mono text-[10px] uppercase tracking-[0.32em] text-[#e8a84a]">
+                Scene B · Mumbai Emerges
+              </p>
+              <p className="font-display mt-2 text-lg italic text-[#f4efe6]/90">
+                Late December sun dipping beneath the Bandra-Kurla haze.
+              </p>
+            </div>
+          </div>
+        )}
+
+        {/* ── SCENE C: NARRATION WITH PRABHAT NEURAL (0.40 – 0.65) ───────── */}
+        {visual.narrationOpacity > 0.05 && (
           <div
-            className="absolute inset-x-0 bottom-24 sm:bottom-28 z-30 mx-auto max-w-3xl px-5"
+            className="absolute inset-x-0 bottom-24 sm:bottom-28 z-30 mx-auto max-w-3xl px-5 transition-transform"
             style={{
               opacity: visual.narrationOpacity,
-              transform: `translate3d(0, ${Math.round((1 - visual.narrationOpacity) * 18)}px, 0)`,
+              transform: `translate3d(0, ${Math.round((1 - visual.narrationOpacity) * 16)}px, 0)`,
             }}
           >
-            <div className="border border-[#f28b50]/35 bg-[#0b0e1b]/90 px-6 py-5 sm:px-8 sm:py-6 shadow-[0_24px_60px_-14px_rgba(0,0,0,0.85)]">
-              <div className="mb-2.5 flex items-center justify-between gap-3">
-                <span className="font-mono text-[10px] uppercase tracking-[0.24em] text-[#f28b50]">
-                  {activeBeat.label}
-                </span>
+            <div className="border border-[#f28b50]/45 bg-[#0b0e1b]/95 px-6 py-5 sm:px-8 sm:py-6 shadow-[0_24px_60px_-14px_rgba(0,0,0,0.9)] backdrop-blur-md">
+              <div className="mb-2.5 flex items-center justify-between gap-3 border-b border-white/10 pb-2">
+                <div className="flex items-center gap-2">
+                  <span className="font-mono text-[10px] uppercase tracking-[0.26em] text-[#f28b50] font-semibold">
+                    Scene C · The Chronicle
+                  </span>
+                  <span className="font-mono text-[10px] text-[#cfc5b9]/70">
+                    (Prabhat Neural · Indian Baritone)
+                  </span>
+                </div>
                 <div className="flex items-center gap-2">
                   {voiceMode === 'recorded' && (
-                    <span className="font-mono text-[10px] uppercase tracking-wider text-[#f28b50]">
+                    <span className="flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-wider text-[#f28b50]">
+                      <span className="h-1.5 w-1.5 rounded-full bg-[#f28b50] animate-ping" />
                       Voice Playing
                     </span>
                   )}
                   <button
                     type="button"
                     onClick={() => playNarrationBeat(activeBeat)}
-                    aria-label="Replay narration caption"
-                    className="inline-flex h-7 w-7 items-center justify-center border border-white/15 text-[#e6ddd0]/75 hover:border-[#f28b50] hover:text-[#f28b50] cursor-pointer"
+                    aria-label="Replay narrator voice"
+                    className="inline-flex h-7 w-7 items-center justify-center border border-white/20 text-[#e6ddd0]/85 hover:border-[#f28b50] hover:text-[#f28b50] cursor-pointer"
                   >
                     <RotateCcw className="h-3 w-3" />
                   </button>
@@ -799,8 +711,9 @@ export const EntryVeil: React.FC<EntryVeilProps> = ({
                     key={`${activeBeat.id}-w-${idx}`}
                     className="inline-block transition-[opacity,filter] duration-200"
                     style={{
-                      opacity: idx < visibleNarrationCount ? 1 : 0.06,
+                      opacity: idx < visibleNarrationCount ? 1 : 0.08,
                       filter: `blur(${idx < visibleNarrationCount ? 0 : 2}px)`,
+                      color: idx === visibleNarrationCount - 1 ? '#ffd29d' : undefined,
                     }}
                   >
                     {word}
@@ -812,36 +725,73 @@ export const EntryVeil: React.FC<EntryVeilProps> = ({
           </div>
         )}
 
-        {/* Moment 06 — Enter the Comic Aperture CTA & Seamless Visual Portal */}
+        {/* ── SCENE D: GRAND CINEMATIC TITLE REVEAL (0.65 – 0.85) ────────── */}
+        {visual.titleReveal > 0.04 && (
+          <div
+            className="absolute inset-0 z-20 flex flex-col items-center justify-center px-6 pt-12 pb-24 text-center pointer-events-none"
+            style={{
+              opacity: visual.titleReveal,
+              transform: `translate3d(0, ${Math.round((1 - visual.titleReveal) * 20)}px, 0) scale(${
+                0.985 + visual.titleReveal * 0.025
+              })`,
+            }}
+          >
+            <p className="font-mono text-[11px] sm:text-xs uppercase tracking-[0.38em] text-[#f28b50]">
+              A Cinematic Graphic Novel
+            </p>
+
+            <h1 className="font-display mt-4 max-w-4xl text-4xl font-semibold leading-[1.02] tracking-tight text-[#fbf6ee] sm:text-7xl md:text-[5.25rem] [text-wrap:balance] drop-shadow-[0_8px_32px_rgba(0,0,0,0.85)]">
+              The Many Deaths of Laila Starr
+            </h1>
+
+            <div className="mt-3 flex items-center justify-center gap-3">
+              <span className="h-[1px] w-8 bg-[#f28b50]/60" />
+              <p className="font-mono text-xs sm:text-sm uppercase tracking-[0.28em] text-[#ffd29d]">
+                Chapter 01 · Once Upon a Falling Starr
+              </p>
+              <span className="h-[1px] w-8 bg-[#f28b50]/60" />
+            </div>
+
+            <div className="mt-6 flex flex-wrap items-center justify-center gap-x-3 gap-y-1 text-xs tracking-[0.1em] text-[#dfd6ca]/80">
+              <span>Written by Ram V</span>
+              <span aria-hidden="true">·</span>
+              <span>Illustrated by Filipe Andrade</span>
+              <span aria-hidden="true">·</span>
+              <span>Colors by Inês Amaro</span>
+            </div>
+          </div>
+        )}
+
+        {/* ── SCENE E: ENTER THE COMIC PORTAL (0.85 – 1.00) ──────────────── */}
         {visual.portalProgress > 0.05 && (
           <div
             className="absolute inset-0 z-30 flex flex-col items-center justify-center px-6 text-center"
             style={{
-              opacity: clamp01(visual.portalProgress * 1.4),
-              transform: `scale(${0.96 + visual.portalProgress * 0.04})`,
+              opacity: clamp01(visual.portalProgress * 1.5),
+              transform: `scale(${0.96 + visual.portalProgress * 0.05})`,
             }}
           >
-            <p className="font-mono text-xs uppercase tracking-[0.3em] text-[#f28b50]">
-              Chapter 01 · Scene 01
+            <p className="font-mono text-xs uppercase tracking-[0.32em] text-[#f28b50]">
+              Scene E · The Descent Begins
             </p>
             <h2 className="font-display mt-3 text-4xl font-semibold text-[#fbf6ee] sm:text-6xl">
-              The City of Mumbai
+              Enter The City of Mumbai
             </h2>
             <button
               type="button"
               data-testid="enter-chapter-portal-btn"
               onClick={() => triggerEnter(!isMuted)}
-              className="mt-8 inline-flex items-center gap-3 border border-[#f28b50] bg-[#f28b50] px-8 py-4 text-xs font-semibold uppercase tracking-[0.22em] text-[#090d1a] shadow-2xl transition-transform duration-200 hover:scale-[1.02] cursor-pointer"
+              className="mt-8 inline-flex items-center gap-3 border border-[#f28b50] bg-[#f28b50] px-8 py-4 text-xs font-semibold uppercase tracking-[0.24em] text-[#090d1a] shadow-2xl transition-transform duration-200 hover:scale-[1.03] cursor-pointer"
             >
-              <span>Enter Chapter One</span>
+              <span>Dive into Comic Artwork</span>
               <ArrowDown className="h-4 w-4" />
             </button>
           </div>
         )}
 
-        {/* Bottom Moment Scrubber & Quiet Scroll Guidance */}
+        {/* Bottom Stage Progress Indicator & Direct Navigation */}
         <div className="absolute bottom-5 inset-x-0 z-40 mx-auto flex max-w-2xl flex-col items-center gap-2.5 px-6">
-          <div className="flex w-full items-center gap-2">
+          <div className="flex w-full items-center gap-1.5 sm:gap-2">
             {PROLOGUE_MOMENTS.map((m, idx) => {
               const active = idx === visual.momentIndex;
               const passed = idx < visual.momentIndex;
@@ -850,29 +800,28 @@ export const EntryVeil: React.FC<EntryVeilProps> = ({
                   key={m.id}
                   type="button"
                   onClick={() => jumpToMoment(m.start)}
-                  aria-label={`Jump to Prologue Moment ${m.code}: ${m.title}`}
-                  className="group relative flex h-5 flex-1 items-center cursor-pointer"
+                  aria-label={`Jump to Scene ${m.code}: ${m.title}`}
+                  className="group relative flex h-6 flex-1 items-center justify-center cursor-pointer"
                 >
                   <span
                     className="block w-full transition-all duration-300"
                     style={{
-                      height: active ? '3px' : '1.5px',
+                      height: active ? '3.5px' : '1.5px',
                       backgroundColor: active
                         ? '#f28b50'
                         : passed
-                          ? 'rgba(242, 139, 80, 0.5)'
+                          ? 'rgba(242, 139, 80, 0.55)'
                           : 'rgba(255, 255, 255, 0.18)',
                     }}
                   />
+                  <span className="sr-only">Scene {m.code}: {m.title}</span>
                 </button>
               );
             })}
           </div>
 
-          <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-[#cfc5b9]/75">
-            {visual.progress < 0.88
-              ? 'Scroll gently to travel through the prologue'
-              : 'Continue scrolling to enter Mumbai'}
+          <p className="font-mono text-[10px] uppercase tracking-[0.24em] text-[#cfc5b9]/75">
+            Scene {currentMoment.code} of E · {currentMoment.title}
           </p>
         </div>
       </div>

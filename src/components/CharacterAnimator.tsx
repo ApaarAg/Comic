@@ -13,6 +13,8 @@ interface CharacterAnimatorProps {
   subtleMotion?: 'breathe' | 'float' | 'spectral' | 'pulse' | 'none';
   className?: string;
   caption?: string;
+  subtitle?: string;
+  dialogueText?: string;
   onInspect?: (payload: { src: string; alt: string; note?: string }) => void;
   inspectNote?: string;
 }
@@ -26,6 +28,8 @@ export const CharacterAnimator: React.FC<CharacterAnimatorProps> = ({
   subtleMotion = 'breathe',
   className = '',
   caption,
+  subtitle,
+  dialogueText,
   onInspect,
   inspectNote,
 }) => {
@@ -37,6 +41,9 @@ export const CharacterAnimator: React.FC<CharacterAnimatorProps> = ({
   const isSpeaking = hasDialogueContext && activeSpeaker === character;
   const isOtherSpeaking = hasDialogueContext && activeSpeaker !== character;
   const speakerAccent = character ? CHARACTER_STYLES[character].accent : '#f28b50';
+  const speakerMeta = character ? CHARACTER_STYLES[character] : null;
+
+  const displayText = dialogueText || subtitle || (isSpeaking ? caption : undefined);
 
   const motionClass =
     reducedMotion || subtleMotion === 'none'
@@ -108,26 +115,26 @@ export const CharacterAnimator: React.FC<CharacterAnimatorProps> = ({
       onBlur={handleHoverOut}
       className={`comic-panel-frame group relative transition-all duration-500 ease-out ${
         isSpeaking
-          ? 'scale-[1.012]'
+          ? 'scale-[1.025] z-20 brightness-[1.04]'
           : isOtherSpeaking
-            ? 'brightness-[0.82] saturate-[0.88]'
-            : ''
+            ? 'brightness-[0.78] saturate-[0.85]'
+            : 'hover:scale-[1.012]'
       } ${className}`}
       style={{
         boxShadow: isSpeaking
-          ? `0 24px 60px -14px ${speakerAccent}38, 0 0 0 1px ${speakerAccent}70`
+          ? `0 24px 60px -14px ${speakerAccent}45, 0 0 0 1.5px ${speakerAccent}85`
           : undefined,
       }}
     >
-      <div ref={hoverTargetRef} className="relative overflow-hidden will-change-transform">
-        <div className={`relative ${motionClass}`}>
+      <div ref={hoverTargetRef} className="relative overflow-hidden will-change-transform bg-[#0c0e18]">
+        <div className={`relative flex items-center justify-center ${motionClass}`}>
           <img
             src={src}
             alt={alt}
             loading="eager"
             decoding="sync"
             referrerPolicy="no-referrer"
-            className="w-full h-auto object-cover select-none"
+            className="w-full max-h-[82vh] object-contain select-none"
           />
 
           {/* Character-calibrated atmospheric rim light while speaking */}
@@ -153,7 +160,26 @@ export const CharacterAnimator: React.FC<CharacterAnimatorProps> = ({
         </button>
       )}
 
-      {caption && <figcaption className="sr-only">{caption}</figcaption>}
+      {/* High-Readability Companion Subtitle Bar */}
+      {displayText && (
+        <div className="border-t border-white/10 bg-[#0c0e18]/95 px-4 py-3 sm:px-5 sm:py-3.5 backdrop-blur-md">
+          {speakerMeta && (
+            <div className="mb-1 flex items-center gap-2">
+              <span
+                className="font-mono text-[10px] uppercase tracking-[0.24em]"
+                style={{ color: speakerAccent }}
+              >
+                {speakerMeta.name} · {speakerMeta.role}
+              </span>
+            </div>
+          )}
+          <p className="font-display text-xs sm:text-sm italic leading-relaxed text-[#f4eee5]/95 tracking-wide">
+            &ldquo;{displayText}&rdquo;
+          </p>
+        </div>
+      )}
+
+      {caption && !displayText && <figcaption className="sr-only">{caption}</figcaption>}
     </figure>
   );
 };

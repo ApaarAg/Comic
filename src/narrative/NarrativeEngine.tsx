@@ -128,6 +128,7 @@ export const NarrativeProvider: React.FC<NarrativeProviderProps> = ({
   const isDialogueActiveRef = useRef(false);
   const activeBeatRef = useRef<NarrationBeat | null>(null);
   const lastTriggeredIdxRef = useRef<number>(-1);
+  const triggeredBeatIdsRef = useRef<Set<string>>(new Set());
   const lastProgressRef = useRef<number>(0);
   const interruptedSeekRef = useRef<number | null>(null);
   const cadenceRafRef = useRef<number | null>(null);
@@ -146,10 +147,19 @@ export const NarrativeProvider: React.FC<NarrativeProviderProps> = ({
       setNarratorProgress(startSeekSec > 0 && beat.durationMs > 0 ? (startSeekSec * 1000) / beat.durationMs : 0);
       setAudioState('NarratorSpeaking');
 
+      // Preload next upcoming audio cue
+      const currentIdx = sortedBeats.findIndex((b) => b.id === beat.id);
+      if (currentIdx >= 0 && currentIdx + 1 < sortedBeats.length) {
+        characterVoicePlayer.preloadAsset(sortedBeats[currentIdx + 1].audioSrc);
+      }
+
       // Dispatch synchronous SFX cue if defined
       if (beat.visualChoreography?.sfxCue) {
         sceneAudioManager.triggerCue(beat.visualChoreography.sfxCue);
       }
+
+      // Duck background ambience smoothly for narrator speech clarity
+      sceneAudioManager.setVoiceActive(true);
 
       // Voice playback or honest visual cadence timing
       void characterVoicePlayer.playLine(beat.id, beat.audioSrc, beat.durationMs, {
@@ -168,11 +178,12 @@ export const NarrativeProvider: React.FC<NarrativeProviderProps> = ({
             setNarratorProgress(1);
             setAudioState('Idle');
             interruptedSeekRef.current = null;
+            sceneAudioManager.setVoiceActive(false);
           }
         },
       });
     },
-    [],
+    [sortedBeats],
   );
 
   // ─────────────────────────────────────────────────────────────────────────
@@ -194,9 +205,6 @@ export const NarrativeProvider: React.FC<NarrativeProviderProps> = ({
         // Duck background ambience for dialogue clarity
         sceneAudioManager.setVoiceActive(true);
       } else {
-        // Character dialogue ended: restore ambience
-        sceneAudioManager.setVoiceActive(false);
-
         // Resume interrupted narrator if still within active narrative window
         if (activeBeatRef.current && interruptedSeekRef.current !== null) {
           const seekTo = interruptedSeekRef.current;
@@ -208,6 +216,8 @@ export const NarrativeProvider: React.FC<NarrativeProviderProps> = ({
             playBeat(activeBeatRef.current, seekTo);
           }
         } else {
+          // Restore ambience volume smoothly when all voices complete
+          sceneAudioManager.setVoiceActive(false);
           setAudioState('Idle');
         }
       }
@@ -227,7 +237,8 @@ export const NarrativeProvider: React.FC<NarrativeProviderProps> = ({
       if (isDialogueActiveRef.current && !force) return;
 
       lastTriggeredIdxRef.current = idx;
-      characterVoicePlayer.stop(60);
+      triggeredBeatIdsRef.current.add(beat.id);
+      characterVoicePlayer.stop(160);
       playBeat(beat);
     },
     [playBeat, sortedBeats],
@@ -237,6 +248,7 @@ export const NarrativeProvider: React.FC<NarrativeProviderProps> = ({
     if (activeBeatRef.current) {
       characterVoicePlayer.pause();
       setAudioState('Paused');
+      sceneAudioManager.setVoiceActive(false);
     }
   }, []);
 
@@ -244,6 +256,7 @@ export const NarrativeProvider: React.FC<NarrativeProviderProps> = ({
     if (activeBeatRef.current && audioState === 'Paused') {
       characterVoicePlayer.resume();
       setAudioState('NarratorSpeaking');
+      sceneAudioManager.setVoiceActive(true);
     }
   }, [audioState]);
 
@@ -255,7 +268,7 @@ export const NarrativeProvider: React.FC<NarrativeProviderProps> = ({
   }, [playBeat]);
 
   // ─────────────────────────────────────────────────────────────────────────
-  // Scroll Synchronization Engine (with Skip-Forward and Hysteresis Guard)
+  // Scroll Synchronization Engine (with One-Shot Latch & Hysteresis Guard)
   // ─────────────────────────────────────────────────────────────────────────
   const processScrollPosition = useCallback(
     (progress: number) => {
@@ -274,27 +287,37 @@ export const NarrativeProvider: React.FC<NarrativeProviderProps> = ({
 
       if (candidateIdx === -1) return;
 
-      // Skip forward logic: user moved forward past one or more beats
+      // Forward progression: user crossed into a new beat
       if (candidateIdx > lastTriggeredIdxRef.current) {
         lastTriggeredIdxRef.current = candidateIdx;
         const targetBeat = sortedBeats[candidateIdx];
 
+        // One-shot latch: do not restart if already triggered in this forward pass
+        if (triggeredBeatIdsRef.current.has(targetBeat.id)) {
+          return;
+        }
+        triggeredBeatIdsRef.current.add(targetBeat.id);
+
         // Do not interrupt active dialogue
         if (isDialogueActiveRef.current) return;
 
-        // Abort previous outdated narrator audio cleanly
-        characterVoicePlayer.stop(80);
+        // Fade out previous audio smoothly (160ms) to avoid sudden cutoffs
+        characterVoicePlayer.stop(160);
         playBeat(targetBeat);
         return;
       }
 
       // Backward scroll hysteresis: only allow re-trigger if user scrolled
-      // backwards by a significant threshold (at least 8% of total scroll)
-      if (delta < -0.08 && candidateIdx < lastTriggeredIdxRef.current) {
+      // backwards by a significant threshold (at least 10% of chapter scroll)
+      if (delta < -0.10 && candidateIdx < lastTriggeredIdxRef.current) {
+        // Clear latches for beats beyond candidateIdx
+        for (let i = candidateIdx + 1; i < sortedBeats.length; i++) {
+          triggeredBeatIdsRef.current.delete(sortedBeats[i].id);
+        }
         lastTriggeredIdxRef.current = candidateIdx;
         const targetBeat = sortedBeats[candidateIdx];
         if (!isDialogueActiveRef.current) {
-          characterVoicePlayer.stop(80);
+          characterVoicePlayer.stop(160);
           playBeat(targetBeat);
         }
       }

@@ -131,16 +131,11 @@ class CharacterVoicePlayer {
   }
 
   public preloadAsset(audioSrc: string | undefined): void {
-    if (
-      !audioSrc ||
-      typeof window === 'undefined' ||
-      !this.availableVoicePaths?.has(audioSrc) ||
-      this.preloadedHowls.has(audioSrc)
-    ) {
+    if (!audioSrc || typeof window === 'undefined' || this.preloadedHowls.has(audioSrc)) {
       return;
     }
     // Keep cache small to avoid retaining excess audio buffers
-    if (this.preloadedHowls.size >= 4) {
+    if (this.preloadedHowls.size >= 6) {
       const oldestKey = this.preloadedHowls.keys().next().value;
       if (oldestKey) {
         this.preloadedHowls.get(oldestKey)?.unload();
@@ -287,9 +282,11 @@ class CharacterVoicePlayer {
       return this.activeState;
     }
 
-    const canPlayRecorded =
+    const isRecordedAsset =
       Boolean(voiceAssetPath) &&
-      available.has(voiceAssetPath!) &&
+      (available.has(voiceAssetPath!) || voiceAssetPath!.startsWith('/assets/audio/voices/'));
+    const canPlayRecorded =
+      isRecordedAsset &&
       !mixer.masterMuted &&
       !mixer.voiceMuted;
 

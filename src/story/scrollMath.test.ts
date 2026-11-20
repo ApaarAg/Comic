@@ -233,22 +233,40 @@ test('computeShaderTransitionEnvelope shapes bell-curve intensity for shader uni
   assert.equal(end.dissolve, 1);
 });
 
-test('computePrologueVisualState progresses across darkness, title, Mumbai, narration, and portal', () => {
-  const m0 = computePrologueVisualState(0.04, PROLOGUE_MOMENTS);
-  const m1 = computePrologueVisualState(0.26, PROLOGUE_MOMENTS);
-  const m2 = computePrologueVisualState(0.46, PROLOGUE_MOMENTS);
-  const m3 = computePrologueVisualState(0.62, PROLOGUE_MOMENTS);
-  const m4 = computePrologueVisualState(0.78, PROLOGUE_MOMENTS);
-  const m5 = computePrologueVisualState(0.96, PROLOGUE_MOMENTS);
+test('computePrologueVisualState progresses across 5 cinematic scenes: darkness, Mumbai, narration, title, and portal', () => {
+  const mA = computePrologueVisualState(0.06, PROLOGUE_MOMENTS);
+  const mB = computePrologueVisualState(0.30, PROLOGUE_MOMENTS);
+  const mC = computePrologueVisualState(0.50, PROLOGUE_MOMENTS);
+  const mD = computePrologueVisualState(0.72, PROLOGUE_MOMENTS);
+  const mE = computePrologueVisualState(0.95, PROLOGUE_MOMENTS);
 
-  assert.equal(resolvePrologueMomentIndex(0.04, PROLOGUE_MOMENTS), 0);
-  assert.equal(m0.titleReveal, 0);
-  assert.equal(m0.mumbaiReveal, 0);
-  assert.ok(m1.momentIndex === 1 && m1.titleReveal > 0.7);
-  assert.ok(m2.momentIndex === 2 && m2.mumbaiReveal > 0.6);
-  assert.ok(m3.momentIndex === 3 && m3.narrationOpacity > 0.8 && m3.activeNarrationIndex === 0);
-  assert.ok(m4.momentIndex === 4 && m4.activeNarrationIndex === 1 && m4.cameraZoom > m1.cameraZoom);
-  assert.ok(m5.momentIndex === 5 && m5.portalProgress > 0.6);
+  // Scene A: Darkness
+  assert.equal(resolvePrologueMomentIndex(0.06, PROLOGUE_MOMENTS), 0);
+  assert.ok(mA.darknessVeilOpacity > 0.9);
+  assert.equal(mA.mumbaiReveal, 0);
+  assert.equal(mA.narrationOpacity, 0);
+  assert.equal(mA.titleReveal, 0);
+
+  // Scene B: Mumbai Skyline slowly revealed
+  assert.equal(resolvePrologueMomentIndex(0.30, PROLOGUE_MOMENTS), 1);
+  assert.ok(mB.mumbaiReveal > 0.6);
+  assert.equal(mB.titleReveal, 0);
+  assert.equal(mB.narrationOpacity, 0);
+
+  // Scene C: Narration with approved Prabhat Neural voice + cinematic captions
+  assert.equal(resolvePrologueMomentIndex(0.50, PROLOGUE_MOMENTS), 2);
+  assert.ok(mC.narrationOpacity > 0.8);
+  assert.equal(mC.activeNarrationIndex, 0);
+
+  // Scene D: Title Reveal with elegant typography
+  assert.equal(resolvePrologueMomentIndex(0.72, PROLOGUE_MOMENTS), 3);
+  assert.ok(mD.titleReveal > 0.7);
+  assert.equal(mD.narrationOpacity, 0);
+
+  // Scene E: Enter the comic into original artwork
+  assert.equal(resolvePrologueMomentIndex(0.95, PROLOGUE_MOMENTS), 4);
+  assert.ok(mE.portalProgress > 0.6);
+  assert.ok(mE.cameraZoom > mB.cameraZoom);
 });
 
 test('resolveBubblePlacement computes directional SVG tail positions cleanly', () => {

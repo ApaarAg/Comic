@@ -437,7 +437,12 @@ export function resolvePrologueMomentIndex(
 }
 
 /**
- * Computes continuous scroll-scrubbed cinematic camera, lighting, and layer values across the 6 prologue moments.
+ * Computes continuous scroll-scrubbed cinematic camera, lighting, and layer values across the 5 prologue scenes:
+ * - Scene A: Darkness (0.00 – 0.20)
+ * - Scene B: Mumbai Skyline slowly revealed with depth/parallax (0.20 – 0.40)
+ * - Scene C: Narration with approved Prabhat Neural voice + cinematic captions (0.40 – 0.65)
+ * - Scene D: Title Reveal with elegant typography (0.65 – 0.85)
+ * - Scene E: Seamless enter into comic / original artwork (0.85 – 1.00)
  */
 export function computePrologueVisualState(
   progress: number,
@@ -446,24 +451,30 @@ export function computePrologueVisualState(
   const p = clamp01(progress);
   const momentIndex = resolvePrologueMomentIndex(p, moments);
 
-  const darknessVeilOpacity = Math.round((1 - clamp01((p - 0.08) / 0.28) * 0.72) * 1000) / 1000;
+  // Scene A Darkness Veil: 1.0 at start, smoothly dissolves away as Scene B approaches (0.16 -> 0.28)
+  const darknessVeilOpacity = Math.round((1 - clamp01((p - 0.16) / 0.14)) * 1000) / 1000;
 
-  const titleIn = clamp01((p - 0.14) / 0.14);
-  const titleOut = 1 - clamp01((p - 0.36) / 0.14);
+  // Scene B Mumbai Skyline Reveal: starts emerging around 0.18, fully visible by 0.36, stays active
+  const mumbaiReveal = Math.round(clamp01((p - 0.18) / 0.18) * 1000) / 1000;
+
+  // Scene C Narration with Prabhat Neural: active from 0.40 to 0.65 (fadeIn 0.38-0.44, fadeOut 0.61-0.66)
+  const narrationIn = clamp01((p - 0.38) / 0.06);
+  const narrationOut = 1 - clamp01((p - 0.61) / 0.05);
+  const narrationOpacity = Math.round(narrationIn * narrationOut * 1000) / 1000;
+  const activeNarrationIndex = 0;
+
+  // Scene D Title Reveal: active from 0.65 to 0.85 (fadeIn 0.64-0.70, fadeOut 0.81-0.86)
+  const titleIn = clamp01((p - 0.64) / 0.06);
+  const titleOut = 1 - clamp01((p - 0.81) / 0.05);
   const titleReveal = Math.round(titleIn * titleOut * 1000) / 1000;
 
-  const mumbaiReveal = Math.round(clamp01((p - 0.3) / 0.24) * 1000) / 1000;
-
+  // Camera Zoom & Pan across the 5 scenes
   const easedP = p * p * (3 - 2 * p);
-  const cameraZoom = Math.round((1 + easedP * 0.18) * 1000) / 1000;
-  const cameraPanY = Math.round((0.5 - easedP) * 28 * 100) / 100;
+  const cameraZoom = Math.round((1 + easedP * 0.22) * 1000) / 1000;
+  const cameraPanY = Math.round((0.5 - easedP) * 24 * 100) / 100;
 
-  const narrationIn = clamp01((p - 0.52) / 0.08);
-  const narrationOut = 1 - clamp01((p - 0.85) / 0.07);
-  const narrationOpacity = Math.round(narrationIn * narrationOut * 1000) / 1000;
-  const activeNarrationIndex = p >= 0.7 ? 1 : 0;
-
-  const portalProgress = Math.round(clamp01((p - 0.88) / 0.12) * 1000) / 1000;
+  // Scene E Portal Dive: accelerates from 0.85 to 1.00 into original comic artwork
+  const portalProgress = Math.round(clamp01((p - 0.85) / 0.15) * 1000) / 1000;
 
   return {
     progress: p,

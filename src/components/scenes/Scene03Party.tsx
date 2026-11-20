@@ -174,7 +174,8 @@ export const Scene03Party: React.FC<SceneProps> = ({
                 onInspect={onInspectPanel}
               />
 
-              <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
+              {/* Sequential Party Focus: The Girl by the Window & Dhiraj's Discourse */}
+              <div className="space-y-8">
                 <CharacterAnimator
                   src="/assets/chapter1/p08_panel04.webp"
                   alt="Close-up of the girl with raven hair smoking by the party window"
@@ -191,6 +192,7 @@ export const Scene03Party: React.FC<SceneProps> = ({
                   activeSpeaker={activeSpeaker}
                   reducedMotion={reducedMotion}
                   subtleMotion="breathe"
+                  caption="Listen, the whole discourse still reproduces the same patriarchal power equations—nobody actually examines who holds the lens."
                   onInspect={onInspectPanel}
                 />
               </div>
