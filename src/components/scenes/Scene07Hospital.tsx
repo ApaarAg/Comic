@@ -62,7 +62,10 @@ export const Scene07Hospital: React.FC<SceneProps> = ({
         trigger: sectionRef.current,
         start: 'top 35%',
         once: true,
-        onEnter: () => soundscape.triggerCue('flatline'),
+        onEnter: () => {
+          soundscape.triggerCue('flatline');
+          soundscape.playMotif('motif_laila');
+        },
       });
     }, sectionRef);
 

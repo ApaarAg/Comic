@@ -300,9 +300,11 @@ export function selectBackdropMode(options: {
 export interface AudioBusSettings {
   masterMuted: boolean;
   ambienceVolume: number;
+  scoreVolume?: number;
   sfxVolume: number;
   voiceVolume: number;
   ambienceMuted: boolean;
+  scoreMuted?: boolean;
   sfxMuted: boolean;
   voiceMuted: boolean;
   isVoiceActive: boolean;
@@ -310,22 +312,28 @@ export interface AudioBusSettings {
 
 export interface ComputedAudioMix {
   ambienceGain: number;
+  scoreGain: number;
   sfxGain: number;
   voiceGain: number;
   duckFactor: number;
 }
 
 /**
- * Computes effective Howler bus volumes with smooth ambience ducking during active dialogue/voice beats.
+ * Computes effective Howler bus volumes with smooth ambience & score ducking during active dialogue/voice beats.
  */
 export function computeAudioMixLevels(settings: AudioBusSettings): ComputedAudioMix {
   if (settings.masterMuted) {
-    return { ambienceGain: 0, sfxGain: 0, voiceGain: 0, duckFactor: 1 };
+    return { ambienceGain: 0, scoreGain: 0, sfxGain: 0, voiceGain: 0, duckFactor: 1 };
   }
   const duckFactor = settings.isVoiceActive ? 0.42 : 1;
   const ambienceGain = settings.ambienceMuted
     ? 0
     : Math.round(clamp01(settings.ambienceVolume) * duckFactor * 1000) / 1000;
+  const scoreVolume = settings.scoreVolume ?? 0.65;
+  const scoreMuted = settings.scoreMuted ?? false;
+  const scoreGain = scoreMuted
+    ? 0
+    : Math.round(clamp01(scoreVolume) * duckFactor * 1000) / 1000;
   const sfxGain = settings.sfxMuted
     ? 0
     : Math.round(clamp01(settings.sfxVolume) * (settings.isVoiceActive ? 0.8 : 1) * 1000) / 1000;
@@ -333,7 +341,7 @@ export function computeAudioMixLevels(settings: AudioBusSettings): ComputedAudio
     ? 0
     : Math.round(clamp01(settings.voiceVolume) * 1000) / 1000;
 
-  return { ambienceGain, sfxGain, voiceGain, duckFactor };
+  return { ambienceGain, scoreGain, sfxGain, voiceGain, duckFactor };
 }
 
 /**

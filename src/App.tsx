@@ -160,6 +160,7 @@ export default function App() {
     if (options?.withAudio) {
       soundscape.unmute();
       setIsMuted(false);
+      soundscape.playMotif('motif_storyverse');
     }
   }, []);
 

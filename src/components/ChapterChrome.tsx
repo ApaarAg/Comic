@@ -206,7 +206,73 @@ export const ChapterChrome: React.FC<ChapterChromeProps> = ({
                     />
                   </div>
 
-                  {/* Bus 2: SFX */}
+                  {/* Bus 2: Cinematic Score */}
+                  <div>
+                    <div className="flex items-center justify-between mb-1">
+                      <span className="text-[#e6ddd0]">Cinematic Score</span>
+                      <button
+                        type="button"
+                        onClick={() => sceneAudioManager.toggleScoreMute()}
+                        className="font-mono text-[10px] uppercase tracking-wider text-[#cfc5b9]/70 hover:text-white cursor-pointer"
+                      >
+                        {mixerSnapshot.scoreMuted
+                          ? 'Muted'
+                          : `${Math.round(mixerSnapshot.scoreVolume * 100)}%`}
+                      </button>
+                    </div>
+                    <input
+                      type="range"
+                      min={0}
+                      max={100}
+                      value={Math.round(mixerSnapshot.scoreVolume * 100)}
+                      onChange={(e) =>
+                        sceneAudioManager.setScoreVolume(Number(e.target.value) / 100)
+                      }
+                      aria-label="Cinematic score volume"
+                      className="w-full accent-[#f28b50] cursor-pointer"
+                    />
+                    {['sunset', 'celestial', 'split', 'descent', 'dawn'].includes(mixerSnapshot.currentMood) && (
+                      <div className="mt-1.5 flex items-center justify-between text-[10px] text-[#c8bfb4]/70">
+                        <span>Arrangement:</span>
+                        <div className="flex gap-1.5">
+                          <button
+                            type="button"
+                            onClick={() =>
+                              sceneAudioManager.setScoreVariant(
+                                mixerSnapshot.currentMood as 'sunset' | 'celestial' | 'split' | 'descent' | 'dawn',
+                                'a',
+                              )
+                            }
+                            className={`px-1.5 py-0.5 rounded text-[9px] uppercase font-mono tracking-wider transition-colors cursor-pointer ${
+                              mixerSnapshot.activeScoreTrack.endsWith('_a')
+                                ? 'bg-[#f28b50]/20 text-[#f28b50] border border-[#f28b50]/50 font-bold'
+                                : 'text-[#cfc5b9]/60 hover:text-white border border-transparent'
+                            }`}
+                          >
+                            Approach A
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() =>
+                              sceneAudioManager.setScoreVariant(
+                                mixerSnapshot.currentMood as 'sunset' | 'celestial' | 'split' | 'descent' | 'dawn',
+                                'b',
+                              )
+                            }
+                            className={`px-1.5 py-0.5 rounded text-[9px] uppercase font-mono tracking-wider transition-colors cursor-pointer ${
+                              mixerSnapshot.activeScoreTrack.endsWith('_b')
+                                ? 'bg-[#f28b50]/20 text-[#f28b50] border border-[#f28b50]/50 font-bold'
+                                : 'text-[#cfc5b9]/60 hover:text-white border border-transparent'
+                            }`}
+                          >
+                            Approach B
+                          </button>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Bus 3: SFX */}
                   <div>
                     <div className="flex items-center justify-between mb-1">
                       <span className="text-[#e6ddd0]">Environmental SFX</span>
@@ -233,7 +299,7 @@ export const ChapterChrome: React.FC<ChapterChromeProps> = ({
                     />
                   </div>
 
-                  {/* Bus 3: Voices */}
+                  {/* Bus 4: Voices */}
                   <div>
                     <div className="flex items-center justify-between mb-1">
                       <span className="text-[#e6ddd0]">Character Voices</span>

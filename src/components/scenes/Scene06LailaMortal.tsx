@@ -82,7 +82,10 @@ export const Scene06LailaMortal: React.FC<SceneProps> = ({
         trigger: stormRef.current ?? sectionRef.current,
         start: 'top 55%',
         once: true,
-        onEnter: () => soundscape.triggerCue('thunder'),
+        onEnter: () => {
+          soundscape.triggerCue('thunder');
+          soundscape.playMotif('motif_transformation');
+        },
       });
     }, sectionRef);
 

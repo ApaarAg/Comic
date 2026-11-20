@@ -61,7 +61,10 @@ export const Scene04DeathsWorld: React.FC<SceneProps> = ({
         trigger: sectionRef.current,
         start: 'top 42%',
         once: true,
-        onEnter: () => soundscape.triggerCue('ding'),
+        onEnter: () => {
+          soundscape.triggerCue('ding');
+          soundscape.playMotif('motif_death');
+        },
       });
     }, sectionRef);
 
