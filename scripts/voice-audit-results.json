@@ -1,0 +1,386 @@
+[
+  {
+    "id": "s01-01",
+    "audioPath": "/assets/audio/voices/narrator/scene-01-opening.mp3",
+    "exists": true,
+    "sizeBytes": 92412,
+    "durationMs": 4800,
+    "emotion": "Deep, powerful, mature Indian English male baritone with rich chest resonance. Slow and deliberate pacing, subtle warmth, commanding presence."
+  },
+  {
+    "id": "s01-02",
+    "audioPath": "/assets/audio/voices/narrator/scene-01-highway.mp3",
+    "exists": true,
+    "sizeBytes": 103968,
+    "durationMs": 4400,
+    "emotion": "Deep, powerful, mature Indian English male baritone with rich chest resonance. Slow and deliberate pacing, subtle warmth, commanding presence."
+  },
+  {
+    "id": "s02-conn-01",
+    "audioPath": "/assets/audio/voices/narrator/scene-02-connector.mp3",
+    "exists": true,
+    "sizeBytes": 111744,
+    "durationMs": 4000,
+    "emotion": "Deep, powerful, mature Indian English male baritone with rich chest resonance. Slow and deliberate pacing, subtle warmth, commanding presence."
+  },
+  {
+    "id": "s03-02",
+    "audioPath": "/assets/audio/voices/narrator/s03-02-window.mp3",
+    "exists": true,
+    "sizeBytes": 126432,
+    "durationMs": 4800,
+    "emotion": "Deep, powerful, mature Indian English male baritone with rich chest resonance. Slow and deliberate pacing, subtle warmth, commanding presence."
+  },
+  {
+    "id": "s04-conn-01",
+    "audioPath": "/assets/audio/voices/narrator/scene-04-connector.mp3",
+    "exists": true,
+    "sizeBytes": 112320,
+    "durationMs": 4600,
+    "emotion": "Deep, powerful, mature Indian English male baritone with rich chest resonance. Slow and deliberate pacing, subtle warmth, commanding presence."
+  },
+  {
+    "id": "s05-01",
+    "audioPath": "/assets/audio/voices/narrator/s05-01-fall.mp3",
+    "exists": true,
+    "sizeBytes": 132192,
+    "durationMs": 5200,
+    "emotion": "Deep, powerful, mature Indian English male baritone with rich chest resonance. Slow and deliberate pacing, subtle warmth, commanding presence."
+  },
+  {
+    "id": "s05-02",
+    "audioPath": "/assets/audio/voices/narrator/s05-02-birth.mp3",
+    "exists": true,
+    "sizeBytes": 151776,
+    "durationMs": 5400,
+    "emotion": "Deep, powerful, mature Indian English male baritone with rich chest resonance. Slow and deliberate pacing, subtle warmth, commanding presence."
+  },
+  {
+    "id": "s05-03",
+    "audioPath": "/assets/audio/voices/narrator/s05-03-darius.mp3",
+    "exists": true,
+    "sizeBytes": 176832,
+    "durationMs": 5800,
+    "emotion": "Deep, powerful, mature Indian English male baritone with rich chest resonance. Slow and deliberate pacing, subtle warmth, commanding presence."
+  },
+  {
+    "id": "s06-conn-01",
+    "audioPath": "/assets/audio/voices/narrator/scene-06-connector.mp3",
+    "exists": true,
+    "sizeBytes": 72288,
+    "durationMs": 3200,
+    "emotion": "Deep, powerful, mature Indian English male baritone with rich chest resonance. Slow and deliberate pacing, subtle warmth, commanding presence."
+  },
+  {
+    "id": "s07-conn-01",
+    "audioPath": "/assets/audio/voices/narrator/scene-07-connector.mp3",
+    "exists": true,
+    "sizeBytes": 101088,
+    "durationMs": 3800,
+    "emotion": "Deep, powerful, mature Indian English male baritone with rich chest resonance. Slow and deliberate pacing, subtle warmth, commanding presence."
+  },
+  {
+    "id": "s08-conn-01",
+    "audioPath": "/assets/audio/voices/narrator/scene-08-connector.mp3",
+    "exists": true,
+    "sizeBytes": 72288,
+    "durationMs": 3000,
+    "emotion": "Deep, powerful, mature Indian English male baritone with rich chest resonance. Slow and deliberate pacing, subtle warmth, commanding presence."
+  },
+  {
+    "id": "s09-01",
+    "audioPath": "/assets/audio/voices/narrator/s09-01-commerce.mp3",
+    "exists": true,
+    "sizeBytes": 99936,
+    "durationMs": 4200,
+    "emotion": "Deep, powerful, mature Indian English male baritone with rich chest resonance. Slow and deliberate pacing, subtle warmth, commanding presence."
+  },
+  {
+    "id": "s09-02",
+    "audioPath": "/assets/audio/voices/narrator/s09-02-midnight.mp3",
+    "exists": true,
+    "sizeBytes": 78201,
+    "durationMs": 4000,
+    "emotion": "Deep, powerful, mature Indian English male baritone with rich chest resonance. Slow and deliberate pacing, subtle warmth, commanding presence."
+  },
+  {
+    "id": "s10-conn-01",
+    "audioPath": "/assets/audio/voices/narrator/scene-10-connector.mp3",
+    "exists": true,
+    "sizeBytes": 79037,
+    "durationMs": 3400,
+    "emotion": "Deep, powerful, mature Indian English male baritone with rich chest resonance. Slow and deliberate pacing, subtle warmth, commanding presence."
+  },
+  {
+    "id": "s02-01",
+    "audioPath": "/assets/audio/voices/supporting/s02-01-mrs-shah.mp3",
+    "exists": true,
+    "sizeBytes": 59811,
+    "durationMs": 3500,
+    "emotion": "Breathless panic over the phone; rising urgency as labor pains strike."
+  },
+  {
+    "id": "s02-02",
+    "audioPath": "/assets/audio/voices/supporting/s02-02-driver.mp3",
+    "exists": true,
+    "sizeBytes": 56049,
+    "durationMs": 3500,
+    "emotion": "Flustered Mumbai taxi street urgency over traffic noise."
+  },
+  {
+    "id": "s02-03",
+    "audioPath": "/assets/audio/voices/supporting/s02-03-mrs-shah-baby.mp3",
+    "exists": true,
+    "sizeBytes": 27210,
+    "durationMs": 3500,
+    "emotion": "Breathless panic over the phone; rising urgency as labor pains strike."
+  },
+  {
+    "id": "s03-01",
+    "audioPath": "/assets/audio/voices/dhiraj/s03-01-dhiraj.mp3",
+    "exists": true,
+    "sizeBytes": 133372,
+    "durationMs": 3500,
+    "emotion": "Animated, slightly pretentious university film-student swagger."
+  },
+  {
+    "id": "s04-01",
+    "audioPath": "/assets/audio/voices/death/s04-01-death-hold.mp3",
+    "exists": true,
+    "sizeBytes": 18851,
+    "durationMs": 3500,
+    "emotion": "Regal, elegant female authority with dark velvety composure—cynical confidence cracking into sheer outrage and disbelief when fired."
+  },
+  {
+    "id": "s04-02",
+    "audioPath": "/assets/audio/voices/supporting/s04-02-agni-way.mp3",
+    "exists": true,
+    "sizeBytes": 32225,
+    "durationMs": 3500,
+    "emotion": "Polite, slightly harried celestial bureaucrat trying to keep diplomatic peace."
+  },
+  {
+    "id": "s04-03",
+    "audioPath": "/assets/audio/voices/supporting/s04-03-god-seat.mp3",
+    "exists": true,
+    "sizeBytes": 23448,
+    "durationMs": 3500,
+    "emotion": "Golden warm bass, smiling vocal cords, disarming corporate-divine finality."
+  },
+  {
+    "id": "s04-04",
+    "audioPath": "/assets/audio/voices/supporting/s04-04-god-hobbies.mp3",
+    "exists": true,
+    "sizeBytes": 161375,
+    "durationMs": 3500,
+    "emotion": "Golden warm bass, smiling vocal cords, disarming corporate-divine finality."
+  },
+  {
+    "id": "s04-05",
+    "audioPath": "/assets/audio/voices/death/s04-05-death-why.mp3",
+    "exists": true,
+    "sizeBytes": 24284,
+    "durationMs": 3500,
+    "emotion": "Regal, elegant female authority with dark velvety composure—cynical confidence cracking into sheer outrage and disbelief when fired."
+  },
+  {
+    "id": "s04-06",
+    "audioPath": "/assets/audio/voices/supporting/s04-06-god-eternity.mp3",
+    "exists": true,
+    "sizeBytes": 64826,
+    "durationMs": 3500,
+    "emotion": "Golden warm bass, smiling vocal cords, disarming corporate-divine finality."
+  },
+  {
+    "id": "s04-07",
+    "audioPath": "/assets/audio/voices/death/s04-07-death-eternity.mp3",
+    "exists": true,
+    "sizeBytes": 35987,
+    "durationMs": 3500,
+    "emotion": "Regal, elegant female authority with dark velvety composure—cynical confidence cracking into sheer outrage and disbelief when fired."
+  },
+  {
+    "id": "s04-08",
+    "audioPath": "/assets/audio/voices/supporting/s04-08-god-fired.mp3",
+    "exists": true,
+    "sizeBytes": 37659,
+    "durationMs": 3500,
+    "emotion": "Golden warm bass, smiling vocal cords, disarming corporate-divine finality."
+  },
+  {
+    "id": "s04-09",
+    "audioPath": "/assets/audio/voices/death/s04-09-death-outrage.mp3",
+    "exists": true,
+    "sizeBytes": 128774,
+    "durationMs": 3500,
+    "emotion": "Regal, elegant female authority with dark velvety composure—cynical confidence cracking into sheer outrage and disbelief when fired."
+  },
+  {
+    "id": "s04-10",
+    "audioPath": "/assets/audio/voices/supporting/s04-10-god-corporate.mp3",
+    "exists": true,
+    "sizeBytes": 47272,
+    "durationMs": 3500,
+    "emotion": "Golden warm bass, smiling vocal cords, disarming corporate-divine finality."
+  },
+  {
+    "id": "s04-11",
+    "audioPath": "/assets/audio/voices/death/s04-11-death-lost.mp3",
+    "exists": true,
+    "sizeBytes": 51034,
+    "durationMs": 3500,
+    "emotion": "Regal, elegant female authority with dark velvety composure—cynical confidence cracking into sheer outrage and disbelief when fired."
+  },
+  {
+    "id": "s06-01",
+    "audioPath": "/assets/audio/voices/death/s06-01-death-agni.mp3",
+    "exists": true,
+    "sizeBytes": 12999,
+    "durationMs": 3500,
+    "emotion": "Regal, elegant female authority with dark velvety composure—cynical confidence cracking into sheer outrage and disbelief when fired."
+  },
+  {
+    "id": "s06-02",
+    "audioPath": "/assets/audio/voices/supporting/s06-02-agni-no.mp3",
+    "exists": true,
+    "sizeBytes": 42674,
+    "durationMs": 3500,
+    "emotion": "Polite, slightly harried celestial bureaucrat trying to keep diplomatic peace."
+  },
+  {
+    "id": "s06-03",
+    "audioPath": "/assets/audio/voices/supporting/s06-03-agni-fine.mp3",
+    "exists": true,
+    "sizeBytes": 33061,
+    "durationMs": 3500,
+    "emotion": "Polite, slightly harried celestial bureaucrat trying to keep diplomatic peace."
+  },
+  {
+    "id": "s06-04",
+    "audioPath": "/assets/audio/voices/death/s06-04-death-close.mp3",
+    "exists": true,
+    "sizeBytes": 74439,
+    "durationMs": 3500,
+    "emotion": "Regal, elegant female authority with dark velvety composure—cynical confidence cracking into sheer outrage and disbelief when fired."
+  },
+  {
+    "id": "s06-05",
+    "audioPath": "/assets/audio/voices/death/s06-05-death-mortal.mp3",
+    "exists": true,
+    "sizeBytes": 55213,
+    "durationMs": 3500,
+    "emotion": "Regal, elegant female authority with dark velvety composure—cynical confidence cracking into sheer outrage and disbelief when fired."
+  },
+  {
+    "id": "s07-01",
+    "audioPath": "/assets/audio/voices/laila/s07-01-laila-awful.mp3",
+    "exists": true,
+    "sizeBytes": 29300,
+    "durationMs": 3500,
+    "emotion": "Husky, breathless, mortal aches, dry mordant humor concealing empathy."
+  },
+  {
+    "id": "s07-02",
+    "audioPath": "/assets/audio/voices/munmun/s07-02-munmun-dead.mp3",
+    "exists": true,
+    "sizeBytes": 54377,
+    "durationMs": 3500,
+    "emotion": "Silvery, bright, quirky teenage ghost in a moonlit ward."
+  },
+  {
+    "id": "s07-03",
+    "audioPath": "/assets/audio/voices/laila/s07-03-laila-who.mp3",
+    "exists": true,
+    "sizeBytes": 15925,
+    "durationMs": 3500,
+    "emotion": "Husky, breathless, mortal aches, dry mordant humor concealing empathy."
+  },
+  {
+    "id": "s07-04",
+    "audioPath": "/assets/audio/voices/munmun/s07-04-munmun-ghost.mp3",
+    "exists": true,
+    "sizeBytes": 50198,
+    "durationMs": 3500,
+    "emotion": "Silvery, bright, quirky teenage ghost in a moonlit ward."
+  },
+  {
+    "id": "s07-05",
+    "audioPath": "/assets/audio/voices/laila/s07-05-laila-name.mp3",
+    "exists": true,
+    "sizeBytes": 24284,
+    "durationMs": 3500,
+    "emotion": "Husky, breathless, mortal aches, dry mordant humor concealing empathy."
+  },
+  {
+    "id": "s07-06",
+    "audioPath": "/assets/audio/voices/munmun/s07-06-munmun-next.mp3",
+    "exists": true,
+    "sizeBytes": 30136,
+    "durationMs": 3500,
+    "emotion": "Silvery, bright, quirky teenage ghost in a moonlit ward."
+  },
+  {
+    "id": "s08-01",
+    "audioPath": "/assets/audio/voices/munmun/s08-01-munmun-darius.mp3",
+    "exists": true,
+    "sizeBytes": 83634,
+    "durationMs": 3500,
+    "emotion": "Silvery, bright, quirky teenage ghost in a moonlit ward."
+  },
+  {
+    "id": "s08-02",
+    "audioPath": "/assets/audio/voices/laila/s08-02-laila-cant.mp3",
+    "exists": true,
+    "sizeBytes": 55213,
+    "durationMs": 3500,
+    "emotion": "Husky, breathless, mortal aches, dry mordant humor concealing empathy."
+  },
+  {
+    "id": "s08-03",
+    "audioPath": "/assets/audio/voices/supporting/s08-03-guard.mp3",
+    "exists": true,
+    "sizeBytes": 97845,
+    "durationMs": 3500,
+    "emotion": "Booming, urgent raised voice echoing down hospital stairwell."
+  },
+  {
+    "id": "s10-01",
+    "audioPath": "/assets/audio/voices/laila/s10-01-laila-wake.mp3",
+    "exists": true,
+    "sizeBytes": 105786,
+    "durationMs": 3500,
+    "emotion": "Husky, breathless, mortal aches, dry mordant humor concealing empathy."
+  },
+  {
+    "id": "s10-02",
+    "audioPath": "/assets/audio/voices/supporting/s10-02-pranah-back.mp3",
+    "exists": true,
+    "sizeBytes": 61065,
+    "durationMs": 3500,
+    "emotion": "Serene, affectionate, softly amused warmth over morning tea."
+  },
+  {
+    "id": "s10-03",
+    "audioPath": "/assets/audio/voices/laila/s10-03-laila-baby.mp3",
+    "exists": true,
+    "sizeBytes": 97845,
+    "durationMs": 3500,
+    "emotion": "Husky, breathless, mortal aches, dry mordant humor concealing empathy."
+  },
+  {
+    "id": "s10-04",
+    "audioPath": "/assets/audio/voices/supporting/s10-04-pranah-lifetime.mp3",
+    "exists": true,
+    "sizeBytes": 120833,
+    "durationMs": 3500,
+    "emotion": "Serene, affectionate, softly amused warmth over morning tea."
+  },
+  {
+    "id": "s10-05",
+    "audioPath": "/assets/audio/voices/laila/s10-05-laila-closing.mp3",
+    "exists": true,
+    "sizeBytes": 26374,
+    "durationMs": 3500,
+    "emotion": "Husky, breathless, mortal aches, dry mordant humor concealing empathy."
+  }
+]

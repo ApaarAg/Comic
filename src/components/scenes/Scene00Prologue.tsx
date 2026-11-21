@@ -93,25 +93,14 @@ export const Scene00Prologue: React.FC<Scene00PrologueProps> = ({
   }, [audioUnlocked, stageProgress, narrative]);
 
   // Compute keyframe-driven visual envelopes
-  const darknessOpacity = audioUnlocked
-    ? Math.max(0, 1 - stageProgress * 6) * 0.12
-    : Math.max(0, 1 - stageProgress * 4.5);
-  const skylineOpacity = audioUnlocked
-    ? Math.min(1, Math.max(0.78, stageProgress * 2))
-    : Math.min(1, Math.max(0, (stageProgress - 0.08) / 0.22));
+  const darknessOpacity = Math.max(0, 0.12 - stageProgress * 1.5);
+  const skylineOpacity = 1.0;
 
-  // Opening Canvas: Once Upon a Falling Starr envelope
-  const canvasOpacity = audioUnlocked
-    ? stageProgress < 0.45
+  // Opening Canvas: Once Upon a Falling Starr envelope (visible from the start)
+  const canvasOpacity =
+    stageProgress < 0.45
       ? 1
-      : Math.max(0, 1 - (stageProgress - 0.45) / 0.09)
-    : stageProgress < 0.12
-      ? 0
-      : stageProgress < 0.20
-        ? (stageProgress - 0.12) / 0.08
-        : stageProgress < 0.48
-          ? 1
-          : Math.max(0, 1 - (stageProgress - 0.48) / 0.07);
+      : Math.max(0, 1 - (stageProgress - 0.45) / 0.09);
 
   // Title Manifestation envelope (0.54 – 0.82)
   const titleOpacity =
@@ -216,44 +205,58 @@ export const Scene00Prologue: React.FC<Scene00PrologueProps> = ({
                       </span>
                     </div>
                     <div className="flex items-center gap-2">
-                      <span className="font-mono text-[10px] uppercase tracking-wider text-[#ffd29d]/85 bg-[#f28b50]/15 px-2.5 py-0.5 rounded border border-[#f28b50]/30">
-                        Brian · 1.05x
-                      </span>
-                      {narrative?.activeNarrationId === 's00-01' && (
+                      {!audioUnlocked ? (
                         <button
                           type="button"
-                          onClick={() => {
-                            if (narrative.audioState === 'Paused') {
-                              narrative.resumeNarrator();
-                            } else {
-                              narrative.pauseNarrator();
-                            }
-                          }}
-                          className="inline-flex items-center gap-1 px-2.5 py-1 rounded border border-white/20 bg-black/40 hover:border-[#f28b50] hover:text-[#f28b50] text-[#e6ddd0] text-xs font-mono transition-all cursor-pointer shadow-md"
-                          title={narrative.audioState === 'Paused' ? 'Resume Opening Narration' : 'Pause Opening Narration'}
+                          onClick={handleUnlock}
+                          className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#f28b50] hover:bg-[#ff9c65] text-black text-[11px] font-mono font-bold tracking-wider uppercase transition-all cursor-pointer shadow-[0_0_14px_rgba(242,139,80,0.55)]"
+                          title="Enter Experience & Enable Audio"
                         >
-                          {narrative.audioState === 'Paused' ? (
-                            <>
-                              <Play className="w-3 h-3 text-[#f28b50]" />
-                              <span className="text-[10px] uppercase tracking-wider">Resume</span>
-                            </>
-                          ) : (
-                            <>
-                              <Pause className="w-3 h-3 text-[#f28b50]" />
-                              <span className="text-[10px] uppercase tracking-wider">Pause</span>
-                            </>
-                          )}
+                          <Volume2 className="w-3.5 h-3.5" />
+                          <span>Enter & Listen</span>
                         </button>
+                      ) : (
+                        <>
+                          <span className="font-mono text-[10px] uppercase tracking-wider text-[#ffd29d]/85 bg-[#f28b50]/15 px-2.5 py-0.5 rounded border border-[#f28b50]/30">
+                            Brian · 1.05x
+                          </span>
+                          {narrative?.activeNarrationId === 's00-01' && (
+                            <button
+                              type="button"
+                              onClick={() => {
+                                if (narrative.audioState === 'Paused') {
+                                  narrative.resumeNarrator();
+                                } else {
+                                  narrative.pauseNarrator();
+                                }
+                              }}
+                              className="inline-flex items-center gap-1 px-2.5 py-1 rounded border border-white/20 bg-black/40 hover:border-[#f28b50] hover:text-[#f28b50] text-[#e6ddd0] text-xs font-mono transition-all cursor-pointer shadow-md"
+                              title={narrative.audioState === 'Paused' ? 'Resume Opening Narration' : 'Pause Opening Narration'}
+                            >
+                              {narrative.audioState === 'Paused' ? (
+                                <>
+                                  <Play className="w-3 h-3 text-[#f28b50]" />
+                                  <span className="text-[10px] uppercase tracking-wider">Resume</span>
+                                </>
+                              ) : (
+                                <>
+                                  <Pause className="w-3 h-3 text-[#f28b50]" />
+                                  <span className="text-[10px] uppercase tracking-wider">Pause</span>
+                                </>
+                              )}
+                            </button>
+                          )}
+                          <button
+                            type="button"
+                            onClick={() => narrative?.triggerNarrationBeat('s00-01', true)}
+                            className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded border border-white/20 bg-black/40 hover:border-[#f28b50] hover:text-[#f28b50] text-[#e6ddd0] text-xs font-mono transition-all cursor-pointer shadow-md"
+                            title="Replay Opening Narration"
+                          >
+                            <RotateCcw className="w-3 h-3 text-[#f28b50]" />
+                            <span className="text-[10px] uppercase tracking-wider">Replay</span>
+                          </button>
+                        </>
                       )}
-                      <button
-                        type="button"
-                        onClick={() => narrative?.triggerNarrationBeat('s00-01', true)}
-                        className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded border border-white/20 bg-black/40 hover:border-[#f28b50] hover:text-[#f28b50] text-[#e6ddd0] text-xs font-mono transition-all cursor-pointer shadow-md"
-                        title="Replay Opening Narration"
-                      >
-                        <RotateCcw className="w-3 h-3 text-[#f28b50]" />
-                        <span className="text-[10px] uppercase tracking-wider">Replay</span>
-                      </button>
                     </div>
                   </div>
 

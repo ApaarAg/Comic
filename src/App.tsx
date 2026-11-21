@@ -34,6 +34,7 @@ import { Scene10EightYearsLater } from './components/scenes/Scene10EightYearsLat
 import { NarrativeProvider } from './narrative/NarrativeEngine';
 import { SCENE_NARRATION_BEATS } from './narrative/narrativeManifest';
 import { CinematicCaptionBar } from './components/CinematicCaptionBar';
+import { CinematicStartupCurtain } from './components/CinematicStartupCurtain';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -49,6 +50,7 @@ function getPrefersReducedMotion(): boolean {
 
 export default function App() {
   const [hasEntered, setHasEntered] = useState<boolean>(true);
+  const [isStageReady, setIsStageReady] = useState<boolean>(false);
   const [reducedMotion, setReducedMotion] = useState<boolean>(getPrefersReducedMotion);
   const [scrollProgress, setScrollProgress] = useState<number>(0);
   const [activeSceneIndex, setActiveSceneIndex] = useState<number>(0);
@@ -205,12 +207,21 @@ export default function App() {
     handleJumpToScene('scene-01');
   }, [handleJumpToScene]);
 
+  const handleStageReady = useCallback(() => {
+    setIsStageReady(true);
+  }, []);
+
   return (
     <NarrativeProvider narrativeBeats={SCENE_NARRATION_BEATS} scrollProgress={scrollProgress}>
       <div
         className="relative min-h-screen bg-[#0b0d17] text-[#f4efe6]"
         data-active-scene={hasEntered ? activeScene.id : 'prologue'}
       >
+        <CinematicStartupCurtain
+          reducedMotion={reducedMotion}
+          onReady={handleStageReady}
+        />
+
         <AtmosphereOverlay
           activeScene={activeScene}
           reducedMotion={reducedMotion}
@@ -324,12 +335,12 @@ export default function App() {
               />
 
               <CinematicTransition
-                kind="storm-dissolve"
+                kind="celestial-portal"
                 fromColor="#1c1429"
                 toColor="#11162a"
-                accentColor="#63b8d6"
-                eyebrow="Transition V · The Descent"
-                caption="Thunder tore the winter sky as an unemployed goddess stepped down into broken bones."
+                accentColor="#8ad3eb"
+                eyebrow="Transition V · The Celestial Stairwell"
+                caption="In the quiet expanse of the divine spire, Death stood before the cosmic accountant to surrender her mantle."
                 artworkUrl="/assets/chapter1/p16_panel01.webp"
                 reducedMotion={reducedMotion}
               />
@@ -341,11 +352,33 @@ export default function App() {
                 onSkipNextScene={() => handleJumpToScene('scene-07')}
               />
 
+              <CinematicTransition
+                kind="storm-dissolve"
+                fromColor="#11162a"
+                toColor="#14202b"
+                accentColor="#63b8d6"
+                eyebrow="Transition VI · The Descent"
+                caption="Thunder tore the winter sky as an unemployed goddess stepped down into broken bones."
+                artworkUrl="/assets/chapter1/p17_panel01.webp"
+                reducedMotion={reducedMotion}
+              />
+
               <Scene07Hospital
                 reducedMotion={reducedMotion}
                 activeSceneIndex={activeSceneIndex}
                 onInspectPanel={setInspectedPanel}
                 onSkipNextScene={() => handleJumpToScene('scene-08')}
+              />
+
+              <CinematicTransition
+                kind="panel-slice"
+                fromColor="#14202b"
+                toColor="#181426"
+                accentColor="#f06a7e"
+                eyebrow="Transition VII · Into the Rain"
+                caption="Holding the infant to her chest, Laila slipped through emergency doors into the Mumbai storm."
+                artworkUrl="/assets/chapter1/p20_panel01.webp"
+                reducedMotion={reducedMotion}
               />
 
               <Scene08Escape
@@ -360,9 +393,9 @@ export default function App() {
                 fromColor="#181426"
                 toColor="#0a0b15"
                 accentColor="#f5b041"
-                eyebrow="Transition VI · Midnight Highway"
+                eyebrow="Transition VIII · Midnight Highway"
                 caption="Bare feet struck wet pavement just as twelve-wheeler beams swept down the avenue."
-                artworkUrl="/assets/chapter1/p20_panel01.webp"
+                artworkUrl="/assets/chapter1/p21_panel01.webp"
                 reducedMotion={reducedMotion}
               />
 
@@ -378,7 +411,7 @@ export default function App() {
                 fromColor="#0a0b15"
                 toColor="#171c26"
                 accentColor="#f2a866"
-                eyebrow="Transition VII · Eight Years Later"
+                eyebrow="Transition IX · Eight Years Later"
                 caption="Harbour mist lifted off the Gateway of India, carrying the warmth of morning tea."
                 artworkUrl="/assets/chapter1/p25_panel01.webp"
                 reducedMotion={reducedMotion}

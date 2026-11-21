@@ -131,11 +131,11 @@ export const Scene06LailaMortal: React.FC<SceneProps> = ({
                 </div>
               )}
 
-              {/* Beat 4: Plunge into Mortal Flesh (Panel 17_05) */}
+              {/* Beat 4: Plunge into Mortal Flesh (Panel 17_04) */}
               {stageProgress >= 0.80 && (
                 <div className="w-full max-w-2xl transition-all duration-500 ease-out">
                   <ComicPanel
-                    src="/assets/chapter1/p17_panel05.webp"
+                    src="/assets/chapter1/p17_panel04.webp"
                     alt="Death plummeting through thunder and lightning down toward the hospital"
                     isActive={true}
                     onInspect={onInspectPanel}

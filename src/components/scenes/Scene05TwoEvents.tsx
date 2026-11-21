@@ -63,92 +63,133 @@ export const Scene05TwoEvents: React.FC<SceneProps> = ({
             </div>
 
             {/* Stage Content */}
-            <div className="relative w-full flex items-center justify-center min-h-[360px] sm:min-h-[460px] max-h-[720px]">
-              {/* Prelude: Agni's Desk & Pamphlet (stageProgress < 0.25) */}
-              {stageProgress < 0.25 && (
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 w-full max-w-3xl transition-all duration-500 ease-out items-center">
-                  <ComicPanel
-                    src="/assets/chapter1/p13_panel01.webp"
-                    alt="Death slumping into melancholy before Agni's desk"
-                    isActive={true}
-                    onInspect={onInspectPanel}
-                  />
-                  <ComicPanel
-                    src="/assets/chapter1/p13_panel02.webp"
-                    alt="Pamphlet reading: A Mortal World of Possibilities — A helpful guide for an extraordinary life after godhood"
-                    isActive={true}
-                    onInspect={onInspectPanel}
-                  />
+            <div className="relative w-full flex flex-col items-center justify-center min-h-[400px] sm:min-h-[480px] max-h-[760px]">
+              {/* Convergence Indicator Bar - Always visible across Scene 05 */}
+              <div className="w-full max-w-3xl mb-4 flex flex-wrap items-center justify-between gap-2 border-b border-white/10 pb-2 text-[10px] sm:text-xs font-mono uppercase tracking-widest">
+                <span className={stageProgress >= 0.40 && stageProgress < 0.65 ? 'text-[#f06a7e] font-bold' : 'text-[#f06a7e]/60'}>
+                  Parel · The Fall
+                </span>
+                <span className="text-[#f7e7da]/90 font-semibold px-2 py-0.5 rounded bg-white/5 border border-white/10">
+                  {stageProgress < 0.40
+                    ? '10:02 PM · The Divine Office'
+                    : convergence > 0.72
+                    ? '10:02 PM · Convergence'
+                    : '10:02 PM · Simultaneous Crossing'}
+                </span>
+                <span className={stageProgress >= 0.65 ? 'text-[#7bc8e2] font-bold' : 'text-[#7bc8e2]/60'}>
+                  Amravati · The Birth
+                </span>
+              </div>
+
+              {/* Sequential Full-Viewport Panel Presentations */}
+              {/* Beat 1: Agni's Desk (stageProgress < 0.20) */}
+              {stageProgress < 0.20 && (
+                <div className="w-full max-w-3xl flex flex-col items-center justify-center transition-all duration-500 ease-out space-y-3">
+                  <div className="w-full max-h-[68vh] flex items-center justify-center">
+                    <ComicPanel
+                      src="/assets/chapter1/p13_panel01.webp"
+                      alt="Death slumping into melancholy before Agni's desk"
+                      isActive={true}
+                      onInspect={onInspectPanel}
+                      inspectNote="Agni's Celestial Office · Death slumping into melancholy upon hearing of her dismissal."
+                    />
+                  </div>
+                  <p className="text-xs sm:text-sm font-display italic text-[#dfd3dd]/85 text-center">
+                    &ldquo;Agni's Celestial Office · The severance conversation.&rdquo;
+                  </p>
                 </div>
               )}
 
-              {/* Parallel Split Sequence (stageProgress >= 0.25) */}
-              {stageProgress >= 0.25 && (
-                <div className="w-full max-w-4xl border border-white/12 bg-[#141022]/90 p-4 sm:p-6 transition-all duration-500 ease-out">
-                  {/* Convergence Indicator Bar */}
-                  <div className="mb-4 flex flex-wrap items-center justify-between gap-2 border-b border-white/10 pb-2 text-[10px] sm:text-xs font-mono uppercase tracking-widest text-[#f06a7e]">
-                    <span>Parel · The Fall</span>
-                    <span className="text-[#f7e7da]/80">
-                      {convergence > 0.72 ? '10:02 PM · Convergence' : 'Simultaneous Crossing'}
-                    </span>
-                    <span className="text-[#7bc8e2]">Amravati · The Birth</span>
+              {/* Beat 2: The Severance Pamphlet (0.20 <= stageProgress < 0.40) */}
+              {stageProgress >= 0.20 && stageProgress < 0.40 && (
+                <div className="w-full max-w-3xl flex flex-col items-center justify-center transition-all duration-500 ease-out space-y-3">
+                  <div className="w-full max-h-[68vh] flex items-center justify-center">
+                    <ComicPanel
+                      src="/assets/chapter1/p13_panel02.webp"
+                      alt="Pamphlet reading: A Mortal World of Possibilities — A helpful guide for an extraordinary life after godhood"
+                      isActive={true}
+                      onInspect={onInspectPanel}
+                      inspectNote="Pamphlet: A Mortal World of Possibilities — A helpful guide for an extraordinary life after godhood."
+                    />
                   </div>
+                  <p className="text-xs sm:text-sm font-display italic text-[#f06a7e] text-center">
+                    &ldquo;A Mortal World of Possibilities · A helpful guide for an extraordinary life after godhood.&rdquo;
+                  </p>
+                </div>
+              )}
 
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 items-center">
-                    {/* Track A: The Fall */}
-                    <div className="space-y-3">
-                      <div
-                        className="transition-transform duration-300"
-                        style={{
-                          transform: reducedMotion
-                            ? undefined
-                            : `translateY(${Math.round((fallProgress - 0.5) * 16)}px)`,
-                        }}
-                      >
-                        <ComicPanel
-                          src="/assets/chapter1/p13_panel03.webp"
-                          alt="The girl falling through the twilight air two floors down toward the ground"
-                          isActive={stageProgress < 0.65}
-                          onInspect={onInspectPanel}
-                        />
-                      </div>
-                      <p className="text-xs italic text-[#dfd3dd]/75">
-                        &ldquo;...two floors down and fast approaching the ground.&rdquo;
-                      </p>
-                    </div>
-
-                    {/* Track B: The Birth */}
-                    <div className="space-y-3">
-                      <div
-                        className="transition-transform duration-300"
-                        style={{
-                          transform: reducedMotion
-                            ? undefined
-                            : `scale(${0.96 + convergence * 0.04})`,
-                        }}
-                      >
-                        <ComicPanel
-                          src={
-                            stageProgress >= 0.75
-                              ? '/assets/chapter1/p13_panel06.webp'
-                              : '/assets/chapter1/p13_panel05.webp'
-                          }
-                          alt={
-                            stageProgress >= 0.75
-                              ? 'Newborn Darius crying loudly in the midwife hands'
-                              : "Mrs. Shah in Amravati Hospital squeezing her husband's hand"
-                          }
-                          isActive={stageProgress >= 0.65}
-                          onInspect={onInspectPanel}
-                        />
-                      </div>
-                      <p className="text-xs italic text-[#7bc8e2]/85">
-                        {stageProgress >= 0.75
-                          ? '&ldquo;...a new life came into being.&rdquo;'
-                          : "&ldquo;...Mrs. Shah squeezing her husband's hand...&rdquo;"}
-                      </p>
-                    </div>
+              {/* Beat 3: Track A — The Fall (0.40 <= stageProgress < 0.65) */}
+              {stageProgress >= 0.40 && stageProgress < 0.65 && (
+                <div className="w-full max-w-3xl flex flex-col items-center justify-center transition-all duration-500 ease-out space-y-3">
+                  <div
+                    className="w-full max-h-[68vh] flex items-center justify-center transition-transform duration-300"
+                    style={{
+                      transform: reducedMotion
+                        ? undefined
+                        : `translateY(${Math.round((fallProgress - 0.5) * 20)}px)`,
+                    }}
+                  >
+                    <ComicPanel
+                      src="/assets/chapter1/p13_panel03.webp"
+                      alt="The girl falling through the twilight air two floors down toward the ground"
+                      isActive={true}
+                      onInspect={onInspectPanel}
+                      inspectNote="Parel · 10:02 PM: The girl falling through the twilight air two floors down."
+                    />
                   </div>
+                  <p className="text-xs sm:text-sm font-display italic text-[#f06a7e] text-center">
+                    &ldquo;It was around that time that the girl from the window at the party was falling through the air — two floors down and fast approaching the ground.&rdquo;
+                  </p>
+                </div>
+              )}
+
+              {/* Beat 4: Track B — The Birth: Labor (0.65 <= stageProgress < 0.82) */}
+              {stageProgress >= 0.65 && stageProgress < 0.82 && (
+                <div className="w-full max-w-3xl flex flex-col items-center justify-center transition-all duration-500 ease-out space-y-3">
+                  <div
+                    className="w-full max-h-[68vh] flex items-center justify-center transition-transform duration-300"
+                    style={{
+                      transform: reducedMotion
+                        ? undefined
+                        : `scale(${0.97 + convergence * 0.03})`,
+                    }}
+                  >
+                    <ComicPanel
+                      src="/assets/chapter1/p13_panel05.webp"
+                      alt="Mrs. Shah in Amravati Hospital squeezing her husband's hand"
+                      isActive={true}
+                      onInspect={onInspectPanel}
+                      inspectNote="Amravati Hospital · 10:02 PM: Mrs. Shah squeezing her husband's hand in labor."
+                    />
+                  </div>
+                  <p className="text-xs sm:text-sm font-display italic text-[#7bc8e2] text-center">
+                    &ldquo;Just as she hit the ground, Mrs. Shah was in the Amravati Hospital squeezing her husband's hand with such strength that he was screaming louder than her.&rdquo;
+                  </p>
+                </div>
+              )}
+
+              {/* Beat 5: Track B — The First Breath (stageProgress >= 0.82) */}
+              {stageProgress >= 0.82 && (
+                <div className="w-full max-w-3xl flex flex-col items-center justify-center transition-all duration-500 ease-out space-y-3">
+                  <div
+                    className="w-full max-h-[68vh] flex items-center justify-center transition-transform duration-300"
+                    style={{
+                      transform: reducedMotion
+                        ? undefined
+                        : `scale(${1.0 + convergence * 0.02})`,
+                    }}
+                  >
+                    <ComicPanel
+                      src="/assets/chapter1/p13_panel06.webp"
+                      alt="Newborn Darius crying loudly in the midwife hands"
+                      isActive={true}
+                      onInspect={onInspectPanel}
+                      inspectNote="Amravati Hospital · 10:02 PM: Darius takes his first breath."
+                    />
+                  </div>
+                  <p className="text-xs sm:text-sm font-display italic text-[#7bc8e2] text-center">
+                    &ldquo;...a new life came into being. And the world had its answer to death.&rdquo;
+                  </p>
                 </div>
               )}
             </div>

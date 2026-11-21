@@ -564,22 +564,22 @@ export const Scene01Mumbai: React.FC<SceneProps> = ({
             <div className="lg:col-span-5 space-y-4">
               <div className="border border-white/10 bg-[#121324]/85 p-6 backdrop-blur-md shadow-2xl">
                 <span className="font-mono text-[10px] uppercase tracking-[0.28em] text-[#f28b50] font-semibold">
-                  The Opening Canvas · Filipe Andrade
+                  Scene 01 · The City of Mumbai
                 </span>
                 <h3 className="font-display mt-2 text-2xl font-semibold text-[#f8f1e7]">
-                  Once Upon a Falling Starr
+                  Late December · 4:45 PM
                 </h3>
                 <p className="mt-3 font-display text-sm italic leading-relaxed text-[#dfd5c7]/90">
-                  &ldquo;It began on a Wednesday afternoon as a late December sun was just dipping below the Mumbai skyline. Down where the elevated highway curves between glass towers, the city exhaled in horns and heat.&rdquo;
+                  &ldquo;Down where the elevated highway curves between glass towers, the city exhaled in horns and heat.&rdquo;
                 </p>
                 <div className="mt-4 pt-3 border-t border-white/10 flex items-center justify-between text-xs text-[#cfc5b9]/75 flex-wrap gap-2">
                   <span className="font-mono text-[11px] text-[#f28b50]">Voice: The Chronicle (Brian · 1.05x)</span>
                   <div className="flex items-center gap-2">
                     <button
                       type="button"
-                      onClick={() => narrative?.triggerNarrationBeat('s00-01', true)}
+                      onClick={() => narrative?.triggerNarrationBeat('s01-02', true)}
                       className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded border border-white/15 bg-black/40 hover:border-[#f28b50] hover:text-[#f28b50] text-[#e6ddd0] text-[10px] font-mono transition-all cursor-pointer"
-                      title="Replay Opening Narration"
+                      title="Replay Highway Narration"
                     >
                       <RotateCcw className="w-3 h-3 text-[#f28b50]" />
                       <span>Replay</span>
@@ -653,22 +653,22 @@ export const Scene01Mumbai: React.FC<SceneProps> = ({
                 <div className="relative border border-white/10 bg-[#121324]/85 p-6 backdrop-blur-md shadow-2xl">
                   <div className="absolute -inset-x-2 -top-4 bottom-0 bg-gradient-to-r from-[#141225]/95 via-[#141225]/80 to-transparent pointer-events-none" aria-hidden="true" />
                   <span className="font-mono text-[10px] uppercase tracking-[0.28em] text-[#f28b50] font-semibold">
-                    The Opening Canvas · Filipe Andrade
+                    Scene 01 · The City of Mumbai
                   </span>
                   <h3 className="font-display mt-2 text-2xl font-semibold text-[#f8f1e7]">
-                    Once Upon a Falling Starr
+                    Late December · 4:45 PM
                   </h3>
                   <p className="mt-3 font-display text-sm italic leading-relaxed text-[#dfd5c7]/90">
-                    &ldquo;It began on a Wednesday afternoon as a late December sun was just dipping below the Mumbai skyline. Down where the elevated highway curves between glass towers, the city exhaled in horns and heat.&rdquo;
+                    &ldquo;Down where the elevated highway curves between glass towers, the city exhaled in horns and heat.&rdquo;
                   </p>
                   <div className="mt-4 pt-3 border-t border-white/10 flex items-center justify-between text-xs text-[#cfc5b9]/75 flex-wrap gap-2">
                     <span className="font-mono text-[11px] text-[#f28b50]">Voice: The Chronicle (Brian · 1.05x)</span>
                     <div className="flex items-center gap-2">
                       <button
                         type="button"
-                        onClick={() => narrative?.triggerNarrationBeat('s00-01', true)}
+                        onClick={() => narrative?.triggerNarrationBeat('s01-02', true)}
                         className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded border border-white/15 bg-black/40 hover:border-[#f28b50] hover:text-[#f28b50] text-[#e6ddd0] text-[10px] font-mono transition-all cursor-pointer"
-                        title="Replay Opening Narration"
+                        title="Replay Highway Narration"
                       >
                         <RotateCcw className="w-3 h-3 text-[#f28b50]" />
                         <span>Replay</span>
