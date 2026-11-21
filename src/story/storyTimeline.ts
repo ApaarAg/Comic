@@ -130,6 +130,8 @@ export interface TimelineBeat {
   audioCue?: AudioCueEvent;
   /** Visual hold duration in normalized progress */
   holdWindow?: { start: number; end: number };
+  /** Active visual panel window in normalized stage progress [start, end] */
+  panelWindow?: { start: number; end: number };
   /** Transition into next scene at end of track */
   transitionOut?: TransitionOutSpec;
 }

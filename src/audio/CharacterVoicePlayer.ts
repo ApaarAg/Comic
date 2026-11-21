@@ -221,6 +221,7 @@ class CharacterVoicePlayer {
 
   public setActiveScene(sceneId: string | null): void {
     if (this.activeSceneId === sceneId) return;
+    this.generation += 1;
     const previousSceneId = this.activeSceneId;
     this.activeSceneId = sceneId;
     this.trace({
@@ -231,10 +232,10 @@ class CharacterVoicePlayer {
       generation: this.generation,
     });
 
-    if (this.activeLineId && this.activeEventSceneId !== sceneId) {
-      this.stop(0, 'scene_changed');
+    if (this.activeLineId && (sceneId === null || this.activeEventSceneId !== sceneId)) {
+      this.cancelCurrent('scene_changed', 0);
     } else if (previousSceneId !== null && sceneId === null && this.activeHowl) {
-      this.stop(0, 'scene_changed');
+      this.cancelCurrent('scene_changed', 0);
     }
   }
 
@@ -291,7 +292,7 @@ class CharacterVoicePlayer {
       return existing;
     }
 
-    while (this.preloadedHowls.size >= 3) {
+    while (this.preloadedHowls.size >= 16) {
       const evictable = [...this.preloadedHowls.entries()].find(([, howl]) => howl !== this.activeHowl);
       if (!evictable) break;
       const [oldSrc, oldHowl] = evictable;
@@ -457,10 +458,10 @@ class CharacterVoicePlayer {
     const eventId = `${lineId}@${generation}`;
     const expectedSceneId = sceneId ?? this.activeSceneId;
 
-    if (expectedSceneId && expectedSceneId !== this.activeSceneId) {
+    if (!expectedSceneId || this.activeSceneId === null || expectedSceneId !== this.activeSceneId) {
       this.activeEventId = eventId;
       this.activeLineId = lineId;
-      this.activeEventSceneId = expectedSceneId;
+      this.activeEventSceneId = expectedSceneId ?? null;
       this.transitionLifecycle('CANCELLED', { reason: 'scene_changed' });
       this.activeLineId = null;
       this.activeEventSceneId = null;
@@ -482,11 +483,10 @@ class CharacterVoicePlayer {
     }
 
     try {
-      const available = await this.checkAvailableVoiceManifest();
       if (!this.isCurrent(generation, lineId, expectedSceneId)) return 'idle';
 
       const isRecordedAsset = Boolean(voiceAssetPath) &&
-        (available.has(voiceAssetPath!) || voiceAssetPath!.startsWith('/assets/audio/voices/'));
+        (voiceAssetPath!.startsWith('/assets/audio/') || (this.availableVoicePaths && this.availableVoicePaths.has(voiceAssetPath!)));
       if (!isRecordedAsset || !voiceAssetPath) {
         this.startCadenceFallback(generation, lineId, expectedSceneId ?? undefined, callbacks);
         return 'cadence-sync-only';
@@ -579,10 +579,14 @@ class CharacterVoicePlayer {
   }
 
   private isCurrent(generation: number, lineId: string, sceneId?: string | null): boolean {
-    return this.generation === generation &&
+    return (
+      this.generation === generation &&
       this.activeLineId === lineId &&
-      this.activeEventSceneId === (sceneId ?? null) &&
-      (!sceneId || !this.activeSceneId || this.activeSceneId === sceneId);
+      this.activeSceneId !== null &&
+      this.activeEventSceneId !== null &&
+      this.activeSceneId === this.activeEventSceneId &&
+      (!sceneId || this.activeSceneId === sceneId)
+    );
   }
 
   private startCadenceFallback(
