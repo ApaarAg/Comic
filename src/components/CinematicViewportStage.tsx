@@ -35,7 +35,6 @@ import { soundscape } from '../audio/soundscape';
 import { useOptionalNarrative } from '../narrative/NarrativeEngine';
 import { SyncedSpeechBubble } from './SyncedSpeechBubble';
 import { CHARACTER_STYLES, type DialogueLine } from '../story/dialogueManifest';
-import { Volume2, VolumeX } from 'lucide-react';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -146,7 +145,6 @@ export const CinematicViewportStage: React.FC<CinematicViewportStageProps> = Rea
   // Audio trigger arbitration
   const handleAudioUpdate = useCallback(
     (currProgress: number, prevProgress: number) => {
-      if (reducedMotion) return;
       if (characterVoicePlayer.getActiveSceneId() !== sceneId) return;
 
       syncNarrationLatchFromPlayer();
@@ -239,11 +237,6 @@ export const CinematicViewportStage: React.FC<CinematicViewportStageProps> = Rea
   useEffect(() => {
     const trackEl = trackRef.current;
     if (!trackEl) return;
-
-    if (reducedMotion) {
-      setStageProgress(0.5);
-      return;
-    }
 
     const ctx = gsap.context(() => {
       ScrollTrigger.create({
@@ -412,6 +405,7 @@ export const CinematicViewportStage: React.FC<CinematicViewportStageProps> = Rea
         {/* Layer 4: Embedded Character Speech Balloon (Anchored to framed character) */}
         {activeLine && (
           <div
+            data-testid="stage-speech-bubble"
             className="absolute z-40 pointer-events-auto transition-opacity duration-300"
             style={{
               left: isMobile
@@ -425,18 +419,18 @@ export const CinematicViewportStage: React.FC<CinematicViewportStageProps> = Rea
                       : '26%',
               right: isMobile ? '5%' : undefined,
               bottom: isMobile
-                ? (camera.focalPoint && camera.focalPoint.yPercent > 50
-                    ? undefined
-                    : 'max(1.25rem, env(safe-area-inset-bottom, 20px))')
+                ? (camera.focalPoint
+                    ? (camera.focalPoint.yPercent > 50 ? undefined : 'max(1.25rem, env(safe-area-inset-bottom, 20px))')
+                    : (camera.panYPercent > 0 || activeLine.side === 'bottom' ? undefined : 'max(1.25rem, env(safe-area-inset-bottom, 20px))'))
                 : visualState.speechBubble?.anchor
                   ? undefined
                   : activeLine.side === 'bottom'
                     ? '12%'
                     : '22%',
               top: isMobile
-                ? (camera.focalPoint && camera.focalPoint.yPercent > 50
-                    ? 'max(4.5rem, calc(env(safe-area-inset-top, 0px) + 4rem))'
-                    : undefined)
+                ? (camera.focalPoint
+                    ? (camera.focalPoint.yPercent > 50 ? 'max(4.5rem, calc(env(safe-area-inset-top, 0px) + 4rem))' : undefined)
+                    : (camera.panYPercent > 0 || activeLine.side === 'bottom' ? 'max(4.5rem, calc(env(safe-area-inset-top, 0px) + 4rem))' : undefined))
                 : !isMobile && visualState.speechBubble?.anchor
                   ? `${Math.round(visualState.speechBubble.anchor.y * 100)}%`
                   : undefined,

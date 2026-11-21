@@ -143,7 +143,7 @@ const FRAGMENT_SHADER = `
     // Soft top and bottom seamless edge feathering into adjacent sections
     float edgeFade = smoothstep(0.0, 0.2, uv.y) * smoothstep(1.0, 0.8, uv.y);
     col = mix(baseGrad, col, edgeFade);
-    gl_FragColor = vec4(col, 1.0);
+    gl_FragColor = vec4(col, edgeFade * uIntensity);
   }
 `;
 
@@ -241,7 +241,7 @@ export const CinematicTransition: React.FC<CinematicTransitionProps> = React.mem
       try {
         renderer = new THREE.WebGLRenderer({
           antialias: false,
-          alpha: false,
+          alpha: true,
           powerPreference: 'default',
         });
       } catch {
@@ -308,17 +308,37 @@ export const CinematicTransition: React.FC<CinematicTransitionProps> = React.mem
         }
       };
 
-      const drawFrame = () => {
+      let lastRenderTime = 0;
+      let stationaryFrames = 0;
+      let lastProgress = -1;
+
+      const drawFrame = (now: number = performance.now()) => {
         if (disposed || !renderer) return;
-        const elapsed = (performance.now() - startTime) * 0.001;
+
+        const isStationary = Math.abs(progressRef.current - lastProgress) < 0.0005;
+        lastProgress = progressRef.current;
+        if (isStationary) {
+          stationaryFrames++;
+        } else {
+          stationaryFrames = 0;
+        }
+
+        // Throttle idle loop to ~15fps after 60 stationary frames to conserve GPU
+        if (stationaryFrames > 60 && (now - lastRenderTime) < 66) {
+          frameId = window.requestAnimationFrame(drawFrame);
+          return;
+        }
+
+        lastRenderTime = now;
+        const elapsed = (now - startTime) * 0.001;
         const env = computeShaderTransitionEnvelope(progressRef.current, kind);
         material.uniforms.uTime.value = elapsed;
         material.uniforms.uProgress.value = progressRef.current;
-        material.uniforms.uIntensity.value = Math.max(0.35, env.intensity);
+        material.uniforms.uIntensity.value = env.intensity;
         renderer.render(scene, camera);
 
         if (isSoftwareGl) {
-          afterDraw(drawFrame);
+          afterDraw(() => drawFrame(performance.now()));
         } else {
           frameId = window.requestAnimationFrame(drawFrame);
         }
@@ -355,9 +375,19 @@ export const CinematicTransition: React.FC<CinematicTransitionProps> = React.mem
       resizeObs?.disconnect();
       geometry?.dispose();
       material?.dispose();
-      renderer?.dispose();
-      if (renderer && renderer.domElement.parentNode === host) {
-        host.removeChild(renderer.domElement);
+      if (renderer) {
+        try {
+          renderer.forceContextLoss();
+          const gl = renderer.getContext();
+          gl?.getExtension('WEBGL_lose_context')?.loseContext();
+        } catch {
+          // ignore context release errors gracefully
+        }
+        renderer.dispose();
+        if (renderer.domElement && renderer.domElement.parentNode === host) {
+          host.removeChild(renderer.domElement);
+        }
+        renderer = null;
       }
     };
   }, [accentColor, fromColor, isNearViewport, kind, reducedMotion, toColor]);

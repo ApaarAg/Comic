@@ -152,7 +152,7 @@ export const ChapterChrome: React.FC<ChapterChromeProps> = React.memo(({
                 role="dialog"
                 aria-label="Audio Bus Mixer"
                 data-testid="audio-mixer-popover"
-                className="absolute right-0 top-12 z-50 w-72 border border-white/15 bg-[#0d101d] p-4 shadow-2xl text-left"
+                className="absolute right-0 top-12 z-50 w-72 max-h-[calc(100dvh-4.5rem)] overflow-y-auto border border-white/15 bg-[#0d101d] p-4 shadow-2xl text-left"
               >
                 <div className="flex items-center justify-between border-b border-white/10 pb-2.5 mb-3">
                   <span className="font-mono text-[11px] uppercase tracking-[0.2em] text-[#f28b50]">
@@ -439,7 +439,7 @@ export const ChapterChrome: React.FC<ChapterChromeProps> = React.memo(({
         >
           <nav
             aria-label="Chapter scenes"
-            className="relative h-full w-full max-w-md overflow-y-auto border-l border-white/10 bg-[#0d101d] px-7 py-8 pb-[max(2rem,env(safe-area-inset-bottom,24px))] text-[#f6efe5] shadow-2xl"
+            className="relative h-full w-full max-w-md overflow-y-auto border-l border-white/10 bg-[#0d101d] px-7 pt-[max(2rem,calc(env(safe-area-inset-top,0px)+1.5rem))] pb-[max(2rem,calc(env(safe-area-inset-bottom,0px)+1.5rem))] pl-[max(1.75rem,env(safe-area-inset-left,0px))] pr-[max(1.75rem,env(safe-area-inset-right,0px))] text-[#f6efe5] shadow-2xl"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="flex items-center justify-between border-b border-white/10 pb-5">

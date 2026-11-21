@@ -133,9 +133,14 @@ export const SceneVideoBackdrop: React.FC<SceneVideoBackdropProps> = ({
     const applyScrub = (progress: number) => {
       latestProgress = progress;
       if (!Number.isFinite(video.duration) || video.duration <= 0) return;
+      if (video.seeking) return;
       const targetTime = computeVideoScrubTime(progress, video.duration);
       if (Math.abs(video.currentTime - targetTime) > 0.03) {
-        video.currentTime = targetTime;
+        if ('fastSeek' in video && typeof (video as any).fastSeek === 'function') {
+          (video as any).fastSeek(targetTime);
+        } else {
+          video.currentTime = targetTime;
+        }
       }
     };
 
@@ -180,7 +185,7 @@ export const SceneVideoBackdrop: React.FC<SceneVideoBackdropProps> = ({
       />
 
       {/* High-resolution background video layer */}
-      {backdropMode === 'video' && (
+      {backdropMode === 'video' && preloadStrategy !== 'none' && (
         <video
           ref={videoRef}
           src={spec.src}

@@ -223,8 +223,11 @@ export const SyncedSpeechBubble: React.FC<SyncedSpeechBubbleProps> = ({
   const effectivePlaybackMode = playbackMode ?? voiceSnap?.state ?? 'idle';
   const effectiveTimings = wordTimings ?? line.wordTimings;
 
+  const isAwaitingVoice =
+    syncToVoicePlayer && isActive && !isPast && !reducedMotion && effectiveElapsed === undefined;
+
   const shouldShowAllWords =
-    reducedMotion || isPast || !isActive || effectiveElapsed === undefined;
+    reducedMotion || isPast || (!isActive && !isAwaitingVoice);
 
   const revealState = shouldShowAllWords
     ? {
@@ -249,9 +252,29 @@ export const SyncedSpeechBubble: React.FC<SyncedSpeechBubbleProps> = ({
             ? ('word-timestamps' as const)
             : ('estimated-duration' as const),
       }
+    : isAwaitingVoice
+      ? {
+          words: line.text
+            .trim()
+            .split(/\s+/)
+            .filter(Boolean)
+            .map((word, index) => ({
+              word,
+              index,
+              startSec: 0,
+              endSec: 0,
+              status: 'upcoming' as const,
+              wordProgress: 0,
+            })),
+          visibleCount: 0,
+          activeWordIndex: 0,
+          totalWords: line.text.trim().split(/\s+/).filter(Boolean).length,
+          progress: 0,
+          timingMode: 'word-timestamps' as const,
+        }
     : resolveSyncedWordStates(
         line.text,
-        effectiveElapsed,
+        effectiveElapsed ?? 0,
         effectiveDuration,
         effectiveTimings,
       );

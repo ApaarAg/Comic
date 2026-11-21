@@ -152,13 +152,10 @@ export const Scene07Hospital: React.FC<SceneProps> = React.memo(({
               {stageProgress >= 0.74 && stageProgress < 0.86 && (
                 <div className="w-full max-w-3xl flex flex-col items-center justify-center transition-opacity duration-500 ease-out">
                   <div className="w-full max-h-[66vh] flex items-center justify-center">
-                    <CharacterAnimator
+                    <ComicPanel
                       src="/assets/chapter1/p19_panel06.webp"
-                      alt="Close-up of plastic wristband: Laila Starr"
-                      character="laila"
-                      activeSpeaker="laila"
-                      reducedMotion={reducedMotion}
-                      subtleMotion="pulse"
+                      alt="Close-up of plastic wristband: NAME: LAILA STARR · AGE: 21"
+                      isActive={true}
                       onInspect={onInspectPanel}
                       inspectNote="NAME: LAILA STARR · AGE: 21"
                     />

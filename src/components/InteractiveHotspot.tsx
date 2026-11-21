@@ -11,6 +11,7 @@ interface InteractiveHotspotProps {
   accentColor?: string;
   onActivate?: () => void;
   className?: string;
+  placement?: 'auto' | 'up' | 'down';
 }
 
 export const InteractiveHotspot: React.FC<InteractiveHotspotProps> = ({
@@ -22,9 +23,12 @@ export const InteractiveHotspot: React.FC<InteractiveHotspotProps> = ({
   accentColor = '#f28b50',
   onActivate,
   className = '',
+  placement = 'auto',
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [discovered, setDiscovered] = useState(false);
+
+  const opensDown = placement === 'down' || (placement === 'auto' && className.includes('top-'));
 
   const handleToggle = () => {
     const next = !isOpen;
@@ -76,7 +80,9 @@ export const InteractiveHotspot: React.FC<InteractiveHotspotProps> = ({
           role="region"
           aria-label={title}
           data-testid={`hotspot-drawer-${id}`}
-          className="absolute bottom-full right-0 mb-3 w-[calc(100vw-2.5rem)] sm:w-96 max-w-sm border border-white/15 bg-[#0e1222]/96 p-5 shadow-2xl z-50 backdrop-blur-md"
+          className={`absolute right-0 ${
+            opensDown ? 'top-full mt-3' : 'bottom-full mb-3'
+          } w-[calc(100vw-2.5rem)] sm:w-96 max-w-sm border border-white/15 bg-[#0e1222]/96 p-5 shadow-2xl z-50 backdrop-blur-md`}
           style={{ borderColor: `${accentColor}66` }}
         >
           <div className="flex items-start justify-between gap-4 border-b border-white/10 pb-3">

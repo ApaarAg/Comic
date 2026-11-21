@@ -26,7 +26,7 @@ interface SceneProps {
   onSkipNextScene?: () => void;
 }
 
-export const Scene06LailaMortal: React.FC<SceneProps> = ({
+export const Scene06LailaMortal: React.FC<SceneProps> = React.memo(({
   reducedMotion,
   activeSceneIndex,
   onInspectPanel,
@@ -51,18 +51,19 @@ export const Scene06LailaMortal: React.FC<SceneProps> = ({
 
         return (
           <div className="relative flex flex-col items-center justify-center w-full max-w-5xl px-4 md:px-8">
-            {/* Scene Header Watermark */}
-            <div className="absolute -top-16 left-6 md:left-10 pointer-events-none opacity-40">
-              <span className="font-mono text-xs uppercase tracking-[0.24em] text-[#63b8d6]">
-                Scene 06 · The Forbidden Bargain
+            {/* Standardized Glassmorphic Header Badge */}
+            <div className="absolute top-4 left-6 md:left-10 z-30 pointer-events-none">
+              <span className="inline-flex items-center gap-2 rounded-full border border-[#63b8d6]/30 bg-black/40 px-3 py-1 font-mono text-[10px] uppercase tracking-[0.22em] text-[#63b8d6] backdrop-blur-md">
+                <span className="h-1.5 w-1.5 rounded-full bg-[#63b8d6]" />
+                <span>Scene 06 · The Forbidden Bargain</span>
               </span>
-              <h2 className="font-display text-2xl font-bold text-[#fbf5ee] sm:text-3xl">
+              <h2 className="font-display mt-2 text-2xl font-bold text-[#fbf5ee] sm:text-3xl">
                 The Descent
               </h2>
             </div>
 
             {/* Stage Content */}
-            <div className="relative w-full flex items-center justify-center min-h-[360px] sm:min-h-[460px] max-h-[720px]">
+            <div className="relative w-full flex items-center justify-center min-h-[360px] sm:min-h-[460px] max-h-[720px] pt-12">
               {/* Beat 1: Storm Clouds & Death Calling Agni (Panels 16_01 & 16_02) */}
               {stageProgress < 0.28 && (
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full max-w-3xl transition-all duration-500 ease-out items-center">
@@ -148,8 +149,8 @@ export const Scene06LailaMortal: React.FC<SceneProps> = ({
         );
       }}
     >
-      {/* Layer 5: Interactive Hotspot */}
-      <div className="absolute bottom-6 right-6 z-30 pointer-events-auto">
+      {/* Layer 5: Interactive Hotspot (Positioned at top-20 right-6 to clear caption bar) */}
+      <div className="absolute top-20 right-6 z-30 pointer-events-auto">
         <InteractiveHotspot
           id="descent-lightning"
           label="The Loophole"
@@ -160,4 +161,7 @@ export const Scene06LailaMortal: React.FC<SceneProps> = ({
       </div>
     </CinematicViewportStage>
   );
-};
+});
+
+Scene06LailaMortal.displayName = 'Scene06LailaMortal';
+

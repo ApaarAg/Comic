@@ -36,7 +36,7 @@ export const Scene10EightYearsLater: React.FC<SceneProps> = React.memo(({
   onInspectPanel,
 }) => {
   return (
-    <div id="scene-10" className="relative z-20">
+    <div className="relative z-20">
       <CinematicViewportStage
         sceneId="scene-10"
         reducedMotion={reducedMotion}
@@ -55,18 +55,19 @@ export const Scene10EightYearsLater: React.FC<SceneProps> = React.memo(({
 
           return (
             <div className="relative flex flex-col items-center justify-center w-full max-w-5xl px-4 md:px-8">
-              {/* Scene Header Watermark */}
-              <div className="absolute -top-16 left-6 md:left-10 pointer-events-none opacity-40">
-                <span className="font-mono text-xs uppercase tracking-[0.24em] text-[#e69a48]">
-                  Scene 10 · Eight Years Later · 7:30 AM
+              {/* Standardized Glassmorphic Header Badge */}
+              <div className="absolute top-4 left-6 md:left-10 z-30 pointer-events-none">
+                <span className="inline-flex items-center gap-2 rounded-full border border-[#e69a48]/30 bg-black/40 px-3 py-1 font-mono text-[10px] uppercase tracking-[0.22em] text-[#e69a48] backdrop-blur-md">
+                  <span className="h-1.5 w-1.5 rounded-full bg-[#e69a48]" />
+                  <span>Scene 10 · Eight Years Later · 7:30 AM</span>
                 </span>
-                <h2 className="font-display text-2xl font-bold text-[#faf5ee] sm:text-3xl">
+                <h2 className="font-display mt-2 text-2xl font-bold text-[#faf5ee] sm:text-3xl">
                   Morning Tea on the Veranda
                 </h2>
               </div>
 
               {/* Stage Content */}
-              <div className="relative w-full flex items-center justify-center min-h-[360px] sm:min-h-[460px] max-h-[720px]">
+              <div className="relative w-full flex items-center justify-center min-h-[360px] sm:min-h-[460px] max-h-[720px] pt-12">
                 {/* Beat 1: Dawn Sunlight & Laila Stirring (stageProgress < 0.25) */}
                 {stageProgress < 0.25 && (
                   <div className="w-full max-w-2xl transition-all duration-500 ease-out">
@@ -158,8 +159,8 @@ export const Scene10EightYearsLater: React.FC<SceneProps> = React.memo(({
           );
         }}
       >
-        {/* Layer 5: Interactive Hotspot */}
-        <div className="absolute bottom-6 right-6 z-30 pointer-events-auto">
+        {/* Layer 5: Interactive Hotspot (Positioned at top-20 right-6 to clear caption bar) */}
+        <div className="absolute top-20 right-6 z-30 pointer-events-auto">
           <InteractiveHotspot
             id="veranda-dawn"
             label="The Mortal Life"
@@ -183,22 +184,28 @@ export const Scene10EightYearsLater: React.FC<SceneProps> = React.memo(({
             referrerPolicy="no-referrer"
             className="mx-auto mb-8 h-40 w-auto object-contain opacity-85 invert mix-blend-screen select-none"
           />
-          <p className="font-mono text-xs uppercase tracking-[0.26em] text-[#f2a866]">
-            End of Chapter One
-          </p>
-          <h3 className="font-display mt-3 text-3xl font-semibold text-[#faf4ea] sm:text-4xl">
+
+          {/* Monumental Chapter End Title Card */}
+          <div className="inline-flex items-center gap-2 rounded-full border border-[#f2a866]/30 bg-[#f2a866]/10 px-4 py-1.5 mb-3">
+            <span className="h-1.5 w-1.5 rounded-full bg-[#f2a866] animate-pulse" />
+            <p className="font-mono text-xs uppercase tracking-[0.28em] text-[#f2a866]">
+              CHAPTER 01 — THE END
+            </p>
+          </div>
+
+          <h3 className="font-display mt-2 text-3xl font-semibold text-[#faf4ea] sm:text-5xl tracking-wide">
             Once Upon a Falling Starr
           </h3>
-          <p className="mx-auto mt-3 max-w-lg text-xs leading-relaxed text-[#cfc5b9]/70">
+          <p className="mx-auto mt-4 max-w-xl text-xs sm:text-sm leading-relaxed text-[#cfc5b9]/75">
             The Many Deaths of Laila Starr · Created by Ram V &amp; Filipe Andrade · Colors by Inês Amaro · Letters by AndWorld Design
           </p>
 
-          <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
+          <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
             {onReplayChapter && (
               <button
                 type="button"
                 onClick={onReplayChapter}
-                className="inline-flex items-center gap-2.5 border border-white/20 bg-white/5 px-6 py-3 text-xs font-medium uppercase tracking-[0.2em] text-[#faf4ea] transition-colors hover:border-[#f2a866] hover:text-[#f2a866] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#f2a866] cursor-pointer"
+                className="inline-flex items-center gap-2.5 border border-white/20 bg-white/5 px-6 py-3.5 text-xs font-medium uppercase tracking-[0.2em] text-[#faf4ea] transition-all hover:border-[#f2a866] hover:bg-white/10 hover:text-[#f2a866] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#f2a866] cursor-pointer"
               >
                 <RotateCcw className="h-3.5 w-3.5" />
                 <span>Return to Mumbai Sunset</span>
@@ -208,11 +215,20 @@ export const Scene10EightYearsLater: React.FC<SceneProps> = React.memo(({
               <button
                 type="button"
                 onClick={onReplayPrologue}
-                className="inline-flex items-center gap-2.5 border border-[#f2a866]/40 bg-[#f2a866]/10 px-6 py-3 text-xs font-medium uppercase tracking-[0.2em] text-[#f2a866] transition-colors hover:bg-[#f2a866] hover:text-[#0b0d17] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#f2a866] cursor-pointer"
+                className="inline-flex items-center gap-2.5 border border-[#f2a866]/40 bg-[#f2a866]/10 px-6 py-3.5 text-xs font-medium uppercase tracking-[0.2em] text-[#f2a866] transition-all hover:bg-[#f2a866] hover:text-[#0b0d17] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#f2a866] cursor-pointer"
               >
                 <span>Replay Prologue</span>
               </button>
             )}
+            <div
+              aria-disabled="true"
+              className="inline-flex items-center gap-3 border border-white/10 bg-white/[0.03] px-6 py-3.5 text-xs font-medium uppercase tracking-[0.2em] text-[#faf4ea]/40 cursor-not-allowed select-none"
+            >
+              <span>Chapter 02 · The Second Death</span>
+              <span className="rounded bg-[#f2a866]/20 px-2 py-0.5 text-[9px] font-mono tracking-wider text-[#f2a866] border border-[#f2a866]/30">
+                Coming Soon
+              </span>
+            </div>
           </div>
         </div>
       </footer>

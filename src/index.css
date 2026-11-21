@@ -203,8 +203,14 @@
   .mumbai-sun-glow,
   .mumbai-traffic-east,
   .mumbai-traffic-west,
-  .mumbai-mote {
-    animation: none;
+  .mumbai-mote,
+  .depth-float,
+  .character-spotlight,
+  .atmosphere-pulse,
+  .scene-vignette,
+  .word-cinematic {
+    animation: none !important;
+    transition: none !important;
   }
 }
 

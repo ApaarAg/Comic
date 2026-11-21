@@ -166,9 +166,9 @@ export default function App() {
 
     const lenis = new Lenis({
       duration: 1.15,
-      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      easing: (t) => (t === 1 ? 1 : 1 - Math.pow(2, -10 * t)),
       smoothWheel: true,
-      touchMultiplier: 1.4,
+      touchMultiplier: 1.0,
     });
     lenisRef.current = lenis;
     if (window.__STORYVERSE_AUDIO_TRACE__) {
@@ -252,6 +252,16 @@ export default function App() {
     [reducedMotion],
   );
 
+  const jumpToScene02 = useCallback(() => handleJumpToScene('scene-02'), [handleJumpToScene]);
+  const jumpToScene03 = useCallback(() => handleJumpToScene('scene-03'), [handleJumpToScene]);
+  const jumpToScene04 = useCallback(() => handleJumpToScene('scene-04'), [handleJumpToScene]);
+  const jumpToScene05 = useCallback(() => handleJumpToScene('scene-05'), [handleJumpToScene]);
+  const jumpToScene06 = useCallback(() => handleJumpToScene('scene-06'), [handleJumpToScene]);
+  const jumpToScene07 = useCallback(() => handleJumpToScene('scene-07'), [handleJumpToScene]);
+  const jumpToScene08 = useCallback(() => handleJumpToScene('scene-08'), [handleJumpToScene]);
+  const jumpToScene09 = useCallback(() => handleJumpToScene('scene-09'), [handleJumpToScene]);
+  const jumpToScene10 = useCallback(() => handleJumpToScene('scene-10'), [handleJumpToScene]);
+
   const handleEnterChapter = useCallback((options?: { withAudio?: boolean }) => {
     handleJumpToScene('scene-01');
     if (options?.withAudio) {
@@ -325,7 +335,7 @@ export default function App() {
             reducedMotion={reducedMotion}
             activeSceneIndex={activeSceneIndex}
             onInspectPanel={setInspectedPanel}
-            onSkipNextScene={() => handleJumpToScene('scene-02')}
+            onSkipNextScene={jumpToScene02}
           />
 
           <CinematicTransition
@@ -343,7 +353,7 @@ export default function App() {
             reducedMotion={reducedMotion}
             activeSceneIndex={activeSceneIndex}
             onInspectPanel={setInspectedPanel}
-            onSkipNextScene={() => handleJumpToScene('scene-03')}
+            onSkipNextScene={jumpToScene03}
           />
 
           <CinematicTransition
@@ -362,7 +372,7 @@ export default function App() {
               reducedMotion={reducedMotion}
               activeSceneIndex={activeSceneIndex}
               onInspectPanel={setInspectedPanel}
-              onSkipNextScene={() => handleJumpToScene('scene-04')}
+              onSkipNextScene={jumpToScene04}
             />
           </Suspense>
 
@@ -382,7 +392,7 @@ export default function App() {
               reducedMotion={reducedMotion}
               activeSceneIndex={activeSceneIndex}
               onInspectPanel={setInspectedPanel}
-              onSkipNextScene={() => handleJumpToScene('scene-05')}
+              onSkipNextScene={jumpToScene05}
             />
           </Suspense>
 
@@ -397,12 +407,12 @@ export default function App() {
             reducedMotion={reducedMotion}
           />
 
-          <Suspense fallback={<SceneFallback id="scene-05" heightVh={350} />}>
+          <Suspense fallback={<SceneFallback id="scene-05" heightVh={360} />}>
             <Scene05TwoEvents
               reducedMotion={reducedMotion}
               activeSceneIndex={activeSceneIndex}
               onInspectPanel={setInspectedPanel}
-              onSkipNextScene={() => handleJumpToScene('scene-06')}
+              onSkipNextScene={jumpToScene06}
             />
           </Suspense>
 
@@ -417,12 +427,12 @@ export default function App() {
             reducedMotion={reducedMotion}
           />
 
-          <Suspense fallback={<SceneFallback id="scene-06" heightVh={340} />}>
+          <Suspense fallback={<SceneFallback id="scene-06" heightVh={360} />}>
             <Scene06LailaMortal
               reducedMotion={reducedMotion}
               activeSceneIndex={activeSceneIndex}
               onInspectPanel={setInspectedPanel}
-              onSkipNextScene={() => handleJumpToScene('scene-07')}
+              onSkipNextScene={jumpToScene07}
             />
           </Suspense>
 
@@ -442,7 +452,7 @@ export default function App() {
               reducedMotion={reducedMotion}
               activeSceneIndex={activeSceneIndex}
               onInspectPanel={setInspectedPanel}
-              onSkipNextScene={() => handleJumpToScene('scene-08')}
+              onSkipNextScene={jumpToScene08}
             />
           </Suspense>
 
@@ -457,12 +467,12 @@ export default function App() {
             reducedMotion={reducedMotion}
           />
 
-          <Suspense fallback={<SceneFallback id="scene-08" heightVh={300} />}>
+          <Suspense fallback={<SceneFallback id="scene-08" heightVh={360} />}>
             <Scene08Escape
               reducedMotion={reducedMotion}
               activeSceneIndex={activeSceneIndex}
               onInspectPanel={setInspectedPanel}
-              onSkipNextScene={() => handleJumpToScene('scene-09')}
+              onSkipNextScene={jumpToScene09}
             />
           </Suspense>
 
@@ -473,16 +483,16 @@ export default function App() {
             accentColor="#f5b041"
             eyebrow="Transition VIII · Midnight Highway"
             caption="Bare feet struck wet pavement just as twelve-wheeler beams swept down the avenue."
-            artworkUrl="/assets/chapter1/p21_panel01.webp"
+            artworkUrl="/assets/chapter1/p24_panel01.webp"
             reducedMotion={reducedMotion}
           />
 
-          <Suspense fallback={<SceneFallback id="scene-09" heightVh={280} />}>
+          <Suspense fallback={<SceneFallback id="scene-09" heightVh={320} />}>
             <Scene09SecondDeath
               reducedMotion={reducedMotion}
               activeSceneIndex={activeSceneIndex}
               onInspectPanel={setInspectedPanel}
-              onSkipNextScene={() => handleJumpToScene('scene-10')}
+              onSkipNextScene={jumpToScene10}
             />
           </Suspense>
 
@@ -497,7 +507,7 @@ export default function App() {
             reducedMotion={reducedMotion}
           />
 
-          <Suspense fallback={<SceneFallback id="scene-10" heightVh={360} />}>
+          <Suspense fallback={<SceneFallback id="scene-10" heightVh={380} />}>
             <Scene10EightYearsLater
               reducedMotion={reducedMotion}
               activeSceneIndex={activeSceneIndex}

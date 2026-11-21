@@ -50,7 +50,7 @@ const OPENING_PASSAGE_TEXT =
   'It began on a Wednesday afternoon as a late December sun was just dipping below the Mumbai skyline. Down where the elevated highway curves between glass towers, the city exhaled in horns and heat.';
 const OPENING_PASSAGE_WORDS = OPENING_PASSAGE_TEXT.split(' ');
 
-export const Scene00Prologue: React.FC<Scene00PrologueProps> = ({
+export const Scene00Prologue: React.FC<Scene00PrologueProps> = React.memo(({
   reducedMotion,
   isMuted,
   onToggleMute,
@@ -133,7 +133,7 @@ export const Scene00Prologue: React.FC<Scene00PrologueProps> = ({
   );
 
   return (
-    <section id="scene-00" aria-label="Scene 0: Cinematic Prologue" className="relative w-full">
+    <section aria-label="Scene 0: Cinematic Prologue" className="relative w-full">
       <CinematicViewportStage
         sceneId="scene-00"
         reducedMotion={reducedMotion}
@@ -393,7 +393,7 @@ export const Scene00Prologue: React.FC<Scene00PrologueProps> = ({
         {/* Cinematic Audio Unlock & Scroll Guidance Prompt */}
         {stageProgress < 0.38 && (
           <div
-            className="absolute bottom-8 left-1/2 -translate-x-1/2 z-50 pointer-events-auto flex flex-col items-center gap-3 transition-opacity duration-300"
+            className="absolute bottom-[max(2rem,calc(env(safe-area-inset-bottom,0px)+1.5rem))] left-1/2 -translate-x-1/2 z-50 pointer-events-auto flex flex-col items-center gap-3 transition-opacity duration-300"
             style={{ opacity: Math.max(0, 1 - stageProgress * 3.2) }}
           >
             {!audioUnlocked ? (
@@ -426,4 +426,7 @@ export const Scene00Prologue: React.FC<Scene00PrologueProps> = ({
       </CinematicViewportStage>
     </section>
   );
-};
+});
+
+Scene00Prologue.displayName = 'Scene00Prologue';
+

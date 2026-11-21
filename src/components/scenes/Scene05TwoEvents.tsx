@@ -126,7 +126,7 @@ export const Scene05TwoEvents: React.FC<SceneProps> = React.memo(({
                     <span className="text-[10px] font-mono tracking-widest text-[#f06a7e] uppercase mb-2">
                       Parel · Sixth Floor Freefall
                     </span>
-                    <div className="w-full max-h-[32vh] md:max-h-[60vh] flex items-center justify-center">
+                    <div className="w-full max-h-[38vh] md:max-h-[60vh] flex items-center justify-center">
                       <ComicPanel
                         src="/assets/chapter1/p13_panel03.webp"
                         alt="The girl falling through the twilight air two floors down toward the ground"
@@ -149,7 +149,7 @@ export const Scene05TwoEvents: React.FC<SceneProps> = React.memo(({
                     <span className="text-[10px] font-mono tracking-widest text-[#7bc8e2] uppercase mb-2">
                       Amravati · Labor Ward Contraction
                     </span>
-                    <div className="w-full max-h-[32vh] md:max-h-[60vh] flex items-center justify-center">
+                    <div className="w-full max-h-[38vh] md:max-h-[60vh] flex items-center justify-center">
                       <ComicPanel
                         src="/assets/chapter1/p13_panel05.webp"
                         alt="Mrs. Shah in Amravati Hospital squeezing her husband's hand"

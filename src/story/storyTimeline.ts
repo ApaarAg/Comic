@@ -178,7 +178,7 @@ export const STORYBOARD_TIMELINE: ReadonlyArray<TimelineScene> = [
     title: 'The Threshold',
     subtitle: 'Beyond the Void · Opening Gesture',
     timecode: '16:40',
-    trackHeightVh: 250,
+    trackHeightVh: 320,
     globalRange: { start: 0.0, end: 0.08 },
     defaultScoreTrack: 'scene_01_music_a',
     soundscapeTrack: 'scene_01_mumbai',
@@ -559,7 +559,7 @@ export const STORYBOARD_TIMELINE: ReadonlyArray<TimelineScene> = [
     title: "Death's World",
     subtitle: 'Beyond Mortal Clouds · The Silvered Tower',
     timecode: '19:15',
-    trackHeightVh: 450,
+    trackHeightVh: 420,
     globalRange: { start: 0.36, end: 0.48 },
     defaultScoreTrack: 'scene_04_music_a',
     alternativeScoreTrack: 'scene_04_music_b',
@@ -955,7 +955,7 @@ export const STORYBOARD_TIMELINE: ReadonlyArray<TimelineScene> = [
     title: 'Laila Becomes Mortal',
     subtitle: 'The Bargain · Descent in Thunder',
     timecode: '20:32',
-    trackHeightVh: 350,
+    trackHeightVh: 360,
     globalRange: { start: 0.58, end: 0.68 },
     defaultScoreTrack: 'scene_06_music_a',
     alternativeScoreTrack: 'scene_06_music_b',
@@ -1797,7 +1797,7 @@ export function resolveTimelineVisualState(
   // Adaptive Mobile scaling: preserve responsive character framing on portrait screens
   const mobileScaleX = isMobile ? 0.85 : 1.0;
   const mobileScaleY = isMobile ? 0.65 : 1.0;
-  const mobileZoomBonus = isMobile ? 0.10 : 0.0;
+  const mobileZoomBonus = isMobile ? 0.02 : 0.0;
 
   const panX = lerp(prevBeat.camera.panXPercent, nextBeat.camera.panXPercent, smoothT) * mobileScaleX;
   const panY = lerp(prevBeat.camera.panYPercent, nextBeat.camera.panYPercent, smoothT) * mobileScaleY;

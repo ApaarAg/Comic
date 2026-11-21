@@ -95,7 +95,7 @@ export const Scene02Traffic: React.FC<SceneProps> = React.memo(({
               {/* Beat 3: Swerving Taxi & Panicked Driver (Panels 03 & 04) */}
               {stageProgress >= 0.40 && stageProgress < 0.65 && (
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 w-full max-w-4xl transition-opacity duration-500 ease-out items-center">
-                  <div className="max-h-[32vh] sm:max-h-none flex items-center justify-center overflow-hidden">
+                  <div className="max-h-[38vh] sm:max-h-none flex items-center justify-center">
                     <ComicPanel
                       src="/assets/chapter1/p07_panel03.webp"
                       alt="Cars squeezed side-by-side through narrow lanes on the overpass"
@@ -103,7 +103,7 @@ export const Scene02Traffic: React.FC<SceneProps> = React.memo(({
                       onInspect={onInspectPanel}
                     />
                   </div>
-                  <div className="max-h-[32vh] sm:max-h-none flex items-center justify-center overflow-hidden">
+                  <div className="max-h-[38vh] sm:max-h-none flex items-center justify-center">
                     <CharacterAnimator
                       src="/assets/chapter1/p07_panel04.webp"
                       alt="Panicked driver gesturing over his shoulder toward Mrs. Shah in the backseat"

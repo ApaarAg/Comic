@@ -26,7 +26,7 @@ interface SceneProps {
   onSkipNextScene?: () => void;
 }
 
-export const Scene03Party: React.FC<SceneProps> = ({
+export const Scene03Party: React.FC<SceneProps> = React.memo(({
   reducedMotion,
   activeSceneIndex,
   onInspectPanel,
@@ -70,18 +70,19 @@ export const Scene03Party: React.FC<SceneProps> = ({
 
         return (
           <div className="relative flex flex-col items-center justify-center w-full max-w-5xl px-4 md:px-8">
-            {/* Scene Header Watermark */}
-            <div className="absolute -top-16 left-6 md:left-10 pointer-events-none opacity-40">
-              <span className="font-mono text-xs uppercase tracking-[0.24em] text-[#e66c8b]">
-                Scene 03 · Parel · 6th Floor
+            {/* Standardized Glassmorphic Header Badge */}
+            <div className="absolute top-4 left-6 md:left-10 z-30 pointer-events-none">
+              <span className="inline-flex items-center gap-2 rounded-full border border-[#e66c8b]/30 bg-black/40 px-3 py-1 font-mono text-[10px] uppercase tracking-[0.22em] text-[#e66c8b] backdrop-blur-md">
+                <span className="h-1.5 w-1.5 rounded-full bg-[#e66c8b]" />
+                <span>Scene 03 · Parel · 6th Floor</span>
               </span>
-              <h2 className="font-display text-2xl font-bold text-[#f4eef7] sm:text-3xl">
+              <h2 className="font-display mt-2 text-2xl font-bold text-[#f4eef7] sm:text-3xl">
                 The College Party
               </h2>
             </div>
 
             {/* Visual Panel Choreography */}
-            <div className="relative w-full flex items-center justify-center min-h-[360px] sm:min-h-[460px] max-h-[720px]">
+            <div className="relative w-full flex items-center justify-center min-h-[360px] sm:min-h-[460px] max-h-[720px] pt-12">
               {/* Beat 1: Dhiraj Ranting (Panel 02) */}
               {stageProgress < 0.35 && (
                 <div className="w-full max-w-2xl transition-all duration-500 ease-out">
@@ -128,8 +129,8 @@ export const Scene03Party: React.FC<SceneProps> = ({
         );
       }}
     >
-      {/* Layer 5: Interactive Hotspot */}
-      <div className="absolute bottom-6 right-6 z-30 pointer-events-auto">
+      {/* Layer 5: Interactive Hotspot (Positioned at top-20 right-6 to clear caption bar) */}
+      <div className="absolute top-20 right-6 z-30 pointer-events-auto">
         <InteractiveHotspot
           id="party-smoke"
           label="Twilight Solitude"
@@ -140,4 +141,7 @@ export const Scene03Party: React.FC<SceneProps> = ({
       </div>
     </CinematicViewportStage>
   );
-};
+});
+
+Scene03Party.displayName = 'Scene03Party';
+
