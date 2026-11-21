@@ -1,5 +1,38 @@
 {
+  "version": 2,
+  "buildCommand": "npm run build",
+  "outputDirectory": "dist",
+  "cleanUrls": true,
+  "headers": [
+    {
+      "source": "/assets/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        },
+        {
+          "key": "Accept-Ranges",
+          "value": "bytes"
+        }
+      ]
+    },
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        },
+        {
+          "key": "X-Frame-Options",
+          "value": "SAMEORIGIN"
+        }
+      ]
+    }
+  ],
   "rewrites": [
+    { "source": "/api/voice-assets", "destination": "/api/voice-assets" },
     { "source": "/mrs-shah-audition.html", "destination": "/mrs-shah-audition.html" },
     { "source": "/narrator-auditions.html", "destination": "/narrator-auditions.html" },
     { "source": "/(.*)", "destination": "/index.html" }

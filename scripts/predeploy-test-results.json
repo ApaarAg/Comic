@@ -1,0 +1,29 @@
+{
+  "timestamp": "2026-11-21T09:06:53.185Z",
+  "productionHost": "http://localhost:4173",
+  "mrsShahDialogueCheck": {
+    "hasShahName": true,
+    "hasBabyText": false,
+    "bubbleCount": 0
+  },
+  "mrsShahAudioRequest": {
+    "url": "http://localhost:4173/assets/audio/voices/supporting/s02-03-mrs-shah-baby.mp3",
+    "status": 206,
+    "headers": {
+      "Cache-Control": "no-cache",
+      "ETag": "W/\"24284-1795250321772\"",
+      "Connection": "keep-alive",
+      "Content-Range": "bytes 0-24283/24284",
+      "Accept-Ranges": "bytes",
+      "Keep-Alive": "timeout=5",
+      "Content-Length": "24284",
+      "Date": "Sat, 21 Nov 2026 09:06:51 GMT",
+      "Content-Type": "audio/mpeg",
+      "Vary": "Origin",
+      "Last-Modified": "Sat, 21 Nov 2026 08:38:41 GMT"
+    }
+  },
+  "failedRequests": [],
+  "consoleErrors": [],
+  "status": "READY_FOR_DEPLOYMENT"
+}
