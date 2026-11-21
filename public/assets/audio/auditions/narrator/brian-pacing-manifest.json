@@ -1,0 +1,65 @@
+[
+  {
+    "filename": "cand-brian-100-opening.mp3",
+    "path": "/assets/audio/auditions/narrator/cand-brian-100-opening.mp3",
+    "sizeBytes": 84470,
+    "speed": 1,
+    "passage": "opening"
+  },
+  {
+    "filename": "cand-brian-100-reflective.mp3",
+    "path": "/assets/audio/auditions/narrator/cand-brian-100-reflective.mp3",
+    "sizeBytes": 96173,
+    "speed": 1,
+    "passage": "reflective"
+  },
+  {
+    "filename": "cand-brian-100-dramatic.mp3",
+    "path": "/assets/audio/auditions/narrator/cand-brian-100-dramatic.mp3",
+    "sizeBytes": 69424,
+    "speed": 1,
+    "passage": "dramatic"
+  },
+  {
+    "filename": "cand-brian-105-opening.mp3",
+    "path": "/assets/audio/auditions/narrator/cand-brian-105-opening.mp3",
+    "sizeBytes": 89486,
+    "speed": 1.05,
+    "passage": "opening"
+  },
+  {
+    "filename": "cand-brian-105-reflective.mp3",
+    "path": "/assets/audio/auditions/narrator/cand-brian-105-reflective.mp3",
+    "sizeBytes": 91158,
+    "speed": 1.05,
+    "passage": "reflective"
+  },
+  {
+    "filename": "cand-brian-105-dramatic.mp3",
+    "path": "/assets/audio/auditions/narrator/cand-brian-105-dramatic.mp3",
+    "sizeBytes": 73185,
+    "speed": 1.05,
+    "passage": "dramatic"
+  },
+  {
+    "filename": "cand-brian-110-opening.mp3",
+    "path": "/assets/audio/auditions/narrator/cand-brian-110-opening.mp3",
+    "sizeBytes": 87814,
+    "speed": 1.1,
+    "passage": "opening"
+  },
+  {
+    "filename": "cand-brian-110-reflective.mp3",
+    "path": "/assets/audio/auditions/narrator/cand-brian-110-reflective.mp3",
+    "sizeBytes": 91576,
+    "speed": 1.1,
+    "passage": "reflective"
+  },
+  {
+    "filename": "cand-brian-110-dramatic.mp3",
+    "path": "/assets/audio/auditions/narrator/cand-brian-110-dramatic.mp3",
+    "sizeBytes": 73185,
+    "speed": 1.1,
+    "passage": "dramatic"
+  }
+]

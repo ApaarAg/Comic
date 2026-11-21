@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Storyverse — Indian Narrator Audition Console</title>
+  <title>Storyverse — Brian Narrator Pacing & Audition Console</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -12,13 +12,15 @@
       --bg: #07060e;
       --surface: #0f0d1b;
       --surface-elevated: #161328;
+      --surface-highlight: #1e1936;
       --border: rgba(242, 139, 80, 0.22);
+      --border-strong: rgba(242, 139, 80, 0.45);
       --border-subtle: rgba(255, 255, 255, 0.08);
       --accent-coral: #f28b50;
       --accent-gold: #f5b041;
       --accent-teal: #4ecdc4;
       --accent-purple: #9b59b6;
-      --accent-blue: #3498db;
+      --accent-green: #2ecc71;
       --text-main: #fcf9f2;
       --text-dim: #9d97b0;
       --text-muted: #6b6680;
@@ -33,12 +35,12 @@
       min-height: 100vh;
       padding: 3rem 1.5rem 5rem;
       background-image:
-        radial-gradient(ellipse 90% 60% at 50% 0%, rgba(242, 139, 80, 0.10), transparent 70%),
+        radial-gradient(ellipse 90% 60% at 50% 0%, rgba(242, 139, 80, 0.12), transparent 70%),
         radial-gradient(circle at 10% 40%, rgba(78, 205, 196, 0.05), transparent 45%),
         radial-gradient(circle at 90% 70%, rgba(155, 89, 182, 0.06), transparent 50%);
     }
 
-    .container { max-width: 1140px; margin: 0 auto; }
+    .container { max-width: 1160px; margin: 0 auto; }
 
     header {
       margin-bottom: 2.5rem;
@@ -85,7 +87,7 @@
       font-size: 1.05rem;
       color: var(--text-dim);
       margin-top: 0.8rem;
-      max-width: 860px;
+      max-width: 900px;
       line-height: 1.6;
     }
 
@@ -116,6 +118,47 @@
       font-size: 0.9rem;
       color: var(--text-main);
       line-height: 1.5;
+    }
+
+    /* Direction Overview Box */
+    .direction-box {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.5rem 1.75rem;
+      margin-bottom: 2.5rem;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1.5rem;
+    }
+    .dir-col h4 {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      color: var(--accent-gold);
+      margin-bottom: 0.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+    .dir-col ul {
+      list-style: none;
+      font-size: 0.86rem;
+      color: var(--text-dim);
+      line-height: 1.6;
+    }
+    .dir-col ul li {
+      position: relative;
+      padding-left: 1.1rem;
+      margin-bottom: 0.25rem;
+    }
+    .dir-col ul li::before {
+      content: '✓';
+      position: absolute;
+      left: 0;
+      color: var(--accent-teal);
+      font-weight: bold;
     }
 
     /* Tab switcher for Narration Types */
@@ -155,10 +198,11 @@
       border-color: rgba(255, 255, 255, 0.18);
     }
     .tab-btn.active {
-      background: linear-gradient(135deg, rgba(242, 139, 80, 0.2), rgba(245, 176, 65, 0.1));
+      background: linear-gradient(135deg, rgba(242, 139, 80, 0.22), rgba(245, 176, 65, 0.12));
       border-color: var(--accent-coral);
       color: #fff;
       font-weight: 600;
+      box-shadow: 0 4px 16px rgba(242, 139, 80, 0.2);
     }
 
     /* Passage Script Card */
@@ -180,21 +224,46 @@
     }
     .script-quote {
       font-family: 'Cinzel', serif;
-      font-size: 1.15rem;
+      font-size: 1.2rem;
       font-style: italic;
       color: #f7f2eb;
       line-height: 1.6;
     }
 
-    /* Candidate Cards Grid */
-    .candidates-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
-      gap: 1.5rem;
-      margin-bottom: 3rem;
+    /* Pacing Suite Hero Section */
+    .section-headline {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      margin-bottom: 1.25rem;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+    .section-title {
+      font-family: 'Cinzel', serif;
+      font-size: 1.6rem;
+      color: #fff;
+    }
+    .section-sub {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem;
+      color: var(--accent-teal);
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
     }
 
-    .candidate-card {
+    /* Speed Tiers Grid (Brian 1.00x, 1.05x, 1.10x) */
+    .pacing-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+      margin-bottom: 3.5rem;
+    }
+    @media (max-width: 900px) {
+      .pacing-grid { grid-template-columns: 1fr; }
+    }
+
+    .pacing-card {
       background: var(--surface);
       border: 1px solid var(--border-subtle);
       border-radius: var(--radius);
@@ -203,69 +272,70 @@
       display: flex;
       flex-direction: column;
       position: relative;
-      overflow: hidden;
     }
-    .candidate-card:hover {
-      border-color: var(--border);
-      transform: translateY(-2px);
-      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.5);
+    .pacing-card:hover {
+      border-color: var(--border-strong);
+      transform: translateY(-3px);
+      box-shadow: 0 16px 36px rgba(0, 0, 0, 0.5);
     }
-    .candidate-card.is-recommended {
-      border-color: rgba(78, 205, 196, 0.4);
-      background: linear-gradient(180deg, rgba(78, 205, 196, 0.05) 0%, var(--surface) 100%);
+    .pacing-card.is-recommended {
+      border-color: rgba(78, 205, 196, 0.5);
+      background: linear-gradient(180deg, rgba(78, 205, 196, 0.08) 0%, var(--surface) 100%);
+      box-shadow: 0 8px 24px rgba(78, 205, 196, 0.15);
     }
-    .candidate-card.is-baseline {
-      border-color: rgba(255, 255, 255, 0.15);
-      background: linear-gradient(180deg, rgba(255, 255, 255, 0.03) 0%, var(--surface) 100%);
+    .pacing-card.is-baseline {
+      border-color: rgba(245, 176, 65, 0.35);
+      background: linear-gradient(180deg, rgba(245, 176, 65, 0.05) 0%, var(--surface) 100%);
     }
 
-    .card-top {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
+    .speed-badge {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      padding: 0.3rem 0.65rem;
+      border-radius: 6px;
+      display: inline-block;
       margin-bottom: 1rem;
     }
-    .candidate-tag {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.68rem;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      padding: 0.25rem 0.55rem;
-      border-radius: 4px;
-      background: rgba(255, 255, 255, 0.06);
-      color: var(--text-dim);
-    }
-    .candidate-tag.rec {
-      background: rgba(78, 205, 196, 0.15);
-      color: var(--accent-teal);
-      border: 1px solid rgba(78, 205, 196, 0.3);
-    }
-    .candidate-tag.base {
-      background: rgba(255, 255, 255, 0.08);
-      color: #fff;
-    }
+    .badge-100 { background: rgba(245, 176, 65, 0.15); color: var(--accent-gold); border: 1px solid rgba(245, 176, 65, 0.3); }
+    .badge-105 { background: rgba(78, 205, 196, 0.18); color: var(--accent-teal); border: 1px solid rgba(78, 205, 196, 0.4); }
+    .badge-110 { background: rgba(242, 139, 80, 0.18); color: var(--accent-coral); border: 1px solid rgba(242, 139, 80, 0.4); }
 
-    .candidate-name {
-      font-size: 1.25rem;
+    .pacing-tier-title {
+      font-size: 1.35rem;
       font-weight: 700;
       color: #fff;
-      margin-bottom: 0.25rem;
+      margin-bottom: 0.3rem;
     }
-    .candidate-engine {
+    .pacing-tier-tempo {
       font-family: 'JetBrains Mono', monospace;
-      font-size: 0.78rem;
-      color: var(--accent-gold);
+      font-size: 0.8rem;
+      color: var(--text-dim);
+      margin-bottom: 1rem;
     }
 
-    .candidate-desc {
+    .pacing-notes {
       font-size: 0.88rem;
       color: var(--text-dim);
-      line-height: 1.5;
-      margin: 0.8rem 0 1.25rem;
+      line-height: 1.55;
+      margin-bottom: 1.5rem;
       flex-grow: 1;
     }
+    .pacing-metric {
+      display: flex;
+      justify-content: space-between;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.76rem;
+      color: var(--text-muted);
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+      padding-top: 0.6rem;
+      margin-bottom: 1.25rem;
+    }
+    .pacing-metric span.val { color: var(--text-main); font-weight: 600; }
 
-    /* Audio Player UI */
+    /* Player Box inside Card */
     .player-box {
       background: var(--surface-elevated);
       border: 1px solid rgba(255, 255, 255, 0.06);
@@ -335,12 +405,6 @@
       overflow-x: auto;
       margin-top: 2rem;
     }
-    .section-title {
-      font-family: 'Cinzel', serif;
-      font-size: 1.4rem;
-      margin-bottom: 1rem;
-      color: #fff;
-    }
     table {
       width: 100%;
       border-collapse: collapse;
@@ -365,43 +429,86 @@
       font-family: 'JetBrains Mono', monospace;
       font-size: 0.75rem;
     }
-    .badge-warn {
+    .badge-gold {
       color: var(--accent-gold);
       font-family: 'JetBrains Mono', monospace;
       font-size: 0.75rem;
+    }
+
+    /* Baseline Reference Toggle */
+    .ref-header {
+      margin-top: 3.5rem;
+      padding-top: 2rem;
+      border-top: 1px solid var(--border-subtle);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
     }
   </style>
 </head>
 <body>
   <div class="container">
     <header>
-      <div class="brand-eyebrow">Storyverse 3.1 · Pre-Production Casting Lab</div>
-      <h1>Indian English Narrator <span>Audition Console</span></h1>
+      <div class="brand-eyebrow">Storyverse 3.1 · Voice Direction & Pacing Lab</div>
+      <h1>Preferred Candidate: Brian <span>Pacing Refinement</span></h1>
       <p class="header-desc">
-        Audition candidates to replace George (en-GB) with an authentic, emotionally nuanced Indian English narrator. 
-        Each candidate performs 3 standardized passages covering distinct dramatic modes.
+        Refining Brian's delivery as our approved Indian English storyteller. We eliminated slow audiobook pauses and stretched words, 
+        evaluating three calibrated conversational speeds without altering pitch, breathing, or vocal warmth.
       </p>
     </header>
 
+    <!-- Production Safety Alert Banner -->
     <div class="safety-banner">
       <div class="safety-badge">Production Lock Active</div>
       <div class="safety-text">
-        <strong>Strict Production Safety Protocol:</strong> George remains active in the live reader. No production files have been overwritten. 
-        This console allows independent listening, emotional comparison, and assessment before any casting decision is locked.
+        <strong>Safety Protocol Enforced:</strong> George remains active in the production reader. None of the 14 chapter narration recordings 
+        will be generated until you test and confirm your approved pacing tier below.
+      </div>
+    </div>
+
+    <!-- Direction Parameters Overview -->
+    <div class="direction-box">
+      <div class="dir-col">
+        <h4>🎙️ Voice Identity & Character</h4>
+        <ul>
+          <li>Original natural baritone preserved</li>
+          <li>Rich, warm Indian English storyteller</li>
+          <li>Zero artificial pitch shifting</li>
+          <li>Full acoustic chest resonance</li>
+        </ul>
+      </div>
+      <div class="dir-col">
+        <h4>⚡ Pacing & Articulation</h4>
+        <ul>
+          <li>Natural, moderately brisk cadence</li>
+          <li>Zero stretched vowels or slow pauses</li>
+          <li>Crisp consonants & natural breaths</li>
+          <li>Dynamic cinematic film narrative style</li>
+        </ul>
+      </div>
+      <div class="dir-col">
+        <h4>🎭 Emotional Acting Nuance</h4>
+        <ul>
+          <li><strong>Opening</strong>: Confident & mysterious</li>
+          <li><strong>Reflective</strong>: Warm without slowing down</li>
+          <li><strong>Dramatic</strong>: Urgent & fateful intensity</li>
+          <li>Emotion driven by inflection, not drag</li>
+        </ul>
       </div>
     </div>
 
     <!-- Narration Type Switcher -->
     <div class="tab-section">
-      <div class="tab-label">Select Dramatic Narration Mode</div>
+      <div class="tab-label">Select Passage for Speed Comparison</div>
       <div class="tabs-nav">
-        <button class="tab-btn active" onclick="switchMode('opening')">
+        <button class="tab-btn active" onclick="switchPassage('opening')">
           <span>🌅</span> Passage 1 · Opening Atmospheric
         </button>
-        <button class="tab-btn" onclick="switchMode('reflective')">
+        <button class="tab-btn" onclick="switchPassage('reflective')">
           <span>🌧️</span> Passage 2 · Reflective & Melancholic
         </button>
-        <button class="tab-btn" onclick="switchMode('dramatic')">
+        <button class="tab-btn" onclick="switchPassage('dramatic')">
           <span>⚡</span> Passage 3 · Dramatic & Intense
         </button>
       </div>
@@ -409,124 +516,109 @@
 
     <!-- Script Quote Box -->
     <div class="script-box">
-      <div class="script-type" id="scriptTypeLabel">Passage 1 · Atmospheric Dusk Reveal (Scene 00/01)</div>
+      <div class="script-type" id="scriptTypeLabel">Passage 1 · Atmospheric Dusk Reveal (Scene 00 / 01)</div>
       <div class="script-quote" id="scriptQuote">
         "It began on a Wednesday afternoon as a late December sun was just dipping below the Mumbai skyline."
       </div>
     </div>
 
-    <!-- Candidate Cards Grid -->
-    <div class="candidates-grid" id="candidateCards">
-      <!-- Candidate 1: Google Gemini Charon (Indian English Deep Baritone) -->
-      <div class="candidate-card is-recommended" data-cand="charon">
-        <div class="card-top">
-          <span class="candidate-tag rec">Top Candidate · Authentic Accent</span>
-          <span style="font-size: 1.1rem;">🇮🇳</span>
+    <!-- Pacing Tiers Section (1.00x, 1.05x, 1.10x) -->
+    <div class="section-headline">
+      <div class="section-title">Brian · Pacing Calibration Suite</div>
+      <div class="section-sub">Zero Pitch Alteration · Native ElevenLabs Duration Modeling</div>
+    </div>
+
+    <div class="pacing-grid">
+      <!-- Tier 1: 1.00x Baseline -->
+      <div class="pacing-card is-baseline">
+        <div>
+          <span class="speed-badge badge-100">1.00x Natural Baseline</span>
+          <div class="pacing-tier-title">Natural Tempo</div>
+          <div class="pacing-tier-tempo">Measured · Expressive · Dignified</div>
         </div>
-        <div class="candidate-name">Gemini Charon</div>
-        <div class="candidate-engine">Google Cloud TTS · Gemini Audio Preview</div>
-        <div class="candidate-desc">
-          Deep, resonant Indian English male baritone. Cinematic weight, authentic local cadence, warm chest resonance without caricature. Naturally captures Mumbai dusk.
+        <div class="pacing-notes">
+          Brian's baseline reading pace. Deep, evocative, unhurried literary delivery. Excellent gravitas and warmth, but may feel slightly deliberate during fast-scrolling sequences.
+        </div>
+        <div class="pacing-metric">
+          <span>Pacing Character:</span>
+          <span class="val">Classic Narrative</span>
         </div>
         <div class="player-box">
           <div class="player-controls">
-            <button class="play-btn" onclick="togglePlay('charon')">
-              <svg id="icon-charon" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+            <button class="play-btn" onclick="togglePlay('brian-100')">
+              <svg id="icon-brian-100" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
             </button>
             <div class="player-meta">
               <div class="player-status">
-                <span id="status-charon">Ready</span>
-                <span id="time-charon">0:00</span>
+                <span id="status-brian-100">Ready</span>
+                <span id="time-brian-100">0:00</span>
               </div>
-              <div class="progress-bar-wrap" onclick="seek('charon', event)">
-                <div class="progress-bar-fill" id="bar-charon"></div>
+              <div class="progress-bar-wrap" onclick="seek('brian-100', event)">
+                <div class="progress-bar-fill" id="bar-brian-100"></div>
               </div>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- Candidate 2: Azure AI Speech Prabhat (en-IN-PrabhatNeural) -->
-      <div class="candidate-card" data-cand="prabhat">
-        <div class="card-top">
-          <span class="candidate-tag">Azure AI Speech · Studio Model</span>
-          <span style="font-size: 1.1rem;">🇮🇳</span>
+      <!-- Tier 2: 1.05x Brisker (Recommended) -->
+      <div class="pacing-card is-recommended">
+        <div>
+          <span class="speed-badge badge-105">1.05x Slightly Brisker · Recommended</span>
+          <div class="pacing-tier-title">Cinematic Cadence</div>
+          <div class="pacing-tier-tempo">Conversational · Crisp · Engaging</div>
         </div>
-        <div class="candidate-name">Azure Prabhat</div>
-        <div class="candidate-engine">en-IN-PrabhatNeural · Natural Baritone</div>
-        <div class="candidate-desc">
-          Polished Indian English broadcast baritone. High linguistic clarity, measured journalistic cadence, consistent studio fidelity across long narrative arcs.
+        <div class="pacing-notes">
+          <strong>Recommended Sweet Spot.</strong> Eliminates audiobook drag while preserving full vowel warmth and emotional inflection. Natural breathing pauses; tight phrase boundaries that feel like a film narrator speaking directly to the audience.
+        </div>
+        <div class="pacing-metric">
+          <span>Pacing Character:</span>
+          <span class="val" style="color: var(--accent-teal);">Cinematic Graphic Novel</span>
         </div>
         <div class="player-box">
           <div class="player-controls">
-            <button class="play-btn" onclick="togglePlay('prabhat')">
-              <svg id="icon-prabhat" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+            <button class="play-btn" onclick="togglePlay('brian-105')" style="background: var(--accent-teal);">
+              <svg id="icon-brian-105" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
             </button>
             <div class="player-meta">
               <div class="player-status">
-                <span id="status-prabhat">Ready</span>
-                <span id="time-prabhat">0:00</span>
+                <span id="status-brian-105">Ready</span>
+                <span id="time-brian-105">0:00</span>
               </div>
-              <div class="progress-bar-wrap" onclick="seek('prabhat', event)">
-                <div class="progress-bar-fill" id="bar-prabhat"></div>
+              <div class="progress-bar-wrap" onclick="seek('brian-105', event)">
+                <div class="progress-bar-fill" id="bar-brian-105" style="background: linear-gradient(90deg, var(--accent-teal), #8ad3eb);"></div>
               </div>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- Candidate 3: Current Baseline — George (ElevenLabs British Narrator) -->
-      <div class="candidate-card is-baseline" data-cand="george">
-        <div class="card-top">
-          <span class="candidate-tag base">Current Live Baseline · Compare</span>
-          <span style="font-size: 1.1rem;">🇬🇧</span>
+      <!-- Tier 3: 1.10x Energetic -->
+      <div class="pacing-card">
+        <div>
+          <span class="speed-badge badge-110">1.10x Energetic & Controlled</span>
+          <div class="pacing-tier-title">Dynamic Flow</div>
+          <div class="pacing-tier-tempo">Punchy · Modern · Urgent</div>
         </div>
-        <div class="candidate-name">George (Baseline)</div>
-        <div class="candidate-engine">ElevenLabs Multilingual v2 · Warm BBC Storyteller</div>
-        <div class="candidate-desc">
-          Current production narrator. Warm, refined, literary British English delivery. Praised for clarity and depth, but lacks authentic Mumbai geographic immersion.
+        <div class="pacing-notes">
+          Brisk, propulsive narrative delivery with immediate momentum. Ideal for dramatic, high-energy sequences. Highly articulate, but reduces contemplative breathing space in reflective moments.
         </div>
-        <div class="player-box">
-          <div class="player-controls">
-            <button class="play-btn" onclick="togglePlay('george')">
-              <svg id="icon-george" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
-            </button>
-            <div class="player-meta">
-              <div class="player-status">
-                <span id="status-george">Ready</span>
-                <span id="time-george">0:00</span>
-              </div>
-              <div class="progress-bar-wrap" onclick="seek('george', event)">
-                <div class="progress-bar-fill" id="bar-george"></div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Candidate 4: ElevenLabs Brian (Deep Resonant Alternative) -->
-      <div class="candidate-card" data-cand="brian">
-        <div class="card-top">
-          <span class="candidate-tag">ElevenLabs · Deep Alternative</span>
-          <span style="font-size: 1.1rem;">🎙️</span>
-        </div>
-        <div class="candidate-name">ElevenLabs Brian</div>
-        <div class="candidate-engine">eleven_multilingual_v2 · Deep Chest Resonant</div>
-        <div class="candidate-desc">
-          Very deep, rich cinematic resonance. Legendary baritone gravitas with slow theatrical pacing. High production fidelity, neutral-international resonance.
+        <div class="pacing-metric">
+          <span>Pacing Character:</span>
+          <span class="val">Fast Thriller Momentum</span>
         </div>
         <div class="player-box">
           <div class="player-controls">
-            <button class="play-btn" onclick="togglePlay('brian')">
-              <svg id="icon-brian" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+            <button class="play-btn" onclick="togglePlay('brian-110')">
+              <svg id="icon-brian-110" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
             </button>
             <div class="player-meta">
               <div class="player-status">
-                <span id="status-brian">Ready</span>
-                <span id="time-brian">0:00</span>
+                <span id="status-brian-110">Ready</span>
+                <span id="time-brian-110">0:00</span>
               </div>
-              <div class="progress-bar-wrap" onclick="seek('brian', event)">
-                <div class="progress-bar-fill" id="bar-brian"></div>
+              <div class="progress-bar-wrap" onclick="seek('brian-110', event)">
+                <div class="progress-bar-fill" id="bar-brian-110"></div>
               </div>
             </div>
           </div>
@@ -534,135 +626,193 @@
       </div>
     </div>
 
-    <!-- Technical Specification & Feasibility Matrix -->
+    <!-- Pacing Metrics & Analysis Matrix -->
     <div class="comparison-table-wrap">
-      <div class="section-title">Narrator Candidate Evaluation Matrix</div>
+      <div class="section-title">Brian Pacing Comparison Matrix</div>
       <table>
         <thead>
           <tr>
-            <th>Candidate</th>
-            <th>Engine / Provider</th>
-            <th>Accent & Persona</th>
-            <th>Emotional Depth</th>
-            <th>Geographic Fit</th>
-            <th>Production Readiness</th>
+            <th>Speed Tier</th>
+            <th>Opening (Scene 01)</th>
+            <th>Reflective (Awakening)</th>
+            <th>Dramatic (Midnight)</th>
+            <th>Conversational Feel</th>
+            <th>Recommended Use</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td><strong>Gemini Charon</strong></td>
-            <td>Google Cloud / Gemini Flash</td>
-            <td>Authentic Indian English Baritone</td>
-            <td><span class="badge-ok">High · Literary & Cinematic</span></td>
-            <td><span class="badge-ok">Exceptional (Mumbai setting)</span></td>
-            <td><span class="badge-ok">Ready · Low Latency / Zero Quota Burn</span></td>
+            <td><strong>1.00x Baseline</strong></td>
+            <td>5.28s</td>
+            <td>6.01s</td>
+            <td>4.34s</td>
+            <td><span class="badge-gold">Deliberate & Literary</span></td>
+            <td>Audiobook / Extended Lore</td>
           </tr>
           <tr>
-            <td><strong>Azure Prabhat</strong></td>
-            <td>Azure AI Speech</td>
-            <td>en-IN-PrabhatNeural</td>
-            <td><span class="badge-ok">Moderate-High · Clean Broadcast</span></td>
-            <td><span class="badge-ok">High (Authentic Indian English)</span></td>
-            <td><span class="badge-ok">Ready · Samples Pre-Generated</span></td>
+            <td><strong>1.05x Brisker</strong></td>
+            <td><strong>5.59s</strong> (Crisp cadence)</td>
+            <td><strong>5.70s</strong> (Tender breath)</td>
+            <td><strong>4.57s</strong> (Tight climax)</td>
+            <td><span class="badge-ok">Natural Film Storyteller</span></td>
+            <td><strong>Primary Storyverse Reader</strong></td>
           </tr>
           <tr>
-            <td><strong>Azure Arjun</strong></td>
-            <td>Azure AI Speech</td>
-            <td>en-IN-ArjunNeural</td>
-            <td><span class="badge-ok">Moderate · Expressive Youth/Drama</span></td>
-            <td><span class="badge-ok">High (Indian Metro)</span></td>
-            <td><span class="badge-warn">Audition Profile Prepared</span></td>
-          </tr>
-          <tr>
-            <td><strong>George (Baseline)</strong></td>
-            <td>ElevenLabs v2</td>
-            <td>British English (en-GB)</td>
-            <td><span class="badge-ok">Very High · Refined BBC Depth</span></td>
-            <td><span class="badge-warn">Low (Mismatches Indian Setting)</span></td>
-            <td><span class="badge-ok">Active in Live Reader Checkpoint</span></td>
+            <td><strong>1.10x Energetic</strong></td>
+            <td>5.49s</td>
+            <td>5.72s</td>
+            <td>4.57s</td>
+            <td><span class="badge-ok">Brisk & Urgent</span></td>
+            <td>Action / Rapid Scrolling</td>
           </tr>
         </tbody>
       </table>
     </div>
+
+    <!-- Baseline Comparison Section (George en-GB vs Brian) -->
+    <div class="ref-header" onclick="toggleBaselineSection()">
+      <div>
+        <h3 style="font-family: 'Cinzel', serif; font-size: 1.3rem; color: #fff;">Compare with Baseline George (en-GB)</h3>
+        <p style="font-size: 0.85rem; color: var(--text-dim); margin-top: 0.2rem;">Listen to how Brian compares to the current production narrator across the same lines.</p>
+      </div>
+      <div id="baselineToggleText" style="font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; color: var(--accent-gold);">[Click to Compare]</div>
+    </div>
+
+    <div id="baselineSection" style="display: none; margin-top: 1.5rem;">
+      <div class="pacing-grid" style="grid-template-columns: repeat(2, 1fr);">
+        <div class="pacing-card" style="border-color: rgba(255, 255, 255, 0.15);">
+          <div>
+            <span class="speed-badge" style="background: rgba(255, 255, 255, 0.08); color: #fff;">Current Production Baseline</span>
+            <div class="pacing-tier-title">George (en-GB)</div>
+            <div class="pacing-tier-tempo">ElevenLabs Multilingual v2 · British BBC Style</div>
+          </div>
+          <div class="pacing-notes">
+            The active live reader voice. Refined, classic British documentary depth, but lacks the geographical warmth and authentic Mumbai identity of Brian.
+          </div>
+          <div class="player-box">
+            <div class="player-controls">
+              <button class="play-btn" onclick="togglePlay('george-base')" style="background: #a55eea;">
+                <svg id="icon-george-base" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+              </button>
+              <div class="player-meta">
+                <div class="player-status">
+                  <span id="status-george-base">Ready</span>
+                  <span id="time-george-base">0:00</span>
+                </div>
+                <div class="progress-bar-wrap" onclick="seek('george-base', event)">
+                  <div class="progress-bar-fill" id="bar-george-base" style="background: #a55eea;"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="pacing-card is-recommended">
+          <div>
+            <span class="speed-badge badge-105">Preferred Candidate · 1.05x</span>
+            <div class="pacing-tier-title">Brian (1.05x Brisker)</div>
+            <div class="pacing-tier-tempo">Warm, Rich Indian English Storyteller</div>
+          </div>
+          <div class="pacing-notes">
+            Natural resonance, evocative local storytelling pacing, emotionally locked to Ram V & Filipe Andrade's graphic novel tone.
+          </div>
+          <div class="player-box">
+            <div class="player-controls">
+              <button class="play-btn" onclick="togglePlay('brian-105')" style="background: var(--accent-teal);">
+                <svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+              </button>
+              <div class="player-meta">
+                <div class="player-status">
+                  <span>Match Pacing with 1.05x Above</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 
   <script>
-    // Audio Manifest for the 3 modes across candidates
-    const AUDIO_MAP = {
+    const PASSAGES_MAP = {
       opening: {
-        scriptType: "Passage 1 · Atmospheric Dusk Reveal (Scene 00/01)",
+        scriptType: "Passage 1 · Atmospheric Dusk Reveal (Scene 00 / 01)",
         quote: '"It began on a Wednesday afternoon as a late December sun was just dipping below the Mumbai skyline."',
         sources: {
-          charon: '/assets/audio/auditions/narrator/cand-gemini-charon-opening.wav',
-          prabhat: '/assets/audio/voices/narrator/sample-prabhat-natural.mp3',
-          george: '/assets/audio/auditions/narrator/cand3-eleven-george-a.mp3',
-          brian: '/assets/audio/auditions/narrator/cand4-eleven-brian-a.mp3'
+          'brian-100': '/assets/audio/auditions/narrator/cand-brian-100-opening.mp3',
+          'brian-105': '/assets/audio/auditions/narrator/cand-brian-105-opening.mp3',
+          'brian-110': '/assets/audio/auditions/narrator/cand-brian-110-opening.mp3',
+          'george-base': '/assets/audio/auditions/narrator/cand3-eleven-george-a.mp3'
         }
       },
       reflective: {
-        scriptType: "Passage 2 · Reflective & Melancholic (Laila's Awakening)",
+        scriptType: "Passage 2 · Reflective & Melancholic (Scene 07 Laila's Awakening)",
         quote: '"She woke up in a body that felt borrowed, in a room that smelled of antiseptic and second chances."',
         sources: {
-          charon: '/assets/audio/auditions/narrator/cand-gemini-charon-reflective.wav',
-          prabhat: '/assets/audio/voices/narrator/sample-prabhat-baritone.mp3',
-          george: '/assets/audio/auditions/narrator/cand3-eleven-george-c.mp3',
-          brian: '/assets/audio/auditions/narrator/cand4-eleven-brian-c.mp3'
+          'brian-100': '/assets/audio/auditions/narrator/cand-brian-100-reflective.mp3',
+          'brian-105': '/assets/audio/auditions/narrator/cand-brian-105-reflective.mp3',
+          'brian-110': '/assets/audio/auditions/narrator/cand-brian-110-reflective.mp3',
+          'george-base': '/assets/audio/auditions/narrator/cand3-eleven-george-c.mp3'
         }
       },
       dramatic: {
         scriptType: "Passage 3 · Dramatic & Intense (Scene 09 Midnight Death)",
         quote: '"And so, only a few minutes away from midnight, Laila Starr met her death once again."',
         sources: {
-          charon: '/assets/audio/auditions/narrator/cand1-gemini-charon-b.wav',
-          prabhat: '/assets/audio/voices/narrator/sample-prabhat-highway-test.mp3',
-          george: '/assets/audio/auditions/narrator/cand3-eleven-george-b.mp3',
-          brian: '/assets/audio/auditions/narrator/cand4-eleven-brian-b.mp3'
+          'brian-100': '/assets/audio/auditions/narrator/cand-brian-100-dramatic.mp3',
+          'brian-105': '/assets/audio/auditions/narrator/cand-brian-105-dramatic.mp3',
+          'brian-110': '/assets/audio/auditions/narrator/cand-brian-110-dramatic.mp3',
+          'george-base': '/assets/audio/auditions/narrator/cand3-eleven-george-b.mp3'
         }
       }
     };
 
-    let currentMode = 'opening';
+    let currentPassage = 'opening';
     let currentAudio = null;
-    let currentPlayingCand = null;
+    let currentPlayingId = null;
     let animFrame = null;
 
-    function switchMode(mode) {
+    function switchPassage(key) {
       if (currentAudio) {
         currentAudio.pause();
         currentAudio = null;
       }
       resetAllPlayers();
-      currentMode = mode;
+      currentPassage = key;
 
-      // Update active tab buttons
       document.querySelectorAll('.tab-btn').forEach((btn, idx) => {
-        btn.classList.toggle('active', ['opening', 'reflective', 'dramatic'][idx] === mode);
+        btn.classList.toggle('active', ['opening', 'reflective', 'dramatic'][idx] === key);
       });
 
-      // Update script box
-      document.getElementById('scriptTypeLabel').innerText = AUDIO_MAP[mode].scriptType;
-      document.getElementById('scriptQuote').innerText = AUDIO_MAP[mode].quote;
+      document.getElementById('scriptTypeLabel').innerText = PASSAGES_MAP[key].scriptType;
+      document.getElementById('scriptQuote').innerText = PASSAGES_MAP[key].quote;
     }
 
     function resetAllPlayers() {
-      ['charon', 'prabhat', 'george', 'brian'].forEach(cand => {
-        document.getElementById(`icon-${cand}`).innerHTML = '<polygon points="5 3 19 12 5 21 5 3"></polygon>';
-        document.getElementById(`bar-${cand}`).style.width = '0%';
-        document.getElementById(`status-${cand}`).innerText = 'Ready';
-        document.getElementById(`time-${cand}`).innerText = '0:00';
+      ['brian-100', 'brian-105', 'brian-110', 'george-base'].forEach(id => {
+        const icon = document.getElementById(`icon-${id}`);
+        if (icon) icon.innerHTML = '<polygon points="5 3 19 12 5 21 5 3"></polygon>';
+        const bar = document.getElementById(`bar-${id}`);
+        if (bar) bar.style.width = '0%';
+        const status = document.getElementById(`status-${id}`);
+        if (status) status.innerText = 'Ready';
+        const time = document.getElementById(`time-${id}`);
+        if (time) time.innerText = '0:00';
       });
-      currentPlayingCand = null;
+      currentPlayingId = null;
       if (animFrame) cancelAnimationFrame(animFrame);
     }
 
-    function togglePlay(cand) {
-      const src = AUDIO_MAP[currentMode].sources[cand];
+    function togglePlay(id) {
+      const src = PASSAGES_MAP[currentPassage].sources[id];
       if (!src) return;
 
-      if (currentPlayingCand === cand && currentAudio && !currentAudio.paused) {
+      if (currentPlayingId === id && currentAudio && !currentAudio.paused) {
         currentAudio.pause();
-        document.getElementById(`icon-${cand}`).innerHTML = '<polygon points="5 3 19 12 5 21 5 3"></polygon>';
-        document.getElementById(`status-${cand}`).innerText = 'Paused';
+        const icon = document.getElementById(`icon-${id}`);
+        if (icon) icon.innerHTML = '<polygon points="5 3 19 12 5 21 5 3"></polygon>';
+        const status = document.getElementById(`status-${id}`);
+        if (status) status.innerText = 'Paused';
         return;
       }
 
@@ -672,15 +822,18 @@
       }
 
       currentAudio = new Audio(src);
-      currentPlayingCand = cand;
+      currentPlayingId = id;
 
       currentAudio.play().then(() => {
-        document.getElementById(`icon-${cand}`).innerHTML = '<rect x="6" y="4" width="4" height="16"></rect><rect x="14" y="4" width="4" height="16"></rect>';
-        document.getElementById(`status-${cand}`).innerText = 'Playing';
-        trackProgress(cand);
+        const icon = document.getElementById(`icon-${id}`);
+        if (icon) icon.innerHTML = '<rect x="6" y="4" width="4" height="16"></rect><rect x="14" y="4" width="4" height="16"></rect>';
+        const status = document.getElementById(`status-${id}`);
+        if (status) status.innerText = 'Playing';
+        trackProgress(id);
       }).catch(err => {
         console.error('Audio play error:', err);
-        document.getElementById(`status-${cand}`).innerText = 'Playback blocked';
+        const status = document.getElementById(`status-${id}`);
+        if (status) status.innerText = 'Playback blocked';
       });
 
       currentAudio.onended = () => {
@@ -688,31 +841,45 @@
       };
     }
 
-    function trackProgress(cand) {
-      if (!currentAudio || currentPlayingCand !== cand) return;
+    function trackProgress(id) {
+      if (!currentAudio || currentPlayingId !== id) return;
       const cur = currentAudio.currentTime || 0;
       const dur = currentAudio.duration || 1;
       const pct = Math.min(100, (cur / dur) * 100);
-      document.getElementById(`bar-${cand}`).style.width = pct + '%';
+      const bar = document.getElementById(`bar-${id}`);
+      if (bar) bar.style.width = pct + '%';
       
       const mins = Math.floor(cur / 60);
       const secs = Math.floor(cur % 60).toString().padStart(2, '0');
-      document.getElementById(`time-${cand}`).innerText = `${mins}:${secs}`;
+      const time = document.getElementById(`time-${id}`);
+      if (time) time.innerText = `${mins}:${secs}`;
 
       if (!currentAudio.paused) {
-        animFrame = requestAnimationFrame(() => trackProgress(cand));
+        animFrame = requestAnimationFrame(() => trackProgress(id));
       }
     }
 
-    function seek(cand, e) {
-      if (currentPlayingCand !== cand || !currentAudio) {
-        togglePlay(cand);
+    function seek(id, e) {
+      if (currentPlayingId !== id || !currentAudio) {
+        togglePlay(id);
         return;
       }
       const rect = e.currentTarget.getBoundingClientRect();
       const clickX = e.clientX - rect.left;
       const ratio = Math.max(0, Math.min(1, clickX / rect.width));
       currentAudio.currentTime = ratio * (currentAudio.duration || 1);
+    }
+
+    function toggleBaselineSection() {
+      const sec = document.getElementById('baselineSection');
+      const text = document.getElementById('baselineToggleText');
+      if (sec.style.display === 'none') {
+        sec.style.display = 'block';
+        text.innerText = '[Hide Comparison]';
+      } else {
+        sec.style.display = 'none';
+        text.innerText = '[Click to Compare]';
+      }
     }
   </script>
 </body>
