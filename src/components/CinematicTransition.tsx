@@ -20,8 +20,11 @@ interface CinematicTransitionProps {
   eyebrow: string;
   caption: string;
   reducedMotion: boolean;
+<<<<<<< HEAD
   artworkUrl?: string;
   altText?: string;
+=======
+>>>>>>> c35419f43bb5aee048a8e5328df5fe9aa12dbc74
 }
 
 const KIND_INDEX: Record<TransitionEffectKind, number> = {
@@ -148,8 +151,11 @@ export const CinematicTransition: React.FC<CinematicTransitionProps> = ({
   eyebrow,
   caption,
   reducedMotion,
+<<<<<<< HEAD
   artworkUrl,
   altText,
+=======
+>>>>>>> c35419f43bb5aee048a8e5328df5fe9aa12dbc74
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const canvasHostRef = useRef<HTMLDivElement>(null);
@@ -349,11 +355,16 @@ export const CinematicTransition: React.FC<CinematicTransitionProps> = ({
       ref={containerRef}
       data-testid={`cinematic-transition-${kind}`}
       aria-label={caption}
+<<<<<<< HEAD
       className="relative min-h-[280px] sm:min-h-[340px] md:min-h-[380px] w-full overflow-hidden flex items-center justify-center py-12"
+=======
+      className="relative h-48 sm:h-56 w-full overflow-hidden"
+>>>>>>> c35419f43bb5aee048a8e5328df5fe9aa12dbc74
       style={{
         background: `linear-gradient(180deg, ${fromColor} 0%, ${toColor} 100%)`,
       }}
     >
+<<<<<<< HEAD
       {/* Real Comic Panel Artwork Layer (replaces empty dark placeholder screens) */}
       {artworkUrl && (
         <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
@@ -384,6 +395,14 @@ export const CinematicTransition: React.FC<CinematicTransitionProps> = ({
         className="pointer-events-none absolute inset-0 z-1"
         style={{
           background: `radial-gradient(ellipse 70% 60% at 50% 50%, ${accentColor}26, transparent 74%)`,
+=======
+      {/* Software/Reduced-motion atmospheric wash fallback */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0"
+        style={{
+          background: `radial-gradient(ellipse 70% 60% at 50% 50%, ${accentColor}1c, transparent 74%)`,
+>>>>>>> c35419f43bb5aee048a8e5328df5fe9aa12dbc74
         }}
       />
 
@@ -391,12 +410,17 @@ export const CinematicTransition: React.FC<CinematicTransitionProps> = ({
       <div
         ref={canvasHostRef}
         aria-hidden="true"
+<<<<<<< HEAD
         className="pointer-events-none absolute inset-0 z-2 mix-blend-screen opacity-85"
+=======
+        className="pointer-events-none absolute inset-0"
+>>>>>>> c35419f43bb5aee048a8e5328df5fe9aa12dbc74
       />
 
       {/* Editorial Narrative Bridge Copy */}
       <div
         ref={copyRef}
+<<<<<<< HEAD
         className="pointer-events-none relative z-10 flex h-full flex-col items-center justify-center px-6 text-center max-w-4xl mx-auto"
       >
         <span
@@ -407,6 +431,18 @@ export const CinematicTransition: React.FC<CinematicTransitionProps> = ({
         </span>
         <p className="font-display max-w-2xl text-xl sm:text-2xl md:text-3xl italic leading-snug text-[#f7f2eb] drop-shadow-[0_4px_16px_rgba(0,0,0,0.95)] [text-wrap:balance]">
           "{caption}"
+=======
+        className="pointer-events-none relative z-10 flex h-full flex-col items-center justify-center px-6 text-center"
+      >
+        <p
+          className="font-mono text-[11px] uppercase tracking-[0.28em]"
+          style={{ color: accentColor }}
+        >
+          {eyebrow}
+        </p>
+        <p className="font-display mt-2 max-w-2xl text-xl sm:text-2xl italic leading-snug text-[#f7f2eb]/95 drop-shadow-[0_2px_10px_rgba(0,0,0,0.85)] [text-wrap:balance]">
+          {caption}
+>>>>>>> c35419f43bb5aee048a8e5328df5fe9aa12dbc74
         </p>
       </div>
     </div>

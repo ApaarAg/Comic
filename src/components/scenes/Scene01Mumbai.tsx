@@ -6,11 +6,18 @@ import mumbaiCloudsUrl from '../../assets/images/mumbai_clouds_haze_179507871377
 import mumbaiSilhouettesUrl from '../../assets/images/mumbai_foreground_silhouettes_1795078713773.jpg';
 import { SceneVideoBackdrop } from '../SceneVideoBackdrop';
 import { InteractiveHotspot } from '../InteractiveHotspot';
+<<<<<<< HEAD
 import type { InspectedPanelData } from '../PanelInspectorModal';
 import { MOTION_EASING } from '../../story/motionSystem';
 import { sceneAudioManager } from '../../audio/SceneAudioManager';
 import { useOptionalNarrative } from '../../narrative/NarrativeEngine';
 import { RotateCcw } from 'lucide-react';
+=======
+import { DialogueController } from '../DialogueController';
+import type { InspectedPanelData } from '../PanelInspectorModal';
+import { MOTION_EASING } from '../../story/motionSystem';
+import { sceneAudioManager } from '../../audio/SceneAudioManager';
+>>>>>>> c35419f43bb5aee048a8e5328df5fe9aa12dbc74
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -85,9 +92,12 @@ export const Scene01Mumbai: React.FC<SceneProps> = ({
   const hazeRef = useRef<HTMLDivElement>(null);
   const captionHighwayRef = useRef<HTMLDivElement>(null);
 
+<<<<<<< HEAD
   const narrative = useOptionalNarrative();
   const choreography = narrative?.activeVisualChoreography;
 
+=======
+>>>>>>> c35419f43bb5aee048a8e5328df5fe9aa12dbc74
   const [pointerOffset, setPointerOffset] = useState({ x: 0, y: 0 });
   const [selectedPinId, setSelectedPinId] = useState<string | null>(null);
   const [discoveredPins, setDiscoveredPins] = useState<Record<string, boolean>>({});
@@ -294,10 +304,13 @@ export const Scene01Mumbai: React.FC<SceneProps> = ({
         data-parallax-tier="background"
         aria-hidden="true"
         className="pointer-events-none absolute inset-x-0 top-0 h-[96vh] overflow-hidden opacity-45 will-change-transform"
+<<<<<<< HEAD
         style={{
           opacity: choreography?.skylineOpacity !== undefined ? choreography.skylineOpacity : undefined,
           transition: 'opacity 1000ms ease',
         }}
+=======
+>>>>>>> c35419f43bb5aee048a8e5328df5fe9aa12dbc74
       >
         <div
           className="h-full w-full"
@@ -433,9 +446,12 @@ export const Scene01Mumbai: React.FC<SceneProps> = ({
             Wednesday · Late December · 4:45 PM
           </p>
         </div>
+<<<<<<< HEAD
         <p className="mt-3 text-sm font-mono uppercase tracking-[0.2em] text-[#f28b50]/75 italic">
           Wednesday · Late December · 4:45 PM · Mumbai, India
         </p>
+=======
+>>>>>>> c35419f43bb5aee048a8e5328df5fe9aa12dbc74
 
         {/* MID-GROUND TIER: Establishing Atmospheric Panorama Strip with Interactive City Pins */}
         <div
@@ -453,7 +469,10 @@ export const Scene01Mumbai: React.FC<SceneProps> = ({
               aria-hidden="true"
               className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#141225]/90 via-transparent to-[#141225]/35"
             />
+<<<<<<< HEAD
             <div aria-hidden="true" className="scene-vignette" />
+=======
+>>>>>>> c35419f43bb5aee048a8e5328df5fe9aa12dbc74
 
             {/* Moving B.K.C. Elevated Highway Traffic Light Trails */}
             {!reducedMotion && (
@@ -561,6 +580,7 @@ export const Scene01Mumbai: React.FC<SceneProps> = ({
                 />
               </div>
             </div>
+<<<<<<< HEAD
             <div className="lg:col-span-5 space-y-4">
               <div className="border border-white/10 bg-[#121324]/85 p-6 backdrop-blur-md shadow-2xl">
                 <span className="font-mono text-[10px] uppercase tracking-[0.28em] text-[#f28b50] font-semibold">
@@ -588,13 +608,25 @@ export const Scene01Mumbai: React.FC<SceneProps> = ({
                   </div>
                 </div>
               </div>
+=======
+            <div className="lg:col-span-5">
+              <DialogueController
+                sequenceId="seq-01-narrator"
+                reducedMotion={reducedMotion}
+                onSkipNextScene={onSkipNextScene}
+              />
+>>>>>>> c35419f43bb5aee048a8e5328df5fe9aa12dbc74
             </div>
           </div>
         </div>
       ) : (
         <div
           ref={panTrackRef}
+<<<<<<< HEAD
           className="relative z-10 mx-auto max-w-6xl px-4 md:px-10 min-h-[200vh]"
+=======
+          className="relative z-10 mx-auto max-w-6xl px-4 md:px-10 min-h-[165vh]"
+>>>>>>> c35419f43bb5aee048a8e5328df5fe9aa12dbc74
         >
           <div className="sticky top-[5.25rem]">
             <div className="grid grid-cols-1 gap-6 lg:grid-cols-12 lg:items-center">
@@ -602,10 +634,13 @@ export const Scene01Mumbai: React.FC<SceneProps> = ({
                 <div
                   ref={viewportRef}
                   className="comic-panel-frame relative h-[calc(100vh-14.5rem)] lg:h-[calc(100vh-7.25rem)] min-h-[380px] sm:min-h-[460px] max-h-[780px] overflow-hidden"
+<<<<<<< HEAD
                   style={{
                     transform: choreography?.cameraZoom ? `scale(${choreography.cameraZoom})` : undefined,
                     transition: 'transform 800ms cubic-bezier(0.16, 1, 0.3, 1)',
                   }}
+=======
+>>>>>>> c35419f43bb5aee048a8e5328df5fe9aa12dbc74
                 >
                   <img
                     ref={imgRef}
@@ -649,6 +684,7 @@ export const Scene01Mumbai: React.FC<SceneProps> = ({
                 </div>
               </div>
 
+<<<<<<< HEAD
               <div className="lg:col-span-5 space-y-4">
                 <div className="relative border border-white/10 bg-[#121324]/85 p-6 backdrop-blur-md shadow-2xl">
                   <div className="absolute -inset-x-2 -top-4 bottom-0 bg-gradient-to-r from-[#141225]/95 via-[#141225]/80 to-transparent pointer-events-none" aria-hidden="true" />
@@ -677,6 +713,15 @@ export const Scene01Mumbai: React.FC<SceneProps> = ({
                     </div>
                   </div>
                 </div>
+=======
+              <div className="lg:col-span-5">
+                <DialogueController
+                  sequenceId="seq-01-narrator"
+                  reducedMotion={reducedMotion}
+                  scrollStageRef={panTrackRef}
+                  onSkipNextScene={onSkipNextScene}
+                />
+>>>>>>> c35419f43bb5aee048a8e5328df5fe9aa12dbc74
               </div>
             </div>
           </div>
@@ -694,6 +739,7 @@ export const Scene01Mumbai: React.FC<SceneProps> = ({
           accentColor="#f28b50"
         />
       </div>
+<<<<<<< HEAD
 
       {!reducedMotion && (
         <div aria-hidden="true" className="pointer-events-none absolute inset-0 z-[3] overflow-hidden">
@@ -713,6 +759,8 @@ export const Scene01Mumbai: React.FC<SceneProps> = ({
           ))}
         </div>
       )}
+=======
+>>>>>>> c35419f43bb5aee048a8e5328df5fe9aa12dbc74
     </section>
   );
 };

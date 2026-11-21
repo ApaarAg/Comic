@@ -14,7 +14,11 @@ export type CharacterId =
   | 'security'
   | 'pranah';
 
+<<<<<<< HEAD
 export type BubbleAnchorSide = 'left' | 'right' | 'center' | 'bottom';
+=======
+export type BubbleAnchorSide = 'left' | 'right' | 'center';
+>>>>>>> c35419f43bb5aee048a8e5328df5fe9aa12dbc74
 export type CharacterExpression =
   | 'neutral'
   | 'urgent'
@@ -25,7 +29,11 @@ export type CharacterExpression =
   | 'spectral'
   | 'warm';
 
+<<<<<<< HEAD
 export type DialoguePresentationMode = 'dialogue' | 'narrator' | 'narration';
+=======
+export type DialoguePresentationMode = 'dialogue' | 'narrator';
+>>>>>>> c35419f43bb5aee048a8e5328df5fe9aa12dbc74
 export type DialogueSourceOrigin = 'comic' | 'connective';
 
 export interface DialogueAnimationSpec {
@@ -46,8 +54,11 @@ export interface DialogueLine {
   bubblePosition: BubbleAnchorSide;
   characterFocus: CharacterId;
   expression: CharacterExpression;
+<<<<<<< HEAD
   /** Panel image filename or selector this line is anchored to */
   panelTarget?: string;
+=======
+>>>>>>> c35419f43bb5aee048a8e5328df5fe9aa12dbc74
   /** Scroll trigger progress [0..1] within the enclosing dialogue stage */
   triggerProgress: number;
   /** Duration in seconds for voice playback or honest visual cadence timing */
@@ -209,7 +220,10 @@ type RawLineInput = Omit<
   | 'sourceOrigin'
   | 'animation'
 > & {
+<<<<<<< HEAD
   panelTarget?: string;
+=======
+>>>>>>> c35419f43bb5aee048a8e5328df5fe9aa12dbc74
   mode?: DialoguePresentationMode;
   sourceOrigin?: DialogueSourceOrigin;
   characterFocus?: CharacterId;
@@ -292,7 +306,10 @@ export const CHAPTER_DIALOGUE_SEQUENCES: Record<string, DialogueLine[]> = {
       text: 'I told you we should have left an hour ago! Do you hear this traffic?!',
       side: 'left',
       expression: 'urgent',
+<<<<<<< HEAD
       panelTarget: 'p07_panel01',
+=======
+>>>>>>> c35419f43bb5aee048a8e5328df5fe9aa12dbc74
       triggerProgress: 0.04,
       durationMs: 3600,
       audioSrc: '/assets/audio/voices/supporting/s02-01-mrs-shah.mp3',
@@ -309,7 +326,10 @@ export const CHAPTER_DIALOGUE_SEQUENCES: Record<string, DialogueLine[]> = {
       text: 'Madam, hold on—every lane is locked solid across B.K.C.!',
       side: 'right',
       expression: 'urgent',
+<<<<<<< HEAD
       panelTarget: 'p07_panel04',
+=======
+>>>>>>> c35419f43bb5aee048a8e5328df5fe9aa12dbc74
       triggerProgress: 0.44,
       durationMs: 3200,
       audioSrc: '/assets/audio/voices/supporting/s02-02-driver.mp3',
@@ -326,7 +346,10 @@ export const CHAPTER_DIALOGUE_SEQUENCES: Record<string, DialogueLine[]> = {
       text: '...The baby is coming.',
       side: 'center',
       expression: 'shocked',
+<<<<<<< HEAD
       panelTarget: 'p07_panel06',
+=======
+>>>>>>> c35419f43bb5aee048a8e5328df5fe9aa12dbc74
       triggerProgress: 0.78,
       durationMs: 2800,
       audioSrc: '/assets/audio/voices/supporting/s02-03-mrs-shah-baby.mp3',
@@ -346,7 +369,10 @@ export const CHAPTER_DIALOGUE_SEQUENCES: Record<string, DialogueLine[]> = {
       side: 'left',
       characterFocus: 'dhiraj',
       expression: 'neutral',
+<<<<<<< HEAD
       panelTarget: 'p08_panel03',
+=======
+>>>>>>> c35419f43bb5aee048a8e5328df5fe9aa12dbc74
       triggerProgress: 0.04,
       durationMs: 4600,
       audioSrc: '/assets/audio/voices/dhiraj/s03-01-dhiraj.mp3',
@@ -358,13 +384,21 @@ export const CHAPTER_DIALOGUE_SEQUENCES: Record<string, DialogueLine[]> = {
       sequenceId: 'seq-03-party',
       mode: 'narrator',
       sourceOrigin: 'comic',
+<<<<<<< HEAD
       speaker: 'narrator',
       speakerLabel: 'The Chronicle · Girl by the Window',
+=======
+      speaker: 'girl',
+      speakerLabel: 'Girl by the Window · Narration',
+>>>>>>> c35419f43bb5aee048a8e5328df5fe9aa12dbc74
       text: '...Beneath gentle curls of raven hair, her eyes stayed fixed on distant city lights while her thoughts drifted like cigarette smoke.',
       side: 'right',
       characterFocus: 'girl',
       expression: 'contemplative',
+<<<<<<< HEAD
       panelTarget: 'p08_panel04',
+=======
+>>>>>>> c35419f43bb5aee048a8e5328df5fe9aa12dbc74
       triggerProgress: 0.58,
       durationMs: 4800,
       audioSrc: '/assets/audio/voices/narrator/s03-02-window.mp3',
@@ -383,7 +417,10 @@ export const CHAPTER_DIALOGUE_SEQUENCES: Record<string, DialogueLine[]> = {
       text: 'Hold the door!',
       side: 'left',
       expression: 'urgent',
+<<<<<<< HEAD
       panelTarget: 'p09_panel02',
+=======
+>>>>>>> c35419f43bb5aee048a8e5328df5fe9aa12dbc74
       triggerProgress: 0.04,
       durationMs: 2200,
       audioSrc: '/assets/audio/voices/death/s04-01-death-hold.mp3',
@@ -400,7 +437,10 @@ export const CHAPTER_DIALOGUE_SEQUENCES: Record<string, DialogueLine[]> = {
       text: 'This way, please. He is expecting you.',
       side: 'right',
       expression: 'neutral',
+<<<<<<< HEAD
       panelTarget: 'p10_panel03',
+=======
+>>>>>>> c35419f43bb5aee048a8e5328df5fe9aa12dbc74
       triggerProgress: 0.42,
       durationMs: 2600,
       audioSrc: '/assets/audio/voices/supporting/s04-02-agni-way.mp3',
@@ -417,7 +457,10 @@ export const CHAPTER_DIALOGUE_SEQUENCES: Record<string, DialogueLine[]> = {
       text: 'Come, come. Have a seat.',
       side: 'right',
       expression: 'commanding',
+<<<<<<< HEAD
       panelTarget: 'p10_panel06',
+=======
+>>>>>>> c35419f43bb5aee048a8e5328df5fe9aa12dbc74
       triggerProgress: 0.72,
       durationMs: 2500,
       audioSrc: '/assets/audio/voices/supporting/s04-03-god-seat.mp3',
@@ -436,7 +479,10 @@ export const CHAPTER_DIALOGUE_SEQUENCES: Record<string, DialogueLine[]> = {
       text: "So, Death... tell me, how're things? Work, life, friendships... hobbies?",
       side: 'right',
       expression: 'neutral',
+<<<<<<< HEAD
       panelTarget: 'p11_panel01',
+=======
+>>>>>>> c35419f43bb5aee048a8e5328df5fe9aa12dbc74
       triggerProgress: 0.03,
       durationMs: 3900,
       audioSrc: '/assets/audio/voices/supporting/s04-04-god-hobbies.mp3',
@@ -453,7 +499,10 @@ export const CHAPTER_DIALOGUE_SEQUENCES: Record<string, DialogueLine[]> = {
       text: 'W-what am I doing here, Sir?',
       side: 'left',
       expression: 'urgent',
+<<<<<<< HEAD
       panelTarget: 'p11_panel03',
+=======
+>>>>>>> c35419f43bb5aee048a8e5328df5fe9aa12dbc74
       triggerProgress: 0.16,
       durationMs: 2500,
       audioSrc: '/assets/audio/voices/death/s04-05-death-why.mp3',
@@ -470,7 +519,10 @@ export const CHAPTER_DIALOGUE_SEQUENCES: Record<string, DialogueLine[]> = {
       text: "How long have you been with us, Death? Feels like an eternity, doesn't it?",
       side: 'right',
       expression: 'commanding',
+<<<<<<< HEAD
       panelTarget: 'p11_panel05',
+=======
+>>>>>>> c35419f43bb5aee048a8e5328df5fe9aa12dbc74
       triggerProgress: 0.29,
       durationMs: 3600,
       audioSrc: '/assets/audio/voices/supporting/s04-06-god-eternity.mp3',
@@ -487,7 +539,10 @@ export const CHAPTER_DIALOGUE_SEQUENCES: Record<string, DialogueLine[]> = {
       text: 'I have actually been here for an eternity.',
       side: 'left',
       expression: 'neutral',
+<<<<<<< HEAD
       panelTarget: 'p12_panel01',
+=======
+>>>>>>> c35419f43bb5aee048a8e5328df5fe9aa12dbc74
       triggerProgress: 0.42,
       durationMs: 2900,
       audioSrc: '/assets/audio/voices/death/s04-07-death-eternity.mp3',
@@ -504,7 +559,10 @@ export const CHAPTER_DIALOGUE_SEQUENCES: Record<string, DialogueLine[]> = {
       text: "Yes, Death. I'm afraid we're letting you go.",
       side: 'right',
       expression: 'commanding',
+<<<<<<< HEAD
       panelTarget: 'p12_panel02',
+=======
+>>>>>>> c35419f43bb5aee048a8e5328df5fe9aa12dbc74
       triggerProgress: 0.54,
       durationMs: 3300,
       audioSrc: '/assets/audio/voices/supporting/s04-08-god-fired.mp3',
@@ -521,7 +579,10 @@ export const CHAPTER_DIALOGUE_SEQUENCES: Record<string, DialogueLine[]> = {
       text: "WHAT?! I'm an absolute consequence. It's in the job description! Send down a plague! Strike the child with lightning!",
       side: 'left',
       expression: 'shocked',
+<<<<<<< HEAD
       panelTarget: 'p12_panel04',
+=======
+>>>>>>> c35419f43bb5aee048a8e5328df5fe9aa12dbc74
       triggerProgress: 0.67,
       durationMs: 4400,
       audioSrc: '/assets/audio/voices/death/s04-09-death-outrage.mp3',
@@ -538,7 +599,10 @@ export const CHAPTER_DIALOGUE_SEQUENCES: Record<string, DialogueLine[]> = {
       text: 'You know how corporate feels about that kind of stuff.',
       side: 'right',
       expression: 'neutral',
+<<<<<<< HEAD
       panelTarget: 'p12_panel06',
+=======
+>>>>>>> c35419f43bb5aee048a8e5328df5fe9aa12dbc74
       triggerProgress: 0.79,
       durationMs: 3200,
       audioSrc: '/assets/audio/voices/supporting/s04-10-god-corporate.mp3',
@@ -555,7 +619,10 @@ export const CHAPTER_DIALOGUE_SEQUENCES: Record<string, DialogueLine[]> = {
       text: "This is all I've ever done. What am I supposed to do?",
       side: 'center',
       expression: 'grief',
+<<<<<<< HEAD
       panelTarget: 'p12_panel07',
+=======
+>>>>>>> c35419f43bb5aee048a8e5328df5fe9aa12dbc74
       triggerProgress: 0.9,
       durationMs: 3500,
       audioSrc: '/assets/audio/voices/death/s04-11-death-lost.mp3',
@@ -571,7 +638,11 @@ export const CHAPTER_DIALOGUE_SEQUENCES: Record<string, DialogueLine[]> = {
       sourceOrigin: 'comic',
       speaker: 'narrator',
       speakerLabel: 'Chronicle · Parel Sixth Floor',
+<<<<<<< HEAD
       text: 'It was around that time that the girl from the window at the party was falling through the air — two floors down and fast approaching the ground.',
+=======
+      text: 'It was around that time that the girl from the window at the party was falling through the air—two floors down and fast approaching the ground.',
+>>>>>>> c35419f43bb5aee048a8e5328df5fe9aa12dbc74
       side: 'center',
       expression: 'urgent',
       triggerProgress: 0.04,
@@ -624,7 +695,10 @@ export const CHAPTER_DIALOGUE_SEQUENCES: Record<string, DialogueLine[]> = {
       text: 'Agni?',
       side: 'left',
       expression: 'grief',
+<<<<<<< HEAD
       panelTarget: 'p14_panel01',
+=======
+>>>>>>> c35419f43bb5aee048a8e5328df5fe9aa12dbc74
       triggerProgress: 0.04,
       durationMs: 1800,
       audioSrc: '/assets/audio/voices/death/s06-01-death-agni.mp3',
@@ -641,7 +715,10 @@ export const CHAPTER_DIALOGUE_SEQUENCES: Record<string, DialogueLine[]> = {
       text: "I know what you're thinking and the answer is no.",
       side: 'right',
       expression: 'neutral',
+<<<<<<< HEAD
       panelTarget: 'p14_panel02',
+=======
+>>>>>>> c35419f43bb5aee048a8e5328df5fe9aa12dbc74
       triggerProgress: 0.24,
       durationMs: 2800,
       audioSrc: '/assets/audio/voices/supporting/s06-02-agni-no.mp3',
@@ -658,7 +735,10 @@ export const CHAPTER_DIALOGUE_SEQUENCES: Record<string, DialogueLine[]> = {
       text: 'Oh, fiiiine... fine, what do you want?',
       side: 'right',
       expression: 'contemplative',
+<<<<<<< HEAD
       panelTarget: 'p14_panel04',
+=======
+>>>>>>> c35419f43bb5aee048a8e5328df5fe9aa12dbc74
       triggerProgress: 0.44,
       durationMs: 2700,
       audioSrc: '/assets/audio/voices/supporting/s06-03-agni-fine.mp3',
@@ -675,7 +755,10 @@ export const CHAPTER_DIALOGUE_SEQUENCES: Record<string, DialogueLine[]> = {
       text: 'When you send me down and give me a mortal body, can you put me close to the child?',
       side: 'left',
       expression: 'urgent',
+<<<<<<< HEAD
       panelTarget: 'p15_panel01',
+=======
+>>>>>>> c35419f43bb5aee048a8e5328df5fe9aa12dbc74
       triggerProgress: 0.64,
       durationMs: 3800,
       audioSrc: '/assets/audio/voices/death/s06-04-death-close.mp3',
@@ -692,7 +775,10 @@ export const CHAPTER_DIALOGUE_SEQUENCES: Record<string, DialogueLine[]> = {
       text: "I'll be a mortal then. My actions. My consequences.",
       side: 'left',
       expression: 'commanding',
+<<<<<<< HEAD
       panelTarget: 'p15_panel02',
+=======
+>>>>>>> c35419f43bb5aee048a8e5328df5fe9aa12dbc74
       triggerProgress: 0.84,
       durationMs: 3500,
       audioSrc: '/assets/audio/voices/death/s06-05-death-mortal.mp3',
@@ -711,7 +797,10 @@ export const CHAPTER_DIALOGUE_SEQUENCES: Record<string, DialogueLine[]> = {
       text: 'Ohhhhh, that feels awful.',
       side: 'left',
       expression: 'grief',
+<<<<<<< HEAD
       panelTarget: 'p17_panel02',
+=======
+>>>>>>> c35419f43bb5aee048a8e5328df5fe9aa12dbc74
       triggerProgress: 0.04,
       durationMs: 2600,
       audioSrc: '/assets/audio/voices/laila/s07-01-laila-awful.mp3',
@@ -728,7 +817,10 @@ export const CHAPTER_DIALOGUE_SEQUENCES: Record<string, DialogueLine[]> = {
       text: 'Yeah, well... you were dead for a good twenty minutes or so.',
       side: 'right',
       expression: 'spectral',
+<<<<<<< HEAD
       panelTarget: 'p18_panel01',
+=======
+>>>>>>> c35419f43bb5aee048a8e5328df5fe9aa12dbc74
       triggerProgress: 0.21,
       durationMs: 3400,
       audioSrc: '/assets/audio/voices/munmun/s07-02-munmun-dead.mp3',
@@ -745,7 +837,10 @@ export const CHAPTER_DIALOGUE_SEQUENCES: Record<string, DialogueLine[]> = {
       text: "Who're you?",
       side: 'left',
       expression: 'urgent',
+<<<<<<< HEAD
       panelTarget: 'p17_panel04',
+=======
+>>>>>>> c35419f43bb5aee048a8e5328df5fe9aa12dbc74
       triggerProgress: 0.38,
       durationMs: 2100,
       audioSrc: '/assets/audio/voices/laila/s07-03-laila-who.mp3',
@@ -762,7 +857,10 @@ export const CHAPTER_DIALOGUE_SEQUENCES: Record<string, DialogueLine[]> = {
       text: "I-I'm a ghost! And your name... it's on your wrist.",
       side: 'right',
       expression: 'spectral',
+<<<<<<< HEAD
       panelTarget: 'p18_panel05',
+=======
+>>>>>>> c35419f43bb5aee048a8e5328df5fe9aa12dbc74
       triggerProgress: 0.54,
       durationMs: 3400,
       audioSrc: '/assets/audio/voices/munmun/s07-04-munmun-ghost.mp3',
@@ -779,7 +877,10 @@ export const CHAPTER_DIALOGUE_SEQUENCES: Record<string, DialogueLine[]> = {
       text: 'L-Laila Starr...',
       side: 'left',
       expression: 'shocked',
+<<<<<<< HEAD
       panelTarget: 'p18_panel06',
+=======
+>>>>>>> c35419f43bb5aee048a8e5328df5fe9aa12dbc74
       triggerProgress: 0.71,
       durationMs: 2500,
       audioSrc: '/assets/audio/voices/laila/s07-05-laila-name.mp3',
@@ -796,7 +897,10 @@ export const CHAPTER_DIALOGUE_SEQUENCES: Record<string, DialogueLine[]> = {
       text: 'So... what next, Laila Starr?',
       side: 'right',
       expression: 'spectral',
+<<<<<<< HEAD
       panelTarget: 'p18_panel07',
+=======
+>>>>>>> c35419f43bb5aee048a8e5328df5fe9aa12dbc74
       triggerProgress: 0.86,
       durationMs: 2700,
       audioSrc: '/assets/audio/voices/munmun/s07-06-munmun-next.mp3',
@@ -815,7 +919,10 @@ export const CHAPTER_DIALOGUE_SEQUENCES: Record<string, DialogueLine[]> = {
       text: "His name is Darius. He's got a name! You can't kill someone with a name!",
       side: 'right',
       expression: 'spectral',
+<<<<<<< HEAD
       panelTarget: 'p20_panel03',
+=======
+>>>>>>> c35419f43bb5aee048a8e5328df5fe9aa12dbc74
       triggerProgress: 0.05,
       durationMs: 3900,
       audioSrc: '/assets/audio/voices/munmun/s08-01-munmun-darius.mp3',
@@ -832,7 +939,10 @@ export const CHAPTER_DIALOGUE_SEQUENCES: Record<string, DialogueLine[]> = {
       text: "What? W-why did you tell me that? I... I can't!",
       side: 'left',
       expression: 'grief',
+<<<<<<< HEAD
       panelTarget: 'p21_panel01',
+=======
+>>>>>>> c35419f43bb5aee048a8e5328df5fe9aa12dbc74
       triggerProgress: 0.42,
       durationMs: 3400,
       audioSrc: '/assets/audio/voices/laila/s08-02-laila-cant.mp3',
@@ -849,7 +959,10 @@ export const CHAPTER_DIALOGUE_SEQUENCES: Record<string, DialogueLine[]> = {
       text: "There she is! Oh my God—she's alive! Hey you! Put that baby down!",
       side: 'right',
       expression: 'urgent',
+<<<<<<< HEAD
       panelTarget: 'p21_panel04',
+=======
+>>>>>>> c35419f43bb5aee048a8e5328df5fe9aa12dbc74
       triggerProgress: 0.76,
       durationMs: 3600,
       audioSrc: '/assets/audio/voices/supporting/s08-03-guard.mp3',
@@ -902,7 +1015,10 @@ export const CHAPTER_DIALOGUE_SEQUENCES: Record<string, DialogueLine[]> = {
       text: 'Have you been standing there watching me sleep this whole time? Ugggh... what happened? How did I get here?',
       side: 'left',
       expression: 'contemplative',
+<<<<<<< HEAD
       panelTarget: 'p25_panel06',
+=======
+>>>>>>> c35419f43bb5aee048a8e5328df5fe9aa12dbc74
       triggerProgress: 0.04,
       durationMs: 4100,
       audioSrc: '/assets/audio/voices/laila/s10-01-laila-wake.mp3',
@@ -919,7 +1035,10 @@ export const CHAPTER_DIALOGUE_SEQUENCES: Record<string, DialogueLine[]> = {
       text: 'You died. Run over by a twelve-wheeler. But I brought you back.',
       side: 'right',
       expression: 'warm',
+<<<<<<< HEAD
       panelTarget: 'p26_panel01',
+=======
+>>>>>>> c35419f43bb5aee048a8e5328df5fe9aa12dbc74
       triggerProgress: 0.26,
       durationMs: 3800,
       audioSrc: '/assets/audio/voices/supporting/s10-02-pranah-back.mp3',
@@ -936,7 +1055,10 @@ export const CHAPTER_DIALOGUE_SEQUENCES: Record<string, DialogueLine[]> = {
       text: "I couldn't do it, Pran. He was just a baby... How could you bring someone like that into being?",
       side: 'left',
       expression: 'grief',
+<<<<<<< HEAD
       panelTarget: 'p26_panel02',
+=======
+>>>>>>> c35419f43bb5aee048a8e5328df5fe9aa12dbc74
       triggerProgress: 0.48,
       durationMs: 4200,
       audioSrc: '/assets/audio/voices/laila/s10-03-laila-baby.mp3',
@@ -953,7 +1075,10 @@ export const CHAPTER_DIALOGUE_SEQUENCES: Record<string, DialogueLine[]> = {
       text: 'Hey, I only give them a lifetime, every one of them. What they do with it is between them and... you, I suppose.',
       side: 'right',
       expression: 'warm',
+<<<<<<< HEAD
       panelTarget: 'p26_panel03',
+=======
+>>>>>>> c35419f43bb5aee048a8e5328df5fe9aa12dbc74
       triggerProgress: 0.7,
       durationMs: 4400,
       audioSrc: '/assets/audio/voices/supporting/s10-04-pranah-lifetime.mp3',
@@ -970,7 +1095,10 @@ export const CHAPTER_DIALOGUE_SEQUENCES: Record<string, DialogueLine[]> = {
       text: "...he's not a baby anymore.",
       side: 'center',
       expression: 'contemplative',
+<<<<<<< HEAD
       panelTarget: 'p27_panel01',
+=======
+>>>>>>> c35419f43bb5aee048a8e5328df5fe9aa12dbc74
       triggerProgress: 0.88,
       durationMs: 3000,
       audioSrc: '/assets/audio/voices/laila/s10-05-laila-closing.mp3',

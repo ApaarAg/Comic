@@ -4,6 +4,9 @@ dist/
 coverage/
 .DS_Store
 *.log
+<<<<<<< HEAD
 .chrome-mobile-audit/
+=======
+>>>>>>> c35419f43bb5aee048a8e5328df5fe9aa12dbc74
 .env*
 !.env.example

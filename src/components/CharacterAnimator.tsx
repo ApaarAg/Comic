@@ -13,9 +13,12 @@ interface CharacterAnimatorProps {
   subtleMotion?: 'breathe' | 'float' | 'spectral' | 'pulse' | 'none';
   className?: string;
   caption?: string;
+<<<<<<< HEAD
   subtitle?: string;
   dialogueText?: string;
   showSubtitle?: boolean;
+=======
+>>>>>>> c35419f43bb5aee048a8e5328df5fe9aa12dbc74
   onInspect?: (payload: { src: string; alt: string; note?: string }) => void;
   inspectNote?: string;
 }
@@ -29,9 +32,12 @@ export const CharacterAnimator: React.FC<CharacterAnimatorProps> = ({
   subtleMotion = 'breathe',
   className = '',
   caption,
+<<<<<<< HEAD
   subtitle,
   dialogueText,
   showSubtitle = false,
+=======
+>>>>>>> c35419f43bb5aee048a8e5328df5fe9aa12dbc74
   onInspect,
   inspectNote,
 }) => {
@@ -43,10 +49,13 @@ export const CharacterAnimator: React.FC<CharacterAnimatorProps> = ({
   const isSpeaking = hasDialogueContext && activeSpeaker === character;
   const isOtherSpeaking = hasDialogueContext && activeSpeaker !== character;
   const speakerAccent = character ? CHARACTER_STYLES[character].accent : '#f28b50';
+<<<<<<< HEAD
   const speakerMeta = character ? CHARACTER_STYLES[character] : null;
 
   // Render subtitle box only if explicitly requested, preventing duplicate text with SyncedSpeechBubble
   const displayText = showSubtitle ? (dialogueText || subtitle) : undefined;
+=======
+>>>>>>> c35419f43bb5aee048a8e5328df5fe9aa12dbc74
 
   const motionClass =
     reducedMotion || subtleMotion === 'none'
@@ -118,6 +127,7 @@ export const CharacterAnimator: React.FC<CharacterAnimatorProps> = ({
       onBlur={handleHoverOut}
       className={`comic-panel-frame group relative transition-all duration-500 ease-out ${
         isSpeaking
+<<<<<<< HEAD
           ? 'scale-[1.025] z-20 brightness-[1.04]'
           : isOtherSpeaking
             ? 'brightness-[0.78] saturate-[0.85]'
@@ -131,13 +141,32 @@ export const CharacterAnimator: React.FC<CharacterAnimatorProps> = ({
     >
       <div ref={hoverTargetRef} className="relative overflow-hidden will-change-transform bg-[#0c0e18]">
         <div className={`relative flex items-center justify-center ${motionClass}`}>
+=======
+          ? 'scale-[1.012]'
+          : isOtherSpeaking
+            ? 'brightness-[0.82] saturate-[0.88]'
+            : ''
+      } ${className}`}
+      style={{
+        boxShadow: isSpeaking
+          ? `0 24px 60px -14px ${speakerAccent}38, 0 0 0 1px ${speakerAccent}70`
+          : undefined,
+      }}
+    >
+      <div ref={hoverTargetRef} className="relative overflow-hidden will-change-transform">
+        <div className={`relative ${motionClass}`}>
+>>>>>>> c35419f43bb5aee048a8e5328df5fe9aa12dbc74
           <img
             src={src}
             alt={alt}
             loading="eager"
             decoding="sync"
             referrerPolicy="no-referrer"
+<<<<<<< HEAD
             className="w-full max-h-[82vh] object-contain select-none"
+=======
+            className="w-full h-auto object-cover select-none"
+>>>>>>> c35419f43bb5aee048a8e5328df5fe9aa12dbc74
           />
 
           {/* Character-calibrated atmospheric rim light while speaking */}
@@ -163,6 +192,7 @@ export const CharacterAnimator: React.FC<CharacterAnimatorProps> = ({
         </button>
       )}
 
+<<<<<<< HEAD
       {/* High-Readability Companion Subtitle Bar */}
       {displayText && (
         <div className="border-t border-white/10 bg-[#0c0e18]/95 px-4 py-3 sm:px-5 sm:py-3.5 backdrop-blur-md">
@@ -183,6 +213,9 @@ export const CharacterAnimator: React.FC<CharacterAnimatorProps> = ({
       )}
 
       {caption && !displayText && <figcaption className="sr-only">{caption}</figcaption>}
+=======
+      {caption && <figcaption className="sr-only">{caption}</figcaption>}
+>>>>>>> c35419f43bb5aee048a8e5328df5fe9aa12dbc74
     </figure>
   );
 };

@@ -28,8 +28,11 @@ export interface VoicePlaybackSnapshot {
   state: VoiceAssetState;
   timingSource: 'audio-seek' | 'estimated-duration';
   isPaused: boolean;
+<<<<<<< HEAD
   /** Whether the voice is currently actively playing (not paused, not idle) */
   isPlaying: boolean;
+=======
+>>>>>>> c35419f43bb5aee048a8e5328df5fe9aa12dbc74
 }
 
 /**
@@ -66,7 +69,10 @@ class CharacterVoicePlayer {
       state: this.activeState,
       timingSource: this.activeTimingSource,
       isPaused: this.isPaused(),
+<<<<<<< HEAD
       isPlaying: this.activeState === 'playing-recording' && !this.isPaused(),
+=======
+>>>>>>> c35419f43bb5aee048a8e5328df5fe9aa12dbc74
     };
   }
 
@@ -134,11 +140,24 @@ class CharacterVoicePlayer {
   }
 
   public preloadAsset(audioSrc: string | undefined): void {
+<<<<<<< HEAD
     if (!audioSrc || typeof window === 'undefined' || this.preloadedHowls.has(audioSrc)) {
       return;
     }
     // Keep cache small to avoid retaining excess audio buffers
     if (this.preloadedHowls.size >= 6) {
+=======
+    if (
+      !audioSrc ||
+      typeof window === 'undefined' ||
+      !this.availableVoicePaths?.has(audioSrc) ||
+      this.preloadedHowls.has(audioSrc)
+    ) {
+      return;
+    }
+    // Keep cache small to avoid retaining excess audio buffers
+    if (this.preloadedHowls.size >= 4) {
+>>>>>>> c35419f43bb5aee048a8e5328df5fe9aa12dbc74
       const oldestKey = this.preloadedHowls.keys().next().value;
       if (oldestKey) {
         this.preloadedHowls.get(oldestKey)?.unload();
@@ -285,11 +304,17 @@ class CharacterVoicePlayer {
       return this.activeState;
     }
 
+<<<<<<< HEAD
     const isRecordedAsset =
       Boolean(voiceAssetPath) &&
       (available.has(voiceAssetPath!) || voiceAssetPath!.startsWith('/assets/audio/voices/'));
     const canPlayRecorded =
       isRecordedAsset &&
+=======
+    const canPlayRecorded =
+      Boolean(voiceAssetPath) &&
+      available.has(voiceAssetPath!) &&
+>>>>>>> c35419f43bb5aee048a8e5328df5fe9aa12dbc74
       !mixer.masterMuted &&
       !mixer.voiceMuted;
 

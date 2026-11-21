@@ -209,8 +209,13 @@ test('computeAudioMixLevels respects mute toggles and ducks ambience under activ
     voiceMuted: false,
     isVoiceActive: true,
   });
+<<<<<<< HEAD
   assert.equal(active.duckFactor, 0.38);
   assert.equal(active.ambienceGain, 0.275);
+=======
+  assert.equal(active.duckFactor, 0.42);
+  assert.equal(active.ambienceGain, 0.21);
+>>>>>>> c35419f43bb5aee048a8e5328df5fe9aa12dbc74
   assert.equal(active.voiceGain, 0.9);
 });
 
@@ -233,6 +238,7 @@ test('computeShaderTransitionEnvelope shapes bell-curve intensity for shader uni
   assert.equal(end.dissolve, 1);
 });
 
+<<<<<<< HEAD
 test('computePrologueVisualState progresses across 5 cinematic scenes: darkness, Mumbai, narration, title, and portal', () => {
   const mA = computePrologueVisualState(0.06, PROLOGUE_MOMENTS);
   const mB = computePrologueVisualState(0.30, PROLOGUE_MOMENTS);
@@ -267,6 +273,24 @@ test('computePrologueVisualState progresses across 5 cinematic scenes: darkness,
   assert.equal(resolvePrologueMomentIndex(0.95, PROLOGUE_MOMENTS), 4);
   assert.ok(mE.portalProgress > 0.6);
   assert.ok(mE.cameraZoom > mB.cameraZoom);
+=======
+test('computePrologueVisualState progresses across darkness, title, Mumbai, narration, and portal', () => {
+  const m0 = computePrologueVisualState(0.04, PROLOGUE_MOMENTS);
+  const m1 = computePrologueVisualState(0.26, PROLOGUE_MOMENTS);
+  const m2 = computePrologueVisualState(0.46, PROLOGUE_MOMENTS);
+  const m3 = computePrologueVisualState(0.62, PROLOGUE_MOMENTS);
+  const m4 = computePrologueVisualState(0.78, PROLOGUE_MOMENTS);
+  const m5 = computePrologueVisualState(0.96, PROLOGUE_MOMENTS);
+
+  assert.equal(resolvePrologueMomentIndex(0.04, PROLOGUE_MOMENTS), 0);
+  assert.equal(m0.titleReveal, 0);
+  assert.equal(m0.mumbaiReveal, 0);
+  assert.ok(m1.momentIndex === 1 && m1.titleReveal > 0.7);
+  assert.ok(m2.momentIndex === 2 && m2.mumbaiReveal > 0.6);
+  assert.ok(m3.momentIndex === 3 && m3.narrationOpacity > 0.8 && m3.activeNarrationIndex === 0);
+  assert.ok(m4.momentIndex === 4 && m4.activeNarrationIndex === 1 && m4.cameraZoom > m1.cameraZoom);
+  assert.ok(m5.momentIndex === 5 && m5.portalProgress > 0.6);
+>>>>>>> c35419f43bb5aee048a8e5328df5fe9aa12dbc74
 });
 
 test('resolveBubblePlacement computes directional SVG tail positions cleanly', () => {

@@ -78,10 +78,17 @@ export const ChapterChrome: React.FC<ChapterChromeProps> = ({
         <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-5 py-2.5 md:px-8">
           {/* Zone 1: Brand Wordmark */}
           <a
+<<<<<<< HEAD
             href="#scene-00"
             onClick={(e) => {
               e.preventDefault();
               onJumpToScene('scene-00');
+=======
+            href="#scene-01"
+            onClick={(e) => {
+              e.preventDefault();
+              onJumpToScene('scene-01');
+>>>>>>> c35419f43bb5aee048a8e5328df5fe9aa12dbc74
             }}
             className="font-display text-lg md:text-xl font-semibold tracking-wide text-[#f6efe5] whitespace-nowrap shrink-0 hover:opacity-85 transition-opacity focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#f28b50]"
           >
@@ -94,9 +101,13 @@ export const ChapterChrome: React.FC<ChapterChromeProps> = ({
               className="font-mono tabular-nums shrink-0"
               style={{ color: activeScene.theme.accent }}
             >
+<<<<<<< HEAD
               {activeScene.index === 0
                 ? 'Prologue'
                 : `${String(activeScene.index).padStart(2, '0')} / 10`}
+=======
+              {String(activeScene.index).padStart(2, '0')} / {String(scenes.length).padStart(2, '0')}
+>>>>>>> c35419f43bb5aee048a8e5328df5fe9aa12dbc74
             </span>
             <span aria-hidden="true" className="text-[#e6ddd0]/35">/</span>
             <span className="truncate font-medium">{activeScene.title}</span>
@@ -113,6 +124,24 @@ export const ChapterChrome: React.FC<ChapterChromeProps> = ({
           <div className="relative flex items-center gap-2 sm:gap-2.5 shrink-0">
             <button
               type="button"
+<<<<<<< HEAD
+=======
+              onClick={onToggleMute}
+              aria-label={isMuted ? 'Unmute ambient sound' : 'Mute ambient sound'}
+              aria-pressed={!isMuted}
+              className="inline-flex h-10 items-center gap-2 border border-white/15 bg-[#121628]/85 px-3 text-xs font-medium tracking-wider uppercase text-[#f6efe5] transition-colors hover:border-[#f28b50]/60 hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#f28b50] whitespace-nowrap shrink-0 cursor-pointer"
+            >
+              {isMuted ? (
+                <VolumeX className="h-3.5 w-3.5 text-[#e6ddd0]/65" />
+              ) : (
+                <Volume2 className="h-3.5 w-3.5 text-[#f28b50]" />
+              )}
+              <span className="hidden md:inline">{isMuted ? 'Sound Off' : 'Sound On'}</span>
+            </button>
+
+            <button
+              type="button"
+>>>>>>> c35419f43bb5aee048a8e5328df5fe9aa12dbc74
               onClick={() => setMixerOpen((prev) => !prev)}
               aria-label="Toggle audio mixer"
               aria-expanded={mixerOpen}
@@ -149,6 +178,7 @@ export const ChapterChrome: React.FC<ChapterChromeProps> = ({
                   <span className="font-mono text-[11px] uppercase tracking-[0.2em] text-[#f28b50]">
                     Audio Mixer
                   </span>
+<<<<<<< HEAD
                   <div className="flex items-center gap-2">
                     <button
                       type="button"
@@ -178,6 +208,16 @@ export const ChapterChrome: React.FC<ChapterChromeProps> = ({
                       <X className="h-3.5 w-3.5" />
                     </button>
                   </div>
+=======
+                  <button
+                    type="button"
+                    onClick={() => setMixerOpen(false)}
+                    aria-label="Close audio mixer"
+                    className="text-[#cfc5b9]/75 hover:text-white cursor-pointer"
+                  >
+                    <X className="h-3.5 w-3.5" />
+                  </button>
+>>>>>>> c35419f43bb5aee048a8e5328df5fe9aa12dbc74
                 </div>
 
                 <div className="space-y-3.5 text-xs">
@@ -208,6 +248,7 @@ export const ChapterChrome: React.FC<ChapterChromeProps> = ({
                     />
                   </div>
 
+<<<<<<< HEAD
                   {/* Bus 2: Cinematic Score */}
                   <div>
                     <div className="flex items-center justify-between mb-1">
@@ -275,6 +316,9 @@ export const ChapterChrome: React.FC<ChapterChromeProps> = ({
                   </div>
 
                   {/* Bus 3: SFX */}
+=======
+                  {/* Bus 2: SFX */}
+>>>>>>> c35419f43bb5aee048a8e5328df5fe9aa12dbc74
                   <div>
                     <div className="flex items-center justify-between mb-1">
                       <span className="text-[#e6ddd0]">Environmental SFX</span>
@@ -301,7 +345,11 @@ export const ChapterChrome: React.FC<ChapterChromeProps> = ({
                     />
                   </div>
 
+<<<<<<< HEAD
                   {/* Bus 4: Voices */}
+=======
+                  {/* Bus 3: Voices */}
+>>>>>>> c35419f43bb5aee048a8e5328df5fe9aa12dbc74
                   <div>
                     <div className="flex items-center justify-between mb-1">
                       <span className="text-[#e6ddd0]">Character Voices</span>
