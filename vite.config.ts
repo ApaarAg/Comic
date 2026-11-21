@@ -4,6 +4,8 @@ import fs from 'fs';
 import path from 'path';
 import {defineConfig} from 'vite';
 
+const projectRoot = import.meta.dirname ?? path.resolve('.');
+
 export default defineConfig(() => {
   return {
     plugins: [
@@ -19,8 +21,8 @@ export default defineConfig(() => {
           if (error) {
             return;
           }
-          const distDir = path.resolve(__dirname, 'dist');
-          const srcAssets = path.resolve(__dirname, 'src/assets');
+          const distDir = path.resolve(projectRoot, 'dist');
+          const srcAssets = path.resolve(projectRoot, 'src/assets');
           const distAssets = path.resolve(distDir, 'src/assets');
           if (fs.existsSync(distDir) && fs.existsSync(srcAssets)) {
             fs.cpSync(srcAssets, distAssets, {recursive: true, force: true});
@@ -30,8 +32,30 @@ export default defineConfig(() => {
     ],
     resolve: {
       alias: {
-        '@': path.resolve(__dirname, '.'),
+        '@': projectRoot,
       },
+    },
+    build: {
+      target: 'esnext',
+      minify: 'esbuild',
+      cssMinify: true,
+      rollupOptions: {
+        output: {
+          manualChunks(id) {
+            if (id.includes('node_modules')) {
+              if (id.includes('three')) return 'vendor-three';
+              if (id.includes('gsap')) return 'vendor-gsap';
+              if (id.includes('react') || id.includes('react-dom') || id.includes('scheduler')) {
+                return 'vendor-react';
+              }
+              if (id.includes('lucide-react')) return 'vendor-lucide';
+              if (id.includes('howler')) return 'vendor-howler';
+              if (id.includes('lenis')) return 'vendor-lenis';
+            }
+          },
+        },
+      },
+      chunkSizeWarningLimit: 600,
     },
     server: {
       // HMR is disabled in AI Studio via DISABLE_HMR env var.

@@ -1,5 +1,6 @@
 import { Howl, Howler } from 'howler';
 import { computeAudioMixLevels, clamp01 } from '../story/scrollMath';
+import { CHAPTER_SCENES } from '../story/chapter1Data';
 
 export type SoundMood =
   | 'prologue'
@@ -427,6 +428,53 @@ class SceneAudioManager {
     }
     this.syncSunsetCityPulse();
     this.emit();
+  }
+
+  public preloadNextSceneAudio(nextMood: SoundMood): void {
+    if (this.masterMuted || typeof window === 'undefined') return;
+    const nextAmbience = MOOD_TO_AMBIENCE[nextMood];
+    const nextScore = this.resolveScoreTrackForMood(nextMood);
+
+    if (nextAmbience && !this.ambienceHowls.has(nextAmbience)) {
+      this.getOrCreateAmbienceHowl(nextAmbience);
+    }
+    if (nextScore && !this.scoreHowls.has(nextScore)) {
+      this.getOrCreateScoreHowl(nextScore);
+    }
+  }
+
+  public pruneDistantSceneAudio(currentSceneIndex: number): void {
+    if (typeof window === 'undefined') return;
+
+    const allowedIndices = new Set([
+      currentSceneIndex - 1,
+      currentSceneIndex,
+      currentSceneIndex + 1,
+    ]);
+
+    const allowedAmbience = new Set<AmbienceTrackId>();
+    const allowedScore = new Set<ScoreTrackId>();
+
+    CHAPTER_SCENES.forEach((scene) => {
+      if (allowedIndices.has(scene.index)) {
+        allowedAmbience.add(MOOD_TO_AMBIENCE[scene.theme.mood]);
+        allowedScore.add(this.resolveScoreTrackForMood(scene.theme.mood));
+      }
+    });
+
+    this.ambienceHowls.forEach((howl, track) => {
+      if (!allowedAmbience.has(track) && !howl.playing() && track !== this.activeAmbienceTrack) {
+        howl.unload();
+        this.ambienceHowls.delete(track);
+      }
+    });
+
+    this.scoreHowls.forEach((howl, track) => {
+      if (!allowedScore.has(track) && !howl.playing() && track !== this.activeScoreTrack) {
+        howl.unload();
+        this.scoreHowls.delete(track);
+      }
+    });
   }
 
   public triggerCue(cue: SfxCue): void {

@@ -9,6 +9,7 @@ import { InteractiveHotspot } from '../InteractiveHotspot';
 import type { InspectedPanelData } from '../PanelInspectorModal';
 import { MOTION_EASING } from '../../story/motionSystem';
 import { sceneAudioManager } from '../../audio/SceneAudioManager';
+import { characterVoicePlayer } from '../../audio/CharacterVoicePlayer';
 import { useOptionalNarrative } from '../../narrative/NarrativeEngine';
 import { RotateCcw } from 'lucide-react';
 
@@ -66,7 +67,7 @@ const MUMBAI_CITY_PINS: ReadonlyArray<CityPinNote> = [
   },
 ];
 
-export const Scene01Mumbai: React.FC<SceneProps> = ({
+export const Scene01Mumbai: React.FC<SceneProps> = React.memo(({
   reducedMotion,
   activeSceneIndex,
   onInspectPanel,
@@ -88,19 +89,27 @@ export const Scene01Mumbai: React.FC<SceneProps> = ({
   const narrative = useOptionalNarrative();
   const choreography = narrative?.activeVisualChoreography;
 
-  const [pointerOffset, setPointerOffset] = useState({ x: 0, y: 0 });
   const [selectedPinId, setSelectedPinId] = useState<string | null>(null);
   const [discoveredPins, setDiscoveredPins] = useState<Record<string, boolean>>({});
 
   useEffect(() => {
-    if (reducedMotion) return;
+    if (reducedMotion || !sectionRef.current) return;
+    const el = sectionRef.current;
+    let rafId = 0;
     const onMove = (e: MouseEvent) => {
-      const nx = (e.clientX / window.innerWidth - 0.5) * 16;
-      const ny = (e.clientY / window.innerHeight - 0.5) * 10;
-      setPointerOffset({ x: nx, y: ny });
+      cancelAnimationFrame(rafId);
+      rafId = requestAnimationFrame(() => {
+        const nx = (e.clientX / window.innerWidth - 0.5) * 16;
+        const ny = (e.clientY / window.innerHeight - 0.5) * 10;
+        el.style.setProperty('--ptr-x', `${nx}px`);
+        el.style.setProperty('--ptr-y', `${ny}px`);
+      });
     };
     window.addEventListener('mousemove', onMove, { passive: true });
-    return () => window.removeEventListener('mousemove', onMove);
+    return () => {
+      cancelAnimationFrame(rafId);
+      window.removeEventListener('mousemove', onMove);
+    };
   }, [reducedMotion]);
 
   useEffect(() => {
@@ -126,6 +135,24 @@ export const Scene01Mumbai: React.FC<SceneProps> = ({
         end: 'bottom top',
         scrub: true,
       };
+
+      ScrollTrigger.create({
+        trigger: sectionRef.current,
+        start: 'top 50%',
+        end: 'bottom 50%',
+        onEnter: () => characterVoicePlayer.setActiveScene('scene-01'),
+        onEnterBack: () => characterVoicePlayer.setActiveScene('scene-01'),
+        onLeave: () => {
+          if (characterVoicePlayer.getActiveSceneId() === 'scene-01') {
+            characterVoicePlayer.setActiveScene(null);
+          }
+        },
+        onLeaveBack: () => {
+          if (characterVoicePlayer.getActiveSceneId() === 'scene-01') {
+            characterVoicePlayer.setActiveScene(null);
+          }
+        },
+      });
 
       // BACKGROUND TIER (slowest apparent motion — drifts downward slightly to resist scroll)
       if (skylineLayerRef.current) {
@@ -305,7 +332,7 @@ export const Scene01Mumbai: React.FC<SceneProps> = ({
             reducedMotion
               ? undefined
               : {
-                  transform: `translate3d(${-pointerOffset.x * 0.22}px, ${-pointerOffset.y * 0.15}px, 0) scale(1.08)`,
+                  transform: 'translate3d(calc(var(--ptr-x, 0px) * -0.22), calc(var(--ptr-y, 0px) * -0.15), 0) scale(1.08)',
                   transition: `transform 220ms ${MOTION_EASING.cssSettle}`,
                 }
           }
@@ -376,7 +403,7 @@ export const Scene01Mumbai: React.FC<SceneProps> = ({
             reducedMotion
               ? undefined
               : {
-                  transform: `translate3d(${-pointerOffset.x * 0.55}px, ${-pointerOffset.y * 0.35}px, 0)`,
+                  transform: 'translate3d(calc(var(--ptr-x, 0px) * -0.55), calc(var(--ptr-y, 0px) * -0.35), 0)',
                   transition: `transform 180ms ${MOTION_EASING.cssSettle}`,
                   WebkitMaskImage:
                     'radial-gradient(ellipse 68% 64% at 50% 48%, transparent 32%, rgba(0,0,0,0.85) 85%, #000 100%)',
@@ -433,9 +460,6 @@ export const Scene01Mumbai: React.FC<SceneProps> = ({
             Wednesday · Late December · 4:45 PM
           </p>
         </div>
-        <p className="mt-3 text-sm font-mono uppercase tracking-[0.2em] text-[#f28b50]/75 italic">
-          Wednesday · Late December · 4:45 PM · Mumbai, India
-        </p>
 
         {/* MID-GROUND TIER: Establishing Atmospheric Panorama Strip with Interactive City Pins */}
         <div
@@ -715,4 +739,6 @@ export const Scene01Mumbai: React.FC<SceneProps> = ({
       )}
     </section>
   );
-};
+});
+
+Scene01Mumbai.displayName = 'Scene01Mumbai';

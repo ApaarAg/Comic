@@ -28,7 +28,7 @@ interface SceneProps {
   onInspectPanel: (panel: InspectedPanelData) => void;
 }
 
-export const Scene10EightYearsLater: React.FC<SceneProps> = ({
+export const Scene10EightYearsLater: React.FC<SceneProps> = React.memo(({
   reducedMotion,
   activeSceneIndex,
   onReplayChapter,
@@ -170,6 +170,9 @@ export const Scene10EightYearsLater: React.FC<SceneProps> = ({
         </div>
       </CinematicViewportStage>
 
+      {/* Dawn-mist atmospheric transition buffer */}
+      <div className="h-24 bg-gradient-to-b from-[#0e101a] to-[#0d101b] pointer-events-none" />
+
       {/* Chapter One Ending Reflection & Replay Console */}
       <footer className="relative z-30 bg-[#0d101b] border-t border-white/10 py-16 px-6 text-center">
         <div className="mx-auto max-w-4xl">
@@ -215,4 +218,6 @@ export const Scene10EightYearsLater: React.FC<SceneProps> = ({
       </footer>
     </div>
   );
-};
+});
+
+Scene10EightYearsLater.displayName = 'Scene10EightYearsLater';

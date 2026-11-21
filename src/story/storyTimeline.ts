@@ -1768,22 +1768,45 @@ export function resolveTimelineVisualState(
     }
   }
 
-  // Calculate local interpolation fraction t [0..1]
-  const denom = nextBeat.stageProgress - prevBeat.stageProgress;
-  const t = denom > 0 ? (p - prevBeat.stageProgress) / denom : 0;
+  // Calculate local interpolation fraction t [0..1] with hold window support
+  let t = 0;
+  if (prevBeat.holdWindow && p >= prevBeat.holdWindow.start && p <= prevBeat.holdWindow.end) {
+    // Camera is held rock-steady on prevBeat
+    t = 0;
+  } else if (nextBeat.holdWindow && p >= nextBeat.holdWindow.start && p <= nextBeat.holdWindow.end) {
+    // Camera is held rock-steady on nextBeat
+    t = 1;
+  } else {
+    // Travel window between beats
+    const travelStart = prevBeat.holdWindow ? prevBeat.holdWindow.end : prevBeat.stageProgress;
+    const travelEnd = nextBeat.holdWindow ? nextBeat.holdWindow.start : nextBeat.stageProgress;
+    const travelDenom = travelEnd - travelStart;
+    if (travelDenom > 0 && p >= travelStart) {
+      t = Math.max(0, Math.min(1, (p - travelStart) / travelDenom));
+    } else if (p < travelStart) {
+      t = 0;
+    } else {
+      const denom = nextBeat.stageProgress - prevBeat.stageProgress;
+      t = denom > 0 ? Math.max(0, Math.min(1, (p - prevBeat.stageProgress) / denom)) : 0;
+    }
+  }
 
-  // Adaptive Mobile scaling: reduce camera pan limits to keep faces within narrow 9:16 aspect ratio
-  const mobileScale = isMobile ? 0.45 : 1.0;
-  const mobileZoomBonus = isMobile ? 0.05 : 0.0;
+  // Smoothstep (Hermite) cubic easing for filmic camera movement
+  const smoothT = t * t * (3 - 2 * t);
 
-  const panX = lerp(prevBeat.camera.panXPercent, nextBeat.camera.panXPercent, t) * mobileScale;
-  const panY = lerp(prevBeat.camera.panYPercent, nextBeat.camera.panYPercent, t) * mobileScale;
-  const zoom = lerp(prevBeat.camera.zoom, nextBeat.camera.zoom, t) + mobileZoomBonus;
-  const rotate = lerp(prevBeat.camera.rotateDeg ?? 0, nextBeat.camera.rotateDeg ?? 0, t);
+  // Adaptive Mobile scaling: preserve responsive character framing on portrait screens
+  const mobileScaleX = isMobile ? 0.85 : 1.0;
+  const mobileScaleY = isMobile ? 0.65 : 1.0;
+  const mobileZoomBonus = isMobile ? 0.10 : 0.0;
 
-  const bgY = lerp(prevBeat.parallax.bgOffsetPx, nextBeat.parallax.bgOffsetPx, t);
-  const midY = lerp(prevBeat.parallax.midOffsetPx, nextBeat.parallax.midOffsetPx, t);
-  const fgY = lerp(prevBeat.parallax.fgOffsetPx, nextBeat.parallax.fgOffsetPx, t);
+  const panX = lerp(prevBeat.camera.panXPercent, nextBeat.camera.panXPercent, smoothT) * mobileScaleX;
+  const panY = lerp(prevBeat.camera.panYPercent, nextBeat.camera.panYPercent, smoothT) * mobileScaleY;
+  const zoom = lerp(prevBeat.camera.zoom, nextBeat.camera.zoom, smoothT) + mobileZoomBonus;
+  const rotate = lerp(prevBeat.camera.rotateDeg ?? 0, nextBeat.camera.rotateDeg ?? 0, smoothT);
+
+  const bgY = lerp(prevBeat.parallax.bgOffsetPx, nextBeat.parallax.bgOffsetPx, smoothT);
+  const midY = lerp(prevBeat.parallax.midOffsetPx, nextBeat.parallax.midOffsetPx, smoothT);
+  const fgY = lerp(prevBeat.parallax.fgOffsetPx, nextBeat.parallax.fgOffsetPx, smoothT);
 
   // Active panel and speech bubble belong to the prevailing beat
   const activeBeat = t < 0.65 ? prevBeat : nextBeat;
@@ -1791,7 +1814,9 @@ export function resolveTimelineVisualState(
   // Active speech bubble remains visible throughout its beat window
   const speechBubble = activeBeat.speech ?? null;
   const audioCue = activeBeat.audioCue ?? null;
-  const isHold = !!activeBeat.camera.isHold;
+  const isHold = !!activeBeat.camera.isHold && (
+    !activeBeat.holdWindow || (p >= activeBeat.holdWindow.start && p <= activeBeat.holdWindow.end)
+  );
   const transitionOut = nextBeat.transitionOut && p >= nextBeat.stageProgress - (nextBeat.transitionOut.durationProgress ?? 0.1)
     ? nextBeat.transitionOut
     : null;

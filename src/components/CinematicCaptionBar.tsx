@@ -51,7 +51,7 @@ const RevealedWord: React.FC<RevealedWordProps> = ({
   );
 };
 
-export const CinematicCaptionBar: React.FC = () => {
+export const CinematicCaptionBar: React.FC = React.memo(() => {
   const {
     audioState,
     activeBeat,
@@ -122,10 +122,11 @@ export const CinematicCaptionBar: React.FC = () => {
     >
       {/* Film Subtitle Feathered Gradient Scrim */}
       <div
-        className="relative w-full pt-12 pb-7 px-6 md:px-16"
+        className="relative w-full pt-5 pb-3 sm:pt-7 sm:pb-4 px-6 md:px-16"
         style={{
           background:
             'linear-gradient(180deg, rgba(7, 9, 18, 0) 0%, rgba(7, 9, 18, 0.72) 36%, rgba(7, 9, 18, 0.96) 88%, #070912 100%)',
+          paddingBottom: 'max(1.25rem, env(safe-area-inset-bottom, 16px))',
         }}
       >
         {/* Subtle Dusk-Coral Hairline Horizon Separator */}
@@ -192,4 +193,6 @@ export const CinematicCaptionBar: React.FC = () => {
       </div>
     </aside>
   );
-};
+});
+
+CinematicCaptionBar.displayName = 'CinematicCaptionBar';

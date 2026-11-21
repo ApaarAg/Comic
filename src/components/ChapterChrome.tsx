@@ -23,7 +23,7 @@ interface ChapterChromeProps {
   hasEntered: boolean;
 }
 
-export const ChapterChrome: React.FC<ChapterChromeProps> = ({
+export const ChapterChrome: React.FC<ChapterChromeProps> = React.memo(({
   scenes,
   activeSceneIndex,
   progress,
@@ -69,7 +69,7 @@ export const ChapterChrome: React.FC<ChapterChromeProps> = ({
   return (
     <>
       <header
-        className="fixed top-0 left-0 right-0 z-40 transition-colors duration-500"
+        className="fixed top-0 left-0 right-0 z-40 transition-colors duration-500 pt-[max(0.625rem,env(safe-area-inset-top,0px))]"
         style={{
           background:
             'linear-gradient(180deg, rgba(10, 12, 22, 0.92) 0%, rgba(10, 12, 22, 0.56) 72%, rgba(10, 12, 22, 0) 100%)',
@@ -107,6 +107,15 @@ export const ChapterChrome: React.FC<ChapterChromeProps> = ({
             >
               {percentTotal}%
             </span>
+          </div>
+
+          {/* Mobile Scene & Progress Readout (<sm) */}
+          <div className="flex sm:hidden items-center gap-1.5 text-[11px] font-mono tracking-wider uppercase text-[#e6ddd0]/80">
+            <span style={{ color: activeScene.theme.accent }}>
+              {activeScene.index === 0 ? 'Prologue' : `${String(activeScene.index).padStart(2, '0')}/10`}
+            </span>
+            <span className="text-[#e6ddd0]/30">·</span>
+            <span data-testid="reading-progress-percent-mobile">{percentTotal}%</span>
           </div>
 
           {/* Zone 3: Primary Controls */}
@@ -430,7 +439,7 @@ export const ChapterChrome: React.FC<ChapterChromeProps> = ({
         >
           <nav
             aria-label="Chapter scenes"
-            className="relative h-full w-full max-w-md overflow-y-auto border-l border-white/10 bg-[#0d101d] px-7 py-8 text-[#f6efe5] shadow-2xl"
+            className="relative h-full w-full max-w-md overflow-y-auto border-l border-white/10 bg-[#0d101d] px-7 py-8 pb-[max(2rem,env(safe-area-inset-bottom,24px))] text-[#f6efe5] shadow-2xl"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="flex items-center justify-between border-b border-white/10 pb-5">
@@ -541,4 +550,6 @@ export const ChapterChrome: React.FC<ChapterChromeProps> = ({
       )}
     </>
   );
-};
+});
+
+ChapterChrome.displayName = 'ChapterChrome';

@@ -1,5 +1,4 @@
 import React, { useEffect, useRef, useState } from 'react';
-import * as THREE from 'three';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import {
@@ -11,6 +10,14 @@ import { sceneAudioManager } from '../audio/SceneAudioManager';
 import { characterVoicePlayer } from '../audio/CharacterVoicePlayer';
 
 gsap.registerPlugin(ScrollTrigger);
+
+let threeModulePromise: Promise<typeof import('three')> | null = null;
+const loadThree = () => {
+  if (!threeModulePromise) {
+    threeModulePromise = import('three');
+  }
+  return threeModulePromise;
+};
 
 interface CinematicTransitionProps {
   kind: TransitionEffectKind;
@@ -140,7 +147,7 @@ const FRAGMENT_SHADER = `
   }
 `;
 
-export const CinematicTransition: React.FC<CinematicTransitionProps> = ({
+export const CinematicTransition: React.FC<CinematicTransitionProps> = React.memo(({
   kind,
   fromColor,
   toColor,
@@ -198,11 +205,13 @@ export const CinematicTransition: React.FC<CinematicTransitionProps> = ({
         trigger: containerRef.current,
         start: 'top 72%',
         onEnter: () => {
-          characterVoicePlayer.stop(220);
+          characterVoicePlayer.setActiveScene(null);
+          characterVoicePlayer.stop(160, 'scene_changed');
           sceneAudioManager.triggerCue('transition');
         },
         onEnterBack: () => {
-          characterVoicePlayer.stop(220);
+          characterVoicePlayer.setActiveScene(null);
+          characterVoicePlayer.stop(160, 'scene_changed');
         },
       });
     }, containerRef);
@@ -216,127 +225,136 @@ export const CinematicTransition: React.FC<CinematicTransitionProps> = ({
       return;
     }
 
+    let disposed = false;
+    let renderer: any = null;
+    let geometry: any = null;
+    let material: any = null;
+    let st: ScrollTrigger | null = null;
+    let resizeObs: ResizeObserver | null = null;
+    let frameId = 0;
     const host = canvasHostRef.current;
     const container = containerRef.current;
-    let renderer: THREE.WebGLRenderer | null = null;
-    try {
-      renderer = new THREE.WebGLRenderer({
-        antialias: false,
-        alpha: false,
-        powerPreference: 'default',
+
+    loadThree().then((THREE) => {
+      if (disposed || !canvasHostRef.current || !containerRef.current) return;
+
+      try {
+        renderer = new THREE.WebGLRenderer({
+          antialias: false,
+          alpha: false,
+          powerPreference: 'default',
+        });
+      } catch {
+        return;
+      }
+
+      const gl = renderer.getContext() as WebGL2RenderingContext;
+      const dbg = gl.getExtension('WEBGL_debug_renderer_info');
+      const glRenderer = dbg ? String(gl.getParameter(dbg.UNMASKED_RENDERER_WEBGL)) : '';
+      const isSoftwareGl = /SwiftShader|llvmpipe|softpipe|Software|Basic Render/i.test(glRenderer);
+
+      const width = Math.max(1, host.clientWidth);
+      const height = Math.max(1, host.clientHeight);
+      renderer.setPixelRatio(isSoftwareGl ? 0.5 : Math.min(window.devicePixelRatio || 1, 1.5));
+      renderer.setSize(width, height, false);
+      renderer.domElement.style.width = '100%';
+      renderer.domElement.style.height = '100%';
+      renderer.domElement.style.display = 'block';
+      host.appendChild(renderer.domElement);
+
+      const scene = new THREE.Scene();
+      const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
+
+      geometry = new THREE.PlaneGeometry(2, 2);
+      material = new THREE.ShaderMaterial({
+        uniforms: {
+          uTime: { value: 0 },
+          uProgress: { value: progressRef.current },
+          uIntensity: { value: 0.7 },
+          uKind: { value: KIND_INDEX[kind] },
+          uFromColor: { value: new THREE.Color(fromColor) },
+          uToColor: { value: new THREE.Color(toColor) },
+          uAccentColor: { value: new THREE.Color(accentColor) },
+        },
+        vertexShader: VERTEX_SHADER,
+        fragmentShader: FRAGMENT_SHADER,
       });
-    } catch {
-      return;
-    }
 
-    const gl = renderer.getContext() as WebGL2RenderingContext;
-    const dbg = gl.getExtension('WEBGL_debug_renderer_info');
-    const glRenderer = dbg ? String(gl.getParameter(dbg.UNMASKED_RENDERER_WEBGL)) : '';
-    const isSoftwareGl = /SwiftShader|llvmpipe|softpipe|Software|Basic Render/i.test(glRenderer);
+      const quad = new THREE.Mesh(geometry, material);
+      scene.add(quad);
 
-    const width = Math.max(1, host.clientWidth);
-    const height = Math.max(1, host.clientHeight);
-    renderer.setPixelRatio(isSoftwareGl ? 0.5 : Math.min(window.devicePixelRatio || 1, 1.5));
-    renderer.setSize(width, height, false);
-    renderer.domElement.style.width = '100%';
-    renderer.domElement.style.height = '100%';
-    renderer.domElement.style.display = 'block';
-    host.appendChild(renderer.domElement);
+      const startTime = performance.now();
 
-    const scene = new THREE.Scene();
-    const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
+      const afterDraw = (cb: () => void) => {
+        if (typeof gl.fenceSync === 'function') {
+          const sync = gl.fenceSync(gl.SYNC_GPU_COMMANDS_COMPLETE, 0);
+          gl.flush();
+          const poll = () => {
+            if (disposed) {
+              if (sync) gl.deleteSync(sync);
+              return;
+            }
+            const state = sync ? gl.getSyncParameter(sync, gl.SYNC_STATUS) : gl.SIGNALED;
+            if (state === gl.UNSIGNALED) {
+              frameId = window.setTimeout(poll, 16);
+            } else {
+              if (sync) gl.deleteSync(sync);
+              frameId = window.setTimeout(cb, 280);
+            }
+          };
+          frameId = window.setTimeout(poll, 16);
+        } else {
+          frameId = window.setTimeout(cb, 280);
+        }
+      };
 
-    const geometry = new THREE.PlaneGeometry(2, 2);
-    const material = new THREE.ShaderMaterial({
-      uniforms: {
-        uTime: { value: 0 },
-        uProgress: { value: progressRef.current },
-        uIntensity: { value: 0.7 },
-        uKind: { value: KIND_INDEX[kind] },
-        uFromColor: { value: new THREE.Color(fromColor) },
-        uToColor: { value: new THREE.Color(toColor) },
-        uAccentColor: { value: new THREE.Color(accentColor) },
-      },
-      vertexShader: VERTEX_SHADER,
-      fragmentShader: FRAGMENT_SHADER,
+      const drawFrame = () => {
+        if (disposed || !renderer) return;
+        const elapsed = (performance.now() - startTime) * 0.001;
+        const env = computeShaderTransitionEnvelope(progressRef.current, kind);
+        material.uniforms.uTime.value = elapsed;
+        material.uniforms.uProgress.value = progressRef.current;
+        material.uniforms.uIntensity.value = Math.max(0.35, env.intensity);
+        renderer.render(scene, camera);
+
+        if (isSoftwareGl) {
+          afterDraw(drawFrame);
+        } else {
+          frameId = window.requestAnimationFrame(drawFrame);
+        }
+      };
+
+      st = ScrollTrigger.create({
+        trigger: container,
+        start: 'top bottom',
+        end: 'bottom top',
+        scrub: true,
+        onUpdate: (self) => {
+          progressRef.current = self.progress;
+        },
+      });
+
+      resizeObs = new ResizeObserver((entries) => {
+        if (disposed || !renderer) return;
+        const entry = entries[0];
+        if (!entry) return;
+        const w = Math.max(1, Math.floor(entry.contentRect.width));
+        const h = Math.max(1, Math.floor(entry.contentRect.height));
+        renderer.setSize(w, h, false);
+      });
+      resizeObs.observe(host);
+
+      drawFrame();
     });
-
-    const quad = new THREE.Mesh(geometry, material);
-    scene.add(quad);
-
-    let frameId = 0;
-    let disposed = false;
-    const startTime = performance.now();
-
-    const afterDraw = (cb: () => void) => {
-      if (typeof gl.fenceSync === 'function') {
-        const sync = gl.fenceSync(gl.SYNC_GPU_COMMANDS_COMPLETE, 0);
-        gl.flush();
-        const poll = () => {
-          if (disposed) {
-            if (sync) gl.deleteSync(sync);
-            return;
-          }
-          const state = sync ? gl.getSyncParameter(sync, gl.SYNC_STATUS) : gl.SIGNALED;
-          if (state === gl.UNSIGNALED) {
-            frameId = window.setTimeout(poll, 16);
-          } else {
-            if (sync) gl.deleteSync(sync);
-            frameId = window.setTimeout(cb, 280);
-          }
-        };
-        frameId = window.setTimeout(poll, 16);
-      } else {
-        frameId = window.setTimeout(cb, 280);
-      }
-    };
-
-    const drawFrame = () => {
-      if (disposed || !renderer) return;
-      const elapsed = (performance.now() - startTime) * 0.001;
-      const env = computeShaderTransitionEnvelope(progressRef.current, kind);
-      material.uniforms.uTime.value = elapsed;
-      material.uniforms.uProgress.value = progressRef.current;
-      material.uniforms.uIntensity.value = Math.max(0.35, env.intensity);
-      renderer.render(scene, camera);
-
-      if (isSoftwareGl) {
-        afterDraw(drawFrame);
-      } else {
-        frameId = window.requestAnimationFrame(drawFrame);
-      }
-    };
-
-    const st = ScrollTrigger.create({
-      trigger: container,
-      start: 'top bottom',
-      end: 'bottom top',
-      scrub: true,
-      onUpdate: (self) => {
-        progressRef.current = self.progress;
-      },
-    });
-
-    const resizeObs = new ResizeObserver((entries) => {
-      if (disposed || !renderer) return;
-      const entry = entries[0];
-      if (!entry) return;
-      const w = Math.max(1, Math.floor(entry.contentRect.width));
-      const h = Math.max(1, Math.floor(entry.contentRect.height));
-      renderer.setSize(w, h, false);
-    });
-    resizeObs.observe(host);
-
-    drawFrame();
 
     return () => {
       disposed = true;
       window.clearTimeout(frameId);
       window.cancelAnimationFrame(frameId);
-      st.kill();
-      resizeObs.disconnect();
-      geometry.dispose();
-      material.dispose();
+      st?.kill();
+      resizeObs?.disconnect();
+      geometry?.dispose();
+      material?.dispose();
       renderer?.dispose();
       if (renderer && renderer.domElement.parentNode === host) {
         host.removeChild(renderer.domElement);
@@ -406,9 +424,11 @@ export const CinematicTransition: React.FC<CinematicTransitionProps> = ({
           {eyebrow}
         </span>
         <p className="font-display max-w-2xl text-xl sm:text-2xl md:text-3xl italic leading-snug text-[#f7f2eb] drop-shadow-[0_4px_16px_rgba(0,0,0,0.95)] [text-wrap:balance]">
-          "{caption}"
+          &ldquo;{caption}&rdquo;
         </p>
       </div>
     </div>
   );
-};
+});
+
+CinematicTransition.displayName = 'CinematicTransition';

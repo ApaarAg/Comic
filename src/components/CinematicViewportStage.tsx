@@ -84,7 +84,7 @@ export interface CinematicViewportStageProps {
   onProgressChange?: (progress: number, visualState: ResolvedVisualState) => void;
 }
 
-export const CinematicViewportStage: React.FC<CinematicViewportStageProps> = ({
+export const CinematicViewportStage: React.FC<CinematicViewportStageProps> = React.memo(({
   sceneId,
   reducedMotion,
   trackHeightVh,
@@ -114,7 +114,6 @@ export const CinematicViewportStage: React.FC<CinematicViewportStageProps> = ({
   });
 
   const [stageProgress, setStageProgress] = useState<number>(0);
-  const [activeSpeechSnapshot, setActiveSpeechSnapshot] = useState<VoicePlaybackSnapshot | null>(null);
 
   const prevProgressRef = useRef<number>(0);
   const isMobileRef = useRef<boolean>(isMobile);
@@ -137,18 +136,6 @@ export const CinematicViewportStage: React.FC<CinematicViewportStageProps> = ({
     [sceneId, stageProgress, isMobile],
   );
 
-  // Subscribe to character voice player for active speech progress / timings
-  useEffect(() => {
-    const unsub = characterVoicePlayer.subscribe((snapshot) => {
-      if (snapshot.lineId === visualState.speechBubble?.id) {
-        setActiveSpeechSnapshot(snapshot);
-      } else if (!snapshot.isPlaying) {
-        setActiveSpeechSnapshot((prev) => (prev !== null ? null : prev));
-      }
-    });
-    return unsub;
-  }, [visualState.speechBubble?.id]);
-
   const narrative = useOptionalNarrative();
   const narrativeRef = useRef(narrative);
   narrativeRef.current = narrative;
@@ -160,6 +147,7 @@ export const CinematicViewportStage: React.FC<CinematicViewportStageProps> = ({
   const handleAudioUpdate = useCallback(
     (currProgress: number, prevProgress: number) => {
       if (reducedMotion) return;
+      if (characterVoicePlayer.getActiveSceneId() !== sceneId) return;
 
       syncNarrationLatchFromPlayer();
 
@@ -362,10 +350,10 @@ export const CinematicViewportStage: React.FC<CinematicViewportStageProps> = ({
       className={`relative w-full ${className}`}
       style={{ height: `${effectiveTrackHeightVh}vh` }}
     >
-      {/* Pinned 100vh Viewport Stage */}
+      {/* Pinned 100dvh Viewport Stage */}
       <div
         ref={stageRef}
-        className="sticky top-0 h-screen w-full overflow-hidden select-none"
+        className="sticky top-0 h-[100dvh] min-h-[100dvh] w-full overflow-hidden select-none"
         style={{
           background: sceneMeta.theme.bg,
           color: sceneMeta.theme.text,
@@ -377,7 +365,6 @@ export const CinematicViewportStage: React.FC<CinematicViewportStageProps> = ({
             className="absolute inset-0 pointer-events-none z-0 will-change-transform"
             style={{
               transform: `translate3d(0, ${parallax.bgOffsetPx}px, 0)`,
-              transition: reducedMotion ? 'none' : 'transform 120ms linear',
             }}
           >
             {backgroundLayer}
@@ -390,7 +377,6 @@ export const CinematicViewportStage: React.FC<CinematicViewportStageProps> = ({
             className="absolute inset-0 pointer-events-none z-10 will-change-transform"
             style={{
               transform: `translate3d(0, ${parallax.midOffsetPx}px, 0)`,
-              transition: reducedMotion ? 'none' : 'transform 120ms linear',
             }}
           >
             {midgroundLayer}
@@ -406,7 +392,6 @@ export const CinematicViewportStage: React.FC<CinematicViewportStageProps> = ({
             transformOrigin: camera.focalPoint
               ? `${camera.focalPoint.xPercent}% ${camera.focalPoint.yPercent}%`
               : '50% 50%',
-            transition: reducedMotion ? 'none' : 'transform 100ms ease-out',
           }}
         >
           {typeof cameraRigLayer === 'function' ? cameraRigLayer(visualState) : cameraRigLayer}
@@ -418,7 +403,6 @@ export const CinematicViewportStage: React.FC<CinematicViewportStageProps> = ({
             className="absolute inset-0 pointer-events-none z-30 will-change-transform"
             style={{
               transform: `translate3d(0, ${parallax.fgOffsetPx}px, 0)`,
-              transition: reducedMotion ? 'none' : 'transform 120ms linear',
             }}
           >
             {foregroundLayer}
@@ -441,15 +425,21 @@ export const CinematicViewportStage: React.FC<CinematicViewportStageProps> = ({
                       : '26%',
               right: isMobile ? '5%' : undefined,
               bottom: isMobile
-                ? '16%'
+                ? (camera.focalPoint && camera.focalPoint.yPercent > 50
+                    ? undefined
+                    : 'max(1.25rem, env(safe-area-inset-bottom, 20px))')
                 : visualState.speechBubble?.anchor
                   ? undefined
                   : activeLine.side === 'bottom'
                     ? '12%'
                     : '22%',
-              top: !isMobile && visualState.speechBubble?.anchor
-                ? `${Math.round(visualState.speechBubble.anchor.y * 100)}%`
-                : undefined,
+              top: isMobile
+                ? (camera.focalPoint && camera.focalPoint.yPercent > 50
+                    ? 'max(4.5rem, calc(env(safe-area-inset-top, 0px) + 4rem))'
+                    : undefined)
+                : !isMobile && visualState.speechBubble?.anchor
+                  ? `${Math.round(visualState.speechBubble.anchor.y * 100)}%`
+                  : undefined,
               transform: !isMobile && visualState.speechBubble?.anchor
                 ? 'translate(-50%, -100%)'
                 : undefined,
@@ -460,10 +450,7 @@ export const CinematicViewportStage: React.FC<CinematicViewportStageProps> = ({
               line={activeLine}
               isActive={true}
               reducedMotion={reducedMotion}
-              elapsedSec={activeSpeechSnapshot?.elapsedSec}
-              durationSec={activeSpeechSnapshot?.durationSec ?? activeLine.duration}
-              isPaused={false}
-              playbackMode={activeSpeechSnapshot?.isPlaying ? 'playing-recording' : 'idle'}
+              syncToVoicePlayer={true}
             />
           </div>
         )}
@@ -484,4 +471,6 @@ export const CinematicViewportStage: React.FC<CinematicViewportStageProps> = ({
       </div>
     </div>
   );
-};
+});
+
+CinematicViewportStage.displayName = 'CinematicViewportStage';

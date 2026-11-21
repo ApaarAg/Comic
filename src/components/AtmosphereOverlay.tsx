@@ -6,7 +6,7 @@ interface AtmosphereOverlayProps {
   reducedMotion: boolean;
 }
 
-export const AtmosphereOverlay: React.FC<AtmosphereOverlayProps> = ({
+export const AtmosphereOverlay: React.FC<AtmosphereOverlayProps> = React.memo(({
   activeScene,
   reducedMotion,
 }) => {
@@ -39,12 +39,12 @@ export const AtmosphereOverlay: React.FC<AtmosphereOverlayProps> = ({
         }}
       />
 
-      {/* Subtle cinematic vignette */}
+      {/* Subtle cinematic vignette softened for crisp comic artwork edges */}
       <div
         className="absolute inset-0"
         style={{
           background:
-            'radial-gradient(circle at 50% 50%, transparent 56%, rgba(6, 8, 16, 0.52) 100%)',
+            'radial-gradient(circle at 50% 50%, transparent 64%, rgba(6, 8, 16, 0.35) 100%)',
         }}
       />
 
@@ -54,4 +54,6 @@ export const AtmosphereOverlay: React.FC<AtmosphereOverlayProps> = ({
       )}
     </div>
   );
-};
+});
+
+AtmosphereOverlay.displayName = 'AtmosphereOverlay';

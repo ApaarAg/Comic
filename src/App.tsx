@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState, lazy, Suspense } from 'react';
 import Lenis from 'lenis';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -20,21 +20,35 @@ import { Scene00Prologue } from './components/scenes/Scene00Prologue';
 import { AtmosphereOverlay } from './components/AtmosphereOverlay';
 import { ChapterChrome } from './components/ChapterChrome';
 import { CinematicTransition } from './components/CinematicTransition';
-import { PanelInspectorModal, type InspectedPanelData } from './components/PanelInspectorModal';
 import { Scene01Mumbai } from './components/scenes/Scene01Mumbai';
 import { Scene02Traffic } from './components/scenes/Scene02Traffic';
-import { Scene03Party } from './components/scenes/Scene03Party';
-import { Scene04DeathsWorld } from './components/scenes/Scene04DeathsWorld';
-import { Scene05TwoEvents } from './components/scenes/Scene05TwoEvents';
-import { Scene06LailaMortal } from './components/scenes/Scene06LailaMortal';
-import { Scene07Hospital } from './components/scenes/Scene07Hospital';
-import { Scene08Escape } from './components/scenes/Scene08Escape';
-import { Scene09SecondDeath } from './components/scenes/Scene09SecondDeath';
-import { Scene10EightYearsLater } from './components/scenes/Scene10EightYearsLater';
+import type { InspectedPanelData } from './components/PanelInspectorModal';
 import { NarrativeProvider } from './narrative/NarrativeEngine';
 import { SCENE_NARRATION_BEATS } from './narrative/narrativeManifest';
 import { CinematicCaptionBar } from './components/CinematicCaptionBar';
 import { CinematicStartupCurtain } from './components/CinematicStartupCurtain';
+
+// Deferred scenes lazy-loaded to optimize initial bundle size while preserving rock-solid layout
+const Scene03Party = lazy(() => import('./components/scenes/Scene03Party').then((m) => ({ default: m.Scene03Party })));
+const Scene04DeathsWorld = lazy(() => import('./components/scenes/Scene04DeathsWorld').then((m) => ({ default: m.Scene04DeathsWorld })));
+const Scene05TwoEvents = lazy(() => import('./components/scenes/Scene05TwoEvents').then((m) => ({ default: m.Scene05TwoEvents })));
+const Scene06LailaMortal = lazy(() => import('./components/scenes/Scene06LailaMortal').then((m) => ({ default: m.Scene06LailaMortal })));
+const Scene07Hospital = lazy(() => import('./components/scenes/Scene07Hospital').then((m) => ({ default: m.Scene07Hospital })));
+const Scene08Escape = lazy(() => import('./components/scenes/Scene08Escape').then((m) => ({ default: m.Scene08Escape })));
+const Scene09SecondDeath = lazy(() => import('./components/scenes/Scene09SecondDeath').then((m) => ({ default: m.Scene09SecondDeath })));
+const Scene10EightYearsLater = lazy(() => import('./components/scenes/Scene10EightYearsLater').then((m) => ({ default: m.Scene10EightYearsLater })));
+const PanelInspectorModal = lazy(() => import('./components/PanelInspectorModal').then((m) => ({ default: m.PanelInspectorModal })));
+
+const SceneFallback: React.FC<{ id: string; heightVh: number }> = ({ id, heightVh }) => (
+  <section
+    id={id}
+    className="relative w-full bg-[#0b0d17] flex items-center justify-center pointer-events-none"
+    style={{ height: `${heightVh}vh` }}
+    aria-hidden="true"
+  >
+    <div className="w-8 h-8 rounded-full border-2 border-white/10 border-t-[#f28b50] animate-spin" />
+  </section>
+);
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -174,7 +188,9 @@ export default function App() {
       lenis.raf(time * 1000);
     };
     gsap.ticker.add(tick);
-    gsap.ticker.lagSmoothing(0);
+    gsap.ticker.lagSmoothing(500, 33);
+
+    ScrollTrigger.addEventListener('refresh', updateLayout);
 
     const refreshTimer = window.setTimeout(() => {
       ScrollTrigger.refresh();
@@ -183,6 +199,7 @@ export default function App() {
 
     return () => {
       removeDebugScroll();
+      ScrollTrigger.removeEventListener('refresh', updateLayout);
       window.clearTimeout(refreshTimer);
       window.removeEventListener('resize', updateProgress);
       gsap.ticker.remove(tick);
@@ -193,11 +210,20 @@ export default function App() {
 
   const activeScene = CHAPTER_SCENES[activeSceneIndex] ?? CHAPTER_SCENES[0];
 
-  // Sync Howler ambience mood to the current scene once entered
+  // Sync audio mood to current scene and preload/prune audio buffers dynamically
   useEffect(() => {
     if (!hasEntered) return;
     soundscape.setMood(activeScene.theme.mood);
-  }, [activeScene.theme.mood, hasEntered]);
+
+    // Preload immediate next scene audio to eliminate start latency
+    const nextScene = CHAPTER_SCENES[activeSceneIndex + 1];
+    if (nextScene) {
+      soundscape.preloadNextSceneAudio(nextScene.theme.mood);
+    }
+
+    // Prune distant scene audio buffers to prevent Web Audio memory accumulation
+    soundscape.pruneDistantSceneAudio(activeSceneIndex);
+  }, [activeScene.theme.mood, activeSceneIndex, hasEntered]);
 
   // Cleanup audio on unmount
   useEffect(() => {
@@ -277,17 +303,19 @@ export default function App() {
           hasEntered={hasEntered}
         />
 
-        <PanelInspectorModal
-          panel={inspectedPanel}
-          onClose={() => setInspectedPanel(null)}
-        />
+        <Suspense fallback={null}>
+          <PanelInspectorModal
+            panel={inspectedPanel}
+            onClose={() => setInspectedPanel(null)}
+          />
+        </Suspense>
 
         <main className="relative z-20">
           <Scene00Prologue
             reducedMotion={reducedMotion}
             isMuted={isMuted}
             onToggleMute={handleToggleMute}
-          onUnlockAudio={() => {
+            onUnlockAudio={() => {
               soundscape.unmute();
               setIsMuted(false);
             }}
@@ -300,169 +328,185 @@ export default function App() {
             onSkipNextScene={() => handleJumpToScene('scene-02')}
           />
 
-              <CinematicTransition
-                kind="ink-spread"
-                fromColor="#141225"
-                toColor="#1c1824"
-                accentColor="#f28b50"
-                eyebrow="Transition I · Street Level"
-                caption="As sunset sank below the skyline, engines idled bumper-to-bumper along the Bandra-Kurla overpass."
-                artworkUrl="/assets/chapter1/p07_panel01.webp"
-                reducedMotion={reducedMotion}
-              />
+          <CinematicTransition
+            kind="ink-spread"
+            fromColor="#141225"
+            toColor="#1c1824"
+            accentColor="#f28b50"
+            eyebrow="Transition I · Street Level"
+            caption="As sunset sank below the skyline, engines idled bumper-to-bumper along the Bandra-Kurla overpass."
+            artworkUrl="/assets/chapter1/p07_panel01.webp"
+            reducedMotion={reducedMotion}
+          />
 
-              <Scene02Traffic
-                reducedMotion={reducedMotion}
-                activeSceneIndex={activeSceneIndex}
-                onInspectPanel={setInspectedPanel}
-                onSkipNextScene={() => handleJumpToScene('scene-03')}
-              />
+          <Scene02Traffic
+            reducedMotion={reducedMotion}
+            activeSceneIndex={activeSceneIndex}
+            onInspectPanel={setInspectedPanel}
+            onSkipNextScene={() => handleJumpToScene('scene-03')}
+          />
 
-              <CinematicTransition
-                kind="panel-slice"
-                fromColor="#1c1824"
-                toColor="#13162b"
-                accentColor="#e66c8b"
-                eyebrow="Transition II · Six Floors Above"
-                caption="Across Parel, neon haze spilled out from an open apartment window above the rush."
-                artworkUrl="/assets/chapter1/p08_panel01.webp"
-                reducedMotion={reducedMotion}
-              />
+          <CinematicTransition
+            kind="panel-slice"
+            fromColor="#1c1824"
+            toColor="#13162b"
+            accentColor="#e66c8b"
+            eyebrow="Transition II · Six Floors Above"
+            caption="Across Parel, neon haze spilled out from an open apartment window above the rush."
+            artworkUrl="/assets/chapter1/p08_panel01.webp"
+            reducedMotion={reducedMotion}
+          />
 
-              <Scene03Party
-                reducedMotion={reducedMotion}
-                activeSceneIndex={activeSceneIndex}
-                onInspectPanel={setInspectedPanel}
-                onSkipNextScene={() => handleJumpToScene('scene-04')}
-              />
+          <Suspense fallback={<SceneFallback id="scene-03" heightVh={320} />}>
+            <Scene03Party
+              reducedMotion={reducedMotion}
+              activeSceneIndex={activeSceneIndex}
+              onInspectPanel={setInspectedPanel}
+              onSkipNextScene={() => handleJumpToScene('scene-04')}
+            />
+          </Suspense>
 
-              <CinematicTransition
-                kind="celestial-portal"
-                fromColor="#13162b"
-                toColor="#16283d"
-                accentColor="#8ad3eb"
-                eyebrow="Transition III · Beyond Mortal Clouds"
-                caption="Far above cigarette smoke and gridlock, a slender silvered tower pierced an endless twilight."
-                artworkUrl="/assets/chapter1/p10_panel01.webp"
-                reducedMotion={reducedMotion}
-              />
+          <CinematicTransition
+            kind="celestial-portal"
+            fromColor="#13162b"
+            toColor="#16283d"
+            accentColor="#8ad3eb"
+            eyebrow="Transition III · Beyond Mortal Clouds"
+            caption="Far above cigarette smoke and gridlock, a slender silvered tower pierced an endless twilight."
+            artworkUrl="/assets/chapter1/p10_panel01.webp"
+            reducedMotion={reducedMotion}
+          />
 
-              <Scene04DeathsWorld
-                reducedMotion={reducedMotion}
-                activeSceneIndex={activeSceneIndex}
-                onInspectPanel={setInspectedPanel}
-                onSkipNextScene={() => handleJumpToScene('scene-05')}
-              />
+          <Suspense fallback={<SceneFallback id="scene-04" heightVh={420} />}>
+            <Scene04DeathsWorld
+              reducedMotion={reducedMotion}
+              activeSceneIndex={activeSceneIndex}
+              onInspectPanel={setInspectedPanel}
+              onSkipNextScene={() => handleJumpToScene('scene-05')}
+            />
+          </Suspense>
 
-              <CinematicTransition
-                kind="temporal-split"
-                fromColor="#16283d"
-                toColor="#1c1429"
-                accentColor="#f06a7e"
-                eyebrow="Transition IV · 10:02 PM Divergence"
-                caption="Two lives—one plummeting through open air, one forcing his way into his first breath."
-                artworkUrl="/assets/chapter1/p13_panel01.webp"
-                reducedMotion={reducedMotion}
-              />
+          <CinematicTransition
+            kind="temporal-split"
+            fromColor="#16283d"
+            toColor="#1c1429"
+            accentColor="#f06a7e"
+            eyebrow="Transition IV · 10:02 PM Divergence"
+            caption="Two lives—one plummeting through open air, one forcing his way into his first breath."
+            artworkUrl="/assets/chapter1/p13_panel01.webp"
+            reducedMotion={reducedMotion}
+          />
 
-              <Scene05TwoEvents
-                reducedMotion={reducedMotion}
-                activeSceneIndex={activeSceneIndex}
-                onInspectPanel={setInspectedPanel}
-                onSkipNextScene={() => handleJumpToScene('scene-06')}
-              />
+          <Suspense fallback={<SceneFallback id="scene-05" heightVh={350} />}>
+            <Scene05TwoEvents
+              reducedMotion={reducedMotion}
+              activeSceneIndex={activeSceneIndex}
+              onInspectPanel={setInspectedPanel}
+              onSkipNextScene={() => handleJumpToScene('scene-06')}
+            />
+          </Suspense>
 
-              <CinematicTransition
-                kind="celestial-portal"
-                fromColor="#1c1429"
-                toColor="#11162a"
-                accentColor="#8ad3eb"
-                eyebrow="Transition V · The Celestial Stairwell"
-                caption="In the quiet expanse of the divine spire, Death stood before the cosmic accountant to surrender her mantle."
-                artworkUrl="/assets/chapter1/p16_panel01.webp"
-                reducedMotion={reducedMotion}
-              />
+          <CinematicTransition
+            kind="celestial-portal"
+            fromColor="#1c1429"
+            toColor="#11162a"
+            accentColor="#8ad3eb"
+            eyebrow="Transition V · The Celestial Stairwell"
+            caption="In the quiet expanse of the divine spire, Death stood before the cosmic accountant to surrender her mantle."
+            artworkUrl="/assets/chapter1/p16_panel01.webp"
+            reducedMotion={reducedMotion}
+          />
 
-              <Scene06LailaMortal
-                reducedMotion={reducedMotion}
-                activeSceneIndex={activeSceneIndex}
-                onInspectPanel={setInspectedPanel}
-                onSkipNextScene={() => handleJumpToScene('scene-07')}
-              />
+          <Suspense fallback={<SceneFallback id="scene-06" heightVh={340} />}>
+            <Scene06LailaMortal
+              reducedMotion={reducedMotion}
+              activeSceneIndex={activeSceneIndex}
+              onInspectPanel={setInspectedPanel}
+              onSkipNextScene={() => handleJumpToScene('scene-07')}
+            />
+          </Suspense>
 
-              <CinematicTransition
-                kind="storm-dissolve"
-                fromColor="#11162a"
-                toColor="#14202b"
-                accentColor="#63b8d6"
-                eyebrow="Transition VI · The Descent"
-                caption="Thunder tore the winter sky as an unemployed goddess stepped down into broken bones."
-                artworkUrl="/assets/chapter1/p17_panel01.webp"
-                reducedMotion={reducedMotion}
-              />
+          <CinematicTransition
+            kind="storm-dissolve"
+            fromColor="#11162a"
+            toColor="#14202b"
+            accentColor="#63b8d6"
+            eyebrow="Transition VI · The Descent"
+            caption="Thunder tore the winter sky as an unemployed goddess stepped down into broken bones."
+            artworkUrl="/assets/chapter1/p17_panel01.webp"
+            reducedMotion={reducedMotion}
+          />
 
-              <Scene07Hospital
-                reducedMotion={reducedMotion}
-                activeSceneIndex={activeSceneIndex}
-                onInspectPanel={setInspectedPanel}
-                onSkipNextScene={() => handleJumpToScene('scene-08')}
-              />
+          <Suspense fallback={<SceneFallback id="scene-07" heightVh={380} />}>
+            <Scene07Hospital
+              reducedMotion={reducedMotion}
+              activeSceneIndex={activeSceneIndex}
+              onInspectPanel={setInspectedPanel}
+              onSkipNextScene={() => handleJumpToScene('scene-08')}
+            />
+          </Suspense>
 
-              <CinematicTransition
-                kind="panel-slice"
-                fromColor="#14202b"
-                toColor="#181426"
-                accentColor="#f06a7e"
-                eyebrow="Transition VII · Into the Rain"
-                caption="Holding the infant to her chest, Laila slipped through emergency doors into the Mumbai storm."
-                artworkUrl="/assets/chapter1/p20_panel01.webp"
-                reducedMotion={reducedMotion}
-              />
+          <CinematicTransition
+            kind="panel-slice"
+            fromColor="#14202b"
+            toColor="#181426"
+            accentColor="#f06a7e"
+            eyebrow="Transition VII · Into the Rain"
+            caption="Holding the infant to her chest, Laila slipped through emergency doors into the Mumbai storm."
+            artworkUrl="/assets/chapter1/p20_panel01.webp"
+            reducedMotion={reducedMotion}
+          />
 
-              <Scene08Escape
-                reducedMotion={reducedMotion}
-                activeSceneIndex={activeSceneIndex}
-                onInspectPanel={setInspectedPanel}
-                onSkipNextScene={() => handleJumpToScene('scene-09')}
-              />
+          <Suspense fallback={<SceneFallback id="scene-08" heightVh={300} />}>
+            <Scene08Escape
+              reducedMotion={reducedMotion}
+              activeSceneIndex={activeSceneIndex}
+              onInspectPanel={setInspectedPanel}
+              onSkipNextScene={() => handleJumpToScene('scene-09')}
+            />
+          </Suspense>
 
-              <CinematicTransition
-                kind="kinetic-sweep"
-                fromColor="#181426"
-                toColor="#0a0b15"
-                accentColor="#f5b041"
-                eyebrow="Transition VIII · Midnight Highway"
-                caption="Bare feet struck wet pavement just as twelve-wheeler beams swept down the avenue."
-                artworkUrl="/assets/chapter1/p21_panel01.webp"
-                reducedMotion={reducedMotion}
-              />
+          <CinematicTransition
+            kind="kinetic-sweep"
+            fromColor="#181426"
+            toColor="#0a0b15"
+            accentColor="#f5b041"
+            eyebrow="Transition VIII · Midnight Highway"
+            caption="Bare feet struck wet pavement just as twelve-wheeler beams swept down the avenue."
+            artworkUrl="/assets/chapter1/p21_panel01.webp"
+            reducedMotion={reducedMotion}
+          />
 
-              <Scene09SecondDeath
-                reducedMotion={reducedMotion}
-                activeSceneIndex={activeSceneIndex}
-                onInspectPanel={setInspectedPanel}
-                onSkipNextScene={() => handleJumpToScene('scene-10')}
-              />
+          <Suspense fallback={<SceneFallback id="scene-09" heightVh={280} />}>
+            <Scene09SecondDeath
+              reducedMotion={reducedMotion}
+              activeSceneIndex={activeSceneIndex}
+              onInspectPanel={setInspectedPanel}
+              onSkipNextScene={() => handleJumpToScene('scene-10')}
+            />
+          </Suspense>
 
-              <CinematicTransition
-                kind="dawn-mist"
-                fromColor="#0a0b15"
-                toColor="#171c26"
-                accentColor="#f2a866"
-                eyebrow="Transition IX · Eight Years Later"
-                caption="Harbour mist lifted off the Gateway of India, carrying the warmth of morning tea."
-                artworkUrl="/assets/chapter1/p25_panel01.webp"
-                reducedMotion={reducedMotion}
-              />
+          <CinematicTransition
+            kind="dawn-mist"
+            fromColor="#0a0b15"
+            toColor="#171c26"
+            accentColor="#f2a866"
+            eyebrow="Transition IX · Eight Years Later"
+            caption="Harbour mist lifted off the Gateway of India, carrying the warmth of morning tea."
+            artworkUrl="/assets/chapter1/p25_panel01.webp"
+            reducedMotion={reducedMotion}
+          />
 
-              <Scene10EightYearsLater
-                reducedMotion={reducedMotion}
-                activeSceneIndex={activeSceneIndex}
-                onReplayChapter={handleReplayChapter}
-                onReplayPrologue={handleReplayPrologue}
-                onInspectPanel={setInspectedPanel}
-              />
-            </main>
+          <Suspense fallback={<SceneFallback id="scene-10" heightVh={360} />}>
+            <Scene10EightYearsLater
+              reducedMotion={reducedMotion}
+              activeSceneIndex={activeSceneIndex}
+              onReplayChapter={handleReplayChapter}
+              onReplayPrologue={handleReplayPrologue}
+              onInspectPanel={setInspectedPanel}
+            />
+          </Suspense>
+        </main>
 
             <CinematicCaptionBar />
       </div>
