@@ -53,7 +53,7 @@ export const Scene00Prologue: React.FC<Scene00PrologueProps> = ({
   onUnlockAudio,
 }) => {
   const [stageProgress, setStageProgress] = useState(0);
-  const [audioUnlocked, setAudioUnlocked] = useState(false);
+  const [audioUnlocked, setAudioUnlocked] = useState(!sceneAudioManager.getMuted());
 
   // Check if Web Audio is currently playing/unlocked
   useEffect(() => {
@@ -66,12 +66,13 @@ export const Scene00Prologue: React.FC<Scene00PrologueProps> = ({
   }, []);
 
   const handleUnlock = useCallback(() => {
+    // Explicitly unmute and unlock — do NOT toggle (which could re-mute if already unmuted)
     sceneAudioManager.ensureAutoplayUnlocked();
+    sceneAudioManager.unmute();
     soundscape.unmute();
-    onToggleMute();
     onUnlockAudio?.();
     setAudioUnlocked(true);
-  }, [onToggleMute, onUnlockAudio]);
+  }, [onUnlockAudio]);
 
   // Compute keyframe-driven visual envelopes
   const darknessOpacity = Math.max(0, 1 - stageProgress * 3.2); // Fades from 1 -> 0 between 0.0 and 0.31
@@ -129,38 +130,55 @@ export const Scene00Prologue: React.FC<Scene00PrologueProps> = ({
         }
         cameraRigLayer={(visual: ResolvedVisualState) => (
           <div
-            className="relative flex flex-col items-center justify-center text-center px-6 max-w-4xl mx-auto will-change-transform"
+            className="relative flex flex-col items-center justify-center text-center px-6 max-w-5xl mx-auto will-change-transform"
             style={{
               transform: `scale(${portalZoom})`,
               opacity: exitFade,
               transition: reducedMotion ? 'none' : 'transform 100ms ease-out',
             }}
           >
-            {/* Opening Title Manifestation */}
+            {/* Opening Title Manifestation — Art-Directed Graphic Novel Film Opening */}
             <div
-              className="transition-all duration-500 flex flex-col items-center"
+              className="transition-all duration-700 flex flex-col items-center select-none"
               style={{
                 opacity: titleOpacity,
-                transform: `translateY(${(1 - titleOpacity) * 24}px)`,
+                transform: `translateY(${(1 - titleOpacity) * 32}px)`,
               }}
             >
-              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/5 border border-white/10 backdrop-blur-md mb-6">
-                <Sparkles className="w-3.5 h-3.5 text-[#e8a84a]" />
-                <span className="font-mono text-[11px] uppercase tracking-[0.28em] text-[#e8a84a]">
-                  An Interactive Graphic Novel
+              {/* Prestigious Editorial Eyebrow */}
+              <div className="flex items-center gap-3 mb-4">
+                <span className="h-[1px] w-8 sm:w-12 bg-gradient-to-r from-transparent to-[#e8a84a]/60" />
+                <span className="font-mono text-[10px] sm:text-[11px] uppercase tracking-[0.38em] text-[#e8a84a]/90 font-medium">
+                  BOOM! STUDIOS · RAM V & FILIPE ANDRADE
                 </span>
+                <span className="h-[1px] w-8 sm:w-12 bg-gradient-to-l from-transparent to-[#e8a84a]/60" />
               </div>
 
-              <h1 className="font-display text-4xl sm:text-6xl md:text-7xl font-bold tracking-tight text-[#fbf4ea] drop-shadow-[0_8px_32px_rgba(0,0,0,0.85)] max-w-3xl leading-[1.08]">
-                THE MANY DEATHS OF{' '}
-                <span className="bg-gradient-to-r from-[#f28b50] via-[#f7c27d] to-[#e66c8b] bg-clip-text text-transparent">
+              {/* Title Part 1: Wide Spaced Serif Eyebrow */}
+              <p className="font-mono text-xs sm:text-sm md:text-base uppercase tracking-[0.32em] text-[#dfd5c7]/85 mb-1 sm:mb-2 drop-shadow-[0_2px_8px_rgba(0,0,0,0.85)]">
+                THE MANY DEATHS OF
+              </p>
+
+              {/* Title Part 2: Colossal Graphic Novel Masthead */}
+              <h1 className="font-display text-5xl sm:text-7xl md:text-8xl lg:text-9xl font-black tracking-tight leading-[0.92] text-[#fbf4ea] drop-shadow-[0_16px_48px_rgba(0,0,0,0.95)] max-w-4xl">
+                <span className="bg-gradient-to-r from-[#f7c27d] via-[#f28b50] to-[#e66c8b] bg-clip-text text-transparent">
                   LAILA STARR
                 </span>
               </h1>
 
-              <p className="mt-4 font-mono text-xs sm:text-sm uppercase tracking-[0.32em] text-[#dfd5c7]/75">
-                Chapter 01 · The City of Mumbai
+              {/* Poetic Narrative Hook Line */}
+              <p className="mt-5 sm:mt-6 font-serif italic text-sm sm:text-lg md:text-xl text-[#fbf4ea]/80 max-w-xl mx-auto leading-relaxed drop-shadow-[0_2px_12px_rgba(0,0,0,0.9)] [text-wrap:balance]">
+                "When the goddess of death is cast down into a dying city, mortality is not an end. It is an education."
               </p>
+
+              {/* Setting / Act Metadata */}
+              <div className="mt-5 sm:mt-6 flex items-center justify-center gap-3 sm:gap-4 font-mono text-[10px] sm:text-[11px] uppercase tracking-[0.30em] text-white/50">
+                <span>MUMBAI</span>
+                <span className="text-[#f28b50]">•</span>
+                <span>16:40 IST</span>
+                <span className="text-[#f28b50]">•</span>
+                <span>CHAPTER 01</span>
+              </div>
             </div>
           </div>
         )}
@@ -209,31 +227,35 @@ export const Scene00Prologue: React.FC<Scene00PrologueProps> = ({
           </>
         }
       >
-        {/* Unobtrusive Audio Unlock & Scroll Guidance Prompt */}
-        {stageProgress < 0.35 && (
+        {/* Cinematic Audio Unlock & Scroll Guidance Prompt */}
+        {stageProgress < 0.38 && (
           <div
             className="absolute bottom-8 left-1/2 -translate-x-1/2 z-50 pointer-events-auto flex flex-col items-center gap-3 transition-opacity duration-300"
-            style={{ opacity: Math.max(0, 1 - stageProgress * 3.5) }}
+            style={{ opacity: Math.max(0, 1 - stageProgress * 3.2) }}
           >
             {!audioUnlocked ? (
               <button
                 type="button"
                 onClick={handleUnlock}
-                className="group flex items-center gap-2.5 rounded-full bg-[#181f38]/90 px-5 py-2.5 text-xs font-mono tracking-widest uppercase text-[#fbf4ea] border border-[#f28b50]/40 shadow-xl backdrop-blur-md hover:bg-[#20294d] hover:border-[#f28b50] transition-all cursor-pointer"
+                className="group relative flex items-center gap-3 rounded-full bg-[#120d22]/90 px-6 py-3 text-xs font-mono tracking-[0.22em] uppercase text-[#fbf4ea] border border-[#f28b50]/50 shadow-[0_4px_24px_rgba(242,139,80,0.25)] backdrop-blur-xl hover:bg-[#1a1432] hover:border-[#f28b50] hover:shadow-[0_4px_32px_rgba(242,139,80,0.4)] transition-all cursor-pointer"
               >
+                <span className="relative flex h-2.5 w-2.5">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#f28b50] opacity-75" />
+                  <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-[#f28b50]" />
+                </span>
                 <VolumeX className="w-4 h-4 text-[#f28b50] group-hover:scale-110 transition-transform" />
-                <span>Click to Unlock Cinematic Audio</span>
+                <span className="font-semibold">Enable Full Cinematic Audio</span>
               </button>
             ) : (
-              <div className="flex items-center gap-2 rounded-full bg-black/40 px-4 py-1.5 text-[11px] font-mono tracking-widest uppercase text-white/60 border border-white/10 backdrop-blur-md">
-                <Volume2 className="w-3.5 h-3.5 text-[#f28b50]" />
-                <span>Audio Active</span>
+              <div className="flex items-center gap-2.5 rounded-full bg-black/60 px-5 py-2 text-[11px] font-mono tracking-[0.24em] uppercase text-[#f7c27d] border border-[#f28b50]/30 backdrop-blur-xl shadow-lg">
+                <Volume2 className="w-3.5 h-3.5 text-[#f28b50] animate-pulse" />
+                <span>Cinematic Score & Voices Active</span>
               </div>
             )}
 
-            <div className="flex items-center gap-1.5 text-[10px] font-mono uppercase tracking-[0.24em] text-white/40 animate-bounce">
-              <span>Scroll to Begin</span>
-              <ChevronDown className="w-3.5 h-3.5" />
+            <div className="flex items-center gap-2 text-[10px] font-mono uppercase tracking-[0.28em] text-white/50 animate-bounce">
+              <span>Scroll to Begin Journey</span>
+              <ChevronDown className="w-3.5 h-3.5 text-[#f28b50]" />
             </div>
           </div>
         )}

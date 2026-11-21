@@ -16,7 +16,7 @@ interface SceneVideoBackdropProps {
   activeSceneIndex: number;
   reducedMotion: boolean;
   /** Element whose scroll bounds drive video scrubbing when playbackMode === 'scrub' */
-  scrubTriggerRef: React.RefObject<HTMLElement | null>;
+  scrubTriggerRef?: React.RefObject<HTMLElement | null>;
 }
 
 export const SceneVideoBackdrop: React.FC<SceneVideoBackdropProps> = ({

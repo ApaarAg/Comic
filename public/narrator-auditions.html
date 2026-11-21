@@ -1,0 +1,719 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Storyverse — Indian Narrator Audition Console</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #07060e;
+      --surface: #0f0d1b;
+      --surface-elevated: #161328;
+      --border: rgba(242, 139, 80, 0.22);
+      --border-subtle: rgba(255, 255, 255, 0.08);
+      --accent-coral: #f28b50;
+      --accent-gold: #f5b041;
+      --accent-teal: #4ecdc4;
+      --accent-purple: #9b59b6;
+      --accent-blue: #3498db;
+      --text-main: #fcf9f2;
+      --text-dim: #9d97b0;
+      --text-muted: #6b6680;
+      --radius: 14px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: var(--bg);
+      color: var(--text-main);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      min-height: 100vh;
+      padding: 3rem 1.5rem 5rem;
+      background-image:
+        radial-gradient(ellipse 90% 60% at 50% 0%, rgba(242, 139, 80, 0.10), transparent 70%),
+        radial-gradient(circle at 10% 40%, rgba(78, 205, 196, 0.05), transparent 45%),
+        radial-gradient(circle at 90% 70%, rgba(155, 89, 182, 0.06), transparent 50%);
+    }
+
+    .container { max-width: 1140px; margin: 0 auto; }
+
+    header {
+      margin-bottom: 2.5rem;
+      border-bottom: 1px solid var(--border-subtle);
+      padding-bottom: 2rem;
+    }
+
+    .brand-eyebrow {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem;
+      letter-spacing: 0.28em;
+      color: var(--accent-gold);
+      text-transform: uppercase;
+      margin-bottom: 0.75rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .brand-eyebrow::before {
+      content: '';
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--accent-coral);
+      box-shadow: 0 0 10px var(--accent-coral);
+    }
+
+    h1 {
+      font-family: 'Cinzel', serif;
+      font-size: 2.5rem;
+      letter-spacing: 0.04em;
+      color: #fff;
+      font-weight: 700;
+      line-height: 1.15;
+    }
+    h1 span {
+      background: linear-gradient(135deg, var(--accent-gold), var(--accent-coral));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .header-desc {
+      font-size: 1.05rem;
+      color: var(--text-dim);
+      margin-top: 0.8rem;
+      max-width: 860px;
+      line-height: 1.6;
+    }
+
+    /* Production Safety Alert Banner */
+    .safety-banner {
+      background: linear-gradient(135deg, rgba(242, 139, 80, 0.08), rgba(245, 176, 65, 0.04));
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.25rem 1.75rem;
+      margin-bottom: 2.5rem;
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+    }
+    .safety-badge {
+      background: var(--accent-coral);
+      color: #07060e;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      padding: 0.35rem 0.65rem;
+      border-radius: 6px;
+      white-space: nowrap;
+    }
+    .safety-text {
+      font-size: 0.9rem;
+      color: var(--text-main);
+      line-height: 1.5;
+    }
+
+    /* Tab switcher for Narration Types */
+    .tab-section {
+      margin-bottom: 2rem;
+    }
+    .tab-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+      color: var(--text-muted);
+      margin-bottom: 0.8rem;
+    }
+    .tabs-nav {
+      display: flex;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+    }
+    .tab-btn {
+      background: var(--surface);
+      border: 1px solid var(--border-subtle);
+      color: var(--text-dim);
+      padding: 0.75rem 1.4rem;
+      border-radius: 10px;
+      font-size: 0.88rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .tab-btn:hover {
+      background: var(--surface-elevated);
+      color: var(--text-main);
+      border-color: rgba(255, 255, 255, 0.18);
+    }
+    .tab-btn.active {
+      background: linear-gradient(135deg, rgba(242, 139, 80, 0.2), rgba(245, 176, 65, 0.1));
+      border-color: var(--accent-coral);
+      color: #fff;
+      font-weight: 600;
+    }
+
+    /* Passage Script Card */
+    .script-box {
+      background: var(--surface);
+      border: 1px solid var(--border-subtle);
+      border-left: 4px solid var(--accent-coral);
+      border-radius: 10px;
+      padding: 1.25rem 1.5rem;
+      margin-bottom: 2.5rem;
+    }
+    .script-type {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.22em;
+      color: var(--accent-gold);
+      margin-bottom: 0.4rem;
+    }
+    .script-quote {
+      font-family: 'Cinzel', serif;
+      font-size: 1.15rem;
+      font-style: italic;
+      color: #f7f2eb;
+      line-height: 1.6;
+    }
+
+    /* Candidate Cards Grid */
+    .candidates-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 3rem;
+    }
+
+    .candidate-card {
+      background: var(--surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius);
+      padding: 1.75rem;
+      transition: all 0.25s ease;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      overflow: hidden;
+    }
+    .candidate-card:hover {
+      border-color: var(--border);
+      transform: translateY(-2px);
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.5);
+    }
+    .candidate-card.is-recommended {
+      border-color: rgba(78, 205, 196, 0.4);
+      background: linear-gradient(180deg, rgba(78, 205, 196, 0.05) 0%, var(--surface) 100%);
+    }
+    .candidate-card.is-baseline {
+      border-color: rgba(255, 255, 255, 0.15);
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.03) 0%, var(--surface) 100%);
+    }
+
+    .card-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 1rem;
+    }
+    .candidate-tag {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.68rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      padding: 0.25rem 0.55rem;
+      border-radius: 4px;
+      background: rgba(255, 255, 255, 0.06);
+      color: var(--text-dim);
+    }
+    .candidate-tag.rec {
+      background: rgba(78, 205, 196, 0.15);
+      color: var(--accent-teal);
+      border: 1px solid rgba(78, 205, 196, 0.3);
+    }
+    .candidate-tag.base {
+      background: rgba(255, 255, 255, 0.08);
+      color: #fff;
+    }
+
+    .candidate-name {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 0.25rem;
+    }
+    .candidate-engine {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.78rem;
+      color: var(--accent-gold);
+    }
+
+    .candidate-desc {
+      font-size: 0.88rem;
+      color: var(--text-dim);
+      line-height: 1.5;
+      margin: 0.8rem 0 1.25rem;
+      flex-grow: 1;
+    }
+
+    /* Audio Player UI */
+    .player-box {
+      background: var(--surface-elevated);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 10px;
+      padding: 1rem;
+      margin-top: auto;
+    }
+    .player-controls {
+      display: flex;
+      align-items: center;
+      gap: 0.85rem;
+    }
+    .play-btn {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: var(--accent-coral);
+      border: none;
+      color: #07060e;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: transform 0.15s ease, background 0.15s ease;
+      flex-shrink: 0;
+    }
+    .play-btn:hover {
+      transform: scale(1.06);
+      background: #ff9d66;
+    }
+    .play-btn svg { width: 18px; height: 18px; fill: currentColor; }
+
+    .player-meta {
+      flex-grow: 1;
+      min-width: 0;
+    }
+    .player-status {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      margin-bottom: 0.35rem;
+      display: flex;
+      justify-content: space-between;
+    }
+    .progress-bar-wrap {
+      width: 100%;
+      height: 6px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 3px;
+      overflow: hidden;
+      cursor: pointer;
+    }
+    .progress-bar-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, var(--accent-coral), var(--accent-gold));
+      border-radius: 3px;
+      transition: width 0.1s linear;
+    }
+
+    /* Comparison Table */
+    .comparison-table-wrap {
+      background: var(--surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius);
+      padding: 1.5rem;
+      overflow-x: auto;
+      margin-top: 2rem;
+    }
+    .section-title {
+      font-family: 'Cinzel', serif;
+      font-size: 1.4rem;
+      margin-bottom: 1rem;
+      color: #fff;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.88rem;
+    }
+    th, td {
+      padding: 0.85rem 1rem;
+      text-align: left;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+    th {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      color: var(--text-muted);
+      background: rgba(255, 255, 255, 0.02);
+    }
+    tr:last-child td { border-bottom: none; }
+    .badge-ok {
+      color: var(--accent-teal);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem;
+    }
+    .badge-warn {
+      color: var(--accent-gold);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="brand-eyebrow">Storyverse 3.1 · Pre-Production Casting Lab</div>
+      <h1>Indian English Narrator <span>Audition Console</span></h1>
+      <p class="header-desc">
+        Audition candidates to replace George (en-GB) with an authentic, emotionally nuanced Indian English narrator. 
+        Each candidate performs 3 standardized passages covering distinct dramatic modes.
+      </p>
+    </header>
+
+    <div class="safety-banner">
+      <div class="safety-badge">Production Lock Active</div>
+      <div class="safety-text">
+        <strong>Strict Production Safety Protocol:</strong> George remains active in the live reader. No production files have been overwritten. 
+        This console allows independent listening, emotional comparison, and assessment before any casting decision is locked.
+      </div>
+    </div>
+
+    <!-- Narration Type Switcher -->
+    <div class="tab-section">
+      <div class="tab-label">Select Dramatic Narration Mode</div>
+      <div class="tabs-nav">
+        <button class="tab-btn active" onclick="switchMode('opening')">
+          <span>🌅</span> Passage 1 · Opening Atmospheric
+        </button>
+        <button class="tab-btn" onclick="switchMode('reflective')">
+          <span>🌧️</span> Passage 2 · Reflective & Melancholic
+        </button>
+        <button class="tab-btn" onclick="switchMode('dramatic')">
+          <span>⚡</span> Passage 3 · Dramatic & Intense
+        </button>
+      </div>
+    </div>
+
+    <!-- Script Quote Box -->
+    <div class="script-box">
+      <div class="script-type" id="scriptTypeLabel">Passage 1 · Atmospheric Dusk Reveal (Scene 00/01)</div>
+      <div class="script-quote" id="scriptQuote">
+        "It began on a Wednesday afternoon as a late December sun was just dipping below the Mumbai skyline."
+      </div>
+    </div>
+
+    <!-- Candidate Cards Grid -->
+    <div class="candidates-grid" id="candidateCards">
+      <!-- Candidate 1: Google Gemini Charon (Indian English Deep Baritone) -->
+      <div class="candidate-card is-recommended" data-cand="charon">
+        <div class="card-top">
+          <span class="candidate-tag rec">Top Candidate · Authentic Accent</span>
+          <span style="font-size: 1.1rem;">🇮🇳</span>
+        </div>
+        <div class="candidate-name">Gemini Charon</div>
+        <div class="candidate-engine">Google Cloud TTS · Gemini Audio Preview</div>
+        <div class="candidate-desc">
+          Deep, resonant Indian English male baritone. Cinematic weight, authentic local cadence, warm chest resonance without caricature. Naturally captures Mumbai dusk.
+        </div>
+        <div class="player-box">
+          <div class="player-controls">
+            <button class="play-btn" onclick="togglePlay('charon')">
+              <svg id="icon-charon" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+            </button>
+            <div class="player-meta">
+              <div class="player-status">
+                <span id="status-charon">Ready</span>
+                <span id="time-charon">0:00</span>
+              </div>
+              <div class="progress-bar-wrap" onclick="seek('charon', event)">
+                <div class="progress-bar-fill" id="bar-charon"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Candidate 2: Azure AI Speech Prabhat (en-IN-PrabhatNeural) -->
+      <div class="candidate-card" data-cand="prabhat">
+        <div class="card-top">
+          <span class="candidate-tag">Azure AI Speech · Studio Model</span>
+          <span style="font-size: 1.1rem;">🇮🇳</span>
+        </div>
+        <div class="candidate-name">Azure Prabhat</div>
+        <div class="candidate-engine">en-IN-PrabhatNeural · Natural Baritone</div>
+        <div class="candidate-desc">
+          Polished Indian English broadcast baritone. High linguistic clarity, measured journalistic cadence, consistent studio fidelity across long narrative arcs.
+        </div>
+        <div class="player-box">
+          <div class="player-controls">
+            <button class="play-btn" onclick="togglePlay('prabhat')">
+              <svg id="icon-prabhat" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+            </button>
+            <div class="player-meta">
+              <div class="player-status">
+                <span id="status-prabhat">Ready</span>
+                <span id="time-prabhat">0:00</span>
+              </div>
+              <div class="progress-bar-wrap" onclick="seek('prabhat', event)">
+                <div class="progress-bar-fill" id="bar-prabhat"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Candidate 3: Current Baseline — George (ElevenLabs British Narrator) -->
+      <div class="candidate-card is-baseline" data-cand="george">
+        <div class="card-top">
+          <span class="candidate-tag base">Current Live Baseline · Compare</span>
+          <span style="font-size: 1.1rem;">🇬🇧</span>
+        </div>
+        <div class="candidate-name">George (Baseline)</div>
+        <div class="candidate-engine">ElevenLabs Multilingual v2 · Warm BBC Storyteller</div>
+        <div class="candidate-desc">
+          Current production narrator. Warm, refined, literary British English delivery. Praised for clarity and depth, but lacks authentic Mumbai geographic immersion.
+        </div>
+        <div class="player-box">
+          <div class="player-controls">
+            <button class="play-btn" onclick="togglePlay('george')">
+              <svg id="icon-george" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+            </button>
+            <div class="player-meta">
+              <div class="player-status">
+                <span id="status-george">Ready</span>
+                <span id="time-george">0:00</span>
+              </div>
+              <div class="progress-bar-wrap" onclick="seek('george', event)">
+                <div class="progress-bar-fill" id="bar-george"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Candidate 4: ElevenLabs Brian (Deep Resonant Alternative) -->
+      <div class="candidate-card" data-cand="brian">
+        <div class="card-top">
+          <span class="candidate-tag">ElevenLabs · Deep Alternative</span>
+          <span style="font-size: 1.1rem;">🎙️</span>
+        </div>
+        <div class="candidate-name">ElevenLabs Brian</div>
+        <div class="candidate-engine">eleven_multilingual_v2 · Deep Chest Resonant</div>
+        <div class="candidate-desc">
+          Very deep, rich cinematic resonance. Legendary baritone gravitas with slow theatrical pacing. High production fidelity, neutral-international resonance.
+        </div>
+        <div class="player-box">
+          <div class="player-controls">
+            <button class="play-btn" onclick="togglePlay('brian')">
+              <svg id="icon-brian" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+            </button>
+            <div class="player-meta">
+              <div class="player-status">
+                <span id="status-brian">Ready</span>
+                <span id="time-brian">0:00</span>
+              </div>
+              <div class="progress-bar-wrap" onclick="seek('brian', event)">
+                <div class="progress-bar-fill" id="bar-brian"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Technical Specification & Feasibility Matrix -->
+    <div class="comparison-table-wrap">
+      <div class="section-title">Narrator Candidate Evaluation Matrix</div>
+      <table>
+        <thead>
+          <tr>
+            <th>Candidate</th>
+            <th>Engine / Provider</th>
+            <th>Accent & Persona</th>
+            <th>Emotional Depth</th>
+            <th>Geographic Fit</th>
+            <th>Production Readiness</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Gemini Charon</strong></td>
+            <td>Google Cloud / Gemini Flash</td>
+            <td>Authentic Indian English Baritone</td>
+            <td><span class="badge-ok">High · Literary & Cinematic</span></td>
+            <td><span class="badge-ok">Exceptional (Mumbai setting)</span></td>
+            <td><span class="badge-ok">Ready · Low Latency / Zero Quota Burn</span></td>
+          </tr>
+          <tr>
+            <td><strong>Azure Prabhat</strong></td>
+            <td>Azure AI Speech</td>
+            <td>en-IN-PrabhatNeural</td>
+            <td><span class="badge-ok">Moderate-High · Clean Broadcast</span></td>
+            <td><span class="badge-ok">High (Authentic Indian English)</span></td>
+            <td><span class="badge-ok">Ready · Samples Pre-Generated</span></td>
+          </tr>
+          <tr>
+            <td><strong>Azure Arjun</strong></td>
+            <td>Azure AI Speech</td>
+            <td>en-IN-ArjunNeural</td>
+            <td><span class="badge-ok">Moderate · Expressive Youth/Drama</span></td>
+            <td><span class="badge-ok">High (Indian Metro)</span></td>
+            <td><span class="badge-warn">Audition Profile Prepared</span></td>
+          </tr>
+          <tr>
+            <td><strong>George (Baseline)</strong></td>
+            <td>ElevenLabs v2</td>
+            <td>British English (en-GB)</td>
+            <td><span class="badge-ok">Very High · Refined BBC Depth</span></td>
+            <td><span class="badge-warn">Low (Mismatches Indian Setting)</span></td>
+            <td><span class="badge-ok">Active in Live Reader Checkpoint</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <script>
+    // Audio Manifest for the 3 modes across candidates
+    const AUDIO_MAP = {
+      opening: {
+        scriptType: "Passage 1 · Atmospheric Dusk Reveal (Scene 00/01)",
+        quote: '"It began on a Wednesday afternoon as a late December sun was just dipping below the Mumbai skyline."',
+        sources: {
+          charon: '/assets/audio/auditions/narrator/cand-gemini-charon-opening.wav',
+          prabhat: '/assets/audio/voices/narrator/sample-prabhat-natural.mp3',
+          george: '/assets/audio/auditions/narrator/cand3-eleven-george-a.mp3',
+          brian: '/assets/audio/auditions/narrator/cand4-eleven-brian-a.mp3'
+        }
+      },
+      reflective: {
+        scriptType: "Passage 2 · Reflective & Melancholic (Laila's Awakening)",
+        quote: '"She woke up in a body that felt borrowed, in a room that smelled of antiseptic and second chances."',
+        sources: {
+          charon: '/assets/audio/auditions/narrator/cand-gemini-charon-reflective.wav',
+          prabhat: '/assets/audio/voices/narrator/sample-prabhat-baritone.mp3',
+          george: '/assets/audio/auditions/narrator/cand3-eleven-george-c.mp3',
+          brian: '/assets/audio/auditions/narrator/cand4-eleven-brian-c.mp3'
+        }
+      },
+      dramatic: {
+        scriptType: "Passage 3 · Dramatic & Intense (Scene 09 Midnight Death)",
+        quote: '"And so, only a few minutes away from midnight, Laila Starr met her death once again."',
+        sources: {
+          charon: '/assets/audio/auditions/narrator/cand1-gemini-charon-b.wav',
+          prabhat: '/assets/audio/voices/narrator/sample-prabhat-highway-test.mp3',
+          george: '/assets/audio/auditions/narrator/cand3-eleven-george-b.mp3',
+          brian: '/assets/audio/auditions/narrator/cand4-eleven-brian-b.mp3'
+        }
+      }
+    };
+
+    let currentMode = 'opening';
+    let currentAudio = null;
+    let currentPlayingCand = null;
+    let animFrame = null;
+
+    function switchMode(mode) {
+      if (currentAudio) {
+        currentAudio.pause();
+        currentAudio = null;
+      }
+      resetAllPlayers();
+      currentMode = mode;
+
+      // Update active tab buttons
+      document.querySelectorAll('.tab-btn').forEach((btn, idx) => {
+        btn.classList.toggle('active', ['opening', 'reflective', 'dramatic'][idx] === mode);
+      });
+
+      // Update script box
+      document.getElementById('scriptTypeLabel').innerText = AUDIO_MAP[mode].scriptType;
+      document.getElementById('scriptQuote').innerText = AUDIO_MAP[mode].quote;
+    }
+
+    function resetAllPlayers() {
+      ['charon', 'prabhat', 'george', 'brian'].forEach(cand => {
+        document.getElementById(`icon-${cand}`).innerHTML = '<polygon points="5 3 19 12 5 21 5 3"></polygon>';
+        document.getElementById(`bar-${cand}`).style.width = '0%';
+        document.getElementById(`status-${cand}`).innerText = 'Ready';
+        document.getElementById(`time-${cand}`).innerText = '0:00';
+      });
+      currentPlayingCand = null;
+      if (animFrame) cancelAnimationFrame(animFrame);
+    }
+
+    function togglePlay(cand) {
+      const src = AUDIO_MAP[currentMode].sources[cand];
+      if (!src) return;
+
+      if (currentPlayingCand === cand && currentAudio && !currentAudio.paused) {
+        currentAudio.pause();
+        document.getElementById(`icon-${cand}`).innerHTML = '<polygon points="5 3 19 12 5 21 5 3"></polygon>';
+        document.getElementById(`status-${cand}`).innerText = 'Paused';
+        return;
+      }
+
+      if (currentAudio) {
+        currentAudio.pause();
+        resetAllPlayers();
+      }
+
+      currentAudio = new Audio(src);
+      currentPlayingCand = cand;
+
+      currentAudio.play().then(() => {
+        document.getElementById(`icon-${cand}`).innerHTML = '<rect x="6" y="4" width="4" height="16"></rect><rect x="14" y="4" width="4" height="16"></rect>';
+        document.getElementById(`status-${cand}`).innerText = 'Playing';
+        trackProgress(cand);
+      }).catch(err => {
+        console.error('Audio play error:', err);
+        document.getElementById(`status-${cand}`).innerText = 'Playback blocked';
+      });
+
+      currentAudio.onended = () => {
+        resetAllPlayers();
+      };
+    }
+
+    function trackProgress(cand) {
+      if (!currentAudio || currentPlayingCand !== cand) return;
+      const cur = currentAudio.currentTime || 0;
+      const dur = currentAudio.duration || 1;
+      const pct = Math.min(100, (cur / dur) * 100);
+      document.getElementById(`bar-${cand}`).style.width = pct + '%';
+      
+      const mins = Math.floor(cur / 60);
+      const secs = Math.floor(cur % 60).toString().padStart(2, '0');
+      document.getElementById(`time-${cand}`).innerText = `${mins}:${secs}`;
+
+      if (!currentAudio.paused) {
+        animFrame = requestAnimationFrame(() => trackProgress(cand));
+      }
+    }
+
+    function seek(cand, e) {
+      if (currentPlayingCand !== cand || !currentAudio) {
+        togglePlay(cand);
+        return;
+      }
+      const rect = e.currentTarget.getBoundingClientRect();
+      const clickX = e.clientX - rect.left;
+      const ratio = Math.max(0, Math.min(1, clickX / rect.width));
+      currentAudio.currentTime = ratio * (currentAudio.duration || 1);
+    }
+  </script>
+</body>
+</html>

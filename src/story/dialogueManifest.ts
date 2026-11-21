@@ -14,7 +14,7 @@ export type CharacterId =
   | 'security'
   | 'pranah';
 
-export type BubbleAnchorSide = 'left' | 'right' | 'center';
+export type BubbleAnchorSide = 'left' | 'right' | 'center' | 'bottom';
 export type CharacterExpression =
   | 'neutral'
   | 'urgent'
@@ -25,7 +25,7 @@ export type CharacterExpression =
   | 'spectral'
   | 'warm';
 
-export type DialoguePresentationMode = 'dialogue' | 'narrator';
+export type DialoguePresentationMode = 'dialogue' | 'narrator' | 'narration';
 export type DialogueSourceOrigin = 'comic' | 'connective';
 
 export interface DialogueAnimationSpec {

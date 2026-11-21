@@ -20,6 +20,8 @@ interface CinematicTransitionProps {
   eyebrow: string;
   caption: string;
   reducedMotion: boolean;
+  artworkUrl?: string;
+  altText?: string;
 }
 
 const KIND_INDEX: Record<TransitionEffectKind, number> = {
@@ -146,6 +148,8 @@ export const CinematicTransition: React.FC<CinematicTransitionProps> = ({
   eyebrow,
   caption,
   reducedMotion,
+  artworkUrl,
+  altText,
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const canvasHostRef = useRef<HTMLDivElement>(null);
@@ -345,17 +349,41 @@ export const CinematicTransition: React.FC<CinematicTransitionProps> = ({
       ref={containerRef}
       data-testid={`cinematic-transition-${kind}`}
       aria-label={caption}
-      className="relative h-48 sm:h-56 w-full overflow-hidden"
+      className="relative min-h-[280px] sm:min-h-[340px] md:min-h-[380px] w-full overflow-hidden flex items-center justify-center py-12"
       style={{
         background: `linear-gradient(180deg, ${fromColor} 0%, ${toColor} 100%)`,
       }}
     >
+      {/* Real Comic Panel Artwork Layer (replaces empty dark placeholder screens) */}
+      {artworkUrl && (
+        <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
+          <img
+            src={artworkUrl}
+            alt={altText || eyebrow}
+            className="w-full h-full object-cover object-center filter brightness-[0.40] contrast-[1.18] saturate-[0.85] scale-105 will-change-transform"
+          />
+          {/* Depth vignette and gradient edge feathering */}
+          <div
+            className="absolute inset-0"
+            style={{
+              background: `radial-gradient(ellipse 80% 70% at 50% 50%, transparent 20%, ${fromColor}d9 75%, ${toColor} 100%)`,
+            }}
+          />
+          <div
+            className="absolute inset-0"
+            style={{
+              background: `linear-gradient(180deg, ${fromColor} 0%, transparent 25%, transparent 75%, ${toColor} 100%)`,
+            }}
+          />
+        </div>
+      )}
+
       {/* Software/Reduced-motion atmospheric wash fallback */}
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute inset-0"
+        className="pointer-events-none absolute inset-0 z-1"
         style={{
-          background: `radial-gradient(ellipse 70% 60% at 50% 50%, ${accentColor}1c, transparent 74%)`,
+          background: `radial-gradient(ellipse 70% 60% at 50% 50%, ${accentColor}26, transparent 74%)`,
         }}
       />
 
@@ -363,22 +391,22 @@ export const CinematicTransition: React.FC<CinematicTransitionProps> = ({
       <div
         ref={canvasHostRef}
         aria-hidden="true"
-        className="pointer-events-none absolute inset-0"
+        className="pointer-events-none absolute inset-0 z-2 mix-blend-screen opacity-85"
       />
 
       {/* Editorial Narrative Bridge Copy */}
       <div
         ref={copyRef}
-        className="pointer-events-none relative z-10 flex h-full flex-col items-center justify-center px-6 text-center"
+        className="pointer-events-none relative z-10 flex h-full flex-col items-center justify-center px-6 text-center max-w-4xl mx-auto"
       >
-        <p
-          className="font-mono text-[11px] uppercase tracking-[0.28em]"
+        <span
+          className="inline-block px-3 py-1 rounded-full bg-black/40 border border-white/10 font-mono text-[11px] uppercase tracking-[0.28em] backdrop-blur-md mb-3"
           style={{ color: accentColor }}
         >
           {eyebrow}
-        </p>
-        <p className="font-display mt-2 max-w-2xl text-xl sm:text-2xl italic leading-snug text-[#f7f2eb]/95 drop-shadow-[0_2px_10px_rgba(0,0,0,0.85)] [text-wrap:balance]">
-          {caption}
+        </span>
+        <p className="font-display max-w-2xl text-xl sm:text-2xl md:text-3xl italic leading-snug text-[#f7f2eb] drop-shadow-[0_4px_16px_rgba(0,0,0,0.95)] [text-wrap:balance]">
+          "{caption}"
         </p>
       </div>
     </div>

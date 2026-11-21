@@ -28,6 +28,8 @@ export interface VoicePlaybackSnapshot {
   state: VoiceAssetState;
   timingSource: 'audio-seek' | 'estimated-duration';
   isPaused: boolean;
+  /** Whether the voice is currently actively playing (not paused, not idle) */
+  isPlaying: boolean;
 }
 
 /**
@@ -64,6 +66,7 @@ class CharacterVoicePlayer {
       state: this.activeState,
       timingSource: this.activeTimingSource,
       isPaused: this.isPaused(),
+      isPlaying: this.activeState === 'playing-recording' && !this.isPaused(),
     };
   }
 

@@ -13,7 +13,7 @@ export interface SceneRange {
     surface: string;
     text: string;
     accent: string;
-    mood: 'sunset' | 'traffic' | 'twilight' | 'celestial' | 'split' | 'descent' | 'clinical' | 'chase' | 'impact' | 'dawn';
+    mood: 'prologue' | 'sunset' | 'traffic' | 'twilight' | 'celestial' | 'split' | 'descent' | 'clinical' | 'chase' | 'impact' | 'dawn';
   };
 }
 
@@ -519,10 +519,10 @@ export interface BubblePlacement {
  * so bubbles point toward speakers without crowding edges on desktop or mobile.
  */
 export function resolveBubblePlacement(
-  side: 'left' | 'right' | 'center',
+  side: 'left' | 'right' | 'center' | 'bottom',
   shape: 'comic' | 'celestial' | 'spectral' | 'caption',
 ): BubblePlacement {
-  if (shape === 'caption' || side === 'center') {
+  if (shape === 'caption' || side === 'center' || side === 'bottom') {
     return {
       alignClass: 'mx-auto items-center',
       tailSide: 'center',

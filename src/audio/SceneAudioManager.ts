@@ -159,7 +159,7 @@ class SceneAudioManager {
   private scoreCrossfadeTimers = new Map<ScoreTrackId, number>();
   private listeners = new Set<() => void>();
 
-  private masterMuted = false;
+  private masterMuted = true; // Start muted; browser autoplay policy requires explicit user unlock
   private ambienceVolume = 0.10;
   private scoreVolume = 0.30;
   private sfxVolume = 0.45;
@@ -341,6 +341,33 @@ class SceneAudioManager {
     this.isVoiceActive = active;
     this.applyMixLevels();
     this.emit();
+  }
+
+  /**
+   * Duck background score and ambience by a factor (0.0 = silent, 1.0 = full).
+   * Used when dialogue or narration begins.
+   */
+  public duckBuses(duckFactor: number, fadeMs: number): void {
+    if (this.masterMuted) return;
+    const targetAmb = this.ambienceVolume * Math.max(0, Math.min(1, duckFactor));
+    const targetScore = this.scoreVolume * Math.max(0, Math.min(1, duckFactor));
+    const activeAmb = this.ambienceHowls.get(this.activeAmbienceTrack);
+    const activeScore = this.scoreHowls.get(this.activeScoreTrack);
+    if (activeAmb && activeAmb.playing()) activeAmb.fade(activeAmb.volume(), targetAmb, fadeMs);
+    if (activeScore && activeScore.playing()) activeScore.fade(activeScore.volume(), targetScore, fadeMs);
+  }
+
+  /**
+   * Restore background score and ambience to their configured levels.
+   * Used when dialogue or narration completes.
+   */
+  public unduckBuses(fadeMs: number): void {
+    if (this.masterMuted) return;
+    const mix = computeAudioMixLevels(this.getBusSettings());
+    const activeAmb = this.ambienceHowls.get(this.activeAmbienceTrack);
+    const activeScore = this.scoreHowls.get(this.activeScoreTrack);
+    if (activeAmb && activeAmb.playing()) activeAmb.fade(activeAmb.volume(), mix.ambienceGain, fadeMs);
+    if (activeScore && activeScore.playing()) activeScore.fade(activeScore.volume(), mix.scoreGain, fadeMs);
   }
 
   public getEffectiveVoiceGain(): number {
@@ -651,6 +678,8 @@ class SceneAudioManager {
     this.ensureInitialized();
 
     const tryResumeAndPlay = () => {
+      this.masterMuted = false;
+      Howler.mute(false);
       if (Howler.ctx && Howler.ctx.state === 'suspended') {
         void Howler.ctx.resume().then(() => {
           this.playAmbienceTrack(this.activeAmbienceTrack);

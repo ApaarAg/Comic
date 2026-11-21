@@ -124,13 +124,18 @@ export const CinematicViewportStage: React.FC<CinematicViewportStageProps> = ({
       if (snapshot.lineId === visualState.speechBubble?.id) {
         setActiveSpeechSnapshot(snapshot);
       } else if (!snapshot.isPlaying) {
-        setActiveSpeechSnapshot(null);
+        setActiveSpeechSnapshot((prev) => (prev !== null ? null : prev));
       }
     });
     return unsub;
   }, [visualState.speechBubble?.id]);
 
   const narrative = useOptionalNarrative();
+  const narrativeRef = useRef(narrative);
+  narrativeRef.current = narrative;
+
+  const onProgressChangeRef = useRef(onProgressChange);
+  onProgressChangeRef.current = onProgressChange;
 
   // Audio trigger arbitration
   const handleAudioUpdate = useCallback(
@@ -149,9 +154,9 @@ export const CinematicViewportStage: React.FC<CinematicViewportStageProps> = ({
         globalLatchState.currentlyPlayingId = speech.id;
 
         if (speech.mode === 'dialogue') {
-          narrative?.setDialogueActive(true);
+          narrativeRef.current?.setDialogueActive(true);
         } else if (speech.mode === 'narration') {
-          narrative?.triggerNarrationBeat(speech.id);
+          narrativeRef.current?.triggerNarrationBeat(speech.id);
         }
 
         // Trigger accompanying audio cues (leitmotifs or SFX)
@@ -166,28 +171,30 @@ export const CinematicViewportStage: React.FC<CinematicViewportStageProps> = ({
         // Duck background music and ambience
         sceneAudioManager.duckBuses(audioAction.ducking.duckFactor, 280);
 
-        void characterVoicePlayer.playLine(speech.id, speech.audioSrc, speech.durationMs, {
-          onComplete: () => {
-            globalLatchState.completedSpeechIds.add(speech.id);
-            if (globalLatchState.currentlyPlayingId === speech.id) {
-              globalLatchState.currentlyPlayingId = null;
-              if (speech.mode === 'dialogue') {
-                narrative?.setDialogueActive(false);
+        if (speech.mode === 'dialogue' || !narrativeRef.current) {
+          void characterVoicePlayer.playLine(speech.id, speech.audioSrc, speech.durationMs, {
+            onComplete: () => {
+              globalLatchState.completedSpeechIds.add(speech.id);
+              if (globalLatchState.currentlyPlayingId === speech.id) {
+                globalLatchState.currentlyPlayingId = null;
+                if (speech.mode === 'dialogue') {
+                  narrativeRef.current?.setDialogueActive(false);
+                }
+                sceneAudioManager.unduckBuses(1400);
               }
-              sceneAudioManager.unduckBuses(1400);
-            }
-          },
-        });
+            },
+          });
+        }
       } else if (audioAction.action === 'stop') {
         if (globalLatchState.currentlyPlayingId) {
           characterVoicePlayer.stop(120);
           globalLatchState.currentlyPlayingId = null;
-          narrative?.setDialogueActive(false);
+          narrativeRef.current?.setDialogueActive(false);
           sceneAudioManager.unduckBuses(600);
         }
       }
     },
-    [narrative, reducedMotion, sceneId],
+    [reducedMotion, sceneId],
   );
 
   // GSAP ScrollTrigger to track normalized stageProgress cleanly
@@ -212,13 +219,13 @@ export const CinematicViewportStage: React.FC<CinematicViewportStageProps> = ({
           prevProgressRef.current = p;
           setStageProgress(p);
           handleAudioUpdate(p, prev);
-          onProgressChange?.(p, resolveTimelineVisualState(sceneId, p, isMobileRef.current));
+          onProgressChangeRef.current?.(p, resolveTimelineVisualState(sceneId, p, isMobileRef.current));
         },
       });
     }, trackEl);
 
     return () => ctx.revert();
-  }, [handleAudioUpdate, onProgressChange, reducedMotion, sceneId]);
+  }, [handleAudioUpdate, reducedMotion, sceneId]);
 
   // Convert embedded speech bubble into DialogueLine interface for SyncedSpeechBubble (dialogue mode only)
   const activeLine: DialogueLine | null = useMemo(() => {
@@ -360,7 +367,7 @@ export const CinematicViewportStage: React.FC<CinematicViewportStageProps> = ({
               elapsedSec={activeSpeechSnapshot?.elapsedSec}
               durationSec={activeSpeechSnapshot?.durationSec ?? activeLine.duration}
               isPaused={false}
-              playbackMode={activeSpeechSnapshot?.isPlaying ? 'playing' : 'idle'}
+              playbackMode={activeSpeechSnapshot?.isPlaying ? 'playing-recording' : 'idle'}
             />
           </div>
         )}

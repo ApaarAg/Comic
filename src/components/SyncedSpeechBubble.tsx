@@ -75,7 +75,7 @@ export const SyncedSpeechBubble: React.FC<SyncedSpeechBubbleProps> = ({
 
   useEffect(() => {
     if (elapsedSec !== undefined || !syncToVoicePlayer || reducedMotion) {
-      setVoiceSnap(null);
+      setVoiceSnap((prev) => (prev !== null ? null : prev));
       return;
     }
 
@@ -83,7 +83,7 @@ export const SyncedSpeechBubble: React.FC<SyncedSpeechBubbleProps> = ({
       if (snap.lineId === line.id) {
         setVoiceSnap(snap);
       } else {
-        setVoiceSnap((prev) => (prev ? null : prev));
+        setVoiceSnap((prev) => (prev !== null ? null : prev));
       }
     };
 
@@ -97,7 +97,7 @@ export const SyncedSpeechBubble: React.FC<SyncedSpeechBubbleProps> = ({
   useEffect(() => {
     const audioEl = audioRef?.current;
     if (!audioEl || elapsedSec !== undefined || reducedMotion) {
-      setMediaTime(null);
+      setMediaTime((prev) => (prev !== null ? null : prev));
       return;
     }
 

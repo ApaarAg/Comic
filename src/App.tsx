@@ -68,6 +68,20 @@ export default function App() {
 
   // Initialize Single Coordinated Scroll Architecture: Lenis smooth scroll + GSAP ScrollTrigger
   useEffect(() => {
+    const updateLayout = () => {
+      const doc = document.documentElement;
+      const maxScroll = Math.max(1, doc.scrollHeight - window.innerHeight);
+      const tops = CHAPTER_SCENES.map((scene) => {
+        const el = document.getElementById(scene.id);
+        return el ? el.getBoundingClientRect().top + window.scrollY : 0;
+      });
+      const sig = `${Math.round(maxScroll)}:${Math.round(window.innerHeight)}`;
+      if (sig !== lastLayoutSigRef.current) {
+        lastLayoutSigRef.current = sig;
+        setSceneBounds(computeNormalizedSceneBounds(tops, maxScroll, window.innerHeight));
+      }
+    };
+
     const updateProgress = () => {
       if (!hasEntered) return;
       const doc = document.documentElement;
@@ -79,30 +93,30 @@ export default function App() {
         const el = document.getElementById(scene.id);
         return el ? el.getBoundingClientRect().top + window.scrollY : 0;
       });
-      setActiveSceneIndex(resolveActiveSceneByOffsets(window.scrollY, window.innerHeight, tops));
+      const nextIdx = resolveActiveSceneByOffsets(window.scrollY, window.innerHeight, tops);
+      setActiveSceneIndex((prev) => (prev !== nextIdx ? nextIdx : prev));
+    };
 
-      const sig = `${Math.round(maxScroll)}:${Math.round(window.innerHeight)}:${tops.map((t) => Math.round(t)).join(',')}`;
-      if (sig !== lastLayoutSigRef.current) {
-        lastLayoutSigRef.current = sig;
-        setSceneBounds(computeNormalizedSceneBounds(tops, maxScroll, window.innerHeight));
-      }
+    const handleResize = () => {
+      updateLayout();
+      updateProgress();
     };
 
     // If user prefers reduced motion, disable Lenis completely and run native instant scrolling
     if (reducedMotion) {
       window.addEventListener('scroll', updateProgress, { passive: true });
-      window.addEventListener('resize', updateProgress, { passive: true });
-      updateProgress();
+      window.addEventListener('resize', handleResize, { passive: true });
+      handleResize();
       ScrollTrigger.refresh();
       return () => {
         window.removeEventListener('scroll', updateProgress);
-        window.removeEventListener('resize', updateProgress);
+        window.removeEventListener('resize', handleResize);
       };
     }
 
     // Single source of truth: Lenis drives ScrollTrigger updates and progress
-    window.addEventListener('resize', updateProgress, { passive: true });
-    updateProgress();
+    window.addEventListener('resize', handleResize, { passive: true });
+    handleResize();
 
     const lenis = new Lenis({
       duration: 1.15,
@@ -224,7 +238,10 @@ export default function App() {
             reducedMotion={reducedMotion}
             isMuted={isMuted}
             onToggleMute={handleToggleMute}
-            onUnlockAudio={() => setIsMuted(false)}
+          onUnlockAudio={() => {
+              soundscape.unmute();
+              setIsMuted(false);
+            }}
           />
 
           <Scene01Mumbai
@@ -241,6 +258,7 @@ export default function App() {
                 accentColor="#f28b50"
                 eyebrow="Transition I · Street Level"
                 caption="As sunset sank below the skyline, engines idled bumper-to-bumper along the Bandra-Kurla overpass."
+                artworkUrl="/assets/chapter1/p07_panel01.webp"
                 reducedMotion={reducedMotion}
               />
 
@@ -258,6 +276,7 @@ export default function App() {
                 accentColor="#e66c8b"
                 eyebrow="Transition II · Six Floors Above"
                 caption="Across Parel, neon haze spilled out from an open apartment window above the rush."
+                artworkUrl="/assets/chapter1/p08_panel01.webp"
                 reducedMotion={reducedMotion}
               />
 
@@ -275,6 +294,7 @@ export default function App() {
                 accentColor="#8ad3eb"
                 eyebrow="Transition III · Beyond Mortal Clouds"
                 caption="Far above cigarette smoke and gridlock, a slender silvered tower pierced an endless twilight."
+                artworkUrl="/assets/chapter1/p10_panel01.webp"
                 reducedMotion={reducedMotion}
               />
 
@@ -292,6 +312,7 @@ export default function App() {
                 accentColor="#f06a7e"
                 eyebrow="Transition IV · 10:02 PM Divergence"
                 caption="Two lives—one plummeting through open air, one forcing his way into his first breath."
+                artworkUrl="/assets/chapter1/p13_panel01.webp"
                 reducedMotion={reducedMotion}
               />
 
@@ -309,6 +330,7 @@ export default function App() {
                 accentColor="#63b8d6"
                 eyebrow="Transition V · The Descent"
                 caption="Thunder tore the winter sky as an unemployed goddess stepped down into broken bones."
+                artworkUrl="/assets/chapter1/p16_panel01.webp"
                 reducedMotion={reducedMotion}
               />
 
@@ -340,6 +362,7 @@ export default function App() {
                 accentColor="#f5b041"
                 eyebrow="Transition VI · Midnight Highway"
                 caption="Bare feet struck wet pavement just as twelve-wheeler beams swept down the avenue."
+                artworkUrl="/assets/chapter1/p20_panel01.webp"
                 reducedMotion={reducedMotion}
               />
 
@@ -357,6 +380,7 @@ export default function App() {
                 accentColor="#f2a866"
                 eyebrow="Transition VII · Eight Years Later"
                 caption="Harbour mist lifted off the Gateway of India, carrying the warmth of morning tea."
+                artworkUrl="/assets/chapter1/p25_panel01.webp"
                 reducedMotion={reducedMotion}
               />
 
