@@ -1,8 +1,21 @@
 {
-  "generatedAt": "2026-11-20T12:40:09.586Z",
-  "totalLines": 48,
-  "availableCount": 48,
+  "generatedAt": "2026-11-21T10:58:01.194Z",
+  "totalLines": 49,
+  "availableCount": 49,
   "records": [
+    {
+      "id": "s00-01",
+      "characterId": "narrator",
+      "characterName": "The Chronicle",
+      "sceneId": "scene-00",
+      "category": "narration",
+      "transcript": "It began on a Wednesday afternoon as a late December sun was just dipping below the Mumbai skyline. Down where the elevated highway curves between glass towers, the city exhaled in horns and heat.",
+      "audioPath": "/assets/audio/voices/narrator/scene-00-opening-canvas.mp3",
+      "durationMs": 11378,
+      "fileExists": true,
+      "fileSizeBytes": 183109,
+      "emotion": "APPROVED NARRATOR: George (ElevenLabs JBFqnCBsd6RMkjVDRZzb). Deep, warm, gravelly, cinematic storytelling baritone with textured rasp, measured cadence, and atmospheric weight."
+    },
     {
       "id": "s01-01",
       "characterId": "narrator",
@@ -11,10 +24,10 @@
       "category": "narration",
       "transcript": "It began on a Wednesday afternoon as a late December sun was just dipping below the Mumbai skyline.",
       "audioPath": "/assets/audio/voices/narrator/scene-01-opening.mp3",
-      "durationMs": 4800,
+      "durationMs": 5526,
       "fileExists": true,
-      "fileSizeBytes": 106272,
-      "emotion": "Deep, powerful, mature Indian English male baritone with rich chest resonance. Slow and deliberate pacing, subtle warmth, commanding presence."
+      "fileSizeBytes": 89486,
+      "emotion": "APPROVED NARRATOR: George (ElevenLabs JBFqnCBsd6RMkjVDRZzb). Deep, warm, gravelly, cinematic storytelling baritone with textured rasp, measured cadence, and atmospheric weight."
     },
     {
       "id": "s01-02",
@@ -24,10 +37,10 @@
       "category": "narration",
       "transcript": "Down where the elevated highway curves between glass towers, the city exhaled in horns and heat.",
       "audioPath": "/assets/audio/voices/narrator/scene-01-highway.mp3",
-      "durationMs": 4400,
+      "durationMs": 5759,
       "fileExists": true,
-      "fileSizeBytes": 103968,
-      "emotion": "Deep, powerful, mature Indian English male baritone with rich chest resonance. Slow and deliberate pacing, subtle warmth, commanding presence."
+      "fileSizeBytes": 93247,
+      "emotion": "APPROVED NARRATOR: George (ElevenLabs JBFqnCBsd6RMkjVDRZzb). Deep, warm, gravelly, cinematic storytelling baritone with textured rasp, measured cadence, and atmospheric weight."
     },
     {
       "id": "s02-conn-01",
@@ -37,10 +50,10 @@
       "category": "narration",
       "transcript": "On the B.K.C. overpass, one city became many cities — each trapped inside its own small metal shell.",
       "audioPath": "/assets/audio/voices/narrator/scene-02-connector.mp3",
-      "durationMs": 4000,
+      "durationMs": 6037,
       "fileExists": true,
-      "fileSizeBytes": 111744,
-      "emotion": "Deep, powerful, mature Indian English male baritone with rich chest resonance. Slow and deliberate pacing, subtle warmth, commanding presence."
+      "fileSizeBytes": 97845,
+      "emotion": "APPROVED NARRATOR: George (ElevenLabs JBFqnCBsd6RMkjVDRZzb). Deep, warm, gravelly, cinematic storytelling baritone with textured rasp, measured cadence, and atmospheric weight."
     },
     {
       "id": "s03-02",
@@ -50,10 +63,10 @@
       "category": "narration",
       "transcript": "...Beneath gentle curls of raven hair, her eyes stayed fixed on distant city lights while her thoughts drifted like cigarette smoke.",
       "audioPath": "/assets/audio/voices/narrator/s03-02-window.mp3",
-      "durationMs": 4800,
+      "durationMs": 6920,
       "fileExists": true,
-      "fileSizeBytes": 126432,
-      "emotion": "Deep, powerful, mature Indian English male baritone with rich chest resonance. Slow and deliberate pacing, subtle warmth, commanding presence."
+      "fileSizeBytes": 111638,
+      "emotion": "APPROVED NARRATOR: George (ElevenLabs JBFqnCBsd6RMkjVDRZzb). Deep, warm, gravelly, cinematic storytelling baritone with textured rasp, measured cadence, and atmospheric weight."
     },
     {
       "id": "s04-conn-01",
@@ -63,10 +76,10 @@
       "category": "narration",
       "transcript": "Beyond the mortal clouds, in a place where endings are drafted like memos, something unprecedented was happening.",
       "audioPath": "/assets/audio/voices/narrator/scene-04-connector.mp3",
-      "durationMs": 4600,
+      "durationMs": 6594,
       "fileExists": true,
-      "fileSizeBytes": 112320,
-      "emotion": "Deep, powerful, mature Indian English male baritone with rich chest resonance. Slow and deliberate pacing, subtle warmth, commanding presence."
+      "fileSizeBytes": 106622,
+      "emotion": "APPROVED NARRATOR: George (ElevenLabs JBFqnCBsd6RMkjVDRZzb). Deep, warm, gravelly, cinematic storytelling baritone with textured rasp, measured cadence, and atmospheric weight."
     },
     {
       "id": "s05-01",
@@ -76,10 +89,10 @@
       "category": "narration",
       "transcript": "It was around that time that the girl from the window at the party was falling through the air — two floors down and fast approaching the ground.",
       "audioPath": "/assets/audio/voices/narrator/s05-01-fall.mp3",
-      "durationMs": 5200,
+      "durationMs": 7616,
       "fileExists": true,
-      "fileSizeBytes": 132192,
-      "emotion": "Deep, powerful, mature Indian English male baritone with rich chest resonance. Slow and deliberate pacing, subtle warmth, commanding presence."
+      "fileSizeBytes": 122923,
+      "emotion": "APPROVED NARRATOR: George (ElevenLabs JBFqnCBsd6RMkjVDRZzb). Deep, warm, gravelly, cinematic storytelling baritone with textured rasp, measured cadence, and atmospheric weight."
     },
     {
       "id": "s05-02",
@@ -89,10 +102,10 @@
       "category": "narration",
       "transcript": "Just as she hit the ground, Mrs. Shah was in the Amravati Hospital squeezing her husband's hand with such strength that he was screaming louder than her.",
       "audioPath": "/assets/audio/voices/narrator/s05-02-birth.mp3",
-      "durationMs": 5400,
+      "durationMs": 8359,
       "fileExists": true,
-      "fileSizeBytes": 151776,
-      "emotion": "Deep, powerful, mature Indian English male baritone with rich chest resonance. Slow and deliberate pacing, subtle warmth, commanding presence."
+      "fileSizeBytes": 134625,
+      "emotion": "APPROVED NARRATOR: George (ElevenLabs JBFqnCBsd6RMkjVDRZzb). Deep, warm, gravelly, cinematic storytelling baritone with textured rasp, measured cadence, and atmospheric weight."
     },
     {
       "id": "s05-03",
@@ -102,10 +115,10 @@
       "category": "narration",
       "transcript": "As the midwife urged her into one last push, a new life came into being. A beautiful thing that would go on to be the cause of much consternation in his many years to come.",
       "audioPath": "/assets/audio/voices/narrator/s05-03-darius.mp3",
-      "durationMs": 5800,
+      "durationMs": 9706,
       "fileExists": true,
-      "fileSizeBytes": 176832,
-      "emotion": "Deep, powerful, mature Indian English male baritone with rich chest resonance. Slow and deliberate pacing, subtle warmth, commanding presence."
+      "fileSizeBytes": 156359,
+      "emotion": "APPROVED NARRATOR: George (ElevenLabs JBFqnCBsd6RMkjVDRZzb). Deep, warm, gravelly, cinematic storytelling baritone with textured rasp, measured cadence, and atmospheric weight."
     },
     {
       "id": "s06-conn-01",
@@ -115,10 +128,10 @@
       "category": "narration",
       "transcript": "A deal was being struck — the kind that bends the fabric of everything.",
       "audioPath": "/assets/audio/voices/narrator/scene-06-connector.mp3",
-      "durationMs": 3200,
+      "durationMs": 4226,
       "fileExists": true,
-      "fileSizeBytes": 72288,
-      "emotion": "Deep, powerful, mature Indian English male baritone with rich chest resonance. Slow and deliberate pacing, subtle warmth, commanding presence."
+      "fileSizeBytes": 68588,
+      "emotion": "APPROVED NARRATOR: George (ElevenLabs JBFqnCBsd6RMkjVDRZzb). Deep, warm, gravelly, cinematic storytelling baritone with textured rasp, measured cadence, and atmospheric weight."
     },
     {
       "id": "s07-conn-01",
@@ -128,10 +141,10 @@
       "category": "narration",
       "transcript": "She woke up in a body that felt borrowed, in a room that smelled of antiseptic and second chances.",
       "audioPath": "/assets/audio/voices/narrator/scene-07-connector.mp3",
-      "durationMs": 3800,
+      "durationMs": 5619,
       "fileExists": true,
-      "fileSizeBytes": 101088,
-      "emotion": "Deep, powerful, mature Indian English male baritone with rich chest resonance. Slow and deliberate pacing, subtle warmth, commanding presence."
+      "fileSizeBytes": 91158,
+      "emotion": "APPROVED NARRATOR: George (ElevenLabs JBFqnCBsd6RMkjVDRZzb). Deep, warm, gravelly, cinematic storytelling baritone with textured rasp, measured cadence, and atmospheric weight."
     },
     {
       "id": "s08-conn-01",
@@ -141,10 +154,10 @@
       "category": "narration",
       "transcript": "The neo-natal ward held its breath. Death held a baby.",
       "audioPath": "/assets/audio/voices/narrator/scene-08-connector.mp3",
-      "durationMs": 3000,
+      "durationMs": 3204,
       "fileExists": true,
-      "fileSizeBytes": 72288,
-      "emotion": "Deep, powerful, mature Indian English male baritone with rich chest resonance. Slow and deliberate pacing, subtle warmth, commanding presence."
+      "fileSizeBytes": 52287,
+      "emotion": "APPROVED NARRATOR: George (ElevenLabs JBFqnCBsd6RMkjVDRZzb). Deep, warm, gravelly, cinematic storytelling baritone with textured rasp, measured cadence, and atmospheric weight."
     },
     {
       "id": "s09-01",
@@ -154,10 +167,10 @@
       "category": "narration",
       "transcript": "And in Mumbai, even at that late hour, great thundering wheels of commerce rolled on unfettered.",
       "audioPath": "/assets/audio/voices/narrator/s09-01-commerce.mp3",
-      "durationMs": 4200,
+      "durationMs": 6177,
       "fileExists": true,
-      "fileSizeBytes": 99936,
-      "emotion": "Deep, powerful, mature Indian English male baritone with rich chest resonance. Slow and deliberate pacing, subtle warmth, commanding presence."
+      "fileSizeBytes": 99935,
+      "emotion": "APPROVED NARRATOR: George (ElevenLabs JBFqnCBsd6RMkjVDRZzb). Deep, warm, gravelly, cinematic storytelling baritone with textured rasp, measured cadence, and atmospheric weight."
     },
     {
       "id": "s09-02",
@@ -167,10 +180,10 @@
       "category": "narration",
       "transcript": "And so, only a few minutes away from midnight, Laila Starr met her death once again.",
       "audioPath": "/assets/audio/voices/narrator/s09-02-midnight.mp3",
-      "durationMs": 4000,
+      "durationMs": 4505,
       "fileExists": true,
-      "fileSizeBytes": 96192,
-      "emotion": "Deep, powerful, mature Indian English male baritone with rich chest resonance. Slow and deliberate pacing, subtle warmth, commanding presence."
+      "fileSizeBytes": 73185,
+      "emotion": "APPROVED NARRATOR: George (ElevenLabs JBFqnCBsd6RMkjVDRZzb). Deep, warm, gravelly, cinematic storytelling baritone with textured rasp, measured cadence, and atmospheric weight."
     },
     {
       "id": "s10-conn-01",
@@ -180,10 +193,10 @@
       "category": "narration",
       "transcript": "Eight years later, the sun rose anyway — as it always has, as it always will.",
       "audioPath": "/assets/audio/voices/narrator/scene-10-connector.mp3",
-      "durationMs": 3400,
+      "durationMs": 4969,
       "fileExists": true,
-      "fileSizeBytes": 90144,
-      "emotion": "Deep, powerful, mature Indian English male baritone with rich chest resonance. Slow and deliberate pacing, subtle warmth, commanding presence."
+      "fileSizeBytes": 80709,
+      "emotion": "APPROVED NARRATOR: George (ElevenLabs JBFqnCBsd6RMkjVDRZzb). Deep, warm, gravelly, cinematic storytelling baritone with textured rasp, measured cadence, and atmospheric weight."
     },
     {
       "id": "s02-01",
@@ -195,7 +208,7 @@
       "audioPath": "/assets/audio/voices/supporting/s02-01-mrs-shah.mp3",
       "durationMs": 3500,
       "fileExists": true,
-      "fileSizeBytes": 68588,
+      "fileSizeBytes": 59811,
       "emotion": "Breathless panic over the phone; rising urgency as labor pains strike."
     },
     {
@@ -208,7 +221,7 @@
       "audioPath": "/assets/audio/voices/supporting/s02-02-driver.mp3",
       "durationMs": 3500,
       "fileExists": true,
-      "fileSizeBytes": 61065,
+      "fileSizeBytes": 56049,
       "emotion": "Flustered Mumbai taxi street urgency over traffic noise."
     },
     {
@@ -221,7 +234,7 @@
       "audioPath": "/assets/audio/voices/supporting/s02-03-mrs-shah-baby.mp3",
       "durationMs": 3500,
       "fileExists": true,
-      "fileSizeBytes": 27210,
+      "fileSizeBytes": 24284,
       "emotion": "Breathless panic over the phone; rising urgency as labor pains strike."
     },
     {
@@ -338,7 +351,7 @@
       "audioPath": "/assets/audio/voices/supporting/s04-08-god-fired.mp3",
       "durationMs": 3500,
       "fileExists": true,
-      "fileSizeBytes": 36823,
+      "fileSizeBytes": 37659,
       "emotion": "Golden warm bass, smiling vocal cords, disarming corporate-divine finality."
     },
     {
@@ -351,7 +364,7 @@
       "audioPath": "/assets/audio/voices/death/s04-09-death-outrage.mp3",
       "durationMs": 3500,
       "fileExists": true,
-      "fileSizeBytes": 123758,
+      "fileSizeBytes": 128774,
       "emotion": "Regal, elegant female authority with dark velvety composure—cynical confidence cracking into sheer outrage and disbelief when fired."
     },
     {
@@ -364,7 +377,7 @@
       "audioPath": "/assets/audio/voices/supporting/s04-10-god-corporate.mp3",
       "durationMs": 3500,
       "fileExists": true,
-      "fileSizeBytes": 46436,
+      "fileSizeBytes": 47272,
       "emotion": "Golden warm bass, smiling vocal cords, disarming corporate-divine finality."
     },
     {
@@ -377,7 +390,7 @@
       "audioPath": "/assets/audio/voices/death/s04-11-death-lost.mp3",
       "durationMs": 3500,
       "fileExists": true,
-      "fileSizeBytes": 53123,
+      "fileSizeBytes": 51034,
       "emotion": "Regal, elegant female authority with dark velvety composure—cynical confidence cracking into sheer outrage and disbelief when fired."
     },
     {
@@ -455,7 +468,7 @@
       "audioPath": "/assets/audio/voices/laila/s07-01-laila-awful.mp3",
       "durationMs": 3500,
       "fileExists": true,
-      "fileSizeBytes": 41003,
+      "fileSizeBytes": 29300,
       "emotion": "Husky, breathless, mortal aches, dry mordant humor concealing empathy."
     },
     {
@@ -533,7 +546,7 @@
       "audioPath": "/assets/audio/voices/munmun/s08-01-munmun-darius.mp3",
       "durationMs": 3500,
       "fileExists": true,
-      "fileSizeBytes": 84470,
+      "fileSizeBytes": 83634,
       "emotion": "Silvery, bright, quirky teenage ghost in a moonlit ward."
     },
     {
@@ -546,7 +559,7 @@
       "audioPath": "/assets/audio/voices/laila/s08-02-laila-cant.mp3",
       "durationMs": 3500,
       "fileExists": true,
-      "fileSizeBytes": 54377,
+      "fileSizeBytes": 55213,
       "emotion": "Husky, breathless, mortal aches, dry mordant humor concealing empathy."
     },
     {

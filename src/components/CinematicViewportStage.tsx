@@ -45,6 +45,25 @@ const globalLatchState: AudioPlaybackLatchState = {
   currentlyPlayingId: null,
   lastProgressByScene: {},
 };
+let lastSyncedCompletedEventId: string | null = null;
+
+function syncNarrationLatchFromPlayer(): void {
+  const snapshot = characterVoicePlayer.getSnapshot();
+  if (!snapshot.eventId) return;
+  const marker = snapshot.eventId.lastIndexOf('@');
+  if (marker < 0) return;
+  const lineId = snapshot.eventId.slice(0, marker);
+  if (snapshot.lifecycle === 'COMPLETED' && lastSyncedCompletedEventId !== snapshot.eventId) {
+    lastSyncedCompletedEventId = snapshot.eventId;
+    globalLatchState.completedSpeechIds.add(lineId);
+    if (globalLatchState.currentlyPlayingId === lineId) globalLatchState.currentlyPlayingId = null;
+  } else if (
+    (snapshot.lifecycle === 'CANCELLED' || snapshot.lifecycle === 'FAILED') &&
+    globalLatchState.currentlyPlayingId === lineId
+  ) {
+    globalLatchState.currentlyPlayingId = null;
+  }
+}
 
 export interface CinematicViewportStageProps {
   sceneId: string;
@@ -142,6 +161,8 @@ export const CinematicViewportStage: React.FC<CinematicViewportStageProps> = ({
     (currProgress: number, prevProgress: number) => {
       if (reducedMotion) return;
 
+      syncNarrationLatchFromPlayer();
+
       const audioAction = resolveTimelineAudioAction(
         sceneId,
         currProgress,
@@ -151,12 +172,26 @@ export const CinematicViewportStage: React.FC<CinematicViewportStageProps> = ({
 
       if (audioAction.action === 'play' && audioAction.speechToPlay) {
         const speech = audioAction.speechToPlay;
-        globalLatchState.currentlyPlayingId = speech.id;
+        const beatIndex = sceneMeta.beats.findIndex((beat) => beat.speech?.id === speech.id);
+        const nextSpeech = sceneMeta.beats
+          .slice(beatIndex + 1)
+          .find((beat) => beat.speech)?.speech;
+        if (nextSpeech) characterVoicePlayer.preloadAsset(nextSpeech.audioSrc);
 
         if (speech.mode === 'dialogue') {
+          globalLatchState.currentlyPlayingId = speech.id;
           narrativeRef.current?.setDialogueActive(true);
         } else if (speech.mode === 'narration') {
-          narrativeRef.current?.triggerNarrationBeat(speech.id);
+          const snapshot = characterVoicePlayer.getSnapshot();
+          if (snapshot.lineId === speech.id && snapshot.sceneId === sceneId) {
+            globalLatchState.currentlyPlayingId = speech.id;
+          } else {
+            globalLatchState.currentlyPlayingId = null;
+            narrativeRef.current?.triggerNarrationBeat(speech.id, true);
+            if (characterVoicePlayer.getActiveLineId() === speech.id) {
+              globalLatchState.currentlyPlayingId = speech.id;
+            }
+          }
         }
 
         // Trigger accompanying audio cues (leitmotifs or SFX)
@@ -183,18 +218,33 @@ export const CinematicViewportStage: React.FC<CinematicViewportStageProps> = ({
                 sceneAudioManager.unduckBuses(1400);
               }
             },
-          });
+            onCancel: () => {
+              globalLatchState.completedSpeechIds.delete(speech.id);
+              if (globalLatchState.currentlyPlayingId === speech.id) {
+                globalLatchState.currentlyPlayingId = null;
+                if (speech.mode === 'dialogue') narrativeRef.current?.setDialogueActive(false);
+                sceneAudioManager.unduckBuses(400);
+              }
+            },
+            onError: () => {
+              if (globalLatchState.currentlyPlayingId === speech.id) {
+                globalLatchState.currentlyPlayingId = null;
+                if (speech.mode === 'dialogue') narrativeRef.current?.setDialogueActive(false);
+                sceneAudioManager.unduckBuses(400);
+              }
+            },
+          }, sceneId);
         }
       } else if (audioAction.action === 'stop') {
         if (globalLatchState.currentlyPlayingId) {
-          characterVoicePlayer.stop(120);
+          characterVoicePlayer.stop(0, 'scrolled_away');
           globalLatchState.currentlyPlayingId = null;
           narrativeRef.current?.setDialogueActive(false);
           sceneAudioManager.unduckBuses(600);
         }
       }
     },
-    [reducedMotion, sceneId],
+    [reducedMotion, sceneId, sceneMeta],
   );
 
   // GSAP ScrollTrigger to track normalized stageProgress cleanly
@@ -213,6 +263,38 @@ export const CinematicViewportStage: React.FC<CinematicViewportStageProps> = ({
         start: 'top top',
         end: 'bottom bottom',
         scrub: true,
+        onEnter: () => {
+          if (characterVoicePlayer.getActiveSceneId() !== sceneId) {
+            globalLatchState.currentlyPlayingId = null;
+            characterVoicePlayer.setActiveScene(sceneId);
+            narrativeRef.current?.setDialogueActive(false);
+            sceneAudioManager.unduckBuses(400);
+          }
+        },
+        onEnterBack: () => {
+          if (characterVoicePlayer.getActiveSceneId() !== sceneId) {
+            globalLatchState.currentlyPlayingId = null;
+            characterVoicePlayer.setActiveScene(sceneId);
+            narrativeRef.current?.setDialogueActive(false);
+            sceneAudioManager.unduckBuses(400);
+          }
+        },
+        onLeave: () => {
+          if (characterVoicePlayer.getActiveSceneId() === sceneId) {
+            globalLatchState.currentlyPlayingId = null;
+            characterVoicePlayer.setActiveScene(null);
+            narrativeRef.current?.setDialogueActive(false);
+            sceneAudioManager.unduckBuses(400);
+          }
+        },
+        onLeaveBack: () => {
+          if (characterVoicePlayer.getActiveSceneId() === sceneId) {
+            globalLatchState.currentlyPlayingId = null;
+            characterVoicePlayer.setActiveScene(null);
+            narrativeRef.current?.setDialogueActive(false);
+            sceneAudioManager.unduckBuses(400);
+          }
+        },
         onUpdate: (self) => {
           const p = Math.max(0, Math.min(1, self.progress));
           const prev = prevProgressRef.current;
@@ -263,6 +345,20 @@ export const CinematicViewportStage: React.FC<CinematicViewportStageProps> = ({
       ref={trackRef}
       id={sceneId}
       data-scene-id={sceneId}
+      data-active-panel-id={visualState.activePanelId}
+      data-active-speech-id={visualState.speechBubble?.id ?? ''}
+      data-stage-progress={visualState.stageProgress.toFixed(4)}
+      data-audio-markers={JSON.stringify(
+        sceneMeta.beats
+          .filter((beat) => beat.speech)
+          .map((beat) => ({
+            id: beat.speech!.id,
+            mode: beat.speech!.mode,
+            stageProgress: beat.stageProgress,
+            panelId: beat.panelId,
+            durationMs: beat.speech!.durationMs,
+          })),
+      )}
       className={`relative w-full ${className}`}
       style={{ height: `${effectiveTrackHeightVh}vh` }}
     >

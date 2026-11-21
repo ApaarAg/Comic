@@ -1841,6 +1841,9 @@ export function resolveTimelineAudioAction(
   const delta = currentProgress - previousProgress;
   const isForward = delta > 0;
   const isFastScroll = Math.abs(delta) > (options?.velocityThreshold ?? 0.25);
+  const crossedBeats = scene.beats.filter(
+    (beat) => beat.speech && previousProgress < beat.stageProgress && currentProgress >= beat.stageProgress,
+  );
 
   // Rapid scroll guard: if user scrolls too fast, cut active voice and avoid firing backlog
   if (isFastScroll && latchState.currentlyPlayingId) {
@@ -1853,6 +1856,18 @@ export function resolveTimelineAudioAction(
 
   // Backward scrolling hysteresis: do NOT re-trigger speech if scrolling backward
   if (!isForward) {
+    // Arm deliberate replay only after the reader retreats clearly behind a line.
+    // Tiny reverse jitter keeps the completed latch intact.
+    for (const beat of scene.beats) {
+      if (
+        beat.speech &&
+        previousProgress >= beat.stageProgress &&
+        currentProgress < beat.stageProgress - 0.05
+      ) {
+        latchState.completedSpeechIds.delete(beat.speech.id);
+      }
+    }
+
     // If currently playing speech and user reverses past its trigger, gently fade out
     if (latchState.currentlyPlayingId) {
       const playingBeat = scene.beats.find((b) => b.speech?.id === latchState.currentlyPlayingId);
@@ -1874,39 +1889,38 @@ export function resolveTimelineAudioAction(
     };
   }
 
-  // Forward scroll: detect newly crossed speech beats
-  for (const beat of scene.beats) {
-    if (beat.speech) {
-      const speech = beat.speech;
-      const crossedForward = previousProgress < beat.stageProgress && currentProgress >= beat.stageProgress;
-
-      if (crossedForward) {
-        // If already completed in this session, do not re-play audio
-        if (latchState.completedSpeechIds.has(speech.id)) {
-          continue;
-        }
-
-        // New speech line triggered!
-        const isDialogue = speech.mode === 'dialogue';
-        return {
-          action: 'play',
-          speechToPlay: speech,
-          ducking: {
-            duckScore: true,
-            duckAmbience: true,
-            duckFactor: isDialogue ? 0.38 : 0.45,
-          },
-        };
-      }
-    }
+  // Forward scroll: only catch the latest crossed event while it is still at
+  // its panel. A delayed update must not speak a line the reader passed.
+  const latestCrossed = crossedBeats[crossedBeats.length - 1];
+  if (!latestCrossed?.speech || currentProgress - latestCrossed.stageProgress > 0.05) {
+    return {
+      action: 'none',
+      ducking: { duckScore: false, duckAmbience: false, duckFactor: 1.0 },
+    };
   }
 
+  if (
+    latchState.completedSpeechIds.has(latestCrossed.speech.id) ||
+    latchState.currentlyPlayingId === latestCrossed.speech.id
+  ) {
+    return {
+      action: 'none',
+      ducking: {
+        duckScore: !!latchState.currentlyPlayingId,
+        duckAmbience: !!latchState.currentlyPlayingId,
+        duckFactor: latchState.currentlyPlayingId ? 0.38 : 1.0,
+      },
+    };
+  }
+
+  const isDialogue = latestCrossed.speech.mode === 'dialogue';
   return {
-    action: 'none',
+    action: 'play',
+    speechToPlay: latestCrossed.speech,
     ducking: {
-      duckScore: !!latchState.currentlyPlayingId,
-      duckAmbience: !!latchState.currentlyPlayingId,
-      duckFactor: latchState.currentlyPlayingId ? 0.38 : 1.0,
+      duckScore: true,
+      duckAmbience: true,
+      duckFactor: isDialogue ? 0.38 : 0.45,
     },
   };
 }

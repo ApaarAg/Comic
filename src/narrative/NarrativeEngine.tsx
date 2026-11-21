@@ -92,29 +92,16 @@ export function useOptionalNarrative(): NarrativeContextValue | null {
 export interface NarrativeProviderProps {
   /** Array of narrative beats (e.g. SCENE_NARRATION_BEATS) */
   narrativeBeats: ReadonlyArray<NarrationBeat>;
-  /** Optional external scroll progress from smooth scroll [0..1] */
-  scrollProgress?: number;
   children: React.ReactNode;
-}
-
-// ─────────────────────────────────────────────────────────────────────────────
-// Helper: get current scroll progress [0..1] from document
-// ─────────────────────────────────────────────────────────────────────────────
-function computeScrollProgress(): number {
-  if (typeof window === 'undefined' || typeof document === 'undefined') return 0;
-  const doc = document.documentElement;
-  const max = Math.max(1, doc.scrollHeight - window.innerHeight);
-  return Math.min(1, Math.max(0, window.scrollY / max));
 }
 
 export const NarrativeProvider: React.FC<NarrativeProviderProps> = ({
   narrativeBeats,
-  scrollProgress: externalProgress,
   children,
 }) => {
-  // Sorted beats by trigger point for binary or linear lookup
+  // Narrative audio starts only from its scene's local storyboard trigger.
   const sortedBeats = useMemo(
-    () => [...narrativeBeats].sort((a, b) => a.triggerProgress - b.triggerProgress),
+    () => [...narrativeBeats],
     [narrativeBeats],
   );
 
@@ -127,9 +114,7 @@ export const NarrativeProvider: React.FC<NarrativeProviderProps> = ({
   // Operational Refs
   const isDialogueActiveRef = useRef(false);
   const activeBeatRef = useRef<NarrationBeat | null>(null);
-  const lastTriggeredIdxRef = useRef<number>(-1);
   const triggeredBeatIdsRef = useRef<Set<string>>(new Set());
-  const lastProgressRef = useRef<number>(0);
   const interruptedSeekRef = useRef<number | null>(null);
   const cadenceRafRef = useRef<number | null>(null);
 
@@ -188,7 +173,25 @@ export const NarrativeProvider: React.FC<NarrativeProviderProps> = ({
             sceneAudioManager.setVoiceActive(false);
           }
         },
-      });
+        onCancel: (reason) => {
+          if (reason !== 'replaced' && activeBeatRef.current?.id === beat.id) {
+            activeBeatRef.current = null;
+            setActiveBeat(null);
+            setNarratorProgress(0);
+            setAudioState('Idle');
+            interruptedSeekRef.current = null;
+            sceneAudioManager.setVoiceActive(false);
+          }
+        },
+        onError: () => {
+          if (activeBeatRef.current?.id === beat.id) {
+            setNarratorProgress(1);
+            setAudioState('Idle');
+            interruptedSeekRef.current = null;
+            sceneAudioManager.setVoiceActive(false);
+          }
+        },
+      }, beat.sceneId);
     },
     [sortedBeats],
   );
@@ -213,7 +216,11 @@ export const NarrativeProvider: React.FC<NarrativeProviderProps> = ({
         sceneAudioManager.setVoiceActive(true);
       } else {
         // Resume interrupted narrator if still within active narrative window
-        if (activeBeatRef.current && interruptedSeekRef.current !== null) {
+        if (
+          activeBeatRef.current &&
+          activeBeatRef.current.sceneId === characterVoicePlayer.getActiveSceneId() &&
+          interruptedSeekRef.current !== null
+        ) {
           const seekTo = interruptedSeekRef.current;
           interruptedSeekRef.current = null;
           setAudioState('NarratorSpeaking');
@@ -241,6 +248,11 @@ export const NarrativeProvider: React.FC<NarrativeProviderProps> = ({
       if (idx === -1) return;
       const beat = sortedBeats[idx];
 
+      // Manual controls and storyboard triggers must still belong to the scene
+      // that currently owns the single voice channel.
+      const activeSceneId = characterVoicePlayer.getActiveSceneId();
+      if (activeSceneId !== beat.sceneId) return;
+
       if (isDialogueActiveRef.current && !force) return;
 
       // Hysteresis & idempotency guard: do not restart audio if already playing or completed
@@ -249,7 +261,6 @@ export const NarrativeProvider: React.FC<NarrativeProviderProps> = ({
         if (activeBeatRef.current?.id === beat.id && characterVoicePlayer.getSnapshot().isPlaying) return;
       }
 
-      lastTriggeredIdxRef.current = idx;
       if (force) {
         triggeredBeatIdsRef.current.delete(beat.id);
       } else {
@@ -259,7 +270,6 @@ export const NarrativeProvider: React.FC<NarrativeProviderProps> = ({
         triggeredBeatIdsRef.current.add('s01-01');
         triggeredBeatIdsRef.current.add('s01-02');
       }
-      characterVoicePlayer.stop(160);
       playBeat(beat);
     },
     [playBeat, sortedBeats],
@@ -288,81 +298,11 @@ export const NarrativeProvider: React.FC<NarrativeProviderProps> = ({
     }
   }, [playBeat]);
 
-  // ─────────────────────────────────────────────────────────────────────────
-  // Scroll Synchronization Engine (with One-Shot Latch & Hysteresis Guard)
-  // ─────────────────────────────────────────────────────────────────────────
-  const processScrollPosition = useCallback(
-    (progress: number) => {
-      const delta = progress - lastProgressRef.current;
-      lastProgressRef.current = progress;
-
-      // Find highest beat whose trigger <= current progress
-      let candidateIdx = -1;
-      for (let i = 0; i < sortedBeats.length; i++) {
-        if (sortedBeats[i].triggerProgress <= progress) {
-          candidateIdx = i;
-        } else {
-          break;
-        }
-      }
-
-      if (candidateIdx === -1) return;
-
-      // Forward progression: user crossed into a new beat
-      if (candidateIdx > lastTriggeredIdxRef.current) {
-        lastTriggeredIdxRef.current = candidateIdx;
-        const targetBeat = sortedBeats[candidateIdx];
-
-        // One-shot latch: do not restart if already triggered in this forward pass
-        if (triggeredBeatIdsRef.current.has(targetBeat.id)) {
-          return;
-        }
-        triggeredBeatIdsRef.current.add(targetBeat.id);
-
-        // Do not interrupt active dialogue
-        if (isDialogueActiveRef.current) return;
-
-        // Fade out previous audio smoothly (160ms) to avoid sudden cutoffs
-        characterVoicePlayer.stop(160);
-        playBeat(targetBeat);
-        return;
-      }
-
-      // Backward scroll: update visual caption focus without restarting completed audio
-      if (candidateIdx < lastTriggeredIdxRef.current) {
-        lastTriggeredIdxRef.current = candidateIdx;
-        const targetBeat = sortedBeats[candidateIdx];
-        activeBeatRef.current = targetBeat;
-        setActiveBeat(targetBeat);
-        setNarratorProgress(1);
-      }
-    },
-    [playBeat, sortedBeats],
-  );
-
-  // Scroll listener
-  useEffect(() => {
-    if (typeof window === 'undefined') return;
-
-    if (externalProgress !== undefined) {
-      processScrollPosition(externalProgress);
-      return;
-    }
-
-    const onScroll = () => {
-      const p = computeScrollProgress();
-      processScrollPosition(p);
-    };
-
-    window.addEventListener('scroll', onScroll, { passive: true });
-    return () => window.removeEventListener('scroll', onScroll);
-  }, [externalProgress, processScrollPosition]);
-
   // Cleanup on unmount
   useEffect(() => {
     return () => {
       if (cadenceRafRef.current) cancelAnimationFrame(cadenceRafRef.current);
-      characterVoicePlayer.stop(0);
+      characterVoicePlayer.stop(0, 'unmounted');
     };
   }, []);
 

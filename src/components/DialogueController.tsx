@@ -52,6 +52,8 @@ export const DialogueController: React.FC<DialogueControllerProps> = ({
   const lines = CHAPTER_DIALOGUE_SEQUENCES[sequenceId] ?? [];
   const containerRef = useRef<HTMLDivElement>(null);
   const narrative = useOptionalNarrative();
+  const narrativeRef = useRef(narrative);
+  narrativeRef.current = narrative;
 
   const [activeIndex, setActiveIndex] = useState(0);
   const [isStageActive, setIsStageActive] = useState(reducedMotion);
@@ -69,6 +71,7 @@ export const DialogueController: React.FC<DialogueControllerProps> = ({
   const isStageActiveRef = useRef(reducedMotion);
   const lastTriggeredLineIdRef = useRef<string | null>(null);
   const triggeredLineIdsRef = useRef<Set<string>>(new Set());
+  const forwardExitedLineIdsRef = useRef<Set<string>>(new Set());
 
   const beatSpecs = useMemo(
     () =>
@@ -125,7 +128,7 @@ export const DialogueController: React.FC<DialogueControllerProps> = ({
       sceneAudioManager.triggerCue(line.sfxCue ?? 'bubble');
 
       if (line.mode === 'dialogue') {
-        narrative?.setDialogueActive(true);
+        narrativeRef.current?.setDialogueActive(true);
       }
 
       const nextLine = lines[lineIndex + 1];
@@ -156,12 +159,29 @@ export const DialogueController: React.FC<DialogueControllerProps> = ({
           if (activeSequenceOwner === sequenceId) {
             setPlaybackState('idle');
             setIsPaused(false);
-            narrative?.setDialogueActive(false);
+            narrativeRef.current?.setDialogueActive(false);
           }
         },
-      });
+        onCancel: (reason) => {
+          if (reason === 'replaced') return;
+          if (activeSequenceOwner === sequenceId) {
+            setPlaybackState('idle');
+            setIsPaused(false);
+            setElapsedSec(line.duration);
+            if (line.mode === 'dialogue') narrativeRef.current?.setDialogueActive(false);
+          }
+        },
+        onError: () => {
+          if (activeSequenceOwner === sequenceId) {
+            setPlaybackState('idle');
+            setIsPaused(false);
+            setElapsedSec(line.duration);
+            if (line.mode === 'dialogue') narrativeRef.current?.setDialogueActive(false);
+          }
+        },
+      }, line.sceneId);
     },
-    [lines, narrative, sequenceId],
+    [lines, sequenceId],
   );
 
   // Scroll-driven beat trigger anchored to parent scrollStageRef (or self container)
@@ -186,12 +206,10 @@ export const DialogueController: React.FC<DialogueControllerProps> = ({
       const panelTriggers: Array<{ lineIndex: number; line: DialogueLine; element: HTMLElement }> = [];
       lines.forEach((line, idx) => {
         if (line.panelTarget) {
-          const found =
-            (triggerEl.querySelector(`img[src*="${line.panelTarget}"]`) as HTMLElement | null) ??
-            (document.querySelector(`img[src*="${line.panelTarget}"]`) as HTMLElement | null);
+          const found = triggerEl.querySelector(`img[src*="${line.panelTarget}"]`) as HTMLElement | null;
           if (found) {
             const triggerTarget =
-              (found.closest('.comic-panel-frame, [data-traffic-beat], .relative') as HTMLElement | null) ??
+              (found.closest('.comic-panel-frame, [data-traffic-beat]') as HTMLElement | null) ??
               found;
             panelTriggers.push({ lineIndex: idx, line, element: triggerTarget });
           }
@@ -203,7 +221,7 @@ export const DialogueController: React.FC<DialogueControllerProps> = ({
           ScrollTrigger.create({
             trigger: element,
             start: 'top 65%',
-            end: 'bottom 35%',
+            end: 'bottom top',
             onEnter: () => {
               isStageActiveRef.current = true;
               setIsStageActive(true);
@@ -222,6 +240,29 @@ export const DialogueController: React.FC<DialogueControllerProps> = ({
               // Focus speech bubble text without restarting completed voice
               activeIndexRef.current = lineIndex;
               setActiveIndex(lineIndex);
+              if (forwardExitedLineIdsRef.current.delete(line.id)) {
+                triggeredLineIdsRef.current.add(line.id);
+                startLinePlayback(lineIndex, true);
+              }
+            },
+            onLeave: () => {
+              forwardExitedLineIdsRef.current.add(line.id);
+              if (
+                activeSequenceOwner === sequenceId &&
+                characterVoicePlayer.getActiveLineId() === line.id
+              ) {
+                characterVoicePlayer.stop(0, 'scrolled_away');
+                lastTriggeredLineIdRef.current = null;
+              }
+            },
+            onLeaveBack: () => {
+              if (
+                activeSequenceOwner === sequenceId &&
+                characterVoicePlayer.getActiveLineId() === line.id
+              ) {
+                characterVoicePlayer.stop(0, 'scrolled_away');
+                lastTriggeredLineIdRef.current = null;
+              }
             },
           });
         });
@@ -288,7 +329,7 @@ export const DialogueController: React.FC<DialogueControllerProps> = ({
         onLeave: () => {
           isStageActiveRef.current = false;
           setIsStageActive(false);
-          narrative?.setDialogueActive(false);
+          narrativeRef.current?.setDialogueActive(false);
           const lastIdx = Math.max(0, lines.length - 1);
           if (activeIndexRef.current !== lastIdx) {
             activeIndexRef.current = lastIdx;
@@ -303,7 +344,7 @@ export const DialogueController: React.FC<DialogueControllerProps> = ({
           isStageActiveRef.current = false;
           setIsStageActive(false);
           setIsPastStage(false);
-          narrative?.setDialogueActive(false);
+          narrativeRef.current?.setDialogueActive(false);
           if (activeIndexRef.current !== 0) {
             activeIndexRef.current = 0;
             setActiveIndex(0);
@@ -333,9 +374,9 @@ export const DialogueController: React.FC<DialogueControllerProps> = ({
         characterVoicePlayer.stop(0);
         activeSequenceOwner = null;
       }
-      narrative?.setDialogueActive(false);
+      narrativeRef.current?.setDialogueActive(false);
     };
-  }, [beatSpecs, lines, narrative, reducedMotion, scrollStageRef, sequenceId, startLinePlayback]);
+  }, [beatSpecs, lines, reducedMotion, scrollStageRef, sequenceId, startLinePlayback]);
 
   const handleTogglePause = useCallback(() => {
     if (!activeLine) return;

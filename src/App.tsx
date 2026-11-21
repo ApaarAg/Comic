@@ -38,6 +38,13 @@ import { CinematicStartupCurtain } from './components/CinematicStartupCurtain';
 
 gsap.registerPlugin(ScrollTrigger);
 
+declare global {
+  interface Window {
+    __STORYVERSE_AUDIO_TRACE__?: boolean;
+    __STORYVERSE_SCROLL_TO__?: (scrollY: number) => void;
+  }
+}
+
 function getInitialAutostart(): boolean {
   if (typeof window === 'undefined') return false;
   return new URLSearchParams(window.location.search).get('autostart') === '1';
@@ -59,6 +66,8 @@ export default function App() {
   const [inspectedPanel, setInspectedPanel] = useState<InspectedPanelData | null>(null);
   const lenisRef = useRef<Lenis | null>(null);
   const lastLayoutSigRef = useRef<string>('');
+  const sectionTopsRef = useRef<number[]>([]);
+  const lastPublishedProgressRef = useRef<number>(0);
 
   useEffect(() => {
     if (typeof window === 'undefined' || !window.matchMedia) return;
@@ -77,6 +86,7 @@ export default function App() {
         const el = document.getElementById(scene.id);
         return el ? el.getBoundingClientRect().top + window.scrollY : 0;
       });
+      sectionTopsRef.current = tops;
       const sig = `${Math.round(maxScroll)}:${Math.round(window.innerHeight)}`;
       if (sig !== lastLayoutSigRef.current) {
         lastLayoutSigRef.current = sig;
@@ -89,13 +99,22 @@ export default function App() {
       const doc = document.documentElement;
       const maxScroll = Math.max(1, doc.scrollHeight - window.innerHeight);
       const nextProgress = clamp01(window.scrollY / maxScroll);
-      setScrollProgress(nextProgress);
+      if (Math.abs(nextProgress - lastPublishedProgressRef.current) >= 0.001 || nextProgress === 0 || nextProgress === 1) {
+        lastPublishedProgressRef.current = nextProgress;
+        setScrollProgress(nextProgress);
+      }
 
-      const tops = CHAPTER_SCENES.map((scene) => {
-        const el = document.getElementById(scene.id);
-        return el ? el.getBoundingClientRect().top + window.scrollY : 0;
-      });
+      const tops = sectionTopsRef.current;
       const nextIdx = resolveActiveSceneByOffsets(window.scrollY, window.innerHeight, tops);
+      // The voice owner follows the same real section boundaries used by each
+      // stage's ScrollTrigger. The chapter chrome can switch at its focal line,
+      // but that earlier visual transition must not claim narration ownership.
+      let ownerIdx = 0;
+      for (let i = 1; i < tops.length; i += 1) {
+        if (window.scrollY >= tops[i]) ownerIdx = i;
+        else break;
+      }
+      characterVoicePlayer.setActiveScene(CHAPTER_SCENES[ownerIdx]?.id ?? null);
       setActiveSceneIndex((prev) => (prev !== nextIdx ? nextIdx : prev));
     };
 
@@ -103,14 +122,25 @@ export default function App() {
       updateLayout();
       updateProgress();
     };
+    const removeDebugScroll = () => {
+      if (window.__STORYVERSE_AUDIO_TRACE__) delete window.__STORYVERSE_SCROLL_TO__;
+    };
 
     // If user prefers reduced motion, disable Lenis completely and run native instant scrolling
     if (reducedMotion) {
+      if (window.__STORYVERSE_AUDIO_TRACE__) {
+        window.__STORYVERSE_SCROLL_TO__ = (scrollY) => {
+          window.scrollTo({ top: scrollY, behavior: 'instant' });
+          ScrollTrigger.update();
+          updateProgress();
+        };
+      }
       window.addEventListener('scroll', updateProgress, { passive: true });
       window.addEventListener('resize', handleResize, { passive: true });
       handleResize();
       ScrollTrigger.refresh();
       return () => {
+        removeDebugScroll();
         window.removeEventListener('scroll', updateProgress);
         window.removeEventListener('resize', handleResize);
       };
@@ -127,6 +157,13 @@ export default function App() {
       touchMultiplier: 1.4,
     });
     lenisRef.current = lenis;
+    if (window.__STORYVERSE_AUDIO_TRACE__) {
+      window.__STORYVERSE_SCROLL_TO__ = (scrollY) => {
+        lenis.scrollTo(scrollY, { immediate: true, force: true });
+        ScrollTrigger.update();
+        updateProgress();
+      };
+    }
 
     lenis.on('scroll', () => {
       ScrollTrigger.update();
@@ -145,6 +182,7 @@ export default function App() {
     }, 280);
 
     return () => {
+      removeDebugScroll();
       window.clearTimeout(refreshTimer);
       window.removeEventListener('resize', updateProgress);
       gsap.ticker.remove(tick);
@@ -212,7 +250,7 @@ export default function App() {
   }, []);
 
   return (
-    <NarrativeProvider narrativeBeats={SCENE_NARRATION_BEATS} scrollProgress={scrollProgress}>
+    <NarrativeProvider narrativeBeats={SCENE_NARRATION_BEATS}>
       <div
         className="relative min-h-screen bg-[#0b0d17] text-[#f4efe6]"
         data-active-scene={hasEntered ? activeScene.id : 'prologue'}

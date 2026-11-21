@@ -9,7 +9,9 @@
     "build": "vite build",
     "preview": "vite preview",
     "clean": "rm -rf dist server.js",
-    "lint": "tsc --noEmit"
+    "lint": "tsc --noEmit",
+    "test": "node --import tsx --test src/story/scrollMath.test.ts src/story/storyTimeline.test.ts src/narrative/narrativeEngine.test.ts tests/cinematic-audio-integration.test.ts tests/audio-lifecycle.test.ts",
+    "test:audio": "node scripts/test-audio-scroll-lifecycle.cjs"
   },
   "dependencies": {
     "@google/genai": "^2.4.0",

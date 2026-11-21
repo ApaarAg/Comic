@@ -277,7 +277,7 @@ export const EntryVeil: React.FC<EntryVeilProps> = ({
           setVoiceMode('idle');
           setNarrationProgress(1);
         },
-      });
+      }, 'scene-00');
     },
     [],
   );

@@ -154,7 +154,7 @@ test('computeAudioMixLevels ducks background ambience when voice is active', () 
     ducked.ambienceGain < unducked.ambienceGain,
     `Ambience must duck when voice is active: ducked=${ducked.ambienceGain} vs unducked=${unducked.ambienceGain}`,
   );
-  assert.equal(ducked.duckFactor, 0.42, 'Duck factor should be 0.42');
+  assert.equal(ducked.duckFactor, 0.38, 'Duck factor should be 0.38');
 
   // Voice volume remains crisp and prioritized
   assert.ok(ducked.voiceGain >= 0.9, 'Voice volume must remain prioritized');

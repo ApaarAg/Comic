@@ -261,7 +261,9 @@ class SceneAudioManager {
     this.ensureInitialized();
     Howler.mute(false);
     if (Howler.ctx && Howler.ctx.state === 'suspended') {
-      void Howler.ctx.resume();
+      void Howler.ctx.resume().catch(() => {
+        // A browser may still reject resume if this call is outside a user gesture.
+      });
     }
     this.playAmbienceTrack(this.activeAmbienceTrack);
     this.playScoreTrack(this.activeScoreTrack);
@@ -686,6 +688,10 @@ class SceneAudioManager {
           this.playScoreTrack(this.activeScoreTrack);
           this.applyMixLevels();
           onUnlocked?.();
+          this.emit();
+        }).catch(() => {
+          this.masterMuted = true;
+          Howler.mute(true);
           this.emit();
         });
       } else {

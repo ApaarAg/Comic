@@ -71,20 +71,23 @@ test('resolveTimelineAudioAction triggers speech on forward crossing', () => {
   assert.equal(action.ducking.duckFactor, 0.38);
 });
 
-test('resolveTimelineAudioAction enforces backward hysteresis (no duplicate replay)', () => {
+test('resolveTimelineAudioAction rearms completed audio only after a deliberate backward revisit', () => {
   const latchState: AudioPlaybackLatchState = {
     completedSpeechIds: new Set(['s02-01']),
     currentlyPlayingId: null,
     lastProgressByScene: { 'scene-02': 0.15 },
   };
 
-  // User scrolls backward across s02-01 trigger (from 0.15 down to 0.05)
-  const backwardAction = resolveTimelineAudioAction('scene-02', 0.05, 0.15, latchState);
-  assert.equal(backwardAction.action, 'none', 'Must NOT re-trigger speech on backward scroll');
+  // A small reverse motion leaves the completion latch intact.
+  const backwardAction = resolveTimelineAudioAction('scene-02', 0.07, 0.09, latchState);
+  assert.equal(backwardAction.action, 'none');
+  assert.equal(latchState.completedSpeechIds.has('s02-01'), true);
 
-  // User scrolls forward again across s02-01 trigger (from 0.05 up to 0.12)
-  const forwardAction = resolveTimelineAudioAction('scene-02', 0.12, 0.05, latchState);
-  assert.equal(forwardAction.action, 'none', 'Must NOT re-play previously completed speech line');
+  // Retreating well past the trigger arms one intentional replay.
+  resolveTimelineAudioAction('scene-02', 0.02, 0.09, latchState);
+  const forwardAction = resolveTimelineAudioAction('scene-02', 0.10, 0.02, latchState);
+  assert.equal(forwardAction.action, 'play');
+  assert.equal(forwardAction.speechToPlay?.id, 's02-01');
 });
 
 test('resolveTimelineAudioAction stops active speech on rapid scroll skip', () => {
