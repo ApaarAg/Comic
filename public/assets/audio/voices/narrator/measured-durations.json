@@ -1,5 +1,11 @@
 [
   {
+    "id": "s00-01",
+    "filename": "scene-00-opening-canvas.mp3",
+    "durationSec": 11.377778,
+    "durationMs": 11378
+  },
+  {
     "id": "s01-01",
     "filename": "scene-01-opening.mp3",
     "durationSec": 5.526349,

@@ -71,9 +71,9 @@ export const PROLOGUE_NARRATION_BEATS: ReadonlyArray<PrologueNarrationBeat> = [
   {
     id: 'prologue-narration-01',
     momentIndex: 0,
-    label: 'The Chronicle · Mumbai, Late December',
-    text: 'It began on a Wednesday afternoon as a late December sun was just dipping below the Mumbai skyline.',
-    durationMs: 5526,
-    voiceAsset: '/assets/audio/voices/narrator/scene-01-opening.mp3',
+    label: 'The Opening Canvas · Once Upon a Falling Starr',
+    text: 'It began on a Wednesday afternoon as a late December sun was just dipping below the Mumbai skyline. Down where the elevated highway curves between glass towers, the city exhaled in horns and heat.',
+    durationMs: 11378,
+    voiceAsset: '/assets/audio/voices/narrator/scene-00-opening-canvas.mp3',
   },
 ];

@@ -18,6 +18,7 @@ function fetchJson(url) {
 }
 
 const FILES = [
+  { id: 's00-01', filename: 'scene-00-opening-canvas.mp3' },
   { id: 's01-01', filename: 'scene-01-opening.mp3' },
   { id: 's01-02', filename: 'scene-01-highway.mp3' },
   { id: 's02-conn-01', filename: 'scene-02-connector.mp3' },

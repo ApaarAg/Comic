@@ -158,6 +158,13 @@ export const NarrativeProvider: React.FC<NarrativeProviderProps> = ({
         sceneAudioManager.triggerCue(beat.visualChoreography.sfxCue);
       }
 
+      // If opening canvas beat, latch both s01-01 and s01-02 so transitioning into Scene 01 never duplicates
+      if (beat.id === 's00-01') {
+        triggeredBeatIdsRef.current.add('s00-01');
+        triggeredBeatIdsRef.current.add('s01-01');
+        triggeredBeatIdsRef.current.add('s01-02');
+      }
+
       // Duck background ambience smoothly for narrator speech clarity
       sceneAudioManager.setVoiceActive(true);
 
@@ -237,7 +244,15 @@ export const NarrativeProvider: React.FC<NarrativeProviderProps> = ({
       if (isDialogueActiveRef.current && !force) return;
 
       lastTriggeredIdxRef.current = idx;
-      triggeredBeatIdsRef.current.add(beat.id);
+      if (force) {
+        triggeredBeatIdsRef.current.delete(beat.id);
+      } else {
+        triggeredBeatIdsRef.current.add(beat.id);
+      }
+      if (beat.id === 's00-01') {
+        triggeredBeatIdsRef.current.add('s01-01');
+        triggeredBeatIdsRef.current.add('s01-02');
+      }
       characterVoicePlayer.stop(160);
       playBeat(beat);
     },

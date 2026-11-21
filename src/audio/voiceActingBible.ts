@@ -833,6 +833,18 @@ export interface NarrationActingDirection {
 
 export const NARRATION_ACTING_BIBLE: ReadonlyArray<NarrationActingDirection> = [
   {
+    id: 's00-01',
+    sceneId: 'scene-00',
+    originalText:
+      'It began on a Wednesday afternoon as a late December sun was just dipping below the Mumbai skyline. Down where the elevated highway curves between glass towers, the city exhaled in horns and heat.',
+    audioSrc: '/assets/audio/voices/narrator/scene-00-opening-canvas.mp3',
+    primaryEmotion: 'Atmospheric Wonder & Grounded Urban Heat',
+    toneAndTexture: 'Deep, rich chest baritone with textured vocal rasp; warm dusk resonance.',
+    pacing: '1.05x slightly brisker conversational cadence; natural breathing, crisp clause boundaries.',
+    vocalCues: 'Gentle acoustic breath before "It began"; seamless inflection between skyline and highway.',
+    voiceSettings: { stability: 0.52, similarity_boost: 0.82, style: 0.24, use_speaker_boost: true },
+  },
+  {
     id: 's01-01',
     sceneId: 'scene-01',
     originalText: 'It began on a Wednesday afternoon as a late December sun was just dipping below the Mumbai skyline.',
