@@ -72,8 +72,12 @@ export const CinematicCaptionBar: React.FC = () => {
   const visibleWordCount = Math.ceil(narratorProgress * words.length);
   const isPaused = audioState === 'Paused';
 
-  // Visible only when narrator is active and not preempted by character dialogue
-  const shouldShow = isNarratorActive && !isDialogueActive && narratorText.length > 0;
+  // Visible only when narrator is active, not preempted by character dialogue, and outside prologue canvas
+  const shouldShow =
+    isNarratorActive &&
+    !isDialogueActive &&
+    narratorText.length > 0 &&
+    activeBeat?.sceneId !== 'scene-00';
 
   // Smooth GSAP entrance & exit
   useEffect(() => {

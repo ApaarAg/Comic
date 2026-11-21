@@ -243,6 +243,12 @@ export const NarrativeProvider: React.FC<NarrativeProviderProps> = ({
 
       if (isDialogueActiveRef.current && !force) return;
 
+      // Hysteresis & idempotency guard: do not restart audio if already playing or completed
+      if (!force) {
+        if (triggeredBeatIdsRef.current.has(beat.id)) return;
+        if (activeBeatRef.current?.id === beat.id && characterVoicePlayer.getSnapshot().isPlaying) return;
+      }
+
       lastTriggeredIdxRef.current = idx;
       if (force) {
         triggeredBeatIdsRef.current.delete(beat.id);

@@ -17,7 +17,7 @@
  * 4. Camera Dive (0.82 – 1.00): Camera pushes through sunset clouds directly into Scene 01.
  */
 
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { CinematicViewportStage } from '../CinematicViewportStage';
 import type { ResolvedVisualState } from '../../story/storyTimeline';
 import mumbaiSkylineUrl from '../../assets/images/mumbai_skyline_backdrop_1795078714752.jpg';
@@ -25,7 +25,7 @@ import mumbaiCloudsUrl from '../../assets/images/mumbai_clouds_haze_179507871377
 import mumbaiSilhouettesUrl from '../../assets/images/mumbai_foreground_silhouettes_1795078713773.jpg';
 import { sceneAudioManager } from '../../audio/SceneAudioManager';
 import { soundscape } from '../../audio/soundscape';
-import { Volume2, VolumeX, ChevronDown, RotateCcw } from 'lucide-react';
+import { Volume2, VolumeX, ChevronDown, RotateCcw, Play, Pause } from 'lucide-react';
 import { useOptionalNarrative } from '../../narrative/NarrativeEngine';
 
 interface Scene00PrologueProps {
@@ -59,6 +59,7 @@ export const Scene00Prologue: React.FC<Scene00PrologueProps> = ({
   const [stageProgress, setStageProgress] = useState(0);
   const [audioUnlocked, setAudioUnlocked] = useState(!sceneAudioManager.getMuted());
   const narrative = useOptionalNarrative();
+  const hasTriggeredRef = useRef(false);
 
   // Check if Web Audio is currently playing/unlocked
   useEffect(() => {
@@ -77,24 +78,34 @@ export const Scene00Prologue: React.FC<Scene00PrologueProps> = ({
     soundscape.unmute();
     onUnlockAudio?.();
     setAudioUnlocked(true);
-    // Begin narrating the opening canvas immediately
-    narrative?.triggerNarrationBeat('s00-01');
+    if (!hasTriggeredRef.current) {
+      hasTriggeredRef.current = true;
+      narrative?.triggerNarrationBeat('s00-01');
+    }
   }, [narrative, onUnlockAudio]);
 
-  // If audio is already unlocked and user begins scrolling into the opening range, trigger narration
+  // If audio is already unlocked and user begins scrolling into the opening range, trigger narration once
   useEffect(() => {
-    if (audioUnlocked && stageProgress >= 0.04) {
+    if (audioUnlocked && !hasTriggeredRef.current && stageProgress >= 0.04) {
+      hasTriggeredRef.current = true;
       narrative?.triggerNarrationBeat('s00-01');
     }
   }, [audioUnlocked, stageProgress, narrative]);
 
   // Compute keyframe-driven visual envelopes
-  const darknessOpacity = Math.max(0, 1 - stageProgress * 4.5); // Fades from 1 -> 0 between 0.0 and 0.22
-  const skylineOpacity = Math.min(1, Math.max(0, (stageProgress - 0.08) / 0.22)); // Rises from 0.08 to 0.30
+  const darknessOpacity = audioUnlocked
+    ? Math.max(0, 1 - stageProgress * 6) * 0.12
+    : Math.max(0, 1 - stageProgress * 4.5);
+  const skylineOpacity = audioUnlocked
+    ? Math.min(1, Math.max(0.78, stageProgress * 2))
+    : Math.min(1, Math.max(0, (stageProgress - 0.08) / 0.22));
 
-  // Opening Canvas: Once Upon a Falling Starr envelope (0.12 – 0.54)
-  const canvasOpacity =
-    stageProgress < 0.12
+  // Opening Canvas: Once Upon a Falling Starr envelope
+  const canvasOpacity = audioUnlocked
+    ? stageProgress < 0.45
+      ? 1
+      : Math.max(0, 1 - (stageProgress - 0.45) / 0.09)
+    : stageProgress < 0.12
       ? 0
       : stageProgress < 0.20
         ? (stageProgress - 0.12) / 0.08
@@ -208,6 +219,32 @@ export const Scene00Prologue: React.FC<Scene00PrologueProps> = ({
                       <span className="font-mono text-[10px] uppercase tracking-wider text-[#ffd29d]/85 bg-[#f28b50]/15 px-2.5 py-0.5 rounded border border-[#f28b50]/30">
                         Brian · 1.05x
                       </span>
+                      {narrative?.activeNarrationId === 's00-01' && (
+                        <button
+                          type="button"
+                          onClick={() => {
+                            if (narrative.audioState === 'Paused') {
+                              narrative.resumeNarrator();
+                            } else {
+                              narrative.pauseNarrator();
+                            }
+                          }}
+                          className="inline-flex items-center gap-1 px-2.5 py-1 rounded border border-white/20 bg-black/40 hover:border-[#f28b50] hover:text-[#f28b50] text-[#e6ddd0] text-xs font-mono transition-all cursor-pointer shadow-md"
+                          title={narrative.audioState === 'Paused' ? 'Resume Opening Narration' : 'Pause Opening Narration'}
+                        >
+                          {narrative.audioState === 'Paused' ? (
+                            <>
+                              <Play className="w-3 h-3 text-[#f28b50]" />
+                              <span className="text-[10px] uppercase tracking-wider">Resume</span>
+                            </>
+                          ) : (
+                            <>
+                              <Pause className="w-3 h-3 text-[#f28b50]" />
+                              <span className="text-[10px] uppercase tracking-wider">Pause</span>
+                            </>
+                          )}
+                        </button>
+                      )}
                       <button
                         type="button"
                         onClick={() => narrative?.triggerNarrationBeat('s00-01', true)}
