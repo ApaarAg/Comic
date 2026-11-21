@@ -24,7 +24,6 @@ export type SfxCue =
   | 'truck'
   | 'transition';
 
-<<<<<<< HEAD
 export type AmbienceTrackId =
   | 'scene_01_mumbai'
   | 'scene_02_traffic'
@@ -36,9 +35,6 @@ export type AmbienceTrackId =
   | 'scene_08_escape'
   | 'scene_09_truck'
   | 'scene_10_eight_years_later'
-=======
-type AmbienceTrackId =
->>>>>>> c35419f43bb5aee048a8e5328df5fe9aa12dbc74
   | 'amb_mumbai'
   | 'amb_traffic'
   | 'amb_party'
@@ -46,7 +42,6 @@ type AmbienceTrackId =
   | 'amb_hospital'
   | 'amb_dawn';
 
-<<<<<<< HEAD
 export type ScoreTrackId =
   | 'scene_01_music_a'
   | 'scene_01_music_b'
@@ -95,23 +90,6 @@ const AMBIENCE_SOURCES: Record<AmbienceTrackId, string> = {
   scene_08_escape: '/assets/audio/soundscapes/scene_08_escape.wav',
   scene_09_truck: '/assets/audio/soundscapes/scene_09_truck.wav',
   scene_10_eight_years_later: '/assets/audio/soundscapes/scene_10_eight_years_later.wav',
-=======
-const MOOD_TO_AMBIENCE: Record<SoundMood, AmbienceTrackId> = {
-  prologue: 'amb_celestial',
-  sunset: 'amb_mumbai',
-  traffic: 'amb_traffic',
-  twilight: 'amb_party',
-  celestial: 'amb_celestial',
-  split: 'amb_party',
-  descent: 'amb_celestial',
-  clinical: 'amb_hospital',
-  chase: 'amb_hospital',
-  impact: 'amb_hospital',
-  dawn: 'amb_dawn',
-};
-
-const AMBIENCE_SOURCES: Record<AmbienceTrackId, string> = {
->>>>>>> c35419f43bb5aee048a8e5328df5fe9aa12dbc74
   amb_mumbai: '/assets/audio/amb_mumbai.wav',
   amb_traffic: '/assets/audio/amb_traffic.wav',
   amb_party: '/assets/audio/amb_party.wav',
@@ -120,7 +98,6 @@ const AMBIENCE_SOURCES: Record<AmbienceTrackId, string> = {
   amb_dawn: '/assets/audio/amb_dawn.wav',
 };
 
-<<<<<<< HEAD
 const SCORE_SOURCES: Record<ScoreTrackId, string> = {
   scene_01_music_a: '/assets/audio/music/scene_01_music_a.wav',
   scene_01_music_b: '/assets/audio/music/scene_01_music_b.wav',
@@ -146,8 +123,6 @@ const MOTIF_SOURCES: Record<MotifId, string> = {
   motif_transformation: '/assets/audio/music/motif_transformation.wav',
 };
 
-=======
->>>>>>> c35419f43bb5aee048a8e5328df5fe9aa12dbc74
 const SFX_SOURCES: Record<SfxCue, string> = {
   bubble: '/assets/audio/sfx_bubble.wav',
   discover: '/assets/audio/sfx_discover.wav',
@@ -162,31 +137,21 @@ const SFX_SOURCES: Record<SfxCue, string> = {
 export interface AudioMixerSnapshot {
   masterMuted: boolean;
   ambienceVolume: number;
-<<<<<<< HEAD
   scoreVolume: number;
   sfxVolume: number;
   voiceVolume: number;
   ambienceMuted: boolean;
   scoreMuted: boolean;
-=======
-  sfxVolume: number;
-  voiceVolume: number;
-  ambienceMuted: boolean;
->>>>>>> c35419f43bb5aee048a8e5328df5fe9aa12dbc74
   sfxMuted: boolean;
   voiceMuted: boolean;
   isVoiceActive: boolean;
   currentMood: SoundMood;
   activeAmbienceTrack: AmbienceTrackId;
-<<<<<<< HEAD
   activeScoreTrack: ScoreTrackId;
-=======
->>>>>>> c35419f43bb5aee048a8e5328df5fe9aa12dbc74
 }
 
 class SceneAudioManager {
   private ambienceHowls = new Map<AmbienceTrackId, Howl>();
-<<<<<<< HEAD
   private scoreHowls = new Map<ScoreTrackId, Howl>();
   private motifHowls = new Map<MotifId, Howl>();
   private sfxHowls = new Map<SfxCue, Howl>();
@@ -201,23 +166,11 @@ class SceneAudioManager {
   private voiceVolume = 0.95;
   private ambienceMuted = false;
   private scoreMuted = false;
-=======
-  private sfxHowls = new Map<SfxCue, Howl>();
-  private crossfadeTimers = new Map<AmbienceTrackId, number>();
-  private listeners = new Set<() => void>();
-
-  private masterMuted = true;
-  private ambienceVolume = 0.42;
-  private sfxVolume = 0.65;
-  private voiceVolume = 0.9;
-  private ambienceMuted = false;
->>>>>>> c35419f43bb5aee048a8e5328df5fe9aa12dbc74
   private sfxMuted = false;
   private voiceMuted = false;
   private isVoiceActive = false;
 
   private currentMood: SoundMood = 'prologue';
-<<<<<<< HEAD
   private activeAmbienceTrack: AmbienceTrackId = 'scene_01_mumbai';
   private activeScoreTrack: ScoreTrackId = 'scene_01_music_a';
   private initialized = false;
@@ -246,35 +199,21 @@ class SceneAudioManager {
     };
   }
 
-=======
-  private activeAmbienceTrack: AmbienceTrackId = 'amb_celestial';
-  private initialized = false;
-
->>>>>>> c35419f43bb5aee048a8e5328df5fe9aa12dbc74
   public getSnapshot(): AudioMixerSnapshot {
     return {
       masterMuted: this.masterMuted,
       ambienceVolume: this.ambienceVolume,
-<<<<<<< HEAD
       scoreVolume: this.scoreVolume,
       sfxVolume: this.sfxVolume,
       voiceVolume: this.voiceVolume,
       ambienceMuted: this.ambienceMuted,
       scoreMuted: this.scoreMuted,
-=======
-      sfxVolume: this.sfxVolume,
-      voiceVolume: this.voiceVolume,
-      ambienceMuted: this.ambienceMuted,
->>>>>>> c35419f43bb5aee048a8e5328df5fe9aa12dbc74
       sfxMuted: this.sfxMuted,
       voiceMuted: this.voiceMuted,
       isVoiceActive: this.isVoiceActive,
       currentMood: this.currentMood,
       activeAmbienceTrack: this.activeAmbienceTrack,
-<<<<<<< HEAD
       activeScoreTrack: this.activeScoreTrack,
-=======
->>>>>>> c35419f43bb5aee048a8e5328df5fe9aa12dbc74
     };
   }
 
@@ -306,7 +245,6 @@ class SceneAudioManager {
     this.masterMuted = true;
     this.clearSunsetCityPulse();
     Howler.mute(true);
-<<<<<<< HEAD
     const activeAmb = this.ambienceHowls.get(this.activeAmbienceTrack);
     if (activeAmb && activeAmb.playing()) {
       activeAmb.fade(activeAmb.volume(), 0, 240);
@@ -314,11 +252,6 @@ class SceneAudioManager {
     const activeScore = this.scoreHowls.get(this.activeScoreTrack);
     if (activeScore && activeScore.playing()) {
       activeScore.fade(activeScore.volume(), 0, 240);
-=======
-    const active = this.ambienceHowls.get(this.activeAmbienceTrack);
-    if (active && active.playing()) {
-      active.fade(active.volume(), 0, 240);
->>>>>>> c35419f43bb5aee048a8e5328df5fe9aa12dbc74
     }
     this.emit();
   }
@@ -331,10 +264,7 @@ class SceneAudioManager {
       void Howler.ctx.resume();
     }
     this.playAmbienceTrack(this.activeAmbienceTrack);
-<<<<<<< HEAD
     this.playScoreTrack(this.activeScoreTrack);
-=======
->>>>>>> c35419f43bb5aee048a8e5328df5fe9aa12dbc74
     this.applyMixLevels();
     this.syncSunsetCityPulse();
     this.emit();
@@ -346,15 +276,12 @@ class SceneAudioManager {
     this.emit();
   }
 
-<<<<<<< HEAD
   public setScoreVolume(vol: number): void {
     this.scoreVolume = clamp01(vol);
     this.applyMixLevels();
     this.emit();
   }
 
-=======
->>>>>>> c35419f43bb5aee048a8e5328df5fe9aa12dbc74
   public setSfxVolume(vol: number): void {
     this.sfxVolume = clamp01(vol);
     this.applyMixLevels();
@@ -373,15 +300,12 @@ class SceneAudioManager {
     this.emit();
   }
 
-<<<<<<< HEAD
   public toggleScoreMute(): void {
     this.scoreMuted = !this.scoreMuted;
     this.applyMixLevels();
     this.emit();
   }
 
-=======
->>>>>>> c35419f43bb5aee048a8e5328df5fe9aa12dbc74
   public toggleSfxMute(): void {
     this.sfxMuted = !this.sfxMuted;
     this.applyMixLevels();
@@ -394,7 +318,6 @@ class SceneAudioManager {
     this.emit();
   }
 
-<<<<<<< HEAD
   public setScoreVariant(
     sceneMood: 'sunset' | 'celestial' | 'split' | 'descent' | 'dawn',
     variant: 'a' | 'b',
@@ -413,8 +336,6 @@ class SceneAudioManager {
     this.emit();
   }
 
-=======
->>>>>>> c35419f43bb5aee048a8e5328df5fe9aa12dbc74
   public setVoiceActive(active: boolean): void {
     if (this.isVoiceActive === active) return;
     this.isVoiceActive = active;
@@ -422,7 +343,6 @@ class SceneAudioManager {
     this.emit();
   }
 
-<<<<<<< HEAD
   /**
    * Duck background score and ambience by a factor (0.0 = silent, 1.0 = full).
    * Used when dialogue or narration begins.
@@ -452,24 +372,10 @@ class SceneAudioManager {
 
   public getEffectiveVoiceGain(): number {
     return computeAudioMixLevels(this.getBusSettings()).voiceGain;
-=======
-  public getEffectiveVoiceGain(): number {
-    return computeAudioMixLevels({
-      masterMuted: this.masterMuted,
-      ambienceVolume: this.ambienceVolume,
-      sfxVolume: this.sfxVolume,
-      voiceVolume: this.voiceVolume,
-      ambienceMuted: this.ambienceMuted,
-      sfxMuted: this.sfxMuted,
-      voiceMuted: this.voiceMuted,
-      isVoiceActive: this.isVoiceActive,
-    }).voiceGain;
->>>>>>> c35419f43bb5aee048a8e5328df5fe9aa12dbc74
   }
 
   private ambientCityTimer: number | null = null;
 
-<<<<<<< HEAD
   private resolveScoreTrackForMood(mood: SoundMood): ScoreTrackId {
     switch (mood) {
       case 'prologue':
@@ -516,17 +422,6 @@ class SceneAudioManager {
       if (prevScore !== nextScore) {
         this.crossfadeScore(prevScore, nextScore);
       }
-=======
-  public setMood(mood: SoundMood): void {
-    if (this.currentMood === mood) return;
-    this.currentMood = mood;
-    const nextTrack = MOOD_TO_AMBIENCE[mood];
-    const prevTrack = this.activeAmbienceTrack;
-    this.activeAmbienceTrack = nextTrack;
-
-    if (!this.masterMuted && prevTrack !== nextTrack) {
-      this.crossfadeAmbience(prevTrack, nextTrack);
->>>>>>> c35419f43bb5aee048a8e5328df5fe9aa12dbc74
     }
     this.syncSunsetCityPulse();
     this.emit();
@@ -538,7 +433,6 @@ class SceneAudioManager {
     const howl = this.getOrCreateSfxHowl(cue);
     if (!howl) return;
 
-<<<<<<< HEAD
     const { sfxGain } = computeAudioMixLevels(this.getBusSettings());
     if (sfxGain <= 0) return;
     howl.volume(sfxGain * 0.65);
@@ -562,21 +456,6 @@ class SceneAudioManager {
     });
 
     howl.volume(scoreGain * 0.95);
-=======
-    const { sfxGain } = computeAudioMixLevels({
-      masterMuted: this.masterMuted,
-      ambienceVolume: this.ambienceVolume,
-      sfxVolume: this.sfxVolume,
-      voiceVolume: this.voiceVolume,
-      ambienceMuted: this.ambienceMuted,
-      sfxMuted: this.sfxMuted,
-      voiceMuted: this.voiceMuted,
-      isVoiceActive: this.isVoiceActive,
-    });
-
-    if (sfxGain <= 0) return;
-    howl.volume(sfxGain * 0.65);
->>>>>>> c35419f43bb5aee048a8e5328df5fe9aa12dbc74
     howl.play();
   }
 
@@ -584,7 +463,6 @@ class SceneAudioManager {
     this.clearSunsetCityPulse();
     this.crossfadeTimers.forEach((timerId) => window.clearTimeout(timerId));
     this.crossfadeTimers.clear();
-<<<<<<< HEAD
     this.scoreCrossfadeTimers.forEach((timerId) => window.clearTimeout(timerId));
     this.scoreCrossfadeTimers.clear();
     this.ambienceHowls.forEach((h) => h.unload());
@@ -594,11 +472,6 @@ class SceneAudioManager {
     this.ambienceHowls.clear();
     this.scoreHowls.clear();
     this.motifHowls.clear();
-=======
-    this.ambienceHowls.forEach((h) => h.unload());
-    this.sfxHowls.forEach((h) => h.unload());
-    this.ambienceHowls.clear();
->>>>>>> c35419f43bb5aee048a8e5328df5fe9aa12dbc74
     this.sfxHowls.clear();
     this.initialized = false;
   }
@@ -622,20 +495,7 @@ class SceneAudioManager {
       }
       const howl = this.getOrCreateSfxHowl('horn');
       if (!howl) return;
-<<<<<<< HEAD
       const { sfxGain } = computeAudioMixLevels(this.getBusSettings());
-=======
-      const { sfxGain } = computeAudioMixLevels({
-        masterMuted: this.masterMuted,
-        ambienceVolume: this.ambienceVolume,
-        sfxVolume: this.sfxVolume,
-        voiceVolume: this.voiceVolume,
-        ambienceMuted: this.ambienceMuted,
-        sfxMuted: this.sfxMuted,
-        voiceMuted: this.voiceMuted,
-        isVoiceActive: this.isVoiceActive,
-      });
->>>>>>> c35419f43bb5aee048a8e5328df5fe9aa12dbc74
       if (sfxGain > 0) {
         howl.volume(sfxGain * 0.22);
         howl.play();
@@ -658,20 +518,13 @@ class SceneAudioManager {
         loop: true,
         volume: 0,
         preload: true,
-<<<<<<< HEAD
         onloaderror: () => {},
-=======
-        onloaderror: () => {
-          // Handled silently so optional media never spams errors
-        },
->>>>>>> c35419f43bb5aee048a8e5328df5fe9aa12dbc74
       });
       this.ambienceHowls.set(track, howl);
     }
     return howl;
   }
 
-<<<<<<< HEAD
   private getOrCreateScoreHowl(track: ScoreTrackId): Howl | null {
     if (typeof window === 'undefined') return null;
     let howl = this.scoreHowls.get(track);
@@ -704,8 +557,6 @@ class SceneAudioManager {
     return howl;
   }
 
-=======
->>>>>>> c35419f43bb5aee048a8e5328df5fe9aa12dbc74
   private getOrCreateSfxHowl(cue: SfxCue): Howl | null {
     if (typeof window === 'undefined') return null;
     let howl = this.sfxHowls.get(cue);
@@ -715,13 +566,7 @@ class SceneAudioManager {
         loop: false,
         volume: this.sfxVolume * 0.65,
         preload: true,
-<<<<<<< HEAD
         onloaderror: () => {},
-=======
-        onloaderror: () => {
-          // Graceful no-op
-        },
->>>>>>> c35419f43bb5aee048a8e5328df5fe9aa12dbc74
       });
       this.sfxHowls.set(cue, howl);
     }
@@ -737,20 +582,7 @@ class SceneAudioManager {
 
     const howl = this.getOrCreateAmbienceHowl(track);
     if (!howl) return;
-<<<<<<< HEAD
     const { ambienceGain } = computeAudioMixLevels(this.getBusSettings());
-=======
-    const { ambienceGain } = computeAudioMixLevels({
-      masterMuted: this.masterMuted,
-      ambienceVolume: this.ambienceVolume,
-      sfxVolume: this.sfxVolume,
-      voiceVolume: this.voiceVolume,
-      ambienceMuted: this.ambienceMuted,
-      sfxMuted: this.sfxMuted,
-      voiceMuted: this.voiceMuted,
-      isVoiceActive: this.isVoiceActive,
-    });
->>>>>>> c35419f43bb5aee048a8e5328df5fe9aa12dbc74
     if (!howl.playing()) {
       howl.volume(0);
       howl.play();
@@ -758,7 +590,6 @@ class SceneAudioManager {
     howl.fade(howl.volume(), ambienceGain, 900);
   }
 
-<<<<<<< HEAD
   private playScoreTrack(track: ScoreTrackId): void {
     const pendingTimer = this.scoreCrossfadeTimers.get(track);
     if (pendingTimer !== undefined) {
@@ -790,9 +621,6 @@ class SceneAudioManager {
       }
     });
 
-=======
-  private crossfadeAmbience(fromTrack: AmbienceTrackId, toTrack: AmbienceTrackId): void {
->>>>>>> c35419f43bb5aee048a8e5328df5fe9aa12dbc74
     const oldHowl = this.ambienceHowls.get(fromTrack);
     if (oldHowl && oldHowl.playing()) {
       const existing = this.crossfadeTimers.get(fromTrack);
@@ -811,7 +639,6 @@ class SceneAudioManager {
     this.playAmbienceTrack(toTrack);
   }
 
-<<<<<<< HEAD
   private crossfadeScore(fromTrack: ScoreTrackId, toTrack: ScoreTrackId): void {
     // Rapid scrolling anti-stacking: immediately fade out any older score tracks
     this.scoreHowls.forEach((howl, track) => {
@@ -909,26 +736,6 @@ class SceneAudioManager {
         activeScore.play();
       }
       activeScore.fade(activeScore.volume(), mix.scoreGain, fadeDuration);
-=======
-  private applyMixLevels(): void {
-    const mix = computeAudioMixLevels({
-      masterMuted: this.masterMuted,
-      ambienceVolume: this.ambienceVolume,
-      sfxVolume: this.sfxVolume,
-      voiceVolume: this.voiceVolume,
-      ambienceMuted: this.ambienceMuted,
-      sfxMuted: this.sfxMuted,
-      voiceMuted: this.voiceMuted,
-      isVoiceActive: this.isVoiceActive,
-    });
-
-    const active = this.ambienceHowls.get(this.activeAmbienceTrack);
-    if (active) {
-      if (!this.masterMuted && !this.ambienceMuted && !active.playing()) {
-        active.play();
-      }
-      active.fade(active.volume(), mix.ambienceGain, 260);
->>>>>>> c35419f43bb5aee048a8e5328df5fe9aa12dbc74
     }
   }
 }

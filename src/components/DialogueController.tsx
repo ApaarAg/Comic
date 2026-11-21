@@ -23,10 +23,7 @@ import {
   type VoiceAssetState,
 } from '../audio/CharacterVoicePlayer';
 import { SyncedSpeechBubble } from './SyncedSpeechBubble';
-<<<<<<< HEAD
 import { useOptionalNarrative } from '../narrative/NarrativeEngine';
-=======
->>>>>>> c35419f43bb5aee048a8e5328df5fe9aa12dbc74
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -54,10 +51,7 @@ export const DialogueController: React.FC<DialogueControllerProps> = ({
 }) => {
   const lines = CHAPTER_DIALOGUE_SEQUENCES[sequenceId] ?? [];
   const containerRef = useRef<HTMLDivElement>(null);
-<<<<<<< HEAD
   const narrative = useOptionalNarrative();
-=======
->>>>>>> c35419f43bb5aee048a8e5328df5fe9aa12dbc74
 
   const [activeIndex, setActiveIndex] = useState(0);
   const [isStageActive, setIsStageActive] = useState(reducedMotion);
@@ -74,10 +68,7 @@ export const DialogueController: React.FC<DialogueControllerProps> = ({
   const activeIndexRef = useRef(0);
   const isStageActiveRef = useRef(reducedMotion);
   const lastTriggeredLineIdRef = useRef<string | null>(null);
-<<<<<<< HEAD
   const triggeredLineIdsRef = useRef<Set<string>>(new Set());
-=======
->>>>>>> c35419f43bb5aee048a8e5328df5fe9aa12dbc74
 
   const beatSpecs = useMemo(
     () =>
@@ -100,7 +91,6 @@ export const DialogueController: React.FC<DialogueControllerProps> = ({
   }, []);
 
   // Notify scene artwork highlight target whenever active dialogue beat changes
-<<<<<<< HEAD
   const onActiveSpeakerChangeRef = useRef(onActiveSpeakerChange);
   onActiveSpeakerChangeRef.current = onActiveSpeakerChange;
   const lastReportedLineIdRef = useRef<string | null>(null);
@@ -116,15 +106,6 @@ export const DialogueController: React.FC<DialogueControllerProps> = ({
     }
     onActiveSpeakerChangeRef.current?.(activeLine.characterFocus ?? activeLine.speaker, activeLine);
   }, [activeLine]);
-=======
-  useEffect(() => {
-    if (!activeLine) {
-      onActiveSpeakerChange?.(null, null);
-      return;
-    }
-    onActiveSpeakerChange?.(activeLine.characterFocus ?? activeLine.speaker, activeLine);
-  }, [activeLine, onActiveSpeakerChange]);
->>>>>>> c35419f43bb5aee048a8e5328df5fe9aa12dbc74
 
   const startLinePlayback = useCallback(
     (lineIndex: number, forceRestart = false) => {
@@ -143,13 +124,10 @@ export const DialogueController: React.FC<DialogueControllerProps> = ({
 
       sceneAudioManager.triggerCue(line.sfxCue ?? 'bubble');
 
-<<<<<<< HEAD
       if (line.mode === 'dialogue') {
         narrative?.setDialogueActive(true);
       }
 
-=======
->>>>>>> c35419f43bb5aee048a8e5328df5fe9aa12dbc74
       const nextLine = lines[lineIndex + 1];
       if (nextLine?.audioSrc) {
         characterVoicePlayer.preloadAsset(nextLine.audioSrc);
@@ -178,19 +156,12 @@ export const DialogueController: React.FC<DialogueControllerProps> = ({
           if (activeSequenceOwner === sequenceId) {
             setPlaybackState('idle');
             setIsPaused(false);
-<<<<<<< HEAD
             narrative?.setDialogueActive(false);
-=======
->>>>>>> c35419f43bb5aee048a8e5328df5fe9aa12dbc74
           }
         },
       });
     },
-<<<<<<< HEAD
     [lines, narrative, sequenceId],
-=======
-    [lines, sequenceId],
->>>>>>> c35419f43bb5aee048a8e5328df5fe9aa12dbc74
   );
 
   // Scroll-driven beat trigger anchored to parent scrollStageRef (or self container)
@@ -211,7 +182,6 @@ export const DialogueController: React.FC<DialogueControllerProps> = ({
     const isTallStage = triggerEl.offsetHeight > 380;
 
     const ctx = gsap.context(() => {
-<<<<<<< HEAD
       // 1. Panel-specific triggers for exact visual comic synchronization
       const panelTriggers: Array<{ lineIndex: number; line: DialogueLine; element: HTMLElement }> = [];
       lines.forEach((line, idx) => {
@@ -258,8 +228,6 @@ export const DialogueController: React.FC<DialogueControllerProps> = ({
       }
 
       // 2. Stage container lifecycle trigger (for active stage bounds, clean exit, and fallback)
-=======
->>>>>>> c35419f43bb5aee048a8e5328df5fe9aa12dbc74
       ScrollTrigger.create({
         trigger: triggerEl,
         start: isTallStage ? 'top 66%' : 'top 76%',
@@ -268,7 +236,6 @@ export const DialogueController: React.FC<DialogueControllerProps> = ({
           isStageActiveRef.current = true;
           setIsStageActive(true);
           setIsPastStage(false);
-<<<<<<< HEAD
           if (panelTriggers.length === 0) {
             const nextIdx = resolveScrollDialogueBeat(
               self.progress,
@@ -284,23 +251,11 @@ export const DialogueController: React.FC<DialogueControllerProps> = ({
               startLinePlayback(nextIdx, false);
             }
           }
-=======
-          const nextIdx = resolveScrollDialogueBeat(
-            self.progress,
-            beatSpecs,
-            activeIndexRef.current,
-            0.025,
-          );
-          activeIndexRef.current = nextIdx;
-          setActiveIndex(nextIdx);
-          startLinePlayback(nextIdx, false);
->>>>>>> c35419f43bb5aee048a8e5328df5fe9aa12dbc74
         },
         onEnterBack: (self) => {
           isStageActiveRef.current = true;
           setIsStageActive(true);
           setIsPastStage(false);
-<<<<<<< HEAD
           if (panelTriggers.length === 0) {
             const nextIdx = resolveScrollDialogueBeat(
               self.progress,
@@ -314,20 +269,6 @@ export const DialogueController: React.FC<DialogueControllerProps> = ({
         },
         onUpdate: (self) => {
           if (!self.isActive || panelTriggers.length > 0) return;
-=======
-          const nextIdx = resolveScrollDialogueBeat(
-            self.progress,
-            beatSpecs,
-            activeIndexRef.current,
-            0.025,
-          );
-          activeIndexRef.current = nextIdx;
-          setActiveIndex(nextIdx);
-          startLinePlayback(nextIdx, true);
-        },
-        onUpdate: (self) => {
-          if (!self.isActive) return;
->>>>>>> c35419f43bb5aee048a8e5328df5fe9aa12dbc74
           const nextIdx = resolveScrollDialogueBeat(
             self.progress,
             beatSpecs,
@@ -337,24 +278,17 @@ export const DialogueController: React.FC<DialogueControllerProps> = ({
           if (nextIdx !== activeIndexRef.current) {
             activeIndexRef.current = nextIdx;
             setActiveIndex(nextIdx);
-<<<<<<< HEAD
             const targetLine = lines[nextIdx];
             if (targetLine && !triggeredLineIdsRef.current.has(targetLine.id)) {
               triggeredLineIdsRef.current.add(targetLine.id);
               startLinePlayback(nextIdx, false);
             }
-=======
-            startLinePlayback(nextIdx, true);
->>>>>>> c35419f43bb5aee048a8e5328df5fe9aa12dbc74
           }
         },
         onLeave: () => {
           isStageActiveRef.current = false;
           setIsStageActive(false);
-<<<<<<< HEAD
           narrative?.setDialogueActive(false);
-=======
->>>>>>> c35419f43bb5aee048a8e5328df5fe9aa12dbc74
           const lastIdx = Math.max(0, lines.length - 1);
           if (activeIndexRef.current !== lastIdx) {
             activeIndexRef.current = lastIdx;
@@ -369,10 +303,7 @@ export const DialogueController: React.FC<DialogueControllerProps> = ({
           isStageActiveRef.current = false;
           setIsStageActive(false);
           setIsPastStage(false);
-<<<<<<< HEAD
           narrative?.setDialogueActive(false);
-=======
->>>>>>> c35419f43bb5aee048a8e5328df5fe9aa12dbc74
           if (activeIndexRef.current !== 0) {
             activeIndexRef.current = 0;
             setActiveIndex(0);
@@ -402,14 +333,9 @@ export const DialogueController: React.FC<DialogueControllerProps> = ({
         characterVoicePlayer.stop(0);
         activeSequenceOwner = null;
       }
-<<<<<<< HEAD
       narrative?.setDialogueActive(false);
     };
   }, [beatSpecs, lines, narrative, reducedMotion, scrollStageRef, sequenceId, startLinePlayback]);
-=======
-    };
-  }, [beatSpecs, lines, reducedMotion, scrollStageRef, sequenceId, startLinePlayback]);
->>>>>>> c35419f43bb5aee048a8e5328df5fe9aa12dbc74
 
   const handleTogglePause = useCallback(() => {
     if (!activeLine) return;
@@ -498,39 +424,23 @@ export const DialogueController: React.FC<DialogueControllerProps> = ({
       {/* Minimalist Unobtrusive Controls Strip (no Prev / Next / All clutter) */}
       <div
         data-testid={`dialogue-controls-${sequenceId}`}
-<<<<<<< HEAD
         className="mt-1 flex flex-wrap items-center justify-between gap-2.5 border-t border-white/10 pt-2.5 opacity-0 transition-opacity duration-500 group-hover/dialogue:opacity-100 focus-within:opacity-100"
       >
         {/* Hairline Beat Progress Track */}
         <div className="flex items-center gap-2.5 min-w-0">
           <div className="flex items-center gap-1 w-10 sm:w-16">
-=======
-        className="mt-1 flex flex-wrap items-center justify-between gap-2.5 border-t border-white/10 pt-2.5 opacity-80 transition-opacity duration-200 group-hover/dialogue:opacity-100 focus-within:opacity-100"
-      >
-        {/* Hairline Beat Progress Track */}
-        <div className="flex items-center gap-2.5 min-w-0">
-          <div className="flex items-center gap-1 w-16 sm:w-24">
->>>>>>> c35419f43bb5aee048a8e5328df5fe9aa12dbc74
             {lines.map((line, idx) => (
               <button
                 key={line.id}
                 type="button"
                 aria-label={`Play dialogue beat ${idx + 1} of ${lines.length}`}
                 onClick={() => handleJumpBeat(idx)}
-<<<<<<< HEAD
                 className="flex h-3 flex-1 items-center cursor-pointer"
-=======
-                className="flex h-5 flex-1 items-center cursor-pointer"
->>>>>>> c35419f43bb5aee048a8e5328df5fe9aa12dbc74
               >
                 <span
                   className="block w-full transition-all duration-300"
                   style={{
-<<<<<<< HEAD
                     height: idx === activeIndex ? '2px' : '1px',
-=======
-                    height: idx === activeIndex ? '2.5px' : '1.5px',
->>>>>>> c35419f43bb5aee048a8e5328df5fe9aa12dbc74
                     backgroundColor:
                       idx <= activeIndex
                         ? idx === activeIndex
@@ -545,11 +455,7 @@ export const DialogueController: React.FC<DialogueControllerProps> = ({
 
           <span
             data-testid={`dialogue-counter-${sequenceId}`}
-<<<<<<< HEAD
             className="hidden sm:inline font-mono text-[10px] tabular-nums uppercase tracking-[0.18em] text-[#e6ddd0]/65"
-=======
-            className="font-mono text-[10px] tabular-nums uppercase tracking-[0.18em] text-[#e6ddd0]/65"
->>>>>>> c35419f43bb5aee048a8e5328df5fe9aa12dbc74
           >
             {String(activeIndex + 1).padStart(2, '0')} / {String(lines.length).padStart(2, '0')}
           </span>
@@ -604,11 +510,7 @@ export const DialogueController: React.FC<DialogueControllerProps> = ({
             aria-expanded={showTranscript}
             aria-label={showTranscript ? 'Hide scene transcript' : 'Open accessible scene transcript'}
             title="Accessible transcript"
-<<<<<<< HEAD
             className={`hidden sm:inline-flex h-8 w-8 items-center justify-center transition-colors cursor-pointer focus-visible:outline-1 focus-visible:outline-[#f28b50] ${
-=======
-            className={`inline-flex h-8 w-8 items-center justify-center transition-colors cursor-pointer focus-visible:outline-1 focus-visible:outline-[#f28b50] ${
->>>>>>> c35419f43bb5aee048a8e5328df5fe9aa12dbc74
               showTranscript ? 'text-[#f28b50]' : 'text-[#e6ddd0]/65 hover:text-[#f6efe5]'
             }`}
           >
@@ -616,10 +518,7 @@ export const DialogueController: React.FC<DialogueControllerProps> = ({
           </button>
 
           {onSkipNextScene && (
-<<<<<<< HEAD
             <div className="opacity-0 group-hover/dialogue:opacity-100 focus-within:opacity-100 transition-opacity duration-500">
-=======
->>>>>>> c35419f43bb5aee048a8e5328df5fe9aa12dbc74
             <button
               type="button"
               onClick={onSkipNextScene}
@@ -631,10 +530,7 @@ export const DialogueController: React.FC<DialogueControllerProps> = ({
               <span>Skip</span>
               <SkipForward className="h-3.5 w-3.5" />
             </button>
-<<<<<<< HEAD
             </div>
-=======
->>>>>>> c35419f43bb5aee048a8e5328df5fe9aa12dbc74
           )}
         </div>
       </div>

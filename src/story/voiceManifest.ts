@@ -18,20 +18,12 @@ export interface VoiceAssetRequirement {
 }
 
 const CHARACTER_DIRECTION: Record<CharacterId, string> = {
-<<<<<<< HEAD
   narrator: 'APPROVED NARRATOR: George (ElevenLabs JBFqnCBsd6RMkjVDRZzb) — Deep, warm, gravelly, cinematic storytelling baritone with textured rasp, measured cadence, and atmospheric weight.',
-=======
-  narrator: 'Warm Indian-English atmospheric storyteller; measured, literary, quiet warmth.',
->>>>>>> c35419f43bb5aee048a8e5328df5fe9aa12dbc74
   mrs_shah: 'Urgent, breathless Mumbai upper-middle-class cadence rising into panic.',
   driver: 'Flustered, harried street urgency over traffic noise.',
   dhiraj: 'Animated, slightly pretentious Indian college film-student cadence.',
   girl: 'Hushed internal narration; detached yet wistful.',
-<<<<<<< HEAD
   death: 'Regal, elegant female authority with dark velvety composure—dry cynical poise cracking into outrage and disbelief when fired.',
-=======
-  death: 'Commanding, slightly theatrical dark poise—dry wit cracking into disbelief when fired.',
->>>>>>> c35419f43bb5aee048a8e5328df5fe9aa12dbc74
   agni: 'Polite, warm, slightly harried celestial bureaucrat trying to keep peace.',
   god: 'Calm, velvety, impossibly relaxed corporate-divine authority.',
   munmun: 'Light, quirky, expressive young hospital ghost in a moonlit ward.',

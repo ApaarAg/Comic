@@ -207,7 +207,6 @@
     animation: none;
   }
 }
-<<<<<<< HEAD
 
 /* === CINEMATIC CAPTION BAR === */
 @keyframes captionReveal {
@@ -322,5 +321,3 @@
 .dialogue-cinematic > * {
   pointer-events: auto;
 }
-=======
->>>>>>> c35419f43bb5aee048a8e5328df5fe9aa12dbc74

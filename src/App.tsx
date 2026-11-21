@@ -16,11 +16,7 @@ import {
 } from './story/scrollMath';
 import { soundscape } from './audio/soundscape';
 import { characterVoicePlayer } from './audio/CharacterVoicePlayer';
-<<<<<<< HEAD
 import { Scene00Prologue } from './components/scenes/Scene00Prologue';
-=======
-import { EntryVeil } from './components/EntryVeil';
->>>>>>> c35419f43bb5aee048a8e5328df5fe9aa12dbc74
 import { AtmosphereOverlay } from './components/AtmosphereOverlay';
 import { ChapterChrome } from './components/ChapterChrome';
 import { CinematicTransition } from './components/CinematicTransition';
@@ -35,13 +31,10 @@ import { Scene07Hospital } from './components/scenes/Scene07Hospital';
 import { Scene08Escape } from './components/scenes/Scene08Escape';
 import { Scene09SecondDeath } from './components/scenes/Scene09SecondDeath';
 import { Scene10EightYearsLater } from './components/scenes/Scene10EightYearsLater';
-<<<<<<< HEAD
 import { NarrativeProvider } from './narrative/NarrativeEngine';
 import { SCENE_NARRATION_BEATS } from './narrative/narrativeManifest';
 import { CinematicCaptionBar } from './components/CinematicCaptionBar';
 import { CinematicStartupCurtain } from './components/CinematicStartupCurtain';
-=======
->>>>>>> c35419f43bb5aee048a8e5328df5fe9aa12dbc74
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -56,12 +49,8 @@ function getPrefersReducedMotion(): boolean {
 }
 
 export default function App() {
-<<<<<<< HEAD
   const [hasEntered, setHasEntered] = useState<boolean>(true);
   const [isStageReady, setIsStageReady] = useState<boolean>(false);
-=======
-  const [hasEntered, setHasEntered] = useState<boolean>(getInitialAutostart);
->>>>>>> c35419f43bb5aee048a8e5328df5fe9aa12dbc74
   const [reducedMotion, setReducedMotion] = useState<boolean>(getPrefersReducedMotion);
   const [scrollProgress, setScrollProgress] = useState<number>(0);
   const [activeSceneIndex, setActiveSceneIndex] = useState<number>(0);
@@ -79,7 +68,6 @@ export default function App() {
     return () => mql.removeEventListener('change', onChange);
   }, []);
 
-<<<<<<< HEAD
   // Initialize Single Coordinated Scroll Architecture: Lenis smooth scroll + GSAP ScrollTrigger
   useEffect(() => {
     const updateLayout = () => {
@@ -96,10 +84,6 @@ export default function App() {
       }
     };
 
-=======
-  // Initialize Lenis smooth scroll + GSAP ScrollTrigger synchronization for both Prologue & Chapter
-  useEffect(() => {
->>>>>>> c35419f43bb5aee048a8e5328df5fe9aa12dbc74
     const updateProgress = () => {
       if (!hasEntered) return;
       const doc = document.documentElement;
@@ -111,7 +95,6 @@ export default function App() {
         const el = document.getElementById(scene.id);
         return el ? el.getBoundingClientRect().top + window.scrollY : 0;
       });
-<<<<<<< HEAD
       const nextIdx = resolveActiveSceneByOffsets(window.scrollY, window.innerHeight, tops);
       setActiveSceneIndex((prev) => (prev !== nextIdx ? nextIdx : prev));
     };
@@ -137,38 +120,11 @@ export default function App() {
     window.addEventListener('resize', handleResize, { passive: true });
     handleResize();
 
-=======
-      setActiveSceneIndex(resolveActiveSceneByOffsets(window.scrollY, window.innerHeight, tops));
-
-      const sig = `${Math.round(maxScroll)}:${Math.round(window.innerHeight)}:${tops.map((t) => Math.round(t)).join(',')}`;
-      if (sig !== lastLayoutSigRef.current) {
-        lastLayoutSigRef.current = sig;
-        setSceneBounds(computeNormalizedSceneBounds(tops, maxScroll, window.innerHeight));
-      }
-    };
-
-    window.addEventListener('scroll', updateProgress, { passive: true });
-    window.addEventListener('resize', updateProgress, { passive: true });
-    updateProgress();
-
-    if (reducedMotion) {
-      ScrollTrigger.refresh();
-      return () => {
-        window.removeEventListener('scroll', updateProgress);
-        window.removeEventListener('resize', updateProgress);
-      };
-    }
-
->>>>>>> c35419f43bb5aee048a8e5328df5fe9aa12dbc74
     const lenis = new Lenis({
       duration: 1.15,
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       smoothWheel: true,
-<<<<<<< HEAD
       touchMultiplier: 1.4,
-=======
-      touchMultiplier: 1.5,
->>>>>>> c35419f43bb5aee048a8e5328df5fe9aa12dbc74
     });
     lenisRef.current = lenis;
 
@@ -186,18 +142,10 @@ export default function App() {
     const refreshTimer = window.setTimeout(() => {
       ScrollTrigger.refresh();
       updateProgress();
-<<<<<<< HEAD
     }, 280);
 
     return () => {
       window.clearTimeout(refreshTimer);
-=======
-    }, 320);
-
-    return () => {
-      window.clearTimeout(refreshTimer);
-      window.removeEventListener('scroll', updateProgress);
->>>>>>> c35419f43bb5aee048a8e5328df5fe9aa12dbc74
       window.removeEventListener('resize', updateProgress);
       gsap.ticker.remove(tick);
       lenis.destroy();
@@ -220,29 +168,6 @@ export default function App() {
     };
   }, []);
 
-<<<<<<< HEAD
-=======
-  const handleEnterChapter = useCallback((options?: { withAudio?: boolean }) => {
-    window.scrollTo(0, 0);
-    setScrollProgress(0);
-    setActiveSceneIndex(0);
-    setHasEntered(true);
-    if (options?.withAudio) {
-      soundscape.unmute();
-      setIsMuted(false);
-    }
-  }, []);
-
-  const handleReplayPrologue = useCallback(() => {
-    characterVoicePlayer.stop(160);
-    window.scrollTo(0, 0);
-    setScrollProgress(0);
-    setActiveSceneIndex(0);
-    setHasEntered(false);
-    soundscape.setMood('prologue');
-  }, []);
-
->>>>>>> c35419f43bb5aee048a8e5328df5fe9aa12dbc74
   const handleToggleMute = useCallback(() => {
     const nextMuted = soundscape.toggleMute();
     setIsMuted(nextMuted);
@@ -263,7 +188,6 @@ export default function App() {
     [reducedMotion],
   );
 
-<<<<<<< HEAD
   const handleEnterChapter = useCallback((options?: { withAudio?: boolean }) => {
     handleJumpToScene('scene-01');
     if (options?.withAudio) {
@@ -279,13 +203,10 @@ export default function App() {
     soundscape.setMood('prologue');
   }, [handleJumpToScene]);
 
-=======
->>>>>>> c35419f43bb5aee048a8e5328df5fe9aa12dbc74
   const handleReplayChapter = useCallback(() => {
     handleJumpToScene('scene-01');
   }, [handleJumpToScene]);
 
-<<<<<<< HEAD
   const handleStageReady = useCallback(() => {
     setIsStageReady(true);
   }, []);
@@ -508,188 +429,5 @@ export default function App() {
             <CinematicCaptionBar />
       </div>
     </NarrativeProvider>
-=======
-  return (
-    <div
-      className="relative min-h-screen bg-[#0b0d17] text-[#f4efe6]"
-      data-active-scene={hasEntered ? activeScene.id : 'prologue'}
-    >
-      <AtmosphereOverlay
-        activeScene={activeScene}
-        reducedMotion={reducedMotion}
-      />
-
-      {!hasEntered ? (
-        <EntryVeil
-          onEnter={handleEnterChapter}
-          reducedMotion={reducedMotion}
-          isMuted={isMuted}
-          onToggleMute={handleToggleMute}
-        />
-      ) : (
-        <>
-          <ChapterChrome
-            scenes={CHAPTER_SCENES}
-            activeSceneIndex={activeSceneIndex}
-            progress={scrollProgress}
-            sceneBounds={sceneBounds}
-            isMuted={isMuted}
-            onToggleMute={handleToggleMute}
-            onJumpToScene={handleJumpToScene}
-            onReplayPrologue={handleReplayPrologue}
-            hasEntered={hasEntered}
-          />
-
-          <PanelInspectorModal
-            panel={inspectedPanel}
-            onClose={() => setInspectedPanel(null)}
-          />
-
-          <main className="relative z-20">
-            <Scene01Mumbai
-              reducedMotion={reducedMotion}
-              activeSceneIndex={activeSceneIndex}
-              onInspectPanel={setInspectedPanel}
-              onSkipNextScene={() => handleJumpToScene('scene-02')}
-            />
-
-            <CinematicTransition
-              kind="ink-spread"
-              fromColor="#141225"
-              toColor="#1c1824"
-              accentColor="#f28b50"
-              eyebrow="Transition I · Street Level"
-              caption="As sunset sank below the skyline, engines idled bumper-to-bumper along the Bandra-Kurla overpass."
-              reducedMotion={reducedMotion}
-            />
-
-            <Scene02Traffic
-              reducedMotion={reducedMotion}
-              activeSceneIndex={activeSceneIndex}
-              onInspectPanel={setInspectedPanel}
-              onSkipNextScene={() => handleJumpToScene('scene-03')}
-            />
-
-            <CinematicTransition
-              kind="panel-slice"
-              fromColor="#1c1824"
-              toColor="#13162b"
-              accentColor="#e66c8b"
-              eyebrow="Transition II · Six Floors Above"
-              caption="Across Parel, neon haze spilled out from an open apartment window above the rush."
-              reducedMotion={reducedMotion}
-            />
-
-            <Scene03Party
-              reducedMotion={reducedMotion}
-              activeSceneIndex={activeSceneIndex}
-              onInspectPanel={setInspectedPanel}
-              onSkipNextScene={() => handleJumpToScene('scene-04')}
-            />
-
-            <CinematicTransition
-              kind="celestial-portal"
-              fromColor="#13162b"
-              toColor="#16283d"
-              accentColor="#8ad3eb"
-              eyebrow="Transition III · Beyond Mortal Clouds"
-              caption="Far above cigarette smoke and gridlock, a slender silvered tower pierced an endless twilight."
-              reducedMotion={reducedMotion}
-            />
-
-            <Scene04DeathsWorld
-              reducedMotion={reducedMotion}
-              activeSceneIndex={activeSceneIndex}
-              onInspectPanel={setInspectedPanel}
-              onSkipNextScene={() => handleJumpToScene('scene-05')}
-            />
-
-            <CinematicTransition
-              kind="temporal-split"
-              fromColor="#16283d"
-              toColor="#1c1429"
-              accentColor="#f06a7e"
-              eyebrow="Transition IV · 10:02 PM Divergence"
-              caption="Two lives—one plummeting through open air, one forcing his way into his first breath."
-              reducedMotion={reducedMotion}
-            />
-
-            <Scene05TwoEvents
-              reducedMotion={reducedMotion}
-              activeSceneIndex={activeSceneIndex}
-              onInspectPanel={setInspectedPanel}
-              onSkipNextScene={() => handleJumpToScene('scene-06')}
-            />
-
-            <CinematicTransition
-              kind="storm-dissolve"
-              fromColor="#1c1429"
-              toColor="#11162a"
-              accentColor="#63b8d6"
-              eyebrow="Transition V · The Descent"
-              caption="Thunder tore the winter sky as an unemployed goddess stepped down into broken bones."
-              reducedMotion={reducedMotion}
-            />
-
-            <Scene06LailaMortal
-              reducedMotion={reducedMotion}
-              activeSceneIndex={activeSceneIndex}
-              onInspectPanel={setInspectedPanel}
-              onSkipNextScene={() => handleJumpToScene('scene-07')}
-            />
-
-            <Scene07Hospital
-              reducedMotion={reducedMotion}
-              activeSceneIndex={activeSceneIndex}
-              onInspectPanel={setInspectedPanel}
-              onSkipNextScene={() => handleJumpToScene('scene-08')}
-            />
-
-            <Scene08Escape
-              reducedMotion={reducedMotion}
-              activeSceneIndex={activeSceneIndex}
-              onInspectPanel={setInspectedPanel}
-              onSkipNextScene={() => handleJumpToScene('scene-09')}
-            />
-
-            <CinematicTransition
-              kind="kinetic-sweep"
-              fromColor="#181426"
-              toColor="#0a0b15"
-              accentColor="#f5b041"
-              eyebrow="Transition VI · Midnight Highway"
-              caption="Bare feet struck wet pavement just as twelve-wheeler beams swept down the avenue."
-              reducedMotion={reducedMotion}
-            />
-
-            <Scene09SecondDeath
-              reducedMotion={reducedMotion}
-              activeSceneIndex={activeSceneIndex}
-              onInspectPanel={setInspectedPanel}
-              onSkipNextScene={() => handleJumpToScene('scene-10')}
-            />
-
-            <CinematicTransition
-              kind="dawn-mist"
-              fromColor="#0a0b15"
-              toColor="#171c26"
-              accentColor="#f2a866"
-              eyebrow="Transition VII · Eight Years Later"
-              caption="Harbour mist lifted off the Gateway of India, carrying the warmth of morning tea."
-              reducedMotion={reducedMotion}
-            />
-
-            <Scene10EightYearsLater
-              reducedMotion={reducedMotion}
-              activeSceneIndex={activeSceneIndex}
-              onReplayChapter={handleReplayChapter}
-              onReplayPrologue={handleReplayPrologue}
-              onInspectPanel={setInspectedPanel}
-            />
-          </main>
-        </>
-      )}
-    </div>
->>>>>>> c35419f43bb5aee048a8e5328df5fe9aa12dbc74
   );
 }

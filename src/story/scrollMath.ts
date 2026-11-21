@@ -13,11 +13,7 @@ export interface SceneRange {
     surface: string;
     text: string;
     accent: string;
-<<<<<<< HEAD
     mood: 'prologue' | 'sunset' | 'traffic' | 'twilight' | 'celestial' | 'split' | 'descent' | 'clinical' | 'chase' | 'impact' | 'dawn';
-=======
-    mood: 'sunset' | 'traffic' | 'twilight' | 'celestial' | 'split' | 'descent' | 'clinical' | 'chase' | 'impact' | 'dawn';
->>>>>>> c35419f43bb5aee048a8e5328df5fe9aa12dbc74
   };
 }
 
@@ -304,17 +300,11 @@ export function selectBackdropMode(options: {
 export interface AudioBusSettings {
   masterMuted: boolean;
   ambienceVolume: number;
-<<<<<<< HEAD
   scoreVolume?: number;
   sfxVolume: number;
   voiceVolume: number;
   ambienceMuted: boolean;
   scoreMuted?: boolean;
-=======
-  sfxVolume: number;
-  voiceVolume: number;
-  ambienceMuted: boolean;
->>>>>>> c35419f43bb5aee048a8e5328df5fe9aa12dbc74
   sfxMuted: boolean;
   voiceMuted: boolean;
   isVoiceActive: boolean;
@@ -322,17 +312,13 @@ export interface AudioBusSettings {
 
 export interface ComputedAudioMix {
   ambienceGain: number;
-<<<<<<< HEAD
   scoreGain: number;
-=======
->>>>>>> c35419f43bb5aee048a8e5328df5fe9aa12dbc74
   sfxGain: number;
   voiceGain: number;
   duckFactor: number;
 }
 
 /**
-<<<<<<< HEAD
  * Computes effective Howler bus volumes with cinematic dynamic mixing targets:
  * - Voice: Reference level (0.95 ~ 0 dB)
  * - Music without speech: -8 to -12 dB relative to voice (~0.30)
@@ -366,26 +352,6 @@ export function computeAudioMixLevels(settings: AudioBusSettings): ComputedAudio
     : Math.round(clamp01(voiceVolume) * 1000) / 1000;
 
   return { ambienceGain, scoreGain, sfxGain, voiceGain, duckFactor };
-=======
- * Computes effective Howler bus volumes with smooth ambience ducking during active dialogue/voice beats.
- */
-export function computeAudioMixLevels(settings: AudioBusSettings): ComputedAudioMix {
-  if (settings.masterMuted) {
-    return { ambienceGain: 0, sfxGain: 0, voiceGain: 0, duckFactor: 1 };
-  }
-  const duckFactor = settings.isVoiceActive ? 0.42 : 1;
-  const ambienceGain = settings.ambienceMuted
-    ? 0
-    : Math.round(clamp01(settings.ambienceVolume) * duckFactor * 1000) / 1000;
-  const sfxGain = settings.sfxMuted
-    ? 0
-    : Math.round(clamp01(settings.sfxVolume) * (settings.isVoiceActive ? 0.8 : 1) * 1000) / 1000;
-  const voiceGain = settings.voiceMuted
-    ? 0
-    : Math.round(clamp01(settings.voiceVolume) * 1000) / 1000;
-
-  return { ambienceGain, sfxGain, voiceGain, duckFactor };
->>>>>>> c35419f43bb5aee048a8e5328df5fe9aa12dbc74
 }
 
 /**
@@ -489,16 +455,12 @@ export function resolvePrologueMomentIndex(
 }
 
 /**
-<<<<<<< HEAD
  * Computes continuous scroll-scrubbed cinematic camera, lighting, and layer values across the 5 prologue scenes:
  * - Scene A: Darkness (0.00 – 0.20)
  * - Scene B: Mumbai Skyline slowly revealed with depth/parallax (0.20 – 0.40)
  * - Scene C: Narration with approved Prabhat Neural voice + cinematic captions (0.40 – 0.65)
  * - Scene D: Title Reveal with elegant typography (0.65 – 0.85)
  * - Scene E: Seamless enter into comic / original artwork (0.85 – 1.00)
-=======
- * Computes continuous scroll-scrubbed cinematic camera, lighting, and layer values across the 6 prologue moments.
->>>>>>> c35419f43bb5aee048a8e5328df5fe9aa12dbc74
  */
 export function computePrologueVisualState(
   progress: number,
@@ -507,7 +469,6 @@ export function computePrologueVisualState(
   const p = clamp01(progress);
   const momentIndex = resolvePrologueMomentIndex(p, moments);
 
-<<<<<<< HEAD
   // Scene A Darkness Veil: 1.0 at start, smoothly dissolves away as Scene B approaches (0.16 -> 0.28)
   const darknessVeilOpacity = Math.round((1 - clamp01((p - 0.16) / 0.14)) * 1000) / 1000;
 
@@ -532,26 +493,6 @@ export function computePrologueVisualState(
 
   // Scene E Portal Dive: accelerates from 0.85 to 1.00 into original comic artwork
   const portalProgress = Math.round(clamp01((p - 0.85) / 0.15) * 1000) / 1000;
-=======
-  const darknessVeilOpacity = Math.round((1 - clamp01((p - 0.08) / 0.28) * 0.72) * 1000) / 1000;
-
-  const titleIn = clamp01((p - 0.14) / 0.14);
-  const titleOut = 1 - clamp01((p - 0.36) / 0.14);
-  const titleReveal = Math.round(titleIn * titleOut * 1000) / 1000;
-
-  const mumbaiReveal = Math.round(clamp01((p - 0.3) / 0.24) * 1000) / 1000;
-
-  const easedP = p * p * (3 - 2 * p);
-  const cameraZoom = Math.round((1 + easedP * 0.18) * 1000) / 1000;
-  const cameraPanY = Math.round((0.5 - easedP) * 28 * 100) / 100;
-
-  const narrationIn = clamp01((p - 0.52) / 0.08);
-  const narrationOut = 1 - clamp01((p - 0.85) / 0.07);
-  const narrationOpacity = Math.round(narrationIn * narrationOut * 1000) / 1000;
-  const activeNarrationIndex = p >= 0.7 ? 1 : 0;
-
-  const portalProgress = Math.round(clamp01((p - 0.88) / 0.12) * 1000) / 1000;
->>>>>>> c35419f43bb5aee048a8e5328df5fe9aa12dbc74
 
   return {
     progress: p,
@@ -578,17 +519,10 @@ export interface BubblePlacement {
  * so bubbles point toward speakers without crowding edges on desktop or mobile.
  */
 export function resolveBubblePlacement(
-<<<<<<< HEAD
   side: 'left' | 'right' | 'center' | 'bottom',
   shape: 'comic' | 'celestial' | 'spectral' | 'caption',
 ): BubblePlacement {
   if (shape === 'caption' || side === 'center' || side === 'bottom') {
-=======
-  side: 'left' | 'right' | 'center',
-  shape: 'comic' | 'celestial' | 'spectral' | 'caption',
-): BubblePlacement {
-  if (shape === 'caption' || side === 'center') {
->>>>>>> c35419f43bb5aee048a8e5328df5fe9aa12dbc74
     return {
       alignClass: 'mx-auto items-center',
       tailSide: 'center',

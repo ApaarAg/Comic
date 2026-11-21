@@ -16,11 +16,7 @@ interface SceneVideoBackdropProps {
   activeSceneIndex: number;
   reducedMotion: boolean;
   /** Element whose scroll bounds drive video scrubbing when playbackMode === 'scrub' */
-<<<<<<< HEAD
   scrubTriggerRef?: React.RefObject<HTMLElement | null>;
-=======
-  scrubTriggerRef: React.RefObject<HTMLElement | null>;
->>>>>>> c35419f43bb5aee048a8e5328df5fe9aa12dbc74
 }
 
 export const SceneVideoBackdrop: React.FC<SceneVideoBackdropProps> = ({
@@ -118,20 +114,13 @@ export const SceneVideoBackdrop: React.FC<SceneVideoBackdropProps> = ({
 
   // Scroll-scrubbed playback synced via GSAP ScrollTrigger for narrative turns
   useEffect(() => {
-<<<<<<< HEAD
     const triggerEl = scrubTriggerRef?.current ?? containerRef.current;
-=======
->>>>>>> c35419f43bb5aee048a8e5328df5fe9aa12dbc74
     if (
       backdropMode !== 'video' ||
       !binding ||
       binding.playbackMode !== 'scrub' ||
       !videoRef.current ||
-<<<<<<< HEAD
       !triggerEl
-=======
-      !scrubTriggerRef.current
->>>>>>> c35419f43bb5aee048a8e5328df5fe9aa12dbc74
     ) {
       return;
     }
@@ -139,10 +128,6 @@ export const SceneVideoBackdrop: React.FC<SceneVideoBackdropProps> = ({
     const video = videoRef.current;
     video.pause();
 
-<<<<<<< HEAD
-=======
-    const triggerEl = scrubTriggerRef.current;
->>>>>>> c35419f43bb5aee048a8e5328df5fe9aa12dbc74
     let latestProgress = 0;
 
     const applyScrub = (progress: number) => {
