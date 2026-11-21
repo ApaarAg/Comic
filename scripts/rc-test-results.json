@@ -1,0 +1,15 @@
+{
+  "timestamp": "2026-11-21T08:46:34.256Z",
+  "productionHost": "http://localhost:4173",
+  "totalRequests": 120,
+  "failedRequests": [],
+  "consoleErrors": [],
+  "auditionPageCheck": {
+    "title": "Mrs. Shah · Childbirth Labour Auditions",
+    "audioSources": [
+      "http://localhost:4173/assets/audio/voices/supporting/s02-03-mrs-shah-baby.mp3",
+      "http://localhost:4173/assets/audio/auditions/acting/audition-s02-03-mrs_shah-take-1-urgent-contraction.mp3",
+      "http://localhost:4173/assets/audio/auditions/acting/audition-s02-03-mrs_shah-take-2-strained-labor-surge.mp3"
+    ]
+  }
+}

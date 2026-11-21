@@ -1,0 +1,7 @@
+{
+  "rewrites": [
+    { "source": "/mrs-shah-audition.html", "destination": "/mrs-shah-audition.html" },
+    { "source": "/narrator-auditions.html", "destination": "/narrator-auditions.html" },
+    { "source": "/(.*)", "destination": "/index.html" }
+  ]
+}

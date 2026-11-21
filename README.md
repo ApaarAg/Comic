@@ -67,16 +67,47 @@ node scripts/test-storyverse-4-0-suite.cjs
 
 ---
 
+## Audition & Review Consoles
+
+For editorial review, dedicated audition consoles are provided:
+- **Mrs. Shah Labour Contraction Auditions**: [`/mrs-shah-audition.html`](http://localhost:4173/mrs-shah-audition.html)
+  - Features side-by-side comparison between the original baseline and Candidate Take 1 (Urgent Contraction) / Take 2 (Strained Labor Surge).
+- **Brian Narrator Pacing Console**: [`/narrator-auditions.html`](http://localhost:4173/narrator-auditions.html)
+  - Features the approved 1.05x Indian English narrator delivery across atmospheric, reflective, and dramatic passages.
+
+---
+
 ## Deployment Guide
 
-### Cloud Run / Docker Container Deployment
-1. Ensure `PORT=3000` and `NODE_ENV=production` are set in container environment.
-2. Build client assets: `npm run build`.
-3. Start the Node/Express server with `npm start`.
+### Option A: Containerized Deployment (Google Cloud Run / AWS ECS / DigitalOcean / Fly.io)
+1. Build the production Docker container:
+   ```bash
+   docker build -t storyverse-app .
+   ```
+2. Run locally or deploy:
+   ```bash
+   docker run -p 3000:3000 --env-file .env storyverse-app
+   ```
+3. Cloud Run one-liner:
+   ```bash
+   gcloud run deploy storyverse --source . --platform managed --region us-central1 --allow-unauthenticated
+   ```
 
-### Static Hosting with Node API
-- Client static files are built into `dist/`.
-- Ensure web server supports HTTP 206 Range Requests (`Accept-Ranges: bytes`) for audio and video assets in `/assets/videos/`.
+### Option B: Static Edge CDN (Vercel / Netlify / Cloudflare Pages)
+1. Build the static distribution:
+   ```bash
+   npm run build
+   ```
+2. Deploy the `dist/` directory.
+   - **Vercel**: Configuration pre-configured in `vercel.json` with SPA routing and audition console passthrough.
+   - **Netlify / Cloudflare Pages**: SPA redirects pre-configured in `public/_redirects` (`/* /index.html 200`).
+   - **Nginx**:
+     ```nginx
+     location / {
+       try_files $uri $uri/ /index.html;
+     }
+     ```
+3. **Asset Range Requests**: Ensure CDN caching allows HTTP 206 `Partial Content` range requests for audio (`.mp3`) and video (`.mp4`) playback.
 
 ---
 

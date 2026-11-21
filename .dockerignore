@@ -1,0 +1,11 @@
+node_modules
+.git
+.github
+*.log
+.env*
+!.env.example
+screenshots
+scratch
+.chrome*
+coverage
+dist

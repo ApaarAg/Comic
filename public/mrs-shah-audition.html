@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Storyverse — Mrs. Shah Childbirth Dialogue Audition Console (s02-03)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #07060e;
+      --surface: #0f0d1b;
+      --surface-elevated: #161328;
+      --surface-highlight: #1e1936;
+      --border: rgba(242, 139, 80, 0.22);
+      --border-strong: rgba(242, 139, 80, 0.45);
+      --border-subtle: rgba(255, 255, 255, 0.08);
+      --accent-coral: #f28b50;
+      --accent-gold: #f5b041;
+      --accent-teal: #4ecdc4;
+      --accent-red: #ef4444;
+      --accent-green: #2ecc71;
+      --text-main: #fcf9f2;
+      --text-dim: #9d97b0;
+      --text-muted: #6b6680;
+      --radius: 14px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: var(--bg);
+      color: var(--text-main);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      min-height: 100vh;
+      padding: 3rem 1.5rem 5rem;
+      background-image:
+        radial-gradient(ellipse 90% 60% at 50% 0%, rgba(242, 139, 80, 0.12), transparent 70%),
+        radial-gradient(circle at 10% 40%, rgba(78, 205, 196, 0.05), transparent 45%),
+        radial-gradient(circle at 90% 70%, rgba(239, 68, 68, 0.06), transparent 50%);
+    }
+
+    .container { max-width: 1080px; margin: 0 auto; }
+
+    header {
+      margin-bottom: 2.5rem;
+      border-bottom: 1px solid var(--border-subtle);
+      padding-bottom: 2rem;
+    }
+
+    .brand-eyebrow {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem;
+      letter-spacing: 0.28em;
+      color: var(--accent-gold);
+      text-transform: uppercase;
+      margin-bottom: 0.75rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .brand-eyebrow::before {
+      content: '';
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--accent-coral);
+      box-shadow: 0 0 10px var(--accent-coral);
+    }
+
+    h1 {
+      font-family: 'Cinzel', serif;
+      font-size: 2.4rem;
+      letter-spacing: 0.03em;
+      color: #fff;
+      font-weight: 700;
+      line-height: 1.15;
+    }
+    h1 span {
+      background: linear-gradient(135deg, var(--accent-gold), var(--accent-coral));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .header-desc {
+      font-size: 1.05rem;
+      color: var(--text-dim);
+      margin-top: 0.8rem;
+      max-width: 850px;
+      line-height: 1.6;
+    }
+
+    .safety-banner {
+      background: linear-gradient(135deg, rgba(46, 204, 113, 0.08), rgba(78, 205, 196, 0.04));
+      border: 1px solid rgba(46, 204, 113, 0.35);
+      border-radius: var(--radius);
+      padding: 1.25rem 1.75rem;
+      margin-bottom: 2.5rem;
+      display: flex;
+      align-items: flex-start;
+      gap: 1.25rem;
+    }
+    .safety-banner-icon {
+      font-size: 1.5rem;
+      line-height: 1;
+      padding-top: 0.1rem;
+    }
+    .safety-banner h3 {
+      font-size: 1rem;
+      font-weight: 600;
+      color: #a7f3d0;
+      margin-bottom: 0.35rem;
+      font-family: 'JetBrains Mono', monospace;
+      letter-spacing: 0.05em;
+    }
+    .safety-banner p {
+      font-size: 0.88rem;
+      color: #d1fae5;
+      line-height: 1.5;
+    }
+
+    .dialogue-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.75rem;
+      margin-bottom: 2rem;
+    }
+
+    .dialogue-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+      padding-bottom: 0.75rem;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+    .dialogue-badge {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem;
+      padding: 0.25rem 0.6rem;
+      border-radius: 4px;
+      background: rgba(242, 139, 80, 0.15);
+      color: var(--accent-coral);
+      border: 1px solid rgba(242, 139, 80, 0.3);
+    }
+    .dialogue-quote {
+      font-family: 'Cinzel', serif;
+      font-size: 1.4rem;
+      color: #fff;
+      margin-bottom: 0.5rem;
+    }
+    .dialogue-context {
+      font-size: 0.88rem;
+      color: var(--text-dim);
+      line-height: 1.5;
+    }
+
+    .audition-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+    }
+
+    .track-card {
+      background: var(--surface-elevated);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius);
+      padding: 1.5rem;
+      transition: all 0.2s ease;
+      position: relative;
+    }
+    .track-card.active {
+      border-color: var(--accent-coral);
+      box-shadow: 0 0 20px rgba(242, 139, 80, 0.15);
+    }
+    .track-card.production {
+      border-color: rgba(255, 255, 255, 0.2);
+    }
+    .track-card.recommended {
+      border-color: var(--accent-gold);
+      box-shadow: 0 0 20px rgba(245, 176, 65, 0.15);
+    }
+
+    .track-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 1rem;
+    }
+    .track-title {
+      font-size: 1.15rem;
+      font-weight: 600;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+    .track-pill {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      padding: 0.2rem 0.5rem;
+      border-radius: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .pill-current {
+      background: rgba(255, 255, 255, 0.1);
+      color: #d1d5db;
+    }
+    .pill-candidate {
+      background: rgba(242, 139, 80, 0.18);
+      color: var(--accent-coral);
+      border: 1px solid rgba(242, 139, 80, 0.35);
+    }
+    .pill-rec {
+      background: rgba(245, 176, 65, 0.2);
+      color: var(--accent-gold);
+      border: 1px solid rgba(245, 176, 65, 0.45);
+    }
+
+    .track-specs {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.78rem;
+      color: var(--text-dim);
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.25rem;
+      margin-bottom: 0.85rem;
+      padding: 0.6rem 0.85rem;
+      background: rgba(0, 0, 0, 0.3);
+      border-radius: 8px;
+    }
+
+    .track-desc {
+      font-size: 0.88rem;
+      color: var(--text-dim);
+      margin-bottom: 1.25rem;
+      line-height: 1.5;
+    }
+
+    .audio-player {
+      width: 100%;
+      height: 44px;
+      border-radius: 8px;
+      outline: none;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 1rem;
+      margin-top: 3rem;
+      justify-content: center;
+    }
+    .nav-button {
+      padding: 0.75rem 1.5rem;
+      border-radius: 8px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.85rem;
+      text-decoration: none;
+      color: #fff;
+      background: var(--surface-elevated);
+      border: 1px solid var(--border);
+      transition: all 0.2s ease;
+    }
+    .nav-button:hover {
+      background: var(--surface-highlight);
+      border-color: var(--accent-coral);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="brand-eyebrow">Storyverse 4.0 · Character Acting Refinement</div>
+      <h1>Mrs. Shah · <span>Childbirth Labour Auditions</span></h1>
+      <p class="header-desc">
+        Audition comparison for Scene 02 (Traffic Jam, Mumbai) dialogue event <code>s02-03</code>:
+        comparing the original baseline recording against corrected high-urgency labour contraction takes.
+      </p>
+    </header>
+
+    <div class="safety-banner">
+      <div class="safety-banner-icon">🛡️</div>
+      <div>
+        <h3>Production Audio Preserved (Zero Destructive Overwrite)</h3>
+        <p>
+          The live production audio file <code>/assets/audio/voices/supporting/s02-03-mrs-shah-baby.mp3</code> remains
+          completely untouched in the production build. These audition takes are isolated release-candidate candidates for user evaluation and approval.
+        </p>
+      </div>
+    </div>
+
+    <div class="dialogue-card">
+      <div class="dialogue-header">
+        <span class="dialogue-badge">Scene 02 · Panel 06 · s02-03</span>
+        <span style="font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; color: var(--text-muted);">Character: Mrs. Shah (Sarah)</span>
+      </div>
+      <div class="dialogue-quote">"...The baby is coming."</div>
+      <div class="dialogue-context">
+        Context: Trapped inside a honking black-and-yellow taxi on the gridlocked Western Express Highway in Mumbai.
+        Traffic is deadlocked, the heat is suffocating, and labor contractions suddenly surge to full intensity.
+      </div>
+    </div>
+
+    <div class="audition-grid">
+      <!-- Current Production Baseline -->
+      <div class="track-card production">
+        <div class="track-top">
+          <div class="track-title">
+            <span>Current Production Baseline</span>
+            <span class="track-pill pill-current">Live in Storyverse</span>
+          </div>
+        </div>
+        <div class="track-specs">
+          <span>File: s02-03-mrs-shah-baby.mp3</span>
+          <span>Size: 27.2 KB</span>
+          <span>Profile: Quiet / Monologue</span>
+        </div>
+        <p class="track-desc">
+          Original low-intensity whispered realization. Sounds contemplative rather than communicating acute physical labor pain.
+        </p>
+        <audio class="audio-player" controls preload="metadata">
+          <source src="/assets/audio/voices/supporting/s02-03-mrs-shah-baby.mp3" type="audio/mpeg">
+          Your browser does not support audio playback.
+        </audio>
+      </div>
+
+      <!-- Candidate Take 1 -->
+      <div class="track-card recommended active">
+        <div class="track-top">
+          <div class="track-title">
+            <span>Candidate Take 1: Urgent Contraction</span>
+            <span class="track-pill pill-rec">Recommended</span>
+          </div>
+        </div>
+        <div class="track-specs">
+          <span>File: audition-s02-03-mrs_shah-take-1-urgent-contraction.mp3</span>
+          <span>Size: 24.3 KB</span>
+          <span>Stability: 0.32 · Style: 0.65</span>
+        </div>
+        <p class="track-desc">
+          High emotional tension, sharp breath intake, sudden surge of labor pain cutting through traffic chaos. Clear Indian English cadence with realistic panic.
+        </p>
+        <audio class="audio-player" controls preload="metadata">
+          <source src="/assets/audio/auditions/acting/audition-s02-03-mrs_shah-take-1-urgent-contraction.mp3" type="audio/mpeg">
+          Your browser does not support audio playback.
+        </audio>
+      </div>
+
+      <!-- Candidate Take 2 -->
+      <div class="track-card">
+        <div class="track-top">
+          <div class="track-title">
+            <span>Candidate Take 2: Strained Labor Surge</span>
+            <span class="track-pill pill-candidate">High Intensity</span>
+          </div>
+        </div>
+        <div class="track-specs">
+          <span>File: audition-s02-03-mrs_shah-take-2-strained-labor-surge.mp3</span>
+          <span>Size: 31.0 KB</span>
+          <span>Stability: 0.26 · Style: 0.72</span>
+        </div>
+        <p class="track-desc">
+          Maximal vocal strain and breathless gasp, shouting through severe contraction agony. Higher intensity for maximum visceral drama.
+        </p>
+        <audio class="audio-player" controls preload="metadata">
+          <source src="/assets/audio/auditions/acting/audition-s02-03-mrs_shah-take-2-strained-labor-surge.mp3" type="audio/mpeg">
+          Your browser does not support audio playback.
+        </audio>
+      </div>
+    </div>
+
+    <div class="nav-links">
+      <a href="/" class="nav-button">← Back to Main Storyverse</a>
+      <a href="/narrator-auditions.html" class="nav-button">Brian Narrator Console →</a>
+    </div>
+  </div>
+</body>
+</html>
