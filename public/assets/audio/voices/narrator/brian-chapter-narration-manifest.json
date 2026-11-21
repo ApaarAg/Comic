@@ -1,0 +1,100 @@
+[
+  {
+    "id": "s01-01",
+    "filename": "scene-01-opening.mp3",
+    "text": "It began on a Wednesday afternoon as a late December sun was just dipping below the Mumbai skyline.",
+    "reused": true,
+    "bytes": 89486
+  },
+  {
+    "id": "s01-02",
+    "filename": "scene-01-highway.mp3",
+    "text": "Down where the elevated highway curves between glass towers, the city exhaled in horns and heat.",
+    "reused": false,
+    "bytes": 93247
+  },
+  {
+    "id": "s02-conn-01",
+    "filename": "scene-02-connector.mp3",
+    "text": "On the B.K.C. overpass, one city became many cities — each trapped inside its own small metal shell.",
+    "reused": false,
+    "bytes": 97845
+  },
+  {
+    "id": "s03-02",
+    "filename": "s03-02-window.mp3",
+    "text": "...Beneath gentle curls of raven hair, her eyes stayed fixed on distant city lights while her thoughts drifted like cigarette smoke.",
+    "reused": false,
+    "bytes": 111638
+  },
+  {
+    "id": "s04-conn-01",
+    "filename": "scene-04-connector.mp3",
+    "text": "Beyond the mortal clouds, in a place where endings are drafted like memos, something unprecedented was happening.",
+    "reused": false,
+    "bytes": 106622
+  },
+  {
+    "id": "s05-01",
+    "filename": "s05-01-fall.mp3",
+    "text": "It was around that time that the girl from the window at the party was falling through the air — two floors down and fast approaching the ground.",
+    "reused": false,
+    "bytes": 122923
+  },
+  {
+    "id": "s05-02",
+    "filename": "s05-02-birth.mp3",
+    "text": "Just as she hit the ground, Mrs. Shah was in the Amravati Hospital squeezing her husband's hand with such strength that he was screaming louder than her.",
+    "reused": false,
+    "bytes": 134625
+  },
+  {
+    "id": "s05-03",
+    "filename": "s05-03-darius.mp3",
+    "text": "As the midwife urged her into one last push, a new life came into being. A beautiful thing that would go on to be the cause of much consternation in his many years to come.",
+    "reused": false,
+    "bytes": 156359
+  },
+  {
+    "id": "s06-conn-01",
+    "filename": "scene-06-connector.mp3",
+    "text": "A deal was being struck — the kind that bends the fabric of everything.",
+    "reused": false,
+    "bytes": 68588
+  },
+  {
+    "id": "s07-conn-01",
+    "filename": "scene-07-connector.mp3",
+    "text": "She woke up in a body that felt borrowed, in a room that smelled of antiseptic and second chances.",
+    "reused": true,
+    "bytes": 91158
+  },
+  {
+    "id": "s08-conn-01",
+    "filename": "scene-08-connector.mp3",
+    "text": "The neo-natal ward held its breath. Death held a baby.",
+    "reused": false,
+    "bytes": 52287
+  },
+  {
+    "id": "s09-01",
+    "filename": "s09-01-commerce.mp3",
+    "text": "And in Mumbai, even at that late hour, great thundering wheels of commerce rolled on unfettered.",
+    "reused": false,
+    "bytes": 99935
+  },
+  {
+    "id": "s09-02",
+    "filename": "s09-02-midnight.mp3",
+    "text": "And so, only a few minutes away from midnight, Laila Starr met her death once again.",
+    "reused": true,
+    "bytes": 73185
+  },
+  {
+    "id": "s10-conn-01",
+    "filename": "scene-10-connector.mp3",
+    "text": "Eight years later, the sun rose anyway — as it always has, as it always will.",
+    "reused": false,
+    "bytes": 80709
+  }
+]

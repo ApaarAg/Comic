@@ -13,7 +13,7 @@
  * Visual & Narrative Progression:
  * 1. Darkness & Atmosphere (0.00 – 0.15): Deep twilight void, floating motes, audio unlock prompt.
  * 2. Skyline Emergence (0.15 – 0.40): Coral sunset emerges behind Mumbai silhouettes.
- * 3. Opening Narration (0.25): George's narration beat s01-01 begins.
+ * 3. Opening Narration (0.25): Brian's narration beat s01-01 begins (1.05x brisk Indian English).
  * 4. Title Manifestation (0.45 – 0.70): Gold foil title reveals with motif_storyverse.
  * 5. Camera Dive (0.75 – 1.00): Camera pushes through sunset clouds directly into Scene 01.
  */

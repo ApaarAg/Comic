@@ -787,7 +787,7 @@ export function getActingDirection(dialogueId: string): ActingDirection | undefi
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// LOCKED NARRATOR PRODUCTION CONFIGURATION (Audio Experience 2.1)
+// LOCKED NARRATOR PRODUCTION CONFIGURATION (Storyverse 3.1)
 // ─────────────────────────────────────────────────────────────────────────────
 
 export interface NarratorConfig {
@@ -799,22 +799,24 @@ export interface NarratorConfig {
     similarity_boost: number;
     style: number;
     use_speaker_boost: boolean;
+    speed?: number;
   };
   description: string;
 }
 
 export const NARRATOR_APPROVED_CONFIG: NarratorConfig = {
   provider: 'elevenlabs',
-  voiceName: 'George',
-  voiceId: 'JBFqnCBsd6RMkjVDRZzb',
+  voiceName: 'Brian',
+  voiceId: 'nPczCjzI2devNBz1zQrb',
   settings: {
-    stability: 0.40,
-    similarity_boost: 0.85,
-    style: 0.35,
+    stability: 0.52,
+    similarity_boost: 0.82,
+    style: 0.25,
     use_speaker_boost: true,
+    speed: 1.05,
   },
   description:
-    'APPROVED FINAL NARRATOR: Deep, warm, gravelly cinematic storytelling baritone with textured rasp, measured cadence, and atmospheric weight.',
+    'APPROVED FINAL NARRATOR (Storyverse 3.1): Brian — Warm, rich, expressive Indian English cinematic storyteller at 1.05x slightly brisker cadence, zero pitch distortion, authentic Mumbai graphic novel delivery.',
 };
 
 export interface NarrationActingDirection {

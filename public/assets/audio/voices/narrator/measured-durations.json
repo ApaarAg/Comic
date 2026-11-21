@@ -1,0 +1,86 @@
+[
+  {
+    "id": "s01-01",
+    "filename": "scene-01-opening.mp3",
+    "durationSec": 5.526349,
+    "durationMs": 5526
+  },
+  {
+    "id": "s01-02",
+    "filename": "scene-01-highway.mp3",
+    "durationSec": 5.758549,
+    "durationMs": 5759
+  },
+  {
+    "id": "s02-conn-01",
+    "filename": "scene-02-connector.mp3",
+    "durationSec": 6.037188,
+    "durationMs": 6037
+  },
+  {
+    "id": "s03-02",
+    "filename": "s03-02-window.mp3",
+    "durationSec": 6.919546,
+    "durationMs": 6920
+  },
+  {
+    "id": "s04-conn-01",
+    "filename": "scene-04-connector.mp3",
+    "durationSec": 6.594467,
+    "durationMs": 6594
+  },
+  {
+    "id": "s05-01",
+    "filename": "s05-01-fall.mp3",
+    "durationSec": 7.616145,
+    "durationMs": 7616
+  },
+  {
+    "id": "s05-02",
+    "filename": "s05-02-birth.mp3",
+    "durationSec": 8.359184,
+    "durationMs": 8359
+  },
+  {
+    "id": "s05-03",
+    "filename": "s05-03-darius.mp3",
+    "durationSec": 9.705941,
+    "durationMs": 9706
+  },
+  {
+    "id": "s06-conn-01",
+    "filename": "scene-06-connector.mp3",
+    "durationSec": 4.226032,
+    "durationMs": 4226
+  },
+  {
+    "id": "s07-conn-01",
+    "filename": "scene-07-connector.mp3",
+    "durationSec": 5.619229,
+    "durationMs": 5619
+  },
+  {
+    "id": "s08-conn-01",
+    "filename": "scene-08-connector.mp3",
+    "durationSec": 3.204354,
+    "durationMs": 3204
+  },
+  {
+    "id": "s09-01",
+    "filename": "s09-01-commerce.mp3",
+    "durationSec": 6.176508,
+    "durationMs": 6177
+  },
+  {
+    "id": "s09-02",
+    "filename": "s09-02-midnight.mp3",
+    "durationSec": 4.504671,
+    "durationMs": 4505
+  },
+  {
+    "id": "s10-conn-01",
+    "filename": "scene-10-connector.mp3",
+    "durationSec": 4.96907,
+    "durationMs": 4969
+  }
+]

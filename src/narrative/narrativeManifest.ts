@@ -84,7 +84,7 @@ export const SCENE_NARRATION_BEATS: NarrationBeat[] = [
     text: 'It began on a Wednesday afternoon as a late December sun was just dipping below the Mumbai skyline.',
     audioSrc: '/assets/audio/voices/narrator/scene-01-opening.mp3',
     triggerProgress: remap('scene-01', 0.04),
-    durationMs: 4800,
+    durationMs: 5526,
     captionStyle: 'cinematic',
     sourceOrigin: 'comic',
     visualChoreography: {
@@ -104,7 +104,7 @@ export const SCENE_NARRATION_BEATS: NarrationBeat[] = [
     text: 'Down where the elevated highway curves between glass towers, the city exhaled in horns and heat.',
     audioSrc: '/assets/audio/voices/narrator/scene-01-highway.mp3',
     triggerProgress: remap('scene-01', 0.56),
-    durationMs: 4400,
+    durationMs: 5759,
     captionStyle: 'whisper',
     sourceOrigin: 'connective',
     visualChoreography: {
@@ -126,7 +126,7 @@ export const SCENE_NARRATION_BEATS: NarrationBeat[] = [
     text: 'On the B.K.C. overpass, one city became many cities — each trapped inside its own small metal shell.',
     audioSrc: '/assets/audio/voices/narrator/scene-02-connector.mp3',
     triggerProgress: remap('scene-02', 0.22),
-    durationMs: 4000,
+    durationMs: 6037,
     captionStyle: 'whisper',
     sourceOrigin: 'connective',
     visualChoreography: {
@@ -144,7 +144,7 @@ export const SCENE_NARRATION_BEATS: NarrationBeat[] = [
     text: '...Beneath gentle curls of raven hair, her eyes stayed fixed on distant city lights while her thoughts drifted like cigarette smoke.',
     audioSrc: '/assets/audio/voices/narrator/s03-02-window.mp3',
     triggerProgress: remap('scene-03', 0.58),
-    durationMs: 4800,
+    durationMs: 6920,
     captionStyle: 'cinematic',
     sourceOrigin: 'comic',
     visualChoreography: {
@@ -161,7 +161,7 @@ export const SCENE_NARRATION_BEATS: NarrationBeat[] = [
     text: 'Beyond the mortal clouds, in a place where endings are drafted like memos, something unprecedented was happening.',
     audioSrc: '/assets/audio/voices/narrator/scene-04-connector.mp3',
     triggerProgress: remap('scene-04', 0.14),
-    durationMs: 4600,
+    durationMs: 6594,
     captionStyle: 'dramatic',
     sourceOrigin: 'connective',
     visualChoreography: {
@@ -178,7 +178,7 @@ export const SCENE_NARRATION_BEATS: NarrationBeat[] = [
     text: 'It was around that time that the girl from the window at the party was falling through the air — two floors down and fast approaching the ground.',
     audioSrc: '/assets/audio/voices/narrator/s05-01-fall.mp3',
     triggerProgress: remap('scene-05', 0.04),
-    durationMs: 5200,
+    durationMs: 7616,
     captionStyle: 'dramatic',
     sourceOrigin: 'comic',
     visualChoreography: {
@@ -194,7 +194,7 @@ export const SCENE_NARRATION_BEATS: NarrationBeat[] = [
     text: "Just as she hit the ground, Mrs. Shah was in the Amravati Hospital squeezing her husband's hand with such strength that he was screaming louder than her.",
     audioSrc: '/assets/audio/voices/narrator/s05-02-birth.mp3',
     triggerProgress: remap('scene-05', 0.42),
-    durationMs: 5400,
+    durationMs: 8359,
     captionStyle: 'cinematic',
     sourceOrigin: 'comic',
     visualChoreography: {
@@ -210,7 +210,7 @@ export const SCENE_NARRATION_BEATS: NarrationBeat[] = [
     text: 'As the midwife urged her into one last push, a new life came into being. A beautiful thing that would go on to be the cause of much consternation in his many years to come.',
     audioSrc: '/assets/audio/voices/narrator/s05-03-darius.mp3',
     triggerProgress: remap('scene-05', 0.74),
-    durationMs: 5800,
+    durationMs: 9706,
     captionStyle: 'cinematic',
     sourceOrigin: 'comic',
     visualChoreography: {
@@ -228,7 +228,7 @@ export const SCENE_NARRATION_BEATS: NarrationBeat[] = [
     text: 'A deal was being struck — the kind that bends the fabric of everything.',
     audioSrc: '/assets/audio/voices/narrator/scene-06-connector.mp3',
     triggerProgress: remap('scene-06', 0.52),
-    durationMs: 3200,
+    durationMs: 4226,
     captionStyle: 'dramatic',
     sourceOrigin: 'connective',
     visualChoreography: {
@@ -245,7 +245,7 @@ export const SCENE_NARRATION_BEATS: NarrationBeat[] = [
     text: 'She woke up in a body that felt borrowed, in a room that smelled of antiseptic and second chances.',
     audioSrc: '/assets/audio/voices/narrator/scene-07-connector.mp3',
     triggerProgress: remap('scene-07', 0.12),
-    durationMs: 3800,
+    durationMs: 5619,
     captionStyle: 'whisper',
     sourceOrigin: 'connective',
     visualChoreography: {
@@ -262,7 +262,7 @@ export const SCENE_NARRATION_BEATS: NarrationBeat[] = [
     text: 'The neo-natal ward held its breath. Death held a baby.',
     audioSrc: '/assets/audio/voices/narrator/scene-08-connector.mp3',
     triggerProgress: remap('scene-08', 0.25),
-    durationMs: 3000,
+    durationMs: 3204,
     captionStyle: 'dramatic',
     sourceOrigin: 'connective',
     visualChoreography: {
@@ -279,7 +279,7 @@ export const SCENE_NARRATION_BEATS: NarrationBeat[] = [
     text: 'And in Mumbai, even at that late hour, great thundering wheels of commerce rolled on unfettered.',
     audioSrc: '/assets/audio/voices/narrator/s09-01-commerce.mp3',
     triggerProgress: remap('scene-09', 0.05),
-    durationMs: 4200,
+    durationMs: 6177,
     captionStyle: 'dramatic',
     sourceOrigin: 'comic',
     visualChoreography: {
@@ -294,7 +294,7 @@ export const SCENE_NARRATION_BEATS: NarrationBeat[] = [
     text: 'And so, only a few minutes away from midnight, Laila Starr met her death once again.',
     audioSrc: '/assets/audio/voices/narrator/s09-02-midnight.mp3',
     triggerProgress: remap('scene-09', 0.58),
-    durationMs: 4000,
+    durationMs: 4505,
     captionStyle: 'cinematic',
     sourceOrigin: 'comic',
     visualChoreography: {
@@ -304,14 +304,14 @@ export const SCENE_NARRATION_BEATS: NarrationBeat[] = [
     },
   },
 
-  // ── SCENE 10: Eight Years Later (0.91 – 1.00) ────────────────────────────
+  // ── SCENE 10: Eight Years Later (0.91 – 1.00) ────────────────────
   {
     id: 's10-conn-01',
     sceneId: 'scene-10',
     text: 'Eight years later, the sun rose anyway — as it always has, as it always will.',
     audioSrc: '/assets/audio/voices/narrator/scene-10-connector.mp3',
     triggerProgress: remap('scene-10', 0.08),
-    durationMs: 3400,
+    durationMs: 4969,
     captionStyle: 'cinematic',
     sourceOrigin: 'connective',
     visualChoreography: {
