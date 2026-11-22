@@ -64,7 +64,7 @@ export const ComicPanel: React.FC<ComicPanelProps> = ({
               referrerPolicy="no-referrer"
               onError={() => setFailed(true)}
               onClick={() => setIsZoomed((prev) => !prev)}
-              className={`w-full max-h-[82vh] object-contain select-none transition-transform duration-500 cursor-zoom-in ${
+              className={`w-full max-h-[58vh] sm:max-h-[82vh] object-contain select-none transition-transform duration-500 cursor-zoom-in ${
                 isZoomed ? 'scale-105 cursor-zoom-out' : ''
               } ${imgClassName}`}
               style={{

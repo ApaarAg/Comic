@@ -50,7 +50,7 @@ export const Scene05TwoEvents: React.FC<SceneProps> = React.memo(({
         const { fallProgress, convergence } = computeParallelEditState(stageProgress);
 
         return (
-          <div className="relative flex flex-col items-center justify-center w-full max-w-5xl px-4 md:px-8">
+          <div className="relative flex flex-col items-center justify-center w-full max-w-5xl xl:max-w-6xl 2xl:max-w-7xl px-2 sm:px-6">
             {/* Standardized Editorial Scene Header Badge */}
             <div className="hidden sm:block absolute top-[max(5.25rem,calc(env(safe-area-inset-top,0px)+4.75rem))] left-6 md:left-10 pointer-events-none z-30">
               <span className="font-mono text-[11px] uppercase tracking-[0.24em] text-[#f06a7e] bg-black/40 px-2.5 py-0.5 rounded-full border border-[#f06a7e]/30 backdrop-blur-md">
@@ -62,9 +62,9 @@ export const Scene05TwoEvents: React.FC<SceneProps> = React.memo(({
             </div>
 
             {/* Stage Content */}
-            <div className="relative w-full flex flex-col items-center justify-center min-h-[400px] sm:min-h-[480px] max-h-[760px] pt-12">
+            <div className="relative w-full flex flex-col items-center justify-center min-h-[400px] sm:min-h-[480px] max-h-[780px] pt-12">
               {/* Convergence Indicator Bar */}
-              <div className="w-full max-w-3xl mb-4 flex flex-wrap items-center justify-between gap-2 border-b border-white/10 pb-2 text-[10px] sm:text-xs font-mono uppercase tracking-widest">
+              <div className="w-full max-w-4xl xl:max-w-5xl mb-4 flex flex-wrap items-center justify-between gap-2 border-b border-white/10 pb-2 text-[10px] sm:text-xs font-mono uppercase tracking-widest">
                 <span className={stageProgress >= 0.38 && stageProgress < 0.78 ? 'text-[#f06a7e] font-bold' : 'text-[#f06a7e]/60'}>
                   Parel · The Fall
                 </span>
@@ -83,8 +83,8 @@ export const Scene05TwoEvents: React.FC<SceneProps> = React.memo(({
               {/* Sequential Full-Viewport Panel Presentations */}
               {/* Beat 1: Agni's Desk (stageProgress < 0.20) */}
               {stageProgress < 0.20 && (
-                <div className="w-full max-w-3xl flex flex-col items-center justify-center transition-opacity duration-500 ease-out">
-                  <div className="w-full max-h-[66vh] flex items-center justify-center">
+                <div className="w-full max-w-4xl xl:max-w-5xl flex flex-col items-center justify-center transition-opacity duration-500 ease-out">
+                  <div className="w-full max-h-[70vh] flex items-center justify-center">
                     <ComicPanel
                       src="/assets/chapter1/p13_panel01.webp"
                       alt="Death slumping into melancholy before Agni's desk"
@@ -98,8 +98,8 @@ export const Scene05TwoEvents: React.FC<SceneProps> = React.memo(({
 
               {/* Beat 2: The Severance Pamphlet (0.20 <= stageProgress < 0.38) */}
               {stageProgress >= 0.20 && stageProgress < 0.38 && (
-                <div className="w-full max-w-3xl flex flex-col items-center justify-center transition-opacity duration-500 ease-out">
-                  <div className="w-full max-h-[66vh] flex items-center justify-center">
+                <div className="w-full max-w-4xl xl:max-w-5xl flex flex-col items-center justify-center transition-opacity duration-500 ease-out">
+                  <div className="w-full max-h-[70vh] flex items-center justify-center">
                     <ComicPanel
                       src="/assets/chapter1/p13_panel02.webp"
                       alt="Pamphlet reading: A Mortal World of Possibilities — A helpful guide for an extraordinary life after godhood"
@@ -113,7 +113,7 @@ export const Scene05TwoEvents: React.FC<SceneProps> = React.memo(({
 
               {/* Beats 3 & 4: True Parallel Split-Screen Comparison (0.38 <= stageProgress < 0.78) */}
               {stageProgress >= 0.38 && stageProgress < 0.78 && (
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-8 w-full max-w-5xl transition-opacity duration-500 ease-out items-center">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-8 w-full max-w-5xl xl:max-w-6xl transition-opacity duration-500 ease-out items-center">
                   {/* Left: The Fall in Parel */}
                   <div
                     className="flex flex-col items-center justify-center transition-transform duration-300 relative border-b md:border-b-0 md:border-r border-white/10 pb-4 md:pb-0 md:pr-4"
@@ -164,9 +164,9 @@ export const Scene05TwoEvents: React.FC<SceneProps> = React.memo(({
 
               {/* Beat 5: Climax — The First Breath (stageProgress >= 0.78) */}
               {stageProgress >= 0.78 && (
-                <div className="w-full max-w-3xl flex flex-col items-center justify-center transition-opacity duration-500 ease-out">
+                <div className="w-full max-w-4xl xl:max-w-5xl flex flex-col items-center justify-center transition-opacity duration-500 ease-out">
                   <div
-                    className="w-full max-h-[66vh] flex items-center justify-center transition-transform duration-300"
+                    className="w-full max-h-[70vh] flex items-center justify-center transition-transform duration-300"
                     style={{
                       transform: reducedMotion
                         ? undefined

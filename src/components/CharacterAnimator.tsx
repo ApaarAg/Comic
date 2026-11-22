@@ -137,7 +137,7 @@ export const CharacterAnimator: React.FC<CharacterAnimatorProps> = ({
             loading="eager"
             decoding="sync"
             referrerPolicy="no-referrer"
-            className="w-full max-h-[82vh] object-contain select-none"
+            className="w-full max-h-[58vh] sm:max-h-[82vh] object-contain select-none"
           />
 
           {/* Character-calibrated atmospheric rim light while speaking */}

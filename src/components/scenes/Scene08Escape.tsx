@@ -50,7 +50,7 @@ export const Scene08Escape: React.FC<SceneProps> = React.memo(({
         const { stageProgress } = visualState;
 
         return (
-          <div className="relative flex flex-col items-center justify-center w-full max-w-5xl px-4 md:px-8">
+          <div className="relative flex flex-col items-center justify-center w-full max-w-5xl xl:max-w-6xl 2xl:max-w-7xl px-2 sm:px-6">
             {/* Standardized Glassmorphic Header Badge */}
             <div className="hidden sm:block absolute top-[max(5.25rem,calc(env(safe-area-inset-top,0px)+4.75rem))] left-6 md:left-10 z-30 pointer-events-none">
               <span className="inline-flex items-center gap-2 rounded-full border border-[#e89138]/30 bg-black/40 px-3 py-1 font-mono text-[10px] uppercase tracking-[0.22em] text-[#e89138] backdrop-blur-md">
@@ -63,10 +63,23 @@ export const Scene08Escape: React.FC<SceneProps> = React.memo(({
             </div>
 
             {/* Stage Content */}
-            <div className="relative w-full flex items-center justify-center min-h-[360px] sm:min-h-[460px] max-h-[720px] pt-2 sm:pt-12">
-              {/* Beat 1: Munmun Pleading — He's Got a Name! (Panels 21_01 & 21_03) */}
-              {stageProgress < 0.35 && (
-                <div className="w-full max-w-2xl transition-all duration-500 ease-out rounded-2xl bg-black/30 p-2 sm:p-3.5 backdrop-blur-sm border border-[#e89138]/20 shadow-[0_12px_40px_rgba(0,0,0,0.55)]">
+            <div className="relative w-full flex items-center justify-center min-h-[360px] sm:min-h-[460px] max-h-[780px] pt-1 sm:pt-12">
+              {/* Beat 1a: Establishing Neo-Natal Ward (Panel 21_01) */}
+              {stageProgress < 0.18 && (
+                <div className="w-full max-w-4xl xl:max-w-5xl transition-all duration-500 ease-out flex items-center justify-center">
+                  <ComicPanel
+                    src="/assets/chapter1/p21_panel01.webp"
+                    alt="Silent rows of glowing neo-natal incubators under night hospital lights"
+                    isActive={true}
+                    onInspect={onInspectPanel}
+                    inspectNote="Neo-Natal Ward · 11:40 PM: Rows of newborn incubators humming in quiet sterile light."
+                  />
+                </div>
+              )}
+
+              {/* Beat 1b: Munmun Pleading — He's Got a Name! (Panel 21_03) */}
+              {stageProgress >= 0.18 && stageProgress < 0.45 && (
+                <div className="w-full max-w-4xl xl:max-w-5xl transition-all duration-500 ease-out rounded-2xl bg-black/30 p-1 sm:p-3.5 backdrop-blur-sm border border-[#e89138]/20 shadow-[0_12px_40px_rgba(0,0,0,0.55)]">
                   <CharacterAnimator
                     src="/assets/chapter1/p21_panel03.webp"
                     alt="Munmun pleading frantically with tears: His name is Darius! You can't kill someone with a name!"
@@ -81,8 +94,8 @@ export const Scene08Escape: React.FC<SceneProps> = React.memo(({
               )}
 
               {/* Beat 2: Laila Holding Darius — I Can't! (Panel 22_02) */}
-              {stageProgress >= 0.35 && stageProgress < 0.65 && (
-                <div className="w-full max-w-2xl transition-all duration-500 ease-out rounded-2xl bg-black/30 p-2 sm:p-3.5 backdrop-blur-sm border border-[#e89138]/20 shadow-[0_12px_40px_rgba(0,0,0,0.55)]">
+              {stageProgress >= 0.45 && stageProgress < 0.70 && (
+                <div className="w-full max-w-4xl xl:max-w-5xl transition-all duration-500 ease-out rounded-2xl bg-black/30 p-1 sm:p-3.5 backdrop-blur-sm border border-[#e89138]/20 shadow-[0_12px_40px_rgba(0,0,0,0.55)]">
                   <CharacterAnimator
                     src="/assets/chapter1/p22_panel02.webp"
                     alt="Laila trembling holding baby Darius: What? W-why did you tell me that? I... I can't!"
@@ -96,15 +109,22 @@ export const Scene08Escape: React.FC<SceneProps> = React.memo(({
                 </div>
               )}
 
-              {/* Beat 3: Security Guards Shouting & Corridor Sprint (Panels 23_03 & 24_01) */}
-              {stageProgress >= 0.65 && (
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full max-w-3xl transition-all duration-500 ease-out items-center">
+              {/* Beat 3a: Security Guards Shouting (Panel 23_03) */}
+              {stageProgress >= 0.70 && stageProgress < 0.85 && (
+                <div className="w-full max-w-4xl xl:max-w-5xl transition-all duration-500 ease-out flex items-center justify-center">
                   <ComicPanel
                     src="/assets/chapter1/p23_panel03.webp"
                     alt="Security guards bursting through double doors shouting: There she is! Put that baby down!"
                     isActive={true}
                     onInspect={onInspectPanel}
+                    inspectNote="Hospital security bursting through double doors into the ward."
                   />
+                </div>
+              )}
+
+              {/* Beat 3b: Corridor Sprint Out into Rain (Panel 24_01) */}
+              {stageProgress >= 0.85 && (
+                <div className="w-full max-w-4xl xl:max-w-5xl transition-all duration-500 ease-out flex items-center justify-center">
                   <ComicPanel
                     src="/assets/chapter1/p24_panel01.webp"
                     alt="Laila running barefoot down the slick hospital stairs out into the rain"

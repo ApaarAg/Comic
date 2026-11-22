@@ -69,7 +69,7 @@ export const Scene03Party: React.FC<SceneProps> = React.memo(({
         const { stageProgress } = visualState;
 
         return (
-          <div className="relative flex flex-col items-center justify-center w-full max-w-5xl px-4 md:px-8">
+          <div className="relative flex flex-col items-center justify-center w-full max-w-5xl xl:max-w-6xl 2xl:max-w-7xl px-2 sm:px-6">
             {/* Standardized Glassmorphic Header Badge */}
             <div className="hidden sm:block absolute top-[max(5.25rem,calc(env(safe-area-inset-top,0px)+4.75rem))] left-6 md:left-10 z-30 pointer-events-none">
               <span className="inline-flex items-center gap-2 rounded-full border border-[#e66c8b]/30 bg-black/40 px-3 py-1 font-mono text-[10px] uppercase tracking-[0.22em] text-[#e66c8b] backdrop-blur-md">
@@ -82,10 +82,10 @@ export const Scene03Party: React.FC<SceneProps> = React.memo(({
             </div>
 
             {/* Visual Panel Choreography */}
-            <div className="relative w-full flex items-center justify-center min-h-[360px] sm:min-h-[460px] max-h-[720px] pt-12">
+            <div className="relative w-full flex items-center justify-center min-h-[360px] sm:min-h-[460px] max-h-[780px] pt-12">
               {/* Beat 1: Dhiraj Ranting (Panel 02) */}
               {stageProgress < 0.35 && (
-                <div className="w-full max-w-2xl transition-all duration-500 ease-out">
+                <div className="w-full max-w-4xl xl:max-w-5xl transition-all duration-500 ease-out">
                   <CharacterAnimator
                     src="/assets/chapter1/p08_panel02.webp"
                     alt="Dhiraj animatedly arguing cultural theory at party"
@@ -101,7 +101,7 @@ export const Scene03Party: React.FC<SceneProps> = React.memo(({
 
               {/* Beat 2: Girl Perched on Window Ledge (Panel 03) */}
               {stageProgress >= 0.35 && stageProgress < 0.60 && (
-                <div className="w-full max-w-2xl transition-all duration-500 ease-out">
+                <div className="w-full max-w-4xl xl:max-w-5xl transition-all duration-500 ease-out">
                   <ComicPanel
                     src="/assets/chapter1/p08_panel03.webp"
                     alt="The girl sitting alone on the open window ledge holding a cigarette overlooking the city"
@@ -114,7 +114,7 @@ export const Scene03Party: React.FC<SceneProps> = React.memo(({
 
               {/* Beat 3: Close-up of the Girl's Eyes & Raven Hair (Panel 04) */}
               {stageProgress >= 0.60 && (
-                <div className="w-full max-w-2xl transition-all duration-500 ease-out">
+                <div className="w-full max-w-4xl xl:max-w-5xl transition-all duration-500 ease-out">
                   <ComicPanel
                     src="/assets/chapter1/p08_panel04.webp"
                     alt="Close-up of the girl with gentle curls of raven hair and cigarette smoke drifting past"

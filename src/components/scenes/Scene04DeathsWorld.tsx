@@ -50,7 +50,7 @@ export const Scene04DeathsWorld: React.FC<SceneProps> = React.memo(({
         const { stageProgress } = visualState;
 
         return (
-          <div className="relative flex flex-col items-center justify-center w-full max-w-5xl px-4 md:px-8">
+          <div className="relative flex flex-col items-center justify-center w-full max-w-5xl xl:max-w-6xl 2xl:max-w-7xl px-2 sm:px-6">
             {/* Standardized Glassmorphic Header Badge */}
             <div className="hidden sm:block absolute top-[max(5.25rem,calc(env(safe-area-inset-top,0px)+4.75rem))] left-6 md:left-10 z-30 pointer-events-none">
               <span className="inline-flex items-center gap-2 rounded-full border border-[#8ad3eb]/30 bg-black/40 px-3 py-1 font-mono text-[10px] uppercase tracking-[0.22em] text-[#8ad3eb] backdrop-blur-md">
@@ -63,10 +63,10 @@ export const Scene04DeathsWorld: React.FC<SceneProps> = React.memo(({
             </div>
 
             {/* Active Panel Display */}
-            <div className="relative w-full flex items-center justify-center min-h-[360px] sm:min-h-[460px] max-h-[720px] pt-12">
+            <div className="relative w-full flex items-center justify-center min-h-[360px] sm:min-h-[460px] max-h-[780px] pt-12">
               {/* Beat 1: The Silvered Tower Exterior (Panel 01) */}
               {stageProgress < 0.12 && (
-                <div className="w-full max-w-2xl transition-all duration-500 ease-out">
+                <div className="w-full max-w-4xl xl:max-w-5xl transition-all duration-500 ease-out">
                   <ComicPanel
                     src="/assets/chapter1/p09_panel01.webp"
                     alt="A slender golden-lit Silvered Tower rising through pastel pink and blue clouds"
@@ -77,9 +77,9 @@ export const Scene04DeathsWorld: React.FC<SceneProps> = React.memo(({
                 </div>
               )}
 
-              {/* Beat 2: Elevator Arrival & Hold the Door! (Panels 02 & 03) */}
-              {stageProgress >= 0.12 && stageProgress < 0.24 && (
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full max-w-3xl transition-all duration-500 ease-out items-center">
+              {/* Beat 2a: Hold the Door! (Panel 09_02) */}
+              {stageProgress >= 0.12 && stageProgress < 0.18 && (
+                <div className="w-full max-w-4xl xl:max-w-5xl transition-all duration-500 ease-out flex items-center justify-center">
                   <CharacterAnimator
                     src="/assets/chapter1/p09_panel02.webp"
                     alt="Blue ringed hand reaching between closing crimson elevator doors: Hold the door!"
@@ -89,6 +89,12 @@ export const Scene04DeathsWorld: React.FC<SceneProps> = React.memo(({
                     subtleMotion="pulse"
                     onInspect={onInspectPanel}
                   />
+                </div>
+              )}
+
+              {/* Beat 2b: Crowded Elevator (Panel 09_03) */}
+              {stageProgress >= 0.18 && stageProgress < 0.24 && (
+                <div className="w-full max-w-3xl lg:max-w-4xl transition-all duration-500 ease-out flex items-center justify-center">
                   <ComicPanel
                     src="/assets/chapter1/p09_panel03.webp"
                     alt="Crowded surreal elevator of strange spirits and Death clutching her pink file"
@@ -100,7 +106,7 @@ export const Scene04DeathsWorld: React.FC<SceneProps> = React.memo(({
 
               {/* Beat 3: Agni Greets Death (Panel 10_01) */}
               {stageProgress >= 0.24 && stageProgress < 0.35 && (
-                <div className="w-full max-w-2xl transition-all duration-500 ease-out">
+                <div className="w-full max-w-xl max-h-[76vh] transition-all duration-500 ease-out flex items-center justify-center">
                   <CharacterAnimator
                     src="/assets/chapter1/p10_panel01.webp"
                     alt="Agni guiding Death along the glass corridor toward the corner office"
@@ -116,7 +122,7 @@ export const Scene04DeathsWorld: React.FC<SceneProps> = React.memo(({
 
               {/* Beat 4: God Offers a Seat (Panel 10_03) */}
               {stageProgress >= 0.35 && stageProgress < 0.44 && (
-                <div className="w-full max-w-2xl transition-all duration-500 ease-out">
+                <div className="w-full max-w-xl max-h-[76vh] transition-all duration-500 ease-out flex items-center justify-center">
                   <CharacterAnimator
                     src="/assets/chapter1/p10_panel03.webp"
                     alt="God sitting behind a massive teak desk welcoming Death"
@@ -130,9 +136,9 @@ export const Scene04DeathsWorld: React.FC<SceneProps> = React.memo(({
                 </div>
               )}
 
-              {/* Beat 5: God Inquiring Hobbies (Panel 10_05) */}
+              {/* Beat 5: God Inquiring Hobbies (Panel 10_05 - Ultra-wide Panoramic Strip) */}
               {stageProgress >= 0.44 && stageProgress < 0.52 && (
-                <div className="w-full max-w-2xl transition-all duration-500 ease-out">
+                <div className="w-full max-w-5xl xl:max-w-6xl 2xl:max-w-7xl transition-all duration-500 ease-out">
                   <CharacterAnimator
                     src="/assets/chapter1/p10_panel05.webp"
                     alt="God casually leaning back asking about work, life, friendships, hobbies"
@@ -147,7 +153,7 @@ export const Scene04DeathsWorld: React.FC<SceneProps> = React.memo(({
 
               {/* Beat 6: Death Puzzled (Panel 10_07) */}
               {stageProgress >= 0.52 && stageProgress < 0.60 && (
-                <div className="w-full max-w-2xl transition-all duration-500 ease-out">
+                <div className="w-full max-w-2xl lg:max-w-3xl transition-all duration-500 ease-out flex items-center justify-center">
                   <CharacterAnimator
                     src="/assets/chapter1/p10_panel07.webp"
                     alt="Death looking perplexed clutching her folder: W-what am I doing here, Sir?"
@@ -160,9 +166,9 @@ export const Scene04DeathsWorld: React.FC<SceneProps> = React.memo(({
                 </div>
               )}
 
-              {/* Beat 7: Eternity Exchange (Panels 11_01 & 11_03) */}
-              {stageProgress >= 0.60 && stageProgress < 0.74 && (
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full max-w-3xl transition-all duration-500 ease-out items-center">
+              {/* Beat 7a: Eternity Exchange - God (Panel 11_01) */}
+              {stageProgress >= 0.60 && stageProgress < 0.67 && (
+                <div className="w-full max-w-3xl lg:max-w-4xl transition-all duration-500 ease-out flex items-center justify-center">
                   <CharacterAnimator
                     src="/assets/chapter1/p11_panel01.webp"
                     alt="God smiling gently: Feels like an eternity, doesn't it?"
@@ -171,6 +177,12 @@ export const Scene04DeathsWorld: React.FC<SceneProps> = React.memo(({
                     reducedMotion={reducedMotion}
                     onInspect={onInspectPanel}
                   />
+                </div>
+              )}
+
+              {/* Beat 7b: Eternity Exchange - Death (Panel 11_03) */}
+              {stageProgress >= 0.67 && stageProgress < 0.74 && (
+                <div className="w-full max-w-3xl lg:max-w-4xl transition-all duration-500 ease-out flex items-center justify-center">
                   <CharacterAnimator
                     src="/assets/chapter1/p11_panel03.webp"
                     alt="Death answering earnestly: I have actually been here for an eternity."
@@ -184,7 +196,7 @@ export const Scene04DeathsWorld: React.FC<SceneProps> = React.memo(({
 
               {/* Beat 8: The Bombshell — Fired! (Panel 11_05) */}
               {stageProgress >= 0.74 && stageProgress < 0.83 && (
-                <div className="w-full max-w-2xl transition-all duration-500 ease-out">
+                <div className="w-full max-w-3xl lg:max-w-4xl transition-all duration-500 ease-out flex items-center justify-center">
                   <CharacterAnimator
                     src="/assets/chapter1/p11_panel05.webp"
                     alt="God delivering the news: Yes, Death. I'm afraid we're letting you go."
@@ -200,37 +212,43 @@ export const Scene04DeathsWorld: React.FC<SceneProps> = React.memo(({
 
               {/* Beat 9: Death's Outrage & Corporate Defense (Panels 12_01, 12_04, 12_06) */}
               {stageProgress >= 0.83 && (
-                <div className="w-full max-w-2xl transition-all duration-500 ease-out">
+                <div className="w-full flex items-center justify-center transition-all duration-500 ease-out">
                   {stageProgress < 0.90 ? (
-                    <CharacterAnimator
-                      src="/assets/chapter1/p12_panel01.webp"
-                      alt="Death shouting in furious disbelief: WHAT?! Send down a plague!"
-                      character="death"
-                      activeSpeaker="death"
-                      reducedMotion={reducedMotion}
-                      subtleMotion="pulse"
-                      onInspect={onInspectPanel}
-                      inspectNote="I'm an absolute consequence. It's in the job description!"
-                    />
+                    <div className="w-full max-w-xl max-h-[76vh]">
+                      <CharacterAnimator
+                        src="/assets/chapter1/p12_panel01.webp"
+                        alt="Death shouting in furious disbelief: WHAT?! Send down a plague!"
+                        character="death"
+                        activeSpeaker="death"
+                        reducedMotion={reducedMotion}
+                        subtleMotion="pulse"
+                        onInspect={onInspectPanel}
+                        inspectNote="I'm an absolute consequence. It's in the job description!"
+                      />
+                    </div>
                   ) : stageProgress < 0.95 ? (
-                    <CharacterAnimator
-                      src="/assets/chapter1/p12_panel04.webp"
-                      alt="God shrugging defensively: You know how corporate feels about that kind of stuff."
-                      character="god"
-                      activeSpeaker="god"
-                      reducedMotion={reducedMotion}
-                      onInspect={onInspectPanel}
-                    />
+                    <div className="w-full max-w-4xl xl:max-w-5xl">
+                      <CharacterAnimator
+                        src="/assets/chapter1/p12_panel04.webp"
+                        alt="God shrugging defensively: You know how corporate feels about that kind of stuff."
+                        character="god"
+                        activeSpeaker="god"
+                        reducedMotion={reducedMotion}
+                        onInspect={onInspectPanel}
+                      />
+                    </div>
                   ) : (
-                    <CharacterAnimator
-                      src="/assets/chapter1/p12_panel06.webp"
-                      alt="Death devastated: This is all I've ever done. What am I supposed to do?"
-                      character="death"
-                      activeSpeaker="death"
-                      reducedMotion={reducedMotion}
-                      subtleMotion="breathe"
-                      onInspect={onInspectPanel}
-                    />
+                    <div className="w-full max-w-xl max-h-[76vh]">
+                      <CharacterAnimator
+                        src="/assets/chapter1/p12_panel06.webp"
+                        alt="Death devastated: This is all I've ever done. What am I supposed to do?"
+                        character="death"
+                        activeSpeaker="death"
+                        reducedMotion={reducedMotion}
+                        subtleMotion="breathe"
+                        onInspect={onInspectPanel}
+                      />
+                    </div>
                   )}
                 </div>
               )}
