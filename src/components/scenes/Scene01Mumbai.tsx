@@ -1,4 +1,22 @@
-import React, { useEffect, useRef, useState } from 'react';
+/**
+ * @license
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Scene01Mumbai.tsx
+ *
+ * Storyverse 4.2.5: Cinematic Opening Reconstruction for Scene 01 (The City of Mumbai)
+ *
+ * Transforms the opening full-page splash artwork (Filipe Andrade, 1920x2913)
+ * into a guided, scroll-driven cinematic camera journey exploring the source
+ * comic page across five progressive stages:
+ * - STAGE A: Complete Artwork Reveal (Establishing the wide twilight splash)
+ * - STAGE B: Sunset Horizon Focus (Close-in on late-December solar corona)
+ * - STAGE C: Glass Monoliths & Narration (Descending past BKC towers with synchronized narration)
+ * - STAGE D: Elevated Highway Overpass (Framing the knotted concrete curve and traffic gridlock)
+ * - STAGE E: Composition Revisit & Continuity Corridor (Pushing into Scene 02)
+ */
+
+import React, { useEffect, useRef, useState, useCallback } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import mumbaiSkylineUrl from '../../assets/images/mumbai_skyline_backdrop_1795078714752.jpg';
@@ -11,7 +29,7 @@ import { MOTION_EASING } from '../../story/motionSystem';
 import { sceneAudioManager } from '../../audio/SceneAudioManager';
 import { characterVoicePlayer } from '../../audio/CharacterVoicePlayer';
 import { useOptionalNarrative } from '../../narrative/NarrativeEngine';
-import { RotateCcw } from 'lucide-react';
+import { RotateCcw, ZoomIn } from 'lucide-react';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -67,6 +85,105 @@ const MUMBAI_CITY_PINS: ReadonlyArray<CityPinNote> = [
   },
 ];
 
+interface CameraKeyframe {
+  progress: number;
+  zoom: number;
+  yRatio: number; // Fraction of maxPanY [0..1]
+  originX: number;
+  originY: number;
+  stageName: string;
+}
+
+const SCENE01_CAMERA_KEYFRAMES: ReadonlyArray<CameraKeyframe> = [
+  {
+    progress: 0.00,
+    zoom: 1.02,
+    yRatio: 0.00,
+    originX: 50,
+    originY: 18,
+    stageName: 'Stage A · Complete Artwork Reveal',
+  },
+  {
+    progress: 0.26,
+    zoom: 1.34,
+    yRatio: 0.10,
+    originX: 48,
+    originY: 15,
+    stageName: 'Stage B · Sunset Horizon · 4:45 PM',
+  },
+  {
+    progress: 0.52,
+    zoom: 1.26,
+    yRatio: 0.46,
+    originX: 50,
+    originY: 48,
+    stageName: 'Stage C · Bandra-Kurla Glass Monoliths',
+  },
+  {
+    progress: 0.78,
+    zoom: 1.35,
+    yRatio: 0.85,
+    originX: 52,
+    originY: 82,
+    stageName: 'Stage D · Elevated Highway Overpass',
+  },
+  {
+    progress: 1.00,
+    zoom: 1.15,
+    yRatio: 1.00,
+    originX: 50,
+    originY: 88,
+    stageName: 'Stage E · Continuity Corridor → Scene 02',
+  },
+];
+
+function lerpVal(a: number, b: number, t: number): number {
+  return a + (b - a) * Math.max(0, Math.min(1, t));
+}
+
+function resolveCameraAtProgress(p: number, maxPanY: number): {
+  zoom: number;
+  y: number;
+  originX: number;
+  originY: number;
+  stageName: string;
+} {
+  const clamped = Math.max(0, Math.min(1, p));
+  const frames = SCENE01_CAMERA_KEYFRAMES;
+
+  let prev = frames[0];
+  let next = frames[frames.length - 1];
+
+  for (let i = 0; i < frames.length; i++) {
+    if (frames[i].progress <= clamped) {
+      prev = frames[i];
+    }
+    if (frames[i].progress >= clamped) {
+      next = frames[i];
+      break;
+    }
+  }
+
+  const span = next.progress - prev.progress;
+  const rawT = span > 0 ? (clamped - prev.progress) / span : 0;
+  // Hermite smoothstep cubic easing
+  const smoothT = rawT * rawT * (3 - 2 * rawT);
+
+  const zoom = lerpVal(prev.zoom, next.zoom, smoothT);
+  const yRatio = lerpVal(prev.yRatio, next.yRatio, smoothT);
+  const originX = lerpVal(prev.originX, next.originX, smoothT);
+  const originY = lerpVal(prev.originY, next.originY, smoothT);
+  const stageName = rawT < 0.65 ? prev.stageName : next.stageName;
+
+  return {
+    zoom: Math.round(zoom * 1000) / 1000,
+    y: Math.round(-maxPanY * yRatio),
+    originX: Math.round(originX * 10) / 10,
+    originY: Math.round(originY * 10) / 10,
+    stageName,
+  };
+}
+
 export const Scene01Mumbai: React.FC<SceneProps> = React.memo(({
   reducedMotion,
   activeSceneIndex,
@@ -82,6 +199,7 @@ export const Scene01Mumbai: React.FC<SceneProps> = React.memo(({
   const panoramaLayerRef = useRef<HTMLDivElement>(null);
   const foregroundLayerRef = useRef<HTMLDivElement>(null);
   const viewportRef = useRef<HTMLDivElement>(null);
+  const cameraRigRef = useRef<HTMLDivElement>(null);
   const imgRef = useRef<HTMLImageElement>(null);
   const hazeRef = useRef<HTMLDivElement>(null);
   const captionHighwayRef = useRef<HTMLDivElement>(null);
@@ -91,6 +209,11 @@ export const Scene01Mumbai: React.FC<SceneProps> = React.memo(({
 
   const [selectedPinId, setSelectedPinId] = useState<string | null>(null);
   const [discoveredPins, setDiscoveredPins] = useState<Record<string, boolean>>({});
+  const [activeStageName, setActiveStageName] = useState<string>('Stage A · Complete Artwork Reveal');
+  const [showHighwayNarration, setShowHighwayNarration] = useState<boolean>(false);
+
+  const prevProgressRef = useRef<number>(0);
+  const hasTriggeredNarrationRef = useRef<boolean>(false);
 
   useEffect(() => {
     if (reducedMotion || !sectionRef.current) return;
@@ -114,6 +237,7 @@ export const Scene01Mumbai: React.FC<SceneProps> = React.memo(({
 
   useEffect(() => {
     if (reducedMotion || !sectionRef.current || !panTrackRef.current) return;
+
     const ctx = gsap.context(() => {
       // Multi-depth horizon reveal on Scene 01 entrance
       if (viewportRef.current) {
@@ -154,7 +278,7 @@ export const Scene01Mumbai: React.FC<SceneProps> = React.memo(({
         },
       });
 
-      // BACKGROUND TIER (slowest apparent motion — drifts downward slightly to resist scroll)
+      // BACKGROUND TIER (slowest apparent motion)
       if (skylineLayerRef.current) {
         gsap.fromTo(
           skylineLayerRef.current,
@@ -179,7 +303,7 @@ export const Scene01Mumbai: React.FC<SceneProps> = React.memo(({
         );
       }
 
-      // MID-GROUND TIER (moderate velocity — glides gently upward & horizontally)
+      // MID-GROUND TIER
       if (cloudLayerRef.current) {
         gsap.fromTo(
           cloudLayerRef.current,
@@ -217,7 +341,7 @@ export const Scene01Mumbai: React.FC<SceneProps> = React.memo(({
         );
       }
 
-      // FOREGROUND TIER (fastest velocity — architectural rooftops sweep briskly past camera)
+      // FOREGROUND TIER
       if (foregroundLayerRef.current) {
         gsap.fromTo(
           foregroundLayerRef.current,
@@ -232,28 +356,54 @@ export const Scene01Mumbai: React.FC<SceneProps> = React.memo(({
         );
       }
 
-      // Vertical camera pan descending down Filipe Andrade's splash from sun to B.K.C. overpass
-      if (imgRef.current && viewportRef.current) {
-        gsap.fromTo(
-          imgRef.current,
-          { y: 0 },
-          {
-            y: () => {
-              const imgH = imgRef.current?.offsetHeight ?? 0;
-              const viewH = viewportRef.current?.clientHeight ?? 0;
-              return -Math.max(0, imgH - viewH);
-            },
-            ease: 'none',
-            scrollTrigger: {
-              trigger: panTrackRef.current,
-              start: 'top 10%',
-              end: 'bottom bottom',
-              scrub: 0.35,
-              invalidateOnRefresh: true,
-            },
-          },
-        );
-      }
+      // Guided Cinematic Camera Journey on Filipe Andrade's full-page splash
+      ScrollTrigger.create({
+        trigger: panTrackRef.current,
+        start: 'top top',
+        end: 'bottom bottom',
+        scrub: 0.4,
+        invalidateOnRefresh: true,
+        onUpdate: (self) => {
+          const p = Math.max(0, Math.min(1, self.progress));
+          const prev = prevProgressRef.current;
+          prevProgressRef.current = p;
+
+          const imgEl = imgRef.current;
+          const viewEl = viewportRef.current;
+          const rigEl = cameraRigRef.current;
+
+          if (imgEl && viewEl && rigEl) {
+            const imgH = imgEl.offsetHeight;
+            const viewH = viewEl.clientHeight;
+            const maxPanY = Math.max(0, imgH - viewH);
+
+            const cam = resolveCameraAtProgress(p, maxPanY);
+
+            rigEl.style.transformOrigin = `${cam.originX}% ${cam.originY}%`;
+            rigEl.style.transform = `translate3d(0, ${cam.y}px, 0) scale(${cam.zoom})`;
+            setActiveStageName(cam.stageName);
+          }
+
+          // Highway narration card visibility threshold
+          setShowHighwayNarration(p >= 0.40);
+
+          // Audio synchronization: trigger highway narration if forward scroll crossed threshold
+          if (
+            prev < 0.48 &&
+            p >= 0.48 &&
+            !hasTriggeredNarrationRef.current &&
+            characterVoicePlayer.getActiveSceneId() === 'scene-01'
+          ) {
+            hasTriggeredNarrationRef.current = true;
+            narrative?.triggerNarrationBeat('s01-02');
+          }
+
+          // Backward scroll hysteresis: reset trigger only after deliberate retreat
+          if (p < 0.35) {
+            hasTriggeredNarrationRef.current = false;
+          }
+        },
+      });
 
       // Atmospheric sunset glaze shift
       if (hazeRef.current) {
@@ -266,28 +416,9 @@ export const Scene01Mumbai: React.FC<SceneProps> = React.memo(({
             ease: 'none',
             scrollTrigger: {
               trigger: panTrackRef.current,
-              start: 'top 10%',
+              start: 'top top',
               end: 'bottom bottom',
               scrub: true,
-            },
-          },
-        );
-      }
-
-      // Lower B.K.C. overpass narration beat fades in as camera settles onto highway traffic
-      if (captionHighwayRef.current) {
-        gsap.fromTo(
-          captionHighwayRef.current,
-          { y: 20, opacity: 0 },
-          {
-            y: 0,
-            opacity: 1,
-            ease: MOTION_EASING.editorial,
-            scrollTrigger: {
-              trigger: panTrackRef.current,
-              start: '42% center',
-              end: '76% bottom',
-              scrub: 0.4,
             },
           },
         );
@@ -295,7 +426,7 @@ export const Scene01Mumbai: React.FC<SceneProps> = React.memo(({
     }, sectionRef);
 
     return () => ctx.revert();
-  }, [reducedMotion]);
+  }, [reducedMotion, narrative]);
 
   const handlePinSelect = (pin: CityPinNote) => {
     const nextId = selectedPinId === pin.id ? null : pin.id;
@@ -315,7 +446,7 @@ export const Scene01Mumbai: React.FC<SceneProps> = React.memo(({
       aria-label="Scene 1: The City of Mumbai"
       className="relative overflow-x-clip bg-[#141225] pt-20 pb-16"
     >
-      {/* BACKGROUND TIER: Distant Illustrated Mumbai Skyline Backdrop (GSAP outer + pointer inner) */}
+      {/* BACKGROUND TIER: Distant Illustrated Mumbai Skyline Backdrop */}
       <div
         ref={skylineLayerRef}
         data-parallax-tier="background"
@@ -390,7 +521,7 @@ export const Scene01Mumbai: React.FC<SceneProps> = React.memo(({
         />
       </div>
 
-      {/* FOREGROUND TIER: Architectural Mumbai Rooftops Framing Outer Viewport Edges (GSAP outer + pointer inner) */}
+      {/* FOREGROUND TIER: Architectural Mumbai Rooftops Framing Outer Viewport Edges */}
       <div
         ref={foregroundLayerRef}
         data-parallax-tier="foreground"
@@ -461,7 +592,7 @@ export const Scene01Mumbai: React.FC<SceneProps> = React.memo(({
           </p>
         </div>
 
-        {/* MID-GROUND TIER: Establishing Atmospheric Panorama Strip with Interactive City Pins */}
+        {/* Establishing Atmospheric Panorama Strip with Interactive City Pins */}
         <div
           ref={panoramaLayerRef}
           data-parallax-tier="midground-panorama"
@@ -562,7 +693,7 @@ export const Scene01Mumbai: React.FC<SceneProps> = React.memo(({
         </div>
       </div>
 
-      {/* Original Graphic Novel Splash Sequence: Vertical Camera Pan + Scroll-Driven Narrator Chronicle */}
+      {/* Guided Cinematic Opening Experience */}
       {reducedMotion ? (
         <div className="relative z-10 mx-auto max-w-6xl px-4 md:px-10 space-y-6">
           <div className="grid grid-cols-1 gap-6 lg:grid-cols-12 lg:items-center">
@@ -618,87 +749,118 @@ export const Scene01Mumbai: React.FC<SceneProps> = React.memo(({
       ) : (
         <div
           ref={panTrackRef}
-          className="relative z-10 mx-auto max-w-6xl px-4 md:px-10 min-h-[200vh]"
+          className="relative z-10 mx-auto max-w-6xl xl:max-w-7xl px-4 md:px-8 min-h-[260vh]"
         >
-          <div className="sticky top-[5.25rem]">
-            <div className="grid grid-cols-1 gap-6 lg:grid-cols-12 lg:items-center">
-              <div className="lg:col-span-7">
+          {/* Sticky Camera Viewport Frame */}
+          <div className="sticky top-[5.25rem] w-full">
+            <div
+              ref={viewportRef}
+              className="relative w-full h-[calc(100vh-7.5rem)] min-h-[480px] sm:min-h-[540px] max-h-[820px] overflow-hidden rounded-xl border border-white/15 bg-[#090b16]/95 shadow-[0_24px_80px_rgba(0,0,0,0.85)] backdrop-blur-sm"
+              style={{
+                transform: choreography?.cameraZoom ? `scale(${choreography.cameraZoom})` : undefined,
+                transition: 'transform 800ms cubic-bezier(0.16, 1, 0.3, 1)',
+              }}
+            >
+              {/* Dynamic Camera Rig Layer */}
+              <div
+                ref={cameraRigRef}
+                className="relative w-full flex items-start justify-center will-change-transform"
+                style={{
+                  transition: 'transform 120ms cubic-bezier(0.16, 1, 0.3, 1)',
+                }}
+              >
+                <img
+                  ref={imgRef}
+                  src="/assets/chapter1/p06_panel01.webp"
+                  alt="Late December sunset dipping below the Mumbai skyline and curving B.K.C. overpass traffic"
+                  loading="eager"
+                  decoding="sync"
+                  referrerPolicy="no-referrer"
+                  onLoad={() => ScrollTrigger.refresh()}
+                  onClick={() =>
+                    onInspectPanel({
+                      src: '/assets/chapter1/p06_panel01.webp',
+                      alt: 'Late December sunset dipping below the Mumbai skyline and curving B.K.C. overpass traffic',
+                      note: "Filipe Andrade's full-page splash descends vertically from crimson sunset clouds straight down into Mumbai's Bandra-Kurla Complex overpass.",
+                    })
+                  }
+                  className="w-full max-w-4xl xl:max-w-5xl h-auto block select-none cursor-zoom-in"
+                />
+
+                {/* Warm sunset atmospheric light glaze */}
                 <div
-                  ref={viewportRef}
-                  className="comic-panel-frame relative h-[calc(100vh-14.5rem)] lg:h-[calc(100vh-7.25rem)] min-h-[380px] sm:min-h-[460px] max-h-[780px] overflow-hidden"
+                  ref={hazeRef}
+                  aria-hidden="true"
+                  className="pointer-events-none absolute inset-0"
                   style={{
-                    transform: choreography?.cameraZoom ? `scale(${choreography.cameraZoom})` : undefined,
-                    transition: 'transform 800ms cubic-bezier(0.16, 1, 0.3, 1)',
+                    background:
+                      'linear-gradient(125deg, rgba(242, 139, 80, 0.16) 0%, rgba(217, 91, 102, 0.06) 45%, rgba(20, 18, 37, 0.22) 100%)',
                   }}
-                >
-                  <img
-                    ref={imgRef}
-                    src="/assets/chapter1/p06_panel01.webp"
-                    alt="Late December sunset dipping below the Mumbai skyline and curving B.K.C. overpass traffic"
-                    loading="eager"
-                    decoding="sync"
-                    referrerPolicy="no-referrer"
-                    onLoad={() => ScrollTrigger.refresh()}
-                    onClick={() =>
-                      onInspectPanel({
-                        src: '/assets/chapter1/p06_panel01.webp',
-                        alt: 'Late December sunset dipping below the Mumbai skyline and curving B.K.C. overpass traffic',
-                        note: "Filipe Andrade's full-page splash descends vertically from crimson sunset clouds straight down into Mumbai's Bandra-Kurla Complex overpass.",
-                      })
-                    }
-                    className="w-full h-auto block select-none will-change-transform cursor-zoom-in"
-                  />
-
-                  {/* Warm sunset atmospheric light glaze */}
-                  <div
-                    ref={hazeRef}
-                    aria-hidden="true"
-                    className="pointer-events-none absolute inset-0"
-                    style={{
-                      background:
-                        'linear-gradient(125deg, rgba(242, 139, 80, 0.16) 0%, rgba(217, 91, 102, 0.06) 45%, rgba(20, 18, 37, 0.22) 100%)',
-                    }}
-                  />
-
-                  {/* Subtle bottom gradient scrim */}
-                  <div
-                    aria-hidden="true"
-                    className="pointer-events-none absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-[#141225]/90 via-[#141225]/35 to-transparent"
-                  />
-
-                  <div
-                    ref={captionHighwayRef}
-                    className="pointer-events-none sr-only"
-                  />
-                </div>
+                />
               </div>
 
-              <div className="lg:col-span-5 space-y-4">
-                <div className="relative border border-white/10 bg-[#121324]/85 p-6 backdrop-blur-md shadow-2xl">
-                  <div className="absolute -inset-x-2 -top-4 bottom-0 bg-gradient-to-r from-[#141225]/95 via-[#141225]/80 to-transparent pointer-events-none" aria-hidden="true" />
-                  <span className="font-mono text-[10px] uppercase tracking-[0.28em] text-[#f28b50] font-semibold">
-                    Scene 01 · The City of Mumbai
-                  </span>
-                  <h3 className="font-display mt-2 text-2xl font-semibold text-[#f8f1e7]">
-                    Late December · 4:45 PM
-                  </h3>
-                  <p className="mt-3 font-display text-sm italic leading-relaxed text-[#dfd5c7]/90">
+              {/* Viewport Top HUD Overlay */}
+              <div className="absolute top-3 inset-x-4 z-30 pointer-events-none flex items-center justify-between gap-3">
+                <span className="font-mono text-[10px] sm:text-[11px] uppercase tracking-[0.22em] text-[#f28b50] bg-black/60 px-3 py-1 rounded-full border border-[#f28b50]/30 backdrop-blur-md shadow-md">
+                  {activeStageName}
+                </span>
+                <button
+                  type="button"
+                  onClick={() =>
+                    onInspectPanel({
+                      src: '/assets/chapter1/p06_panel01.webp',
+                      alt: 'Late December sunset dipping below the Mumbai skyline and curving B.K.C. overpass traffic',
+                      note: "Filipe Andrade's full-page splash descends vertically from crimson sunset clouds straight down into Mumbai's Bandra-Kurla Complex overpass.",
+                    })
+                  }
+                  className="pointer-events-auto inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full border border-white/20 bg-black/50 hover:border-[#f28b50] hover:text-[#f28b50] text-[#e6ddd0] text-[10px] font-mono transition-all backdrop-blur-md cursor-pointer shadow-md"
+                  title="Inspect Full Artwork Splash"
+                >
+                  <ZoomIn className="w-3.5 h-3.5 text-[#f28b50]" />
+                  <span className="hidden sm:inline">Inspect Plate</span>
+                </button>
+              </div>
+
+              {/* Bottom Vignette Scrim */}
+              <div
+                aria-hidden="true"
+                className="pointer-events-none absolute inset-x-0 bottom-0 h-36 bg-gradient-to-t from-[#0a0d1a]/95 via-[#0a0d1a]/45 to-transparent z-20"
+              />
+
+              {/* Bottom Editorial Narration Overlay Card */}
+              <div
+                ref={captionHighwayRef}
+                className={`absolute bottom-4 inset-x-4 sm:inset-x-8 z-30 pointer-events-auto transition-all duration-500 ease-out ${
+                  showHighwayNarration
+                    ? 'opacity-100 translate-y-0'
+                    : 'opacity-0 translate-y-3 pointer-events-none'
+                }`}
+              >
+                <div className="mx-auto max-w-2xl border border-white/15 bg-[#0a0d1a]/90 p-4 sm:p-5 backdrop-blur-md shadow-2xl rounded-lg">
+                  <div className="flex items-center justify-between gap-2 border-b border-white/10 pb-2 mb-2.5">
+                    <span className="font-mono text-[10px] uppercase tracking-[0.24em] text-[#f28b50] font-semibold">
+                      Scene 01 · The City of Mumbai
+                    </span>
+                    <span className="font-mono text-[10px] uppercase tracking-[0.16em] text-[#cfc5b9]/70">
+                      Bandra-Kurla Complex
+                    </span>
+                  </div>
+                  <p className="font-display text-sm sm:text-base italic leading-relaxed text-[#fbf4ea]/95">
                     &ldquo;Down where the elevated highway curves between glass towers, the city exhaled in horns and heat.&rdquo;
                   </p>
-                  <div className="mt-4 pt-3 border-t border-white/10 flex items-center justify-between text-xs text-[#cfc5b9]/75 flex-wrap gap-2">
-                    <span className="font-mono text-[11px] text-[#f28b50]">Voice: The Chronicle (Brian · 1.05x)</span>
-                    <div className="flex items-center gap-2">
-                      <button
-                        type="button"
-                        onClick={() => narrative?.triggerNarrationBeat('s01-02', true)}
-                        className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded border border-white/15 bg-black/40 hover:border-[#f28b50] hover:text-[#f28b50] text-[#e6ddd0] text-[10px] font-mono transition-all cursor-pointer"
-                        title="Replay Highway Narration"
-                      >
-                        <RotateCcw className="w-3 h-3 text-[#f28b50]" />
-                        <span>Replay</span>
-                      </button>
-                      <span className="font-mono text-[11px]">Bandra-Kurla Complex</span>
-                    </div>
+                  <div className="mt-3 pt-2.5 border-t border-white/10 flex items-center justify-between text-xs text-[#cfc5b9]/80 flex-wrap gap-2">
+                    <span className="font-mono text-[10px] sm:text-[11px] text-[#f28b50]">
+                      Voice: The Chronicle (Brian · 1.05x)
+                    </span>
+                    <button
+                      type="button"
+                      onClick={() => narrative?.triggerNarrationBeat('s01-02', true)}
+                      className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded border border-white/20 bg-black/50 hover:border-[#f28b50] hover:text-[#f28b50] text-[#e6ddd0] text-[10px] font-mono transition-all cursor-pointer shadow-sm"
+                      title="Replay Highway Narration"
+                    >
+                      <RotateCcw className="w-3 h-3 text-[#f28b50]" />
+                      <span>Replay Voice</span>
+                    </button>
                   </div>
                 </div>
               </div>
@@ -708,7 +870,7 @@ export const Scene01Mumbai: React.FC<SceneProps> = React.memo(({
       )}
 
       {/* Interactive Geographic Context Node (Preserved + Seamlessly Anchored Before Scene 02 Descent) */}
-      <div className="relative z-20 mx-auto mt-10 max-w-5xl px-6 md:px-10">
+      <div className="relative z-20 mx-auto mt-12 max-w-5xl px-6 md:px-10">
         <InteractiveHotspot
           id="mumbai-sunset"
           label="City Observation"
