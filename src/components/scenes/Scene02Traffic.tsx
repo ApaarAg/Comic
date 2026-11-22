@@ -52,7 +52,7 @@ export const Scene02Traffic: React.FC<SceneProps> = React.memo(({
         return (
           <div className="relative flex flex-col items-center justify-center w-full max-w-5xl px-4 md:px-8">
             {/* Standardized Editorial Scene Header Badge */}
-            <div className="absolute top-4 left-6 md:left-10 pointer-events-none z-30">
+            <div className="hidden sm:block absolute top-[max(5.25rem,calc(env(safe-area-inset-top,0px)+4.75rem))] left-6 md:left-10 pointer-events-none z-30">
               <span className="font-mono text-[11px] uppercase tracking-[0.24em] text-[#e8a84a] bg-black/40 px-2.5 py-0.5 rounded-full border border-[#e8a84a]/30 backdrop-blur-md">
                 Scene 02 · B.K.C. Overpass
               </span>
@@ -62,7 +62,7 @@ export const Scene02Traffic: React.FC<SceneProps> = React.memo(({
             </div>
 
             {/* Active Panel Display depending on narrative beat */}
-            <div className="relative w-full flex items-center justify-center min-h-[360px] sm:min-h-[460px] max-h-[720px] pt-12">
+            <div className="relative w-full flex items-center justify-center min-h-[360px] sm:min-h-[460px] max-h-[720px] pt-2 sm:pt-12">
               {/* Beat 1: Mrs. Shah Screaming on Phone (Panel 01) */}
               {stageProgress < 0.22 && (
                 <div className="w-full max-w-2xl transition-opacity duration-500 ease-out">
@@ -132,7 +132,7 @@ export const Scene02Traffic: React.FC<SceneProps> = React.memo(({
 
               {/* Beat 5: Baby Is Coming Close-up (Panel 06) */}
               {stageProgress >= 0.80 && (
-                <div className="w-full max-w-2xl transition-opacity duration-500 ease-out">
+                <div className="w-full max-w-2xl transition-opacity duration-500 ease-out rounded-2xl bg-black/30 p-2 sm:p-3.5 backdrop-blur-sm border border-[#e8a84a]/20 shadow-[0_12px_40px_rgba(0,0,0,0.55)]">
                   <CharacterAnimator
                     src="/assets/chapter1/p07_panel06.webp"
                     alt="Close-up of Mrs. Shah in intense pain shouting: The baby is coming!"

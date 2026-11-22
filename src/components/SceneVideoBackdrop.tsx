@@ -181,7 +181,7 @@ export const SceneVideoBackdrop: React.FC<SceneVideoBackdropProps> = ({
         loading="lazy"
         decoding="async"
         referrerPolicy="no-referrer"
-        className="h-full w-full object-cover opacity-20 blur-[2px] scale-105 select-none"
+        className="h-full w-full object-cover opacity-20 blur-[2px] scale-100 max-w-full select-none"
       />
 
       {/* High-resolution background video layer */}

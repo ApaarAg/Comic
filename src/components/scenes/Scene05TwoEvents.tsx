@@ -52,7 +52,7 @@ export const Scene05TwoEvents: React.FC<SceneProps> = React.memo(({
         return (
           <div className="relative flex flex-col items-center justify-center w-full max-w-5xl px-4 md:px-8">
             {/* Standardized Editorial Scene Header Badge */}
-            <div className="absolute top-4 left-6 md:left-10 pointer-events-none z-30">
+            <div className="hidden sm:block absolute top-[max(5.25rem,calc(env(safe-area-inset-top,0px)+4.75rem))] left-6 md:left-10 pointer-events-none z-30">
               <span className="font-mono text-[11px] uppercase tracking-[0.24em] text-[#f06a7e] bg-black/40 px-2.5 py-0.5 rounded-full border border-[#f06a7e]/30 backdrop-blur-md">
                 Scene 05 · Parallel Realities
               </span>

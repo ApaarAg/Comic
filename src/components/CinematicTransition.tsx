@@ -408,13 +408,13 @@ export const CinematicTransition: React.FC<CinematicTransitionProps> = React.mem
           <img
             src={artworkUrl}
             alt={altText || eyebrow}
-            className="w-full h-full object-cover object-center filter brightness-[0.40] contrast-[1.18] saturate-[0.85] scale-105 will-change-transform"
+            className="w-full h-full object-cover object-center filter brightness-[0.36] contrast-[1.18] saturate-[0.85] scale-100 max-w-full will-change-transform"
           />
           {/* Depth vignette and gradient edge feathering */}
           <div
             className="absolute inset-0"
             style={{
-              background: `radial-gradient(ellipse 80% 70% at 50% 50%, transparent 20%, ${fromColor}d9 75%, ${toColor} 100%)`,
+              background: `radial-gradient(ellipse 75% 65% at 50% 50%, rgba(8,10,20,0.60) 0%, ${fromColor}e6 70%, ${toColor} 100%)`,
             }}
           />
           <div
@@ -445,17 +445,19 @@ export const CinematicTransition: React.FC<CinematicTransitionProps> = React.mem
       {/* Editorial Narrative Bridge Copy */}
       <div
         ref={copyRef}
-        className="pointer-events-none relative z-10 flex h-full flex-col items-center justify-center px-6 text-center max-w-4xl mx-auto"
+        className="pointer-events-none relative z-10 flex h-full flex-col items-center justify-center px-4 sm:px-6 text-center max-w-3xl mx-auto"
       >
-        <span
-          className="inline-block px-3 py-1 rounded-full bg-black/40 border border-white/10 font-mono text-[11px] uppercase tracking-[0.28em] backdrop-blur-md mb-3"
-          style={{ color: accentColor }}
-        >
-          {eyebrow}
-        </span>
-        <p className="font-display max-w-2xl text-xl sm:text-2xl md:text-3xl italic leading-snug text-[#f7f2eb] drop-shadow-[0_4px_16px_rgba(0,0,0,0.95)] [text-wrap:balance]">
-          &ldquo;{caption}&rdquo;
-        </p>
+        <div className="flex flex-col items-center justify-center px-6 py-5 sm:px-10 sm:py-7 rounded-2xl bg-[#080a14]/85 border border-white/10 backdrop-blur-md shadow-[0_8px_32px_rgba(0,0,0,0.65)]">
+          <span
+            className="inline-block px-3 py-1 rounded-full bg-black/50 border border-white/15 font-mono text-[11px] uppercase tracking-[0.28em] backdrop-blur-sm mb-3"
+            style={{ color: accentColor }}
+          >
+            {eyebrow}
+          </span>
+          <p className="font-display max-w-2xl text-xl sm:text-2xl md:text-3xl italic leading-snug text-[#f7f2eb] drop-shadow-[0_2px_12px_rgba(0,0,0,0.9)] [text-wrap:balance]">
+            &ldquo;{caption}&rdquo;
+          </p>
+        </div>
       </div>
     </div>
   );

@@ -88,7 +88,22 @@ export const ChapterChrome: React.FC<ChapterChromeProps> = React.memo(({
             Laila Starr
           </a>
 
-          {/* Zone 2: Current Scene & Journey Readout */}
+          {/* Zone 2: Current Scene & Journey Readout (Desktop & Mobile Consolidated) */}
+          <div className="flex sm:hidden items-center gap-1.5 text-[11px] font-mono tracking-wider uppercase text-[#e6ddd0]/90 truncate min-w-0">
+            <span
+              className="font-mono tabular-nums shrink-0 font-semibold"
+              style={{ color: activeScene.theme.accent }}
+            >
+              {activeScene.index === 0
+                ? 'PR'
+                : `${String(activeScene.index).padStart(2, '0')}/10`}
+            </span>
+            <span className="text-[#88837a] shrink-0">·</span>
+            <span className="font-sans font-medium text-[#f6efe5] truncate capitalize tracking-normal">
+              {activeScene.title}
+            </span>
+          </div>
+
           <div className="hidden sm:flex items-center gap-3 text-xs tracking-[0.14em] uppercase text-[#e6ddd0]/85 min-w-0">
             <span
               className="font-mono tabular-nums shrink-0"

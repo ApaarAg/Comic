@@ -52,7 +52,7 @@ export const Scene08Escape: React.FC<SceneProps> = React.memo(({
         return (
           <div className="relative flex flex-col items-center justify-center w-full max-w-5xl px-4 md:px-8">
             {/* Standardized Glassmorphic Header Badge */}
-            <div className="absolute top-4 left-6 md:left-10 z-30 pointer-events-none">
+            <div className="hidden sm:block absolute top-[max(5.25rem,calc(env(safe-area-inset-top,0px)+4.75rem))] left-6 md:left-10 z-30 pointer-events-none">
               <span className="inline-flex items-center gap-2 rounded-full border border-[#e89138]/30 bg-black/40 px-3 py-1 font-mono text-[10px] uppercase tracking-[0.22em] text-[#e89138] backdrop-blur-md">
                 <span className="h-1.5 w-1.5 rounded-full bg-[#e89138]" />
                 <span>Scene 08 · Neo-Natal Ward · 11:40 PM</span>
@@ -63,10 +63,10 @@ export const Scene08Escape: React.FC<SceneProps> = React.memo(({
             </div>
 
             {/* Stage Content */}
-            <div className="relative w-full flex items-center justify-center min-h-[360px] sm:min-h-[460px] max-h-[720px] pt-12">
+            <div className="relative w-full flex items-center justify-center min-h-[360px] sm:min-h-[460px] max-h-[720px] pt-2 sm:pt-12">
               {/* Beat 1: Munmun Pleading — He's Got a Name! (Panels 21_01 & 21_03) */}
               {stageProgress < 0.35 && (
-                <div className="w-full max-w-2xl transition-all duration-500 ease-out">
+                <div className="w-full max-w-2xl transition-all duration-500 ease-out rounded-2xl bg-black/30 p-2 sm:p-3.5 backdrop-blur-sm border border-[#e89138]/20 shadow-[0_12px_40px_rgba(0,0,0,0.55)]">
                   <CharacterAnimator
                     src="/assets/chapter1/p21_panel03.webp"
                     alt="Munmun pleading frantically with tears: His name is Darius! You can't kill someone with a name!"
@@ -82,7 +82,7 @@ export const Scene08Escape: React.FC<SceneProps> = React.memo(({
 
               {/* Beat 2: Laila Holding Darius — I Can't! (Panel 22_02) */}
               {stageProgress >= 0.35 && stageProgress < 0.65 && (
-                <div className="w-full max-w-2xl transition-all duration-500 ease-out">
+                <div className="w-full max-w-2xl transition-all duration-500 ease-out rounded-2xl bg-black/30 p-2 sm:p-3.5 backdrop-blur-sm border border-[#e89138]/20 shadow-[0_12px_40px_rgba(0,0,0,0.55)]">
                   <CharacterAnimator
                     src="/assets/chapter1/p22_panel02.webp"
                     alt="Laila trembling holding baby Darius: What? W-why did you tell me that? I... I can't!"

@@ -420,20 +420,22 @@ export const CinematicViewportStage: React.FC<CinematicViewportStageProps> = Rea
               right: isMobile ? '5%' : undefined,
               bottom: isMobile
                 ? (camera.focalPoint
-                    ? (camera.focalPoint.yPercent > 50 ? undefined : 'max(1.25rem, env(safe-area-inset-bottom, 20px))')
-                    : (camera.panYPercent > 0 || activeLine.side === 'bottom' ? undefined : 'max(1.25rem, env(safe-area-inset-bottom, 20px))'))
+                    ? (camera.focalPoint.yPercent > 50 ? undefined : 'max(1.5rem, env(safe-area-inset-bottom, 24px))')
+                    : (camera.panYPercent > 0 || activeLine.side === 'bottom' ? undefined : 'max(1.5rem, env(safe-area-inset-bottom, 24px))'))
                 : visualState.speechBubble?.anchor
                   ? undefined
-                  : activeLine.side === 'bottom'
-                    ? '12%'
+                  : (camera.panYPercent > 4 || activeLine.side === 'bottom')
+                    ? undefined
                     : '22%',
               top: isMobile
                 ? (camera.focalPoint
-                    ? (camera.focalPoint.yPercent > 50 ? 'max(4.5rem, calc(env(safe-area-inset-top, 0px) + 4rem))' : undefined)
-                    : (camera.panYPercent > 0 || activeLine.side === 'bottom' ? 'max(4.5rem, calc(env(safe-area-inset-top, 0px) + 4rem))' : undefined))
+                    ? (camera.focalPoint.yPercent > 50 ? 'max(5.75rem, calc(env(safe-area-inset-top, 0px) + 5.25rem))' : undefined)
+                    : (camera.panYPercent > 0 || activeLine.side === 'bottom' ? 'max(5.75rem, calc(env(safe-area-inset-top, 0px) + 5.25rem))' : undefined))
                 : !isMobile && visualState.speechBubble?.anchor
                   ? `${Math.round(visualState.speechBubble.anchor.y * 100)}%`
-                  : undefined,
+                  : !isMobile && (camera.panYPercent > 4 || activeLine.side === 'bottom')
+                    ? 'max(5.75rem, calc(env(safe-area-inset-top, 0px) + 5.25rem))'
+                    : undefined,
               transform: !isMobile && visualState.speechBubble?.anchor
                 ? 'translate(-50%, -100%)'
                 : undefined,

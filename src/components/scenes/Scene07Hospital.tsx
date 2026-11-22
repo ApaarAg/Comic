@@ -51,7 +51,7 @@ export const Scene07Hospital: React.FC<SceneProps> = React.memo(({
         return (
           <div className="relative flex flex-col items-center justify-center w-full max-w-5xl px-4 md:px-8">
             {/* Standardized Editorial Scene Header Badge */}
-            <div className="absolute top-4 left-6 md:left-10 pointer-events-none z-30">
+            <div className="hidden sm:block absolute top-[max(5.25rem,calc(env(safe-area-inset-top,0px)+4.75rem))] left-6 md:left-10 pointer-events-none z-30">
               <span className="font-mono text-[11px] uppercase tracking-[0.24em] text-[#6dc4e0] bg-black/40 px-2.5 py-0.5 rounded-full border border-[#6dc4e0]/30 backdrop-blur-md">
                 Scene 07 · Amravati Hospital · 10:32 PM
               </span>
@@ -61,11 +61,11 @@ export const Scene07Hospital: React.FC<SceneProps> = React.memo(({
             </div>
 
             {/* Stage Content */}
-            <div className="relative w-full flex flex-col items-center justify-center min-h-[400px] sm:min-h-[480px] max-h-[760px] pt-12">
+            <div className="relative w-full flex flex-col items-center justify-center min-h-[400px] sm:min-h-[480px] max-h-[760px] pt-2 sm:pt-12">
               {/* Beat 1: Hospital Ward Awakening & Antiseptic (stageProgress < 0.16) */}
               {stageProgress < 0.16 && (
                 <div className="w-full max-w-3xl flex flex-col items-center justify-center transition-opacity duration-500 ease-out">
-                  <div className="w-full max-h-[66vh] flex items-center justify-center">
+                  <div className="w-full max-h-[66vh] flex items-center justify-center rounded-2xl bg-black/30 p-2 sm:p-3.5 backdrop-blur-sm border border-[#6dc4e0]/20 shadow-[0_12px_40px_rgba(0,0,0,0.55)]">
                     <ComicPanel
                       src="/assets/chapter1/p18_panel01.webp"
                       alt="Ceiling lights of Amravati Hospital recovery ward humming in dark"
@@ -80,7 +80,7 @@ export const Scene07Hospital: React.FC<SceneProps> = React.memo(({
               {/* Beat 2: Laila Groaning in Mortal Body (0.16 <= stageProgress < 0.32) */}
               {stageProgress >= 0.16 && stageProgress < 0.32 && (
                 <div className="w-full max-w-3xl flex flex-col items-center justify-center transition-opacity duration-500 ease-out">
-                  <div className="w-full max-h-[66vh] flex items-center justify-center">
+                  <div className="w-full max-h-[66vh] flex items-center justify-center rounded-2xl bg-black/30 p-2 sm:p-3.5 backdrop-blur-sm border border-[#6dc4e0]/20 shadow-[0_12px_40px_rgba(0,0,0,0.55)]">
                     <CharacterAnimator
                       src="/assets/chapter1/p18_panel02.webp"
                       alt="Laila clutching aching mortal ribs: Ohhhhh, that feels awful."
@@ -98,7 +98,7 @@ export const Scene07Hospital: React.FC<SceneProps> = React.memo(({
               {/* Beat 3: Munmun on Hospital Gurney (0.32 <= stageProgress < 0.46) */}
               {stageProgress >= 0.32 && stageProgress < 0.46 && (
                 <div className="w-full max-w-3xl flex flex-col items-center justify-center transition-opacity duration-500 ease-out">
-                  <div className="w-full max-h-[66vh] flex items-center justify-center">
+                  <div className="w-full max-h-[66vh] flex items-center justify-center rounded-2xl bg-black/30 p-2 sm:p-3.5 backdrop-blur-sm border border-[#6dc4e0]/20 shadow-[0_12px_40px_rgba(0,0,0,0.55)]">
                     <CharacterAnimator
                       src="/assets/chapter1/p18_panel04.webp"
                       alt="Munmun perched on hospital gurney rail: Yeah, well... you were dead for a good twenty minutes or so."
@@ -116,7 +116,7 @@ export const Scene07Hospital: React.FC<SceneProps> = React.memo(({
               {/* Beat 4: Laila Startled at Munmun (0.46 <= stageProgress < 0.60) */}
               {stageProgress >= 0.46 && stageProgress < 0.60 && (
                 <div className="w-full max-w-3xl flex flex-col items-center justify-center transition-opacity duration-500 ease-out">
-                  <div className="w-full max-h-[66vh] flex items-center justify-center">
+                  <div className="w-full max-h-[66vh] flex items-center justify-center rounded-2xl bg-black/30 p-2 sm:p-3.5 backdrop-blur-sm border border-[#6dc4e0]/20 shadow-[0_12px_40px_rgba(0,0,0,0.55)]">
                     <CharacterAnimator
                       src="/assets/chapter1/p19_panel01.webp"
                       alt="Laila glaring in shock at the spectral girl: Who're you?"
@@ -133,7 +133,7 @@ export const Scene07Hospital: React.FC<SceneProps> = React.memo(({
               {/* Beat 5: Munmun Pointing to Wristband (0.60 <= stageProgress < 0.74) */}
               {stageProgress >= 0.60 && stageProgress < 0.74 && (
                 <div className="w-full max-w-3xl flex flex-col items-center justify-center transition-opacity duration-500 ease-out">
-                  <div className="w-full max-h-[66vh] flex items-center justify-center">
+                  <div className="w-full max-h-[66vh] flex items-center justify-center rounded-2xl bg-black/30 p-2 sm:p-3.5 backdrop-blur-sm border border-[#6dc4e0]/20 shadow-[0_12px_40px_rgba(0,0,0,0.55)]">
                     <CharacterAnimator
                       src="/assets/chapter1/p19_panel03.webp"
                       alt="Munmun explaining: I-I'm a ghost! And your name... it's on your wrist."
@@ -151,7 +151,7 @@ export const Scene07Hospital: React.FC<SceneProps> = React.memo(({
               {/* Beat 6: Patient Wristband — Laila Starr (0.74 <= stageProgress < 0.86) */}
               {stageProgress >= 0.74 && stageProgress < 0.86 && (
                 <div className="w-full max-w-3xl flex flex-col items-center justify-center transition-opacity duration-500 ease-out">
-                  <div className="w-full max-h-[66vh] flex items-center justify-center">
+                  <div className="w-full max-h-[66vh] flex items-center justify-center rounded-2xl bg-black/30 p-2 sm:p-3.5 backdrop-blur-sm border border-[#6dc4e0]/20 shadow-[0_12px_40px_rgba(0,0,0,0.55)]">
                     <ComicPanel
                       src="/assets/chapter1/p19_panel06.webp"
                       alt="Close-up of plastic wristband: NAME: LAILA STARR · AGE: 21"
@@ -166,7 +166,7 @@ export const Scene07Hospital: React.FC<SceneProps> = React.memo(({
               {/* Beat 7: What Next, Laila Starr? (stageProgress >= 0.86) */}
               {stageProgress >= 0.86 && (
                 <div className="w-full max-w-3xl flex flex-col items-center justify-center transition-opacity duration-500 ease-out">
-                  <div className="w-full max-h-[66vh] flex items-center justify-center">
+                  <div className="w-full max-h-[66vh] flex items-center justify-center rounded-2xl bg-black/30 p-2 sm:p-3.5 backdrop-blur-sm border border-[#6dc4e0]/20 shadow-[0_12px_40px_rgba(0,0,0,0.55)]">
                     <CharacterAnimator
                       src="/assets/chapter1/p20_panel03.webp"
                       alt="Munmun smiling from hospital doorway: So... what next, Laila Starr?"
