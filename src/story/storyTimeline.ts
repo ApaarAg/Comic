@@ -218,18 +218,6 @@ export const STORYBOARD_TIMELINE: ReadonlyArray<TimelineScene> = [
         panelAlt: 'The Opening Canvas: Once Upon a Falling Starr — sunset dipping over Mumbai skyline and curving BKC elevated highway',
         camera: { panXPercent: 0, panYPercent: -5, zoom: 1.04, isHold: true },
         parallax: { bgOffsetPx: 16, midOffsetPx: 32, fgOffsetPx: 60 },
-        speech: {
-          id: 's00-01',
-          speaker: 'narrator',
-          speakerLabel: 'The Chronicle (Brian · 1.05x)',
-          text: 'It began on a Wednesday afternoon as a late December sun was just dipping below the Mumbai skyline. Down where the elevated highway curves between glass towers, the city exhaled in horns and heat.',
-          mode: 'narration',
-          audioSrc: '/assets/audio/voices/narrator/scene-00-opening-canvas.mp3',
-          durationMs: 11378,
-          priority: 'narration',
-          interruptionPolicy: 'pause_resume',
-          placement: 'bottom',
-        },
         holdWindow: { start: 0.34, end: 0.52 },
       },
       {
@@ -2070,8 +2058,8 @@ export function validateStoryTimeline(): {
     });
   });
 
-  if (totalNarrationBeats !== 15) {
-    errors.push(`Expected 15 narration beats, found ${totalNarrationBeats}`);
+  if (totalNarrationBeats !== 14) {
+    errors.push(`Expected 14 narration beats, found ${totalNarrationBeats}`);
   }
 
   if (totalDialogueBeats !== 34) {

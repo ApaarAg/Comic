@@ -25,8 +25,7 @@ import mumbaiSkylineUrl from '../../assets/images/mumbai_skyline_backdrop_179507
 import mumbaiCloudsUrl from '../../assets/images/mumbai_clouds_haze_1795078713772.jpg';
 import mumbaiSilhouettesUrl from '../../assets/images/mumbai_foreground_silhouettes_1795078713773.jpg';
 import { sceneAudioManager } from '../../audio/SceneAudioManager';
-import { ChevronDown, RotateCcw, Play, Pause } from 'lucide-react';
-import { useOptionalNarrative } from '../../narrative/NarrativeEngine';
+import { ChevronDown } from 'lucide-react';
 
 interface Scene00PrologueProps {
   reducedMotion: boolean;
@@ -43,16 +42,11 @@ const PROLOGUE_MOTES = Array.from({ length: 18 }, (_, i) => ({
   duration: `${3.5 + (i % 3) * 0.8}s`,
 }));
 
-const OPENING_PASSAGE_TEXT =
-  'It began as it always had, in the quiet between two breaths. Before the rain. Before Mumbai woke to find itself immortal.';
-const OPENING_PASSAGE_WORDS = OPENING_PASSAGE_TEXT.split(' ');
-
 export const Scene00Prologue: React.FC<Scene00PrologueProps> = React.memo(({
   reducedMotion,
 }) => {
   const [stageProgress, setStageProgress] = useState(0);
   const [, setAudioUnlocked] = useState(!sceneAudioManager.getMuted());
-  const narrative = useOptionalNarrative();
 
   // Sync with audio manager state for UI indicators
   useEffect(() => {
@@ -110,16 +104,6 @@ export const Scene00Prologue: React.FC<Scene00PrologueProps> = React.memo(({
   const portalZoom = 1 + Math.max(0, (stageProgress - 0.82) * 2.2);
   const exitFade = Math.max(0, 1 - Math.max(0, (stageProgress - 0.90) * 10));
 
-  // Real voice playback tracking for word-by-word progressive lighting
-  const isNarrating = narrative?.activeNarrationId === 's00-01' && narrative.audioState === 'Playing';
-  const audioProgress = narrative?.audioProgress ?? 0;
-  const currentWordIndex = isNarrating
-    ? Math.min(
-        OPENING_PASSAGE_WORDS.length,
-        Math.floor(audioProgress * OPENING_PASSAGE_WORDS.length * 1.08),
-      )
-    : 0;
-
   return (
     <section
       className="relative w-full"
@@ -132,6 +116,7 @@ export const Scene00Prologue: React.FC<Scene00PrologueProps> = React.memo(({
     >
       <CinematicViewportStage
         sceneId="scene-00"
+        reducedMotion={reducedMotion}
         onProgressChange={setStageProgress}
         backgroundLayer={
           <div
@@ -280,7 +265,7 @@ export const Scene00Prologue: React.FC<Scene00PrologueProps> = React.memo(({
             }}
           >
             <div className="w-full max-w-3xl border border-[#f28b50]/45 bg-[#0a0d18]/92 p-6 sm:p-8 backdrop-blur-2xl shadow-[0_32px_80px_rgba(0,0,0,0.92)] rounded-2xl text-left pointer-events-auto select-none">
-              {/* Card Header & Controls */}
+              {/* Card Header */}
               <div className="flex items-center justify-between gap-3 border-b border-white/10 pb-3 mb-4 flex-wrap">
                 <div className="flex items-center gap-2.5">
                   <span className="h-2 w-2 rounded-full bg-[#f28b50] animate-pulse" />
@@ -290,47 +275,8 @@ export const Scene00Prologue: React.FC<Scene00PrologueProps> = React.memo(({
                 </div>
                 <div className="flex items-center gap-2">
                   <span className="font-mono text-[10px] uppercase tracking-wider text-[#ffd29d]/85 bg-[#f28b50]/15 px-2.5 py-0.5 rounded border border-[#f28b50]/30">
-                    Brian · 1.05x
+                    Prologue
                   </span>
-                  {narrative?.activeNarrationId === 's00-01' && (
-                    <button
-                      type="button"
-                      onClick={() => {
-                        sceneAudioManager.unmute();
-                        if (narrative.audioState === 'Paused') {
-                          narrative.resumeNarrator();
-                        } else {
-                          narrative.pauseNarrator();
-                        }
-                      }}
-                      className="inline-flex items-center gap-1 px-2.5 py-1 rounded border border-white/20 bg-black/40 hover:border-[#f28b50] hover:text-[#f28b50] text-[#e6ddd0] text-xs font-mono transition-all cursor-pointer shadow-md"
-                      title={narrative.audioState === 'Paused' ? 'Resume Opening Narration' : 'Pause Opening Narration'}
-                    >
-                      {narrative.audioState === 'Paused' ? (
-                        <>
-                          <Play className="w-3 h-3 text-[#f28b50]" />
-                          <span className="text-[10px] uppercase tracking-wider">Resume</span>
-                        </>
-                      ) : (
-                        <>
-                          <Pause className="w-3 h-3 text-[#f28b50]" />
-                          <span className="text-[10px] uppercase tracking-wider">Pause</span>
-                        </>
-                      )}
-                    </button>
-                  )}
-                  <button
-                    type="button"
-                    onClick={() => {
-                      sceneAudioManager.unmute();
-                      narrative?.triggerNarrationBeat('s00-01', true);
-                    }}
-                    className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded border border-white/20 bg-black/40 hover:border-[#f28b50] hover:text-[#f28b50] text-[#e6ddd0] text-xs font-mono transition-all cursor-pointer shadow-md"
-                    title="Replay Opening Narration"
-                  >
-                    <RotateCcw className="w-3 h-3 text-[#f28b50]" />
-                    <span className="text-[10px] uppercase tracking-wider">Replay</span>
-                  </button>
                 </div>
               </div>
 
@@ -339,33 +285,14 @@ export const Scene00Prologue: React.FC<Scene00PrologueProps> = React.memo(({
                 Once Upon a Falling Starr
               </h2>
 
-              {/* Synchronized Word Highlighting */}
+              {/* Poetic Narrative Text */}
               <p className="font-display text-base sm:text-lg md:text-xl italic leading-relaxed text-[#dfd5c7]">
-                &ldquo;
-                {OPENING_PASSAGE_WORDS.map((word, idx) => {
-                  const isSpoken = idx < currentWordIndex;
-                  const isCurrent = idx === currentWordIndex - 1 && isNarrating;
-                  return (
-                    <span
-                      key={`canvas-w-${idx}`}
-                      className="inline-block transition-all duration-150"
-                      style={{
-                        opacity: isSpoken ? 1 : 0.35,
-                        color: isCurrent ? '#f7c27d' : isSpoken ? '#fbf4ea' : '#9d97b0',
-                        textShadow: isCurrent ? '0 0 14px rgba(247,194,125,0.7)' : 'none',
-                      }}
-                    >
-                      {word}
-                      {idx < OPENING_PASSAGE_WORDS.length - 1 ? '\u00A0' : ''}
-                    </span>
-                  );
-                })}
-                &rdquo;
+                &ldquo;It began as it always had, in the quiet between two breaths. Before the rain. Before Mumbai woke to find itself immortal.&rdquo;
               </p>
 
               {/* Metadata Footer */}
               <div className="mt-4 pt-3 border-t border-white/10 flex items-center justify-between text-[11px] font-mono text-[#cfc5b9]/70 flex-wrap gap-2">
-                <span className="text-[#f28b50]">Voice: The Chronicle (Brian · Indian English)</span>
+                <span className="text-[#f28b50]">Mumbai · Sunset Prelude</span>
                 <span>Bandra-Kurla Complex · 16:40 IST</span>
               </div>
             </div>

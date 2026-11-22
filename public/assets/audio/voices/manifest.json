@@ -1,21 +1,8 @@
 {
-  "generatedAt": "2026-11-21T21:25:05.108Z",
-  "totalLines": 49,
-  "availableCount": 49,
+  "generatedAt": "2026-11-22T12:37:06.296Z",
+  "totalLines": 48,
+  "availableCount": 48,
   "records": [
-    {
-      "id": "s00-01",
-      "characterId": "narrator",
-      "characterName": "The Chronicle",
-      "sceneId": "scene-00",
-      "category": "narration",
-      "transcript": "It began on a Wednesday afternoon as a late December sun was just dipping below the Mumbai skyline. Down where the elevated highway curves between glass towers, the city exhaled in horns and heat.",
-      "audioPath": "/assets/audio/voices/narrator/scene-00-opening-canvas.mp3",
-      "durationMs": 11378,
-      "fileExists": true,
-      "fileSizeBytes": 183109,
-      "emotion": "APPROVED NARRATOR: George (ElevenLabs JBFqnCBsd6RMkjVDRZzb). Deep, warm, gravelly, cinematic storytelling baritone with textured rasp, measured cadence, and atmospheric weight."
-    },
     {
       "id": "s01-01",
       "characterId": "narrator",

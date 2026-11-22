@@ -24,7 +24,7 @@ test('every storyboard voice event has one scene owner and a unique event id', (
       owners.set(beat.speech.id, scene.id);
     }
   }
-  assert.equal(owners.size, 49, 'The timeline should own all 15 narration and 34 dialogue recordings');
+  assert.equal(owners.size, 48, 'The timeline should own all 14 narration and 34 dialogue recordings');
 });
 
 test('Scene 02 narration cannot be selected while Scene 01 owns the timeline', () => {
@@ -84,23 +84,18 @@ test('Scene 00 does not trigger narration prematurely at scroll position zero or
   assert.equal(summaryScroll.action, 'none', 'Story summary must be purely visual without speech trigger');
 });
 
-test('Scene 00 narration triggers only when scroll reaches the opening canvas beat', () => {
+test('Scene 00 contains no spoken dialogue and remains purely visual and musical', () => {
   const latch = createLatch();
 
-  // Forward scroll reaching the opening canvas at 0.36
+  // Scrolling into Opening Canvas at 0.38
   const canvasAction = resolveTimelineAudioAction('scene-00', 0.38, 0.30, latch);
-  assert.equal(canvasAction.action, 'play', 'Narration must trigger when reaching opening canvas beat');
-  assert.equal(canvasAction.speechToPlay?.id, 's00-01');
-  assert.equal(canvasAction.speechToPlay?.mode, 'narration');
+  assert.equal(canvasAction.action, 'none', 'Opening Canvas card must be visual only; dialogue belongs afterward in Scene 01');
 
-  // Once completed, staying in opening canvas does not restart
-  latch.completedSpeechIds.add('s00-01');
-  const heldAction = resolveTimelineAudioAction('scene-00', 0.42, 0.39, latch);
-  assert.equal(heldAction.action, 'none', 'Completed narration must not retrigger while holding');
-
-  // Deliberate reverse scroll above 0.31 rearms for replay
-  resolveTimelineAudioAction('scene-00', 0.28, 0.40, latch);
-  assert.equal(latch.completedSpeechIds.has('s00-01'), false, 'Retreating past beat must rearm s00-01');
+  // Across the entire Scene 00, no speech is triggered
+  for (let p = 0.05; p <= 0.95; p += 0.05) {
+    const action = resolveTimelineAudioAction('scene-00', p, p - 0.05, latch);
+    assert.equal(action.action, 'none', `Scene 00 at progress ${p} must not trigger spoken dialogue`);
+  }
 });
 
 test('Scene 01 triggers s01-01 and s01-02 sequentially at distinct comic panel positions', () => {

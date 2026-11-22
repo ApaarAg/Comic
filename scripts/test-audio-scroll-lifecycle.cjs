@@ -266,24 +266,12 @@ async function main() {
     const prematureAtZero = (await log()).filter((event) => event.lifecycle === 'PLAYING');
     assert.equal(prematureAtZero.length, 0, 'No narration must play at initial load without scrolling');
 
-    // Scroll intentionally to the Scene 00 Opening Canvas narration trigger
-    const s00Marker = (await getMarkers('scene-00')).find((marker) => marker.id === 's00-01');
-    assert.ok(s00Marker, 'Scene 00 opening canvas narration marker should exist');
-    const openingStart = await startVoiceAt('scene-00', s00Marker);
-    const openingSnapshotBefore = await currentVoice();
-    await delay(700);
-    const openingSnapshotAfter = await currentVoice();
-    assert.equal(openingStart.ownerSceneId, 'scene-00');
-    assert.equal(openingStart.timingSource, 'audio-seek', 'Opening narration must use the production recording');
-    assert.equal(openingStart.audioContextState, 'running', 'AudioContext must be running when narration starts');
-    assert.ok(
-      openingSnapshotAfter.voice.elapsedSec > openingSnapshotBefore.voice.elapsedSec + 0.3,
-      'Recorded narration time should advance while it plays',
-    );
-    await delay(250);
-    assert.equal((await log()).filter((event) => event.lifecycle === 'PLAYING' && event.lineId === 's00-01').length, 1,
-      'Opening narration must start exactly once');
-    results.assertions.push('opening narration started once from the real recording and advanced with the AudioContext');
+    // Confirm Scene 00 contains no spoken dialogue markers (dialogue belongs afterward in Scene 01)
+    const s00Markers = await getMarkers('scene-00');
+    assert.equal(s00Markers.length, 0, 'Scene 00 must not contain spoken dialogue markers; dialogue belongs afterward in Scene 01');
+    const s00Speech = (await log()).filter((event) => event.lifecycle === 'PLAYING' && event.ownerSceneId === 'scene-00');
+    assert.equal(s00Speech.length, 0, 'No dialogue must play in Scene 00');
+    results.assertions.push('Scene 00 contains no duplicate prologue dialogue and remains purely visual');
 
     const scene02Narration = (await getMarkers('scene-02')).find((marker) => marker.id === 's02-conn-01');
     assert.ok(scene02Narration, 'Scene 02 connector narration marker should exist');

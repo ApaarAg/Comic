@@ -27,7 +27,7 @@ import { InteractiveHotspot } from '../InteractiveHotspot';
 import type { InspectedPanelData } from '../PanelInspectorModal';
 import { MOTION_EASING } from '../../story/motionSystem';
 import { sceneAudioManager } from '../../audio/SceneAudioManager';
-import { characterVoicePlayer } from '../../audio/CharacterVoicePlayer';
+import { characterVoicePlayer, type VoiceCancellationReason } from '../../audio/CharacterVoicePlayer';
 import { useOptionalNarrative } from '../../narrative/NarrativeEngine';
 import {
   STORYBOARD_TIMELINE,
@@ -449,7 +449,9 @@ export const Scene01Mumbai: React.FC<SceneProps> = React.memo(({
               }
             } else if (audioAction.action === 'stop') {
               if (globalAudioPlaybackLatch.currentlyPlayingId) {
-                characterVoicePlayer.stop(160, audioAction.stopReason ?? 'scrolled_away');
+                const cancelReason: VoiceCancellationReason =
+                  audioAction.stopReason === 'scene_exit' ? 'scene_changed' : 'scrolled_away';
+                characterVoicePlayer.stop(160, cancelReason);
                 globalAudioPlaybackLatch.currentlyPlayingId = null;
               }
             }

@@ -78,28 +78,6 @@ function remap(sceneId: string, localProgress: number): number {
 // ---------------------------------------------------------------------------
 
 export const SCENE_NARRATION_BEATS: NarrationBeat[] = [
-  // ── SCENE 00: The Opening Canvas · Once Upon a Falling Starr ─────────────
-  {
-    id: 's00-01',
-    sceneId: 'scene-00',
-    text: 'It began on a Wednesday afternoon as a late December sun was just dipping below the Mumbai skyline. Down where the elevated highway curves between glass towers, the city exhaled in horns and heat.',
-    audioSrc: '/assets/audio/voices/narrator/scene-00-opening-canvas.mp3',
-    triggerProgress: remap('scene-00', 0.36),
-    durationMs: 11378,
-    captionStyle: 'cinematic',
-    sourceOrigin: 'comic',
-    visualChoreography: {
-      cameraPanPercent: 0.05,
-      cameraZoom: 1.04,
-      skylineOpacity: 0.85,
-      videoActive: true,
-      particulateDensity: 0.8,
-      trafficSpeed: 'slow',
-      sfxCue: 'discover',
-      cinematicNote: 'The Opening Canvas: Sunset over Mumbai skyline descending toward BKC elevated highway.',
-    },
-  },
-
   // ── SCENE 01: The City of Mumbai (0.08 – 0.17) ───────────────────────────
   {
     id: 's01-01',
