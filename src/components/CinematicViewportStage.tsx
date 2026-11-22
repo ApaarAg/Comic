@@ -26,6 +26,8 @@ import {
   STORYBOARD_TIMELINE,
   resolveTimelineVisualState,
   resolveTimelineAudioAction,
+  globalAudioPlaybackLatch,
+  syncAudioPlaybackLatch,
   type ResolvedVisualState,
   type AudioPlaybackLatchState,
 } from '../story/storyTimeline';
@@ -37,32 +39,6 @@ import { SyncedSpeechBubble } from './SyncedSpeechBubble';
 import { CHARACTER_STYLES, type DialogueLine } from '../story/dialogueManifest';
 
 gsap.registerPlugin(ScrollTrigger);
-
-// Global latch state across all active scenes to prevent duplicate audio playback
-const globalLatchState: AudioPlaybackLatchState = {
-  completedSpeechIds: new Set(),
-  currentlyPlayingId: null,
-  lastProgressByScene: {},
-};
-let lastSyncedCompletedEventId: string | null = null;
-
-function syncNarrationLatchFromPlayer(): void {
-  const snapshot = characterVoicePlayer.getSnapshot();
-  if (!snapshot.eventId) return;
-  const marker = snapshot.eventId.lastIndexOf('@');
-  if (marker < 0) return;
-  const lineId = snapshot.eventId.slice(0, marker);
-  if (snapshot.lifecycle === 'COMPLETED' && lastSyncedCompletedEventId !== snapshot.eventId) {
-    lastSyncedCompletedEventId = snapshot.eventId;
-    globalLatchState.completedSpeechIds.add(lineId);
-    if (globalLatchState.currentlyPlayingId === lineId) globalLatchState.currentlyPlayingId = null;
-  } else if (
-    (snapshot.lifecycle === 'CANCELLED' || snapshot.lifecycle === 'FAILED') &&
-    globalLatchState.currentlyPlayingId === lineId
-  ) {
-    globalLatchState.currentlyPlayingId = null;
-  }
-}
 
 export interface CinematicViewportStageProps {
   sceneId: string;
@@ -147,13 +123,24 @@ export const CinematicViewportStage: React.FC<CinematicViewportStageProps> = Rea
     (currProgress: number, prevProgress: number) => {
       if (characterVoicePlayer.getActiveSceneId() !== sceneId) return;
 
-      syncNarrationLatchFromPlayer();
+      syncAudioPlaybackLatch(characterVoicePlayer.getSnapshot(), globalAudioPlaybackLatch);
+
+      if (currProgress < prevProgress) {
+        for (const beat of sceneMeta.beats) {
+          if (
+            beat.speech &&
+            currProgress < beat.stageProgress - 0.05
+          ) {
+            narrativeRef.current?.rearmNarrationBeat(beat.speech.id);
+          }
+        }
+      }
 
       const audioAction = resolveTimelineAudioAction(
         sceneId,
         currProgress,
         prevProgress,
-        globalLatchState,
+        globalAudioPlaybackLatch,
       );
 
       if (audioAction.action === 'play' && audioAction.speechToPlay) {
@@ -165,17 +152,17 @@ export const CinematicViewportStage: React.FC<CinematicViewportStageProps> = Rea
         if (nextSpeech) characterVoicePlayer.preloadAsset(nextSpeech.audioSrc);
 
         if (speech.mode === 'dialogue') {
-          globalLatchState.currentlyPlayingId = speech.id;
+          globalAudioPlaybackLatch.currentlyPlayingId = speech.id;
           narrativeRef.current?.setDialogueActive(true);
         } else if (speech.mode === 'narration') {
           const snapshot = characterVoicePlayer.getSnapshot();
           if (snapshot.lineId === speech.id && snapshot.sceneId === sceneId) {
-            globalLatchState.currentlyPlayingId = speech.id;
+            globalAudioPlaybackLatch.currentlyPlayingId = speech.id;
           } else {
-            globalLatchState.currentlyPlayingId = null;
+            globalAudioPlaybackLatch.currentlyPlayingId = null;
             narrativeRef.current?.triggerNarrationBeat(speech.id, true);
             if (characterVoicePlayer.getActiveLineId() === speech.id) {
-              globalLatchState.currentlyPlayingId = speech.id;
+              globalAudioPlaybackLatch.currentlyPlayingId = speech.id;
             }
           }
         }
@@ -195,9 +182,9 @@ export const CinematicViewportStage: React.FC<CinematicViewportStageProps> = Rea
         if (speech.mode === 'dialogue' || !narrativeRef.current) {
           void characterVoicePlayer.playLine(speech.id, speech.audioSrc, speech.durationMs, {
             onComplete: () => {
-              globalLatchState.completedSpeechIds.add(speech.id);
-              if (globalLatchState.currentlyPlayingId === speech.id) {
-                globalLatchState.currentlyPlayingId = null;
+              globalAudioPlaybackLatch.completedSpeechIds.add(speech.id);
+              if (globalAudioPlaybackLatch.currentlyPlayingId === speech.id) {
+                globalAudioPlaybackLatch.currentlyPlayingId = null;
                 if (speech.mode === 'dialogue') {
                   narrativeRef.current?.setDialogueActive(false);
                 }
@@ -205,16 +192,16 @@ export const CinematicViewportStage: React.FC<CinematicViewportStageProps> = Rea
               }
             },
             onCancel: () => {
-              globalLatchState.completedSpeechIds.delete(speech.id);
-              if (globalLatchState.currentlyPlayingId === speech.id) {
-                globalLatchState.currentlyPlayingId = null;
+              globalAudioPlaybackLatch.completedSpeechIds.delete(speech.id);
+              if (globalAudioPlaybackLatch.currentlyPlayingId === speech.id) {
+                globalAudioPlaybackLatch.currentlyPlayingId = null;
                 if (speech.mode === 'dialogue') narrativeRef.current?.setDialogueActive(false);
                 sceneAudioManager.unduckBuses(400);
               }
             },
             onError: () => {
-              if (globalLatchState.currentlyPlayingId === speech.id) {
-                globalLatchState.currentlyPlayingId = null;
+              if (globalAudioPlaybackLatch.currentlyPlayingId === speech.id) {
+                globalAudioPlaybackLatch.currentlyPlayingId = null;
                 if (speech.mode === 'dialogue') narrativeRef.current?.setDialogueActive(false);
                 sceneAudioManager.unduckBuses(400);
               }
@@ -222,9 +209,9 @@ export const CinematicViewportStage: React.FC<CinematicViewportStageProps> = Rea
           }, sceneId);
         }
       } else if (audioAction.action === 'stop') {
-        if (globalLatchState.currentlyPlayingId) {
+        if (globalAudioPlaybackLatch.currentlyPlayingId) {
           characterVoicePlayer.stop(0, 'scrolled_away');
-          globalLatchState.currentlyPlayingId = null;
+          globalAudioPlaybackLatch.currentlyPlayingId = null;
           narrativeRef.current?.setDialogueActive(false);
           sceneAudioManager.unduckBuses(600);
         }
@@ -246,7 +233,7 @@ export const CinematicViewportStage: React.FC<CinematicViewportStageProps> = Rea
         scrub: true,
         onEnter: () => {
           if (characterVoicePlayer.getActiveSceneId() !== sceneId) {
-            globalLatchState.currentlyPlayingId = null;
+            globalAudioPlaybackLatch.currentlyPlayingId = null;
             characterVoicePlayer.setActiveScene(sceneId);
             narrativeRef.current?.setDialogueActive(false);
             sceneAudioManager.unduckBuses(400);
@@ -254,7 +241,7 @@ export const CinematicViewportStage: React.FC<CinematicViewportStageProps> = Rea
         },
         onEnterBack: () => {
           if (characterVoicePlayer.getActiveSceneId() !== sceneId) {
-            globalLatchState.currentlyPlayingId = null;
+            globalAudioPlaybackLatch.currentlyPlayingId = null;
             characterVoicePlayer.setActiveScene(sceneId);
             narrativeRef.current?.setDialogueActive(false);
             sceneAudioManager.unduckBuses(400);
@@ -262,7 +249,7 @@ export const CinematicViewportStage: React.FC<CinematicViewportStageProps> = Rea
         },
         onLeave: () => {
           if (characterVoicePlayer.getActiveSceneId() === sceneId) {
-            globalLatchState.currentlyPlayingId = null;
+            globalAudioPlaybackLatch.currentlyPlayingId = null;
             characterVoicePlayer.setActiveScene(null);
             narrativeRef.current?.setDialogueActive(false);
             sceneAudioManager.unduckBuses(400);
@@ -270,7 +257,7 @@ export const CinematicViewportStage: React.FC<CinematicViewportStageProps> = Rea
         },
         onLeaveBack: () => {
           if (characterVoicePlayer.getActiveSceneId() === sceneId) {
-            globalLatchState.currentlyPlayingId = null;
+            globalAudioPlaybackLatch.currentlyPlayingId = null;
             characterVoicePlayer.setActiveScene(null);
             narrativeRef.current?.setDialogueActive(false);
             sceneAudioManager.unduckBuses(400);

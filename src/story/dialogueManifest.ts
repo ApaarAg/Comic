@@ -274,7 +274,7 @@ export const CHAPTER_DIALOGUE_SEQUENCES: Record<string, DialogueLine[]> = {
       text: 'Down where the elevated highway curves between glass towers, the city exhaled in horns and heat.',
       side: 'center',
       expression: 'neutral',
-      triggerProgress: 0.56,
+      triggerProgress: 0.72,
       durationMs: 4400,
       audioSrc: '/assets/audio/voices/narrator/scene-01-highway.mp3',
       sfxCue: 'horn',

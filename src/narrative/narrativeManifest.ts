@@ -126,7 +126,7 @@ export const SCENE_NARRATION_BEATS: NarrationBeat[] = [
     sceneId: 'scene-01',
     text: 'Down where the elevated highway curves between glass towers, the city exhaled in horns and heat.',
     audioSrc: '/assets/audio/voices/narrator/scene-01-highway.mp3',
-    triggerProgress: remap('scene-01', 0.52),
+    triggerProgress: remap('scene-01', 0.72),
     durationMs: 5759,
     captionStyle: 'whisper',
     sourceOrigin: 'connective',

@@ -321,10 +321,10 @@ export const STORYBOARD_TIMELINE: ReadonlyArray<TimelineScene> = [
       {
         id: 's01-beat-02',
         sceneId: 'scene-01',
-        stageProgress: 0.52,
+        stageProgress: 0.72,
         panelId: 'p06_panel01',
         panelAlt: 'Camera panning down to the curved concrete elevated highway overpass',
-        camera: { panXPercent: 5, panYPercent: 12, zoom: 1.10, isHold: true },
+        camera: { panXPercent: 5, panYPercent: 20, zoom: 1.25, isHold: true },
         parallax: { bgOffsetPx: 18, midOffsetPx: 40, fgOffsetPx: 85 },
         speech: {
           id: 's01-02',
@@ -346,16 +346,17 @@ export const STORYBOARD_TIMELINE: ReadonlyArray<TimelineScene> = [
           priority: 'sfx',
           volume: 0.45,
         },
-        holdWindow: { start: 0.46, end: 0.72 },
+        holdWindow: { start: 0.66, end: 0.88 },
       },
       {
         id: 's01-beat-03',
         sceneId: 'scene-01',
-        stageProgress: 0.88,
+        stageProgress: 0.94,
         panelId: 'p06_panel01',
         panelAlt: 'Close-in focus on gridlock line of cars leading into Scene 02',
         camera: { panXPercent: 10, panYPercent: 25, zoom: 1.20, isHold: false },
         parallax: { bgOffsetPx: 35, midOffsetPx: 75, fgOffsetPx: 140 },
+        holdWindow: { start: 0.90, end: 1.00 },
         transitionOut: {
           kind: 'dissolve',
           durationProgress: 0.12,
@@ -1734,6 +1735,39 @@ export interface AudioPlaybackLatchState {
   lastProgressByScene: Record<string, number>;
 }
 
+export function createAudioPlaybackLatchState(): AudioPlaybackLatchState {
+  return {
+    completedSpeechIds: new Set<string>(),
+    currentlyPlayingId: null,
+    lastProgressByScene: {},
+  };
+}
+
+// Global authoritative latch state across all active scenes to prevent duplicate audio playback
+export const globalAudioPlaybackLatch: AudioPlaybackLatchState = createAudioPlaybackLatchState();
+
+let lastSyncedCompletedEventId: string | null = null;
+
+export function syncAudioPlaybackLatch(
+  snapshot: { eventId: string | null; lifecycle: string },
+  latchState: AudioPlaybackLatchState = globalAudioPlaybackLatch,
+): void {
+  if (!snapshot.eventId) return;
+  const marker = snapshot.eventId.lastIndexOf('@');
+  if (marker < 0) return;
+  const lineId = snapshot.eventId.slice(0, marker);
+  if (snapshot.lifecycle === 'COMPLETED' && lastSyncedCompletedEventId !== snapshot.eventId) {
+    lastSyncedCompletedEventId = snapshot.eventId;
+    latchState.completedSpeechIds.add(lineId);
+    if (latchState.currentlyPlayingId === lineId) latchState.currentlyPlayingId = null;
+  } else if (
+    (snapshot.lifecycle === 'CANCELLED' || snapshot.lifecycle === 'FAILED') &&
+    latchState.currentlyPlayingId === lineId
+  ) {
+    latchState.currentlyPlayingId = null;
+  }
+}
+
 export interface ResolvedAudioAction {
   action: 'play' | 'stop' | 'preempt' | 'none';
   speechToPlay?: EmbeddedSpeechBubble;
@@ -1918,7 +1952,6 @@ export function resolveTimelineAudioAction(
     for (const beat of scene.beats) {
       if (
         beat.speech &&
-        previousProgress >= beat.stageProgress &&
         currentProgress < beat.stageProgress - 0.05
       ) {
         latchState.completedSpeechIds.delete(beat.speech.id);

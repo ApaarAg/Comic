@@ -65,6 +65,8 @@ export interface NarrativeContextValue {
   activeVisualChoreography: VisualChoreographySpec | null;
   /** Manual trigger for a narration beat */
   triggerNarrationBeat: (id: string, force?: boolean) => void;
+  /** Rearm a completed or triggered narration beat so it can replay on deliberate return */
+  rearmNarrationBeat: (id: string) => void;
   /** Pause the active narrator playback */
   pauseNarrator: () => void;
   /** Resume paused narrator playback */
@@ -267,6 +269,10 @@ export const NarrativeProvider: React.FC<NarrativeProviderProps> = ({
     [playBeat, sortedBeats],
   );
 
+  const rearmNarrationBeat = useCallback((id: string) => {
+    triggeredBeatIdsRef.current.delete(id);
+  }, []);
+
   const pauseNarrator = useCallback(() => {
     if (activeBeatRef.current) {
       characterVoicePlayer.pause();
@@ -311,6 +317,7 @@ export const NarrativeProvider: React.FC<NarrativeProviderProps> = ({
       isDialogueActive,
       activeVisualChoreography: activeBeat?.visualChoreography ?? null,
       triggerNarrationBeat,
+      rearmNarrationBeat,
       pauseNarrator,
       resumeNarrator,
       replayNarrator,
@@ -322,6 +329,7 @@ export const NarrativeProvider: React.FC<NarrativeProviderProps> = ({
       narratorProgress,
       isDialogueActive,
       triggerNarrationBeat,
+      rearmNarrationBeat,
       pauseNarrator,
       resumeNarrator,
       replayNarrator,

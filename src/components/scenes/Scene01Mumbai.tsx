@@ -29,6 +29,12 @@ import { MOTION_EASING } from '../../story/motionSystem';
 import { sceneAudioManager } from '../../audio/SceneAudioManager';
 import { characterVoicePlayer } from '../../audio/CharacterVoicePlayer';
 import { useOptionalNarrative } from '../../narrative/NarrativeEngine';
+import {
+  STORYBOARD_TIMELINE,
+  resolveTimelineAudioAction,
+  globalAudioPlaybackLatch,
+  syncAudioPlaybackLatch,
+} from '../../story/storyTimeline';
 import { RotateCcw, ZoomIn } from 'lucide-react';
 
 gsap.registerPlugin(ScrollTrigger);
@@ -205,6 +211,8 @@ export const Scene01Mumbai: React.FC<SceneProps> = React.memo(({
   const captionHighwayRef = useRef<HTMLDivElement>(null);
 
   const narrative = useOptionalNarrative();
+  const narrativeRef = useRef(narrative);
+  narrativeRef.current = narrative;
   const choreography = narrative?.activeVisualChoreography;
 
   const [selectedPinId, setSelectedPinId] = useState<string | null>(null);
@@ -214,8 +222,6 @@ export const Scene01Mumbai: React.FC<SceneProps> = React.memo(({
   const [showHighwayNarration, setShowHighwayNarration] = useState<boolean>(false);
 
   const prevProgressRef = useRef<number>(0);
-  const hasTriggeredOpeningRef = useRef<boolean>(false);
-  const hasTriggeredHighwayRef = useRef<boolean>(false);
 
   useEffect(() => {
     if (reducedMotion || !sectionRef.current) return;
@@ -347,6 +353,38 @@ export const Scene01Mumbai: React.FC<SceneProps> = React.memo(({
         end: 'bottom bottom',
         scrub: 0.4,
         invalidateOnRefresh: true,
+        onEnter: () => {
+          if (characterVoicePlayer.getActiveSceneId() !== 'scene-01') {
+            globalAudioPlaybackLatch.currentlyPlayingId = null;
+            characterVoicePlayer.setActiveScene('scene-01');
+            narrativeRef.current?.setDialogueActive(false);
+            sceneAudioManager.unduckBuses(400);
+          }
+        },
+        onEnterBack: () => {
+          if (characterVoicePlayer.getActiveSceneId() !== 'scene-01') {
+            globalAudioPlaybackLatch.currentlyPlayingId = null;
+            characterVoicePlayer.setActiveScene('scene-01');
+            narrativeRef.current?.setDialogueActive(false);
+            sceneAudioManager.unduckBuses(400);
+          }
+        },
+        onLeave: () => {
+          if (characterVoicePlayer.getActiveSceneId() === 'scene-01') {
+            globalAudioPlaybackLatch.currentlyPlayingId = null;
+            characterVoicePlayer.setActiveScene(null);
+            narrativeRef.current?.setDialogueActive(false);
+            sceneAudioManager.unduckBuses(400);
+          }
+        },
+        onLeaveBack: () => {
+          if (characterVoicePlayer.getActiveSceneId() === 'scene-01') {
+            globalAudioPlaybackLatch.currentlyPlayingId = null;
+            characterVoicePlayer.setActiveScene(null);
+            narrativeRef.current?.setDialogueActive(false);
+            sceneAudioManager.unduckBuses(400);
+          }
+        },
         onUpdate: (self) => {
           const p = Math.max(0, Math.min(1, self.progress));
           const prev = prevProgressRef.current;
@@ -369,61 +407,51 @@ export const Scene01Mumbai: React.FC<SceneProps> = React.memo(({
           }
 
           // Card visibility thresholds: Stage B (first comic panel) vs Stage D (highway overpass)
-          setShowOpeningNarration(p >= 0.14 && p < 0.44);
-          setShowHighwayNarration(p >= 0.46);
+          setShowOpeningNarration(p >= 0.15 && p < 0.50);
+          setShowHighwayNarration(p >= 0.65);
 
-          const isFastScroll = Math.abs(p - prev) > 0.25;
-          if (isFastScroll && characterVoicePlayer.getActiveSceneId() === 'scene-01') {
-            characterVoicePlayer.stop(0, 'rapid_scroll_skip');
-          }
+          // Authoritative audio timeline arbitration: only Scene 01 owns its cues
+          if (characterVoicePlayer.getActiveSceneId() === 'scene-01') {
+            syncAudioPlaybackLatch(characterVoicePlayer.getSnapshot(), globalAudioPlaybackLatch);
 
-          // Audio synchronization: trigger first comic narration (s01-01) at Stage B
-          if (
-            prev < 0.20 &&
-            p >= 0.20 &&
-            p <= 0.28 &&
-            !isFastScroll &&
-            !hasTriggeredOpeningRef.current &&
-            characterVoicePlayer.getActiveSceneId() === 'scene-01'
-          ) {
-            hasTriggeredOpeningRef.current = true;
-            narrative?.triggerNarrationBeat('s01-01', true);
-          } else if (p > 0.35) {
-            hasTriggeredOpeningRef.current = true;
-          }
-
-          // Audio synchronization: trigger highway narration (s01-02) at Stage D
-          if (
-            prev < 0.52 &&
-            p >= 0.52 &&
-            p <= 0.60 &&
-            !isFastScroll &&
-            !hasTriggeredHighwayRef.current &&
-            characterVoicePlayer.getActiveSceneId() === 'scene-01'
-          ) {
-            hasTriggeredHighwayRef.current = true;
-            narrative?.triggerNarrationBeat('s01-02', true);
-          } else if (p > 0.68) {
-            hasTriggeredHighwayRef.current = true;
-          }
-
-          // Backward scroll hysteresis: reset triggers only after deliberate retreat
-          if (p < 0.10) {
-            hasTriggeredOpeningRef.current = false;
-            if (
-              characterVoicePlayer.getActiveLineId() === 's01-01' &&
-              characterVoicePlayer.getActiveSceneId() === 'scene-01'
-            ) {
-              characterVoicePlayer.stop(160, 'reverse_scroll');
+            // Backward deliberate retreat: rearm cues when reader moves clearly before trigger threshold
+            if (p < prev) {
+              const sceneMeta = STORYBOARD_TIMELINE.find((s) => s.id === 'scene-01');
+              if (sceneMeta) {
+                for (const beat of sceneMeta.beats) {
+                  if (
+                    beat.speech &&
+                    p < beat.stageProgress - 0.05
+                  ) {
+                    narrativeRef.current?.rearmNarrationBeat(beat.speech.id);
+                  }
+                }
+              }
             }
-          }
-          if (p < 0.38) {
-            hasTriggeredHighwayRef.current = false;
-            if (
-              characterVoicePlayer.getActiveLineId() === 's01-02' &&
-              characterVoicePlayer.getActiveSceneId() === 'scene-01'
-            ) {
-              characterVoicePlayer.stop(160, 'reverse_scroll');
+
+            const audioAction = resolveTimelineAudioAction(
+              'scene-01',
+              p,
+              prev,
+              globalAudioPlaybackLatch,
+            );
+
+            if (audioAction.action === 'play' && audioAction.speechToPlay) {
+              const speech = audioAction.speechToPlay;
+              globalAudioPlaybackLatch.currentlyPlayingId = speech.id;
+              // Authoritative trigger: force = false ensures NarrativeEngine's latch enforces one-time playback
+              narrativeRef.current?.triggerNarrationBeat(speech.id, false);
+              if (characterVoicePlayer.getActiveLineId() === speech.id) {
+                globalAudioPlaybackLatch.currentlyPlayingId = speech.id;
+              }
+              if (audioAction.cueToPlay) {
+                sceneAudioManager.triggerCue(audioAction.cueToPlay.cueId as any);
+              }
+            } else if (audioAction.action === 'stop') {
+              if (globalAudioPlaybackLatch.currentlyPlayingId) {
+                characterVoicePlayer.stop(160, audioAction.stopReason ?? 'scrolled_away');
+                globalAudioPlaybackLatch.currentlyPlayingId = null;
+              }
             }
           }
         },
@@ -450,7 +478,7 @@ export const Scene01Mumbai: React.FC<SceneProps> = React.memo(({
     }, sectionRef);
 
     return () => ctx.revert();
-  }, [reducedMotion, narrative]);
+  }, [reducedMotion]);
 
   const handlePinSelect = (pin: CityPinNote) => {
     const nextId = selectedPinId === pin.id ? null : pin.id;
@@ -757,7 +785,11 @@ export const Scene01Mumbai: React.FC<SceneProps> = React.memo(({
                   <div className="flex items-center gap-2">
                     <button
                       type="button"
-                      onClick={() => narrative?.triggerNarrationBeat('s01-01', true)}
+                      onClick={() => {
+                        globalAudioPlaybackLatch.completedSpeechIds.delete('s01-01');
+                        narrativeRef.current?.rearmNarrationBeat('s01-01');
+                        narrativeRef.current?.triggerNarrationBeat('s01-01', true);
+                      }}
                       className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded border border-white/15 bg-black/40 hover:border-[#f28b50] hover:text-[#f28b50] text-[#e6ddd0] text-[10px] font-mono transition-all cursor-pointer"
                       title="Replay Opening Narration"
                     >
@@ -784,7 +816,11 @@ export const Scene01Mumbai: React.FC<SceneProps> = React.memo(({
                   <div className="flex items-center gap-2">
                     <button
                       type="button"
-                      onClick={() => narrative?.triggerNarrationBeat('s01-02', true)}
+                      onClick={() => {
+                        globalAudioPlaybackLatch.completedSpeechIds.delete('s01-02');
+                        narrativeRef.current?.rearmNarrationBeat('s01-02');
+                        narrativeRef.current?.triggerNarrationBeat('s01-02', true);
+                      }}
                       className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded border border-white/15 bg-black/40 hover:border-[#f28b50] hover:text-[#f28b50] text-[#e6ddd0] text-[10px] font-mono transition-all cursor-pointer"
                       title="Replay Highway Narration"
                     >
@@ -906,7 +942,11 @@ export const Scene01Mumbai: React.FC<SceneProps> = React.memo(({
                     </span>
                     <button
                       type="button"
-                      onClick={() => narrative?.triggerNarrationBeat('s01-01', true)}
+                      onClick={() => {
+                        globalAudioPlaybackLatch.completedSpeechIds.delete('s01-01');
+                        narrativeRef.current?.rearmNarrationBeat('s01-01');
+                        narrativeRef.current?.triggerNarrationBeat('s01-01', true);
+                      }}
                       className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded border border-white/20 bg-black/50 hover:border-[#f28b50] hover:text-[#f28b50] text-[#e6ddd0] text-[10px] font-mono transition-all cursor-pointer shadow-sm"
                       title="Replay Opening Narration"
                     >
@@ -945,7 +985,11 @@ export const Scene01Mumbai: React.FC<SceneProps> = React.memo(({
                     </span>
                     <button
                       type="button"
-                      onClick={() => narrative?.triggerNarrationBeat('s01-02', true)}
+                      onClick={() => {
+                        globalAudioPlaybackLatch.completedSpeechIds.delete('s01-02');
+                        narrativeRef.current?.rearmNarrationBeat('s01-02');
+                        narrativeRef.current?.triggerNarrationBeat('s01-02', true);
+                      }}
                       className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded border border-white/20 bg-black/50 hover:border-[#f28b50] hover:text-[#f28b50] text-[#e6ddd0] text-[10px] font-mono transition-all cursor-pointer shadow-sm"
                       title="Replay Highway Narration"
                     >

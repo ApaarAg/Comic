@@ -121,13 +121,40 @@ test('Scene 01 triggers s01-01 and s01-02 sequentially at distinct comic panel p
   const stageBHeld = resolveTimelineAudioAction('scene-01', 0.26, 0.22, latch);
   assert.equal(stageBHeld.action, 'none');
 
-  // Scrolling between Stage B and Stage D does not trigger highway narration prematurely
-  const stageC = resolveTimelineAudioAction('scene-01', 0.40, 0.35, latch);
-  assert.equal(stageC.action, 'none');
+  // Repeated scroll updates inside Stage B do not restart s01-01
+  const stageBUpdate = resolveTimelineAudioAction('scene-01', 0.28, 0.26, latch);
+  assert.equal(stageBUpdate.action, 'none');
 
-  // Reaching Stage D (Elevated Highway Overpass) triggers s01-02
-  const stageD = resolveTimelineAudioAction('scene-01', 0.53, 0.48, latch);
+  // Small reverse scroll (0.28 -> 0.22) preserves completed latch and does not restart
+  const stageBMicroReverse = resolveTimelineAudioAction('scene-01', 0.22, 0.28, latch);
+  assert.equal(stageBMicroReverse.action, 'none');
+  assert.equal(latch.completedSpeechIds.has('s01-01'), true);
+
+  // Moving forward again after micro-reverse does not replay
+  const stageBForwardAgain = resolveTimelineAudioAction('scene-01', 0.25, 0.22, latch);
+  assert.equal(stageBForwardAgain.action, 'none');
+
+  // Scrolling through Stage C (Bandra-Kurla Glass Monoliths at 0.52) does not trigger s01-02 prematurely
+  const stageC = resolveTimelineAudioAction('scene-01', 0.54, 0.48, latch);
+  assert.equal(stageC.action, 'none', 'Stage C monoliths must not trigger highway narration prematurely');
+
+  // Reaching Stage D (Elevated Highway Overpass at 0.72) triggers s01-02
+  const stageD = resolveTimelineAudioAction('scene-01', 0.74, 0.70, latch);
   assert.equal(stageD.action, 'play');
   assert.equal(stageD.speechToPlay?.id, 's01-02', 'Stage D must trigger s01-02');
   assert.equal(stageD.speechToPlay?.audioSrc, '/assets/audio/voices/narrator/scene-01-highway.mp3');
+
+  // Holding in Stage D does not restart completed s01-02
+  latch.completedSpeechIds.add('s01-02');
+  const stageDHeld = resolveTimelineAudioAction('scene-01', 0.78, 0.74, latch);
+  assert.equal(stageDHeld.action, 'none');
+
+  // Deliberate return to beginning of Scene 01 (p < 0.15) rearms s01-01 via incremental scrolling
+  latch.completedSpeechIds.add('s01-01');
+  // Step 1: reverse from 0.22 to 0.18 (stays latched)
+  resolveTimelineAudioAction('scene-01', 0.18, 0.22, latch);
+  assert.equal(latch.completedSpeechIds.has('s01-01'), true, 'Micro-reverse to 0.18 must remain latched');
+  // Step 2: reverse from 0.18 to 0.14 (past 0.15 boundary, rearms!)
+  resolveTimelineAudioAction('scene-01', 0.14, 0.18, latch);
+  assert.equal(latch.completedSpeechIds.has('s01-01'), false, 'Deliberate incremental retreat behind 0.15 rearms s01-01');
 });
