@@ -731,32 +731,15 @@ class SceneAudioManager {
     if (typeof window === 'undefined') return;
     this.ensureInitialized();
 
-    const tryResumeAndPlay = () => {
-      this.masterMuted = false;
-      Howler.mute(false);
-      if (Howler.ctx && Howler.ctx.state === 'suspended') {
-        void Howler.ctx.resume().then(() => {
-          this.playAmbienceTrack(this.activeAmbienceTrack);
-          this.playScoreTrack(this.activeScoreTrack);
-          this.applyMixLevels();
-          onUnlocked?.();
-          this.emit();
-        }).catch(() => {
-          this.masterMuted = true;
-          Howler.mute(true);
-          this.emit();
-        });
-      } else {
-        this.playAmbienceTrack(this.activeAmbienceTrack);
-        this.playScoreTrack(this.activeScoreTrack);
-        this.applyMixLevels();
-        onUnlocked?.();
-        this.emit();
-      }
+    const doUnlockAndPlay = () => {
+      this.unmute();
+      if (onUnlocked) onUnlocked();
+      this.emit();
     };
 
+    // If AudioContext is already running, unmute and play immediately
     if (Howler.ctx && Howler.ctx.state === 'running') {
-      tryResumeAndPlay();
+      doUnlockAndPlay();
       return;
     }
 
@@ -764,25 +747,44 @@ class SceneAudioManager {
     if (Howler.ctx && Howler.ctx.state === 'suspended') {
       void Howler.ctx.resume().then(() => {
         if (Howler.ctx && Howler.ctx.state === 'running') {
-          tryResumeAndPlay();
+          doUnlockAndPlay();
         }
       }).catch(() => {
         // Autoplay restricted by browser policy; wait for user interaction gesture
       });
     }
 
+    // Listen to Howler's native state changes
+    if (Howler.ctx && typeof Howler.ctx.addEventListener === 'function') {
+      const onStateChange = () => {
+        if (Howler.ctx && Howler.ctx.state === 'running') {
+          doUnlockAndPlay();
+          Howler.ctx?.removeEventListener('statechange', onStateChange);
+        }
+      };
+      Howler.ctx.addEventListener('statechange', onStateChange);
+    }
+
     if (this.autoplayListenersBound) return;
     this.autoplayListenersBound = true;
 
-    const events = ['pointerdown', 'touchstart', 'keydown', 'wheel', 'scroll'];
-    const unlockHandler = () => {
-      events.forEach((evt) => window.removeEventListener(evt, unlockHandler));
-      this.autoplayListenersBound = false;
-      tryResumeAndPlay();
+    // Listen only to genuine user activation gestures (wheel/scroll are rejected by browsers)
+    const gestureEvents = ['click', 'pointerdown', 'pointerup', 'touchstart', 'touchend', 'keydown'];
+    const unlockHandler = (event: Event) => {
+      // If the user clicked specifically on an audio toggle or mute button, let that button's click handler manage it
+      const target = event.target as HTMLElement | null;
+      if (target && target.closest('[data-testid*="mute"], [data-testid*="audio-toggle"]')) {
+        return;
+      }
+      doUnlockAndPlay();
+      if (Howler.ctx && Howler.ctx.state === 'running') {
+        gestureEvents.forEach((evt) => window.removeEventListener(evt, unlockHandler));
+        this.autoplayListenersBound = false;
+      }
     };
 
-    events.forEach((evt) =>
-      window.addEventListener(evt, unlockHandler, { once: true, passive: true }),
+    gestureEvents.forEach((evt) =>
+      window.addEventListener(evt, unlockHandler, { passive: true }),
     );
   }
 

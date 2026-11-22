@@ -122,10 +122,13 @@ export const Scene00Prologue: React.FC<Scene00PrologueProps> = React.memo(({
 
   return (
     <section
-      id="scene-00"
-      data-scene-id="scene-00"
       className="relative w-full"
       aria-label="Prologue: The Threshold"
+      onClick={() => {
+        if (sceneAudioManager.getMuted()) {
+          sceneAudioManager.unmute();
+        }
+      }}
     >
       <CinematicViewportStage
         sceneId="scene-00"
@@ -293,6 +296,7 @@ export const Scene00Prologue: React.FC<Scene00PrologueProps> = React.memo(({
                     <button
                       type="button"
                       onClick={() => {
+                        sceneAudioManager.unmute();
                         if (narrative.audioState === 'Paused') {
                           narrative.resumeNarrator();
                         } else {
@@ -317,7 +321,10 @@ export const Scene00Prologue: React.FC<Scene00PrologueProps> = React.memo(({
                   )}
                   <button
                     type="button"
-                    onClick={() => narrative?.triggerNarrationBeat('s00-01', true)}
+                    onClick={() => {
+                      sceneAudioManager.unmute();
+                      narrative?.triggerNarrationBeat('s00-01', true);
+                    }}
                     className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded border border-white/20 bg-black/40 hover:border-[#f28b50] hover:text-[#f28b50] text-[#e6ddd0] text-xs font-mono transition-all cursor-pointer shadow-md"
                     title="Replay Opening Narration"
                   >
@@ -415,14 +422,18 @@ export const Scene00Prologue: React.FC<Scene00PrologueProps> = React.memo(({
         {/* Discreet Scroll Guidance Indicator (Fades smoothly as viewer scrolls past 0.10) */}
         {stageProgress < 0.10 && (
           <div
-            className="absolute bottom-[max(2rem,calc(env(safe-area-inset-bottom,0px)+1.5rem))] left-1/2 -translate-x-1/2 z-40 pointer-events-none flex flex-col items-center gap-2 transition-opacity duration-300"
+            className="absolute bottom-[max(2rem,calc(env(safe-area-inset-bottom,0px)+1.5rem))] left-1/2 -translate-x-1/2 z-40 pointer-events-auto flex flex-col items-center gap-2 transition-opacity duration-300"
             style={{ opacity: Math.max(0, 1 - stageProgress * 12) }}
-            aria-hidden="true"
           >
-            <div className="flex items-center gap-2 text-[10px] font-mono uppercase tracking-[0.28em] text-white/50 animate-bounce">
-              <span>Scroll to Begin</span>
+            <button
+              type="button"
+              onClick={() => sceneAudioManager.unmute()}
+              className="flex items-center gap-2 text-[10px] font-mono uppercase tracking-[0.28em] text-white/50 hover:text-[#f28b50] transition-colors cursor-pointer animate-bounce"
+              aria-label="Scroll or click to begin journey with audio"
+            >
+              <span>Scroll or Click to Begin</span>
               <ChevronDown className="w-3.5 h-3.5 text-[#f28b50]" />
-            </div>
+            </button>
           </div>
         )}
       </CinematicViewportStage>

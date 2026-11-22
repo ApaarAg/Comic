@@ -244,9 +244,14 @@ export default function App() {
   }, []);
 
   const handleToggleMute = useCallback(() => {
-    const nextMuted = soundscape.toggleMute();
-    setIsMuted(nextMuted);
-  }, []);
+    if (isMuted) {
+      soundscape.unmute();
+      setIsMuted(false);
+    } else {
+      soundscape.mute();
+      setIsMuted(true);
+    }
+  }, [isMuted]);
 
   const handleJumpToScene = useCallback(
     (sceneId: string) => {

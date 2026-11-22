@@ -134,7 +134,32 @@ export const ChapterChrome: React.FC<ChapterChromeProps> = React.memo(({
           </div>
 
           {/* Zone 3: Primary Controls */}
-          <div className="relative flex items-center gap-2 sm:gap-2.5 shrink-0">
+          <div className="relative flex items-center gap-1.5 sm:gap-2.5 shrink-0">
+            {/* Quick Master Audio Toggle */}
+            <button
+              type="button"
+              onClick={onToggleMute}
+              aria-label={isMuted ? 'Enable cinematic audio' : 'Mute master audio'}
+              data-testid="header-audio-toggle"
+              className={`inline-flex h-10 items-center gap-1.5 border px-2.5 sm:px-3 text-xs font-mono uppercase tracking-wider transition-all cursor-pointer shrink-0 ${
+                isMuted
+                  ? 'border-[#f28b50] bg-[#f28b50]/20 text-[#f28b50] hover:bg-[#f28b50]/30 shadow-[0_0_12px_rgba(242,139,80,0.25)]'
+                  : 'border-white/15 bg-[#121628]/85 text-[#e6ddd0]/80 hover:border-[#f28b50]/60 hover:text-white'
+              }`}
+            >
+              {isMuted ? (
+                <>
+                  <VolumeX className="h-3.5 w-3.5 text-[#f28b50] animate-pulse" />
+                  <span className="hidden sm:inline font-semibold">Audio Off</span>
+                </>
+              ) : (
+                <>
+                  <Volume2 className="h-3.5 w-3.5 text-[#f28b50]" />
+                  <span className="hidden sm:inline">Audio On</span>
+                </>
+              )}
+            </button>
+
             <button
               type="button"
               onClick={() => setMixerOpen((prev) => !prev)}

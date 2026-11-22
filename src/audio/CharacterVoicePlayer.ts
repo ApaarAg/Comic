@@ -122,6 +122,10 @@ class CharacterVoicePlayer {
   private mixerUnsub: (() => void) | null = null;
   private listeners = new Set<(snapshot: VoicePlaybackSnapshot) => void>();
 
+  constructor() {
+    this.ensureMixerSync();
+  }
+
   public getSnapshot(): VoicePlaybackSnapshot {
     return {
       lineId: this.activeLineId,
@@ -209,12 +213,15 @@ class CharacterVoicePlayer {
   private ensureMixerSync(): void {
     if (this.mixerUnsub) return;
     this.mixerUnsub = sceneAudioManager.subscribe(() => {
-      if (this.activeHowl && this.activeSoundId !== null) {
+      if (this.activeHowl) {
         const snap = sceneAudioManager.getSnapshot();
         const gain = snap.masterMuted || snap.voiceMuted
           ? 0
           : sceneAudioManager.getEffectiveVoiceGain();
-        this.activeHowl.volume(gain, this.activeSoundId);
+        this.activeHowl.volume(gain);
+        if (this.activeSoundId !== null) {
+          this.activeHowl.volume(gain, this.activeSoundId);
+        }
       }
     });
   }
@@ -303,7 +310,7 @@ class CharacterVoicePlayer {
     const howl = new Howl({
       src: [audioSrc],
       preload: true,
-      volume: 0,
+      volume: 1,
     });
     this.preloadedHowls.set(audioSrc, howl);
     return howl;
@@ -526,11 +533,12 @@ class CharacterVoicePlayer {
       let retriedAfterUnlock = false;
       const startHowl = () => {
         if (!this.isCurrent(generation, lineId, expectedSceneId) || this.activeHowl !== howl) return;
-        const soundId = howl.play();
-        this.activeSoundId = soundId;
         const gain = sceneAudioManager.getSnapshot().masterMuted || sceneAudioManager.getSnapshot().voiceMuted
           ? 0
           : sceneAudioManager.getEffectiveVoiceGain();
+        howl.volume(gain);
+        const soundId = howl.play();
+        this.activeSoundId = soundId;
         howl.volume(gain, soundId);
       };
 
@@ -557,6 +565,9 @@ class CharacterVoicePlayer {
             waitingForUnlock = false;
             retriedAfterUnlock = true;
             listenOnce('playerror', handlePlayError);
+            if (sceneAudioManager.getMuted()) {
+              sceneAudioManager.unmute();
+            }
             startHowl();
           });
           return;
