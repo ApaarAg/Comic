@@ -85,7 +85,7 @@ export const Scene03Party: React.FC<SceneProps> = React.memo(({
             <div className="relative w-full flex items-center justify-center min-h-[360px] sm:min-h-[460px] max-h-[780px] pt-12">
               {/* Beat 1: Dhiraj Ranting (Panel 02) */}
               {stageProgress < 0.35 && (
-                <div className="w-full max-w-4xl xl:max-w-5xl transition-all duration-500 ease-out">
+                <div className="w-full max-w-5xl xl:max-w-6xl 2xl:max-w-[1440px] transition-all duration-500 ease-out">
                   <CharacterAnimator
                     src="/assets/chapter1/p08_panel02.webp"
                     alt="Dhiraj animatedly arguing cultural theory at party"
@@ -101,7 +101,7 @@ export const Scene03Party: React.FC<SceneProps> = React.memo(({
 
               {/* Beat 2: Girl Perched on Window Ledge (Panel 03) */}
               {stageProgress >= 0.35 && stageProgress < 0.60 && (
-                <div className="w-full max-w-4xl xl:max-w-5xl transition-all duration-500 ease-out">
+                <div className="w-full max-w-5xl xl:max-w-6xl 2xl:max-w-[1440px] transition-all duration-500 ease-out">
                   <ComicPanel
                     src="/assets/chapter1/p08_panel03.webp"
                     alt="The girl sitting alone on the open window ledge holding a cigarette overlooking the city"
@@ -114,7 +114,7 @@ export const Scene03Party: React.FC<SceneProps> = React.memo(({
 
               {/* Beat 3: Close-up of the Girl's Eyes & Raven Hair (Panel 04) */}
               {stageProgress >= 0.60 && (
-                <div className="w-full max-w-4xl xl:max-w-5xl transition-all duration-500 ease-out">
+                <div className="w-full max-w-5xl xl:max-w-6xl 2xl:max-w-[1440px] transition-all duration-500 ease-out">
                   <ComicPanel
                     src="/assets/chapter1/p08_panel04.webp"
                     alt="Close-up of the girl with gentle curls of raven hair and cigarette smoke drifting past"

@@ -65,7 +65,7 @@ export const Scene02Traffic: React.FC<SceneProps> = React.memo(({
             <div className="relative w-full flex items-center justify-center min-h-[360px] sm:min-h-[460px] max-h-[780px] pt-2 sm:pt-12">
               {/* Beat 1: Mrs. Shah Screaming on Phone (Panel 01) */}
               {stageProgress < 0.22 && (
-                <div className="w-full max-w-4xl xl:max-w-5xl transition-opacity duration-500 ease-out">
+                <div className="w-full max-w-5xl xl:max-w-6xl 2xl:max-w-[1440px] transition-opacity duration-500 ease-out">
                   <CharacterAnimator
                     src="/assets/chapter1/p07_panel01.webp"
                     alt="Mrs. Shah screaming into her phone in the backseat of a car stuck in Mumbai traffic"
@@ -81,7 +81,7 @@ export const Scene02Traffic: React.FC<SceneProps> = React.memo(({
 
               {/* Beat 2: Gridlock Artwork (Panel 02) */}
               {stageProgress >= 0.22 && stageProgress < 0.40 && (
-                <div className="relative w-full max-w-5xl xl:max-w-6xl transition-opacity duration-500 ease-out">
+                <div className="relative w-full max-w-5xl xl:max-w-6xl 2xl:max-w-[1440px] transition-opacity duration-500 ease-out">
                   <ComicPanel
                     src="/assets/chapter1/p07_panel02.webp"
                     alt="Overpass bumper-to-bumper gridlock filled with honking cars"
@@ -94,7 +94,7 @@ export const Scene02Traffic: React.FC<SceneProps> = React.memo(({
 
               {/* Beat 3a: Swerving Taxi Lanes (Panel 03) */}
               {stageProgress >= 0.40 && stageProgress < 0.48 && (
-                <div className="w-full max-w-4xl xl:max-w-5xl transition-opacity duration-500 ease-out flex items-center justify-center">
+                <div className="w-full max-w-5xl xl:max-w-6xl 2xl:max-w-[1440px] transition-opacity duration-500 ease-out flex items-center justify-center">
                   <ComicPanel
                     src="/assets/chapter1/p07_panel03.webp"
                     alt="Cars squeezed side-by-side through narrow lanes on the overpass"
@@ -108,7 +108,7 @@ export const Scene02Traffic: React.FC<SceneProps> = React.memo(({
 
               {/* Beat 3b: Panicked Driver Pointing (Panel 04) */}
               {stageProgress >= 0.48 && stageProgress < 0.65 && (
-                <div className="w-full max-w-4xl xl:max-w-5xl transition-opacity duration-500 ease-out flex items-center justify-center">
+                <div className="w-full max-w-5xl xl:max-w-6xl 2xl:max-w-[1440px] transition-opacity duration-500 ease-out flex items-center justify-center">
                   <CharacterAnimator
                     src="/assets/chapter1/p07_panel04.webp"
                     alt="Panicked driver gesturing over his shoulder toward Mrs. Shah in the backseat"
@@ -124,7 +124,7 @@ export const Scene02Traffic: React.FC<SceneProps> = React.memo(({
 
               {/* Beat 4: Traffic Officer (Panel 05) */}
               {stageProgress >= 0.65 && stageProgress < 0.80 && (
-                <div className="w-full max-w-4xl xl:max-w-5xl transition-opacity duration-500 ease-out">
+                <div className="w-full max-w-5xl xl:max-w-6xl 2xl:max-w-[1440px] transition-opacity duration-500 ease-out">
                   <ComicPanel
                     src="/assets/chapter1/p07_panel05.webp"
                     alt="Mumbai traffic constable waving the cab through the gridlock barricades"
@@ -137,7 +137,7 @@ export const Scene02Traffic: React.FC<SceneProps> = React.memo(({
 
               {/* Beat 5: Baby Is Coming Close-up (Panel 06) */}
               {stageProgress >= 0.80 && (
-                <div className="w-full max-w-4xl xl:max-w-5xl transition-opacity duration-500 ease-out rounded-2xl bg-black/30 p-2 sm:p-3.5 backdrop-blur-sm border border-[#e8a84a]/20 shadow-[0_12px_40px_rgba(0,0,0,0.55)]">
+                <div className="w-full max-w-5xl xl:max-w-6xl 2xl:max-w-[1440px] transition-opacity duration-500 ease-out rounded-2xl bg-black/30 p-2 sm:p-3.5 backdrop-blur-sm border border-[#e8a84a]/20 shadow-[0_12px_40px_rgba(0,0,0,0.55)]">
                   <CharacterAnimator
                     src="/assets/chapter1/p07_panel06.webp"
                     alt="Close-up of Mrs. Shah in intense pain shouting: The baby is coming!"

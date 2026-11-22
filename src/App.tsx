@@ -345,7 +345,8 @@ export default function App() {
             accentColor="#f28b50"
             eyebrow="Transition I · Street Level"
             caption="As sunset sank below the skyline, engines idled bumper-to-bumper along the Bandra-Kurla overpass."
-            artworkUrl="/assets/chapter1/p07_panel01.webp"
+            artworkUrl="/assets/chapter1/p06_panel01.webp"
+            altText="Bandra-Kurla elevated highway overpass descending into traffic at dusk"
             reducedMotion={reducedMotion}
           />
 

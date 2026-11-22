@@ -65,7 +65,7 @@ export const Scene09SecondDeath: React.FC<SceneProps> = React.memo(({
             <div className="relative w-full flex items-center justify-center min-h-[360px] sm:min-h-[460px] max-h-[780px] pt-1 sm:pt-12">
               {/* Beat 1: Rain-Slicked Highway & Twelve-Wheeler Headlights (stageProgress < 0.40) */}
               {stageProgress < 0.40 && (
-                <div className="w-full max-w-4xl xl:max-w-5xl transition-all duration-500 ease-out flex items-center justify-center">
+                <div className="w-full max-w-5xl xl:max-w-6xl 2xl:max-w-[1440px] transition-all duration-500 ease-out flex items-center justify-center">
                   <ComicPanel
                     src="/assets/chapter1/p24_panel01.webp"
                     alt="Laila fleeing barefoot into the dark midnight rain on the Mumbai street"
@@ -78,7 +78,7 @@ export const Scene09SecondDeath: React.FC<SceneProps> = React.memo(({
 
               {/* Beat 2: The Collision Impact Freeze-Frame (stageProgress 0.40 to 0.70) */}
               {stageProgress >= 0.40 && stageProgress < 0.70 && (
-                <div className="w-full max-w-4xl xl:max-w-5xl transition-all duration-300 ease-out flex items-center justify-center">
+                <div className="relative w-full max-w-5xl xl:max-w-6xl 2xl:max-w-[1440px] transition-all duration-300 ease-out flex items-center justify-center">
                   <ComicPanel
                     src="/assets/chapter1/p24_panel02.webp"
                     alt="Massive twin halogen headlights of an oncoming twelve-wheeler truck bearing down on Laila"
@@ -86,12 +86,30 @@ export const Scene09SecondDeath: React.FC<SceneProps> = React.memo(({
                     onInspect={onInspectPanel}
                     inspectNote="The violent shockwave of impact — sudden, merciless, absolute."
                   />
+
+                  {/* Optical High-Beam Headlight Exposure Bloom at Peak Impact */}
+                  {stageProgress >= 0.58 && !reducedMotion && (
+                    <div
+                      aria-hidden="true"
+                      className="pointer-events-none absolute inset-0 z-20 rounded-lg mix-blend-screen transition-opacity duration-150"
+                      style={{
+                        opacity: Math.min(
+                          1,
+                          stageProgress < 0.67
+                            ? ((stageProgress - 0.58) / 0.09) * 0.85
+                            : ((0.70 - stageProgress) / 0.03) * 0.85,
+                        ),
+                        background:
+                          'radial-gradient(ellipse at 50% 50%, rgba(255, 255, 245, 0.95) 0%, rgba(245, 176, 65, 0.45) 45%, rgba(0, 0, 0, 0) 80%)',
+                      }}
+                    />
+                  )}
                 </div>
               )}
 
               {/* Beat 3: The Aftermath — Laila Starr Met Her Death Once Again (stageProgress >= 0.70) */}
               {stageProgress >= 0.70 && (
-                <div className="w-full max-w-4xl xl:max-w-5xl transition-all duration-500 ease-out flex items-center justify-center">
+                <div className="w-full max-w-5xl xl:max-w-6xl 2xl:max-w-[1440px] transition-all duration-500 ease-out flex items-center justify-center">
                   <ComicPanel
                     src="/assets/chapter1/p24_panel03.webp"
                     alt="Laila's body lying motionless on the wet asphalt under rain and distant headlights"

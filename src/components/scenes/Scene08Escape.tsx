@@ -66,7 +66,7 @@ export const Scene08Escape: React.FC<SceneProps> = React.memo(({
             <div className="relative w-full flex items-center justify-center min-h-[360px] sm:min-h-[460px] max-h-[780px] pt-1 sm:pt-12">
               {/* Beat 1a: Establishing Neo-Natal Ward (Panel 21_01) */}
               {stageProgress < 0.18 && (
-                <div className="w-full max-w-4xl xl:max-w-5xl transition-all duration-500 ease-out flex items-center justify-center">
+                <div className="w-full max-w-5xl xl:max-w-6xl 2xl:max-w-[1440px] transition-all duration-500 ease-out flex items-center justify-center">
                   <ComicPanel
                     src="/assets/chapter1/p21_panel01.webp"
                     alt="Silent rows of glowing neo-natal incubators under night hospital lights"
@@ -79,7 +79,7 @@ export const Scene08Escape: React.FC<SceneProps> = React.memo(({
 
               {/* Beat 1b: Munmun Pleading — He's Got a Name! (Panel 21_03) */}
               {stageProgress >= 0.18 && stageProgress < 0.45 && (
-                <div className="w-full max-w-4xl xl:max-w-5xl transition-all duration-500 ease-out rounded-2xl bg-black/30 p-1 sm:p-3.5 backdrop-blur-sm border border-[#e89138]/20 shadow-[0_12px_40px_rgba(0,0,0,0.55)]">
+                <div className="w-full max-w-5xl xl:max-w-6xl 2xl:max-w-[1440px] transition-all duration-500 ease-out rounded-2xl bg-black/30 p-1 sm:p-3.5 backdrop-blur-sm border border-[#e89138]/20 shadow-[0_12px_40px_rgba(0,0,0,0.55)]">
                   <CharacterAnimator
                     src="/assets/chapter1/p21_panel03.webp"
                     alt="Munmun pleading frantically with tears: His name is Darius! You can't kill someone with a name!"
@@ -95,7 +95,7 @@ export const Scene08Escape: React.FC<SceneProps> = React.memo(({
 
               {/* Beat 2: Laila Holding Darius — I Can't! (Panel 22_02) */}
               {stageProgress >= 0.45 && stageProgress < 0.70 && (
-                <div className="w-full max-w-4xl xl:max-w-5xl transition-all duration-500 ease-out rounded-2xl bg-black/30 p-1 sm:p-3.5 backdrop-blur-sm border border-[#e89138]/20 shadow-[0_12px_40px_rgba(0,0,0,0.55)]">
+                <div className="w-full max-w-5xl xl:max-w-6xl 2xl:max-w-[1440px] transition-all duration-500 ease-out rounded-2xl bg-black/30 p-1 sm:p-3.5 backdrop-blur-sm border border-[#e89138]/20 shadow-[0_12px_40px_rgba(0,0,0,0.55)]">
                   <CharacterAnimator
                     src="/assets/chapter1/p22_panel02.webp"
                     alt="Laila trembling holding baby Darius: What? W-why did you tell me that? I... I can't!"
@@ -111,7 +111,7 @@ export const Scene08Escape: React.FC<SceneProps> = React.memo(({
 
               {/* Beat 3a: Security Guards Shouting (Panel 23_03) */}
               {stageProgress >= 0.70 && stageProgress < 0.85 && (
-                <div className="w-full max-w-4xl xl:max-w-5xl transition-all duration-500 ease-out flex items-center justify-center">
+                <div className="w-full max-w-5xl xl:max-w-6xl 2xl:max-w-[1440px] transition-all duration-500 ease-out flex items-center justify-center">
                   <ComicPanel
                     src="/assets/chapter1/p23_panel03.webp"
                     alt="Security guards bursting through double doors shouting: There she is! Put that baby down!"
@@ -124,7 +124,7 @@ export const Scene08Escape: React.FC<SceneProps> = React.memo(({
 
               {/* Beat 3b: Corridor Sprint Out into Rain (Panel 24_01) */}
               {stageProgress >= 0.85 && (
-                <div className="w-full max-w-4xl xl:max-w-5xl transition-all duration-500 ease-out flex items-center justify-center">
+                <div className="w-full max-w-5xl xl:max-w-6xl 2xl:max-w-[1440px] transition-all duration-500 ease-out flex items-center justify-center">
                   <ComicPanel
                     src="/assets/chapter1/p24_panel01.webp"
                     alt="Laila running barefoot down the slick hospital stairs out into the rain"

@@ -70,7 +70,7 @@ export const Scene10EightYearsLater: React.FC<SceneProps> = React.memo(({
               <div className="relative w-full flex items-center justify-center min-h-[360px] sm:min-h-[460px] max-h-[780px] pt-1 sm:pt-12">
                 {/* Beat 1a: Dawn Light Establishing Shot (Panel 25_01) */}
                 {stageProgress < 0.12 && (
-                  <div className="w-full max-w-4xl xl:max-w-5xl transition-all duration-500 ease-out flex items-center justify-center">
+                  <div className="w-full max-w-5xl xl:max-w-6xl 2xl:max-w-[1440px] transition-all duration-500 ease-out flex items-center justify-center">
                     <ComicPanel
                       src="/assets/chapter1/p25_panel01.webp"
                       alt="Early golden dawn light breaking across the wooden veranda"
@@ -83,7 +83,7 @@ export const Scene10EightYearsLater: React.FC<SceneProps> = React.memo(({
 
                 {/* Beat 1b: Dawn Sunlight & Laila Stirring (Panel 25_06) */}
                 {stageProgress >= 0.12 && stageProgress < 0.25 && (
-                  <div className="w-full max-w-4xl xl:max-w-5xl transition-all duration-500 ease-out flex items-center justify-center">
+                  <div className="w-full max-w-5xl xl:max-w-6xl 2xl:max-w-[1440px] transition-all duration-500 ease-out flex items-center justify-center">
                     <CharacterAnimator
                       src="/assets/chapter1/p25_panel06.webp"
                       alt="Laila stirring on wicker chair waking up in golden morning light"
@@ -99,7 +99,7 @@ export const Scene10EightYearsLater: React.FC<SceneProps> = React.memo(({
 
                 {/* Beat 2a: Laila Waking Up & Rubbing Temples (Panel 26_02) */}
                 {stageProgress >= 0.25 && stageProgress < 0.38 && (
-                  <div className="w-full max-w-4xl xl:max-w-5xl transition-all duration-500 ease-out flex items-center justify-center">
+                  <div className="w-full max-w-5xl xl:max-w-6xl 2xl:max-w-[1440px] transition-all duration-500 ease-out flex items-center justify-center">
                     <CharacterAnimator
                       src="/assets/chapter1/p26_panel02.webp"
                       alt="Laila rubbing temples: Have you been standing there watching me sleep this whole time?"
@@ -144,7 +144,7 @@ export const Scene10EightYearsLater: React.FC<SceneProps> = React.memo(({
 
                 {/* Beat 3b: Pranah's Gift of Life (Panel 26_07) */}
                 {stageProgress >= 0.63 && stageProgress < 0.75 && (
-                  <div className="w-full max-w-4xl xl:max-w-5xl transition-all duration-500 ease-out flex items-center justify-center">
+                  <div className="w-full max-w-5xl xl:max-w-6xl 2xl:max-w-[1440px] transition-all duration-500 ease-out flex items-center justify-center">
                     <CharacterAnimator
                       src="/assets/chapter1/p26_panel07.webp"
                       alt="Pranah holding his blue teacup: Hey, I only give them a lifetime..."
@@ -160,7 +160,7 @@ export const Scene10EightYearsLater: React.FC<SceneProps> = React.memo(({
 
                 {/* Beat 4a: Balcony Overlooking the Sea (Panel 27_01) */}
                 {stageProgress >= 0.75 && stageProgress < 0.88 && (
-                  <div className="w-full max-w-3xl lg:max-w-4xl transition-all duration-500 ease-out flex items-center justify-center">
+                  <div className="w-full max-w-4xl xl:max-w-5xl 2xl:max-w-6xl transition-all duration-500 ease-out flex items-center justify-center">
                     <ComicPanel
                       src="/assets/chapter1/p27_panel01.webp"
                       alt="Pranah and Laila standing on a sunlit Mumbai balcony overlooking the sea and skyline"
@@ -173,7 +173,7 @@ export const Scene10EightYearsLater: React.FC<SceneProps> = React.memo(({
 
                 {/* Beat 4b: Laila's Realization — Not a Baby Anymore (Panel 27_02) */}
                 {stageProgress >= 0.88 && (
-                  <div className="w-full max-w-4xl xl:max-w-5xl transition-all duration-500 ease-out flex items-center justify-center">
+                  <div className="w-full max-w-5xl xl:max-w-6xl 2xl:max-w-[1440px] transition-all duration-500 ease-out flex items-center justify-center">
                     <CharacterAnimator
                       src="/assets/chapter1/p27_panel02.webp"
                       alt="Laila sipping warm tea with wide reflective eyes: ...he's not a baby anymore."
@@ -204,7 +204,7 @@ export const Scene10EightYearsLater: React.FC<SceneProps> = React.memo(({
       </CinematicViewportStage>
 
       {/* Dawn-mist atmospheric transition buffer */}
-      <div className="h-24 bg-gradient-to-b from-[#0e101a] to-[#0d101b] pointer-events-none" />
+      <div className="h-32 bg-gradient-to-b from-[#181b24] via-[#10131d] to-[#0d101b] pointer-events-none -mt-1" />
 
       {/* Chapter One Ending Reflection & Replay Console */}
       <footer className="relative z-30 bg-[#0d101b] border-t border-white/10 py-16 px-6 text-center">
