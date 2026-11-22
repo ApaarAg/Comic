@@ -53,16 +53,17 @@ export interface NarrationBeat {
 // Scene bounds (from chapter1Data.ts)
 // ---------------------------------------------------------------------------
 const SCENE_BOUNDS: Record<string, { start: number; end: number }> = {
-  'scene-01': { start: 0.0,  end: 0.09 },
-  'scene-02': { start: 0.09, end: 0.18 },
-  'scene-03': { start: 0.18, end: 0.27 },
-  'scene-04': { start: 0.27, end: 0.39 },
-  'scene-05': { start: 0.39, end: 0.51 },
-  'scene-06': { start: 0.51, end: 0.61 },
-  'scene-07': { start: 0.61, end: 0.72 },
-  'scene-08': { start: 0.72, end: 0.83 },
-  'scene-09': { start: 0.83, end: 0.91 },
-  'scene-10': { start: 0.91, end: 1.0  },
+  'scene-00': { start: 0.0,  end: 0.08 },
+  'scene-01': { start: 0.08, end: 0.17 },
+  'scene-02': { start: 0.17, end: 0.27 },
+  'scene-03': { start: 0.27, end: 0.36 },
+  'scene-04': { start: 0.36, end: 0.47 },
+  'scene-05': { start: 0.47, end: 0.58 },
+  'scene-06': { start: 0.58, end: 0.67 },
+  'scene-07': { start: 0.67, end: 0.77 },
+  'scene-08': { start: 0.77, end: 0.86 },
+  'scene-09': { start: 0.86, end: 0.93 },
+  'scene-10': { start: 0.93, end: 1.0  },
 };
 
 /** Remap a per-scene triggerProgress [0..1] to the whole-chapter progress. */
@@ -83,7 +84,7 @@ export const SCENE_NARRATION_BEATS: NarrationBeat[] = [
     sceneId: 'scene-00',
     text: 'It began on a Wednesday afternoon as a late December sun was just dipping below the Mumbai skyline. Down where the elevated highway curves between glass towers, the city exhaled in horns and heat.',
     audioSrc: '/assets/audio/voices/narrator/scene-00-opening-canvas.mp3',
-    triggerProgress: 0.002,
+    triggerProgress: remap('scene-00', 0.36),
     durationMs: 11378,
     captionStyle: 'cinematic',
     sourceOrigin: 'comic',
@@ -99,13 +100,13 @@ export const SCENE_NARRATION_BEATS: NarrationBeat[] = [
     },
   },
 
-  // ── SCENE 01: The City of Mumbai (0.00 – 0.09) ───────────────────────────
+  // ── SCENE 01: The City of Mumbai (0.08 – 0.17) ───────────────────────────
   {
     id: 's01-01',
     sceneId: 'scene-01',
     text: 'It began on a Wednesday afternoon as a late December sun was just dipping below the Mumbai skyline.',
     audioSrc: '/assets/audio/voices/narrator/scene-01-opening.mp3',
-    triggerProgress: remap('scene-01', 0.04),
+    triggerProgress: remap('scene-01', 0.20),
     durationMs: 5526,
     captionStyle: 'cinematic',
     sourceOrigin: 'comic',
@@ -125,7 +126,7 @@ export const SCENE_NARRATION_BEATS: NarrationBeat[] = [
     sceneId: 'scene-01',
     text: 'Down where the elevated highway curves between glass towers, the city exhaled in horns and heat.',
     audioSrc: '/assets/audio/voices/narrator/scene-01-highway.mp3',
-    triggerProgress: remap('scene-01', 0.56),
+    triggerProgress: remap('scene-01', 0.52),
     durationMs: 5759,
     captionStyle: 'whisper',
     sourceOrigin: 'connective',

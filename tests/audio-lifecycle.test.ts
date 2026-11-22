@@ -24,7 +24,7 @@ test('every storyboard voice event has one scene owner and a unique event id', (
       owners.set(beat.speech.id, scene.id);
     }
   }
-  assert.equal(owners.size, 48, 'The timeline should own all 14 narration and 34 dialogue recordings');
+  assert.equal(owners.size, 49, 'The timeline should own all 15 narration and 34 dialogue recordings');
 });
 
 test('Scene 02 narration cannot be selected while Scene 01 owns the timeline', () => {
@@ -101,4 +101,33 @@ test('Scene 00 narration triggers only when scroll reaches the opening canvas be
   // Deliberate reverse scroll above 0.31 rearms for replay
   resolveTimelineAudioAction('scene-00', 0.28, 0.40, latch);
   assert.equal(latch.completedSpeechIds.has('s00-01'), false, 'Retreating past beat must rearm s00-01');
+});
+
+test('Scene 01 triggers s01-01 and s01-02 sequentially at distinct comic panel positions', () => {
+  const latch = createLatch();
+
+  // At Stage A (initial skyline artwork), no narration plays
+  const stageA = resolveTimelineAudioAction('scene-01', 0.05, 0.0, latch);
+  assert.equal(stageA.action, 'none', 'Stage A skyline artwork must not trigger narration');
+
+  // At Stage B (Sunset Horizon · 4:45 PM), first comic narration triggers
+  const stageB = resolveTimelineAudioAction('scene-01', 0.21, 0.15, latch);
+  assert.equal(stageB.action, 'play');
+  assert.equal(stageB.speechToPlay?.id, 's01-01', 'Stage B must trigger s01-01');
+  assert.equal(stageB.speechToPlay?.audioSrc, '/assets/audio/voices/narrator/scene-01-opening.mp3');
+
+  // Holding in Stage B does not restart completed s01-01
+  latch.completedSpeechIds.add('s01-01');
+  const stageBHeld = resolveTimelineAudioAction('scene-01', 0.26, 0.22, latch);
+  assert.equal(stageBHeld.action, 'none');
+
+  // Scrolling between Stage B and Stage D does not trigger highway narration prematurely
+  const stageC = resolveTimelineAudioAction('scene-01', 0.40, 0.35, latch);
+  assert.equal(stageC.action, 'none');
+
+  // Reaching Stage D (Elevated Highway Overpass) triggers s01-02
+  const stageD = resolveTimelineAudioAction('scene-01', 0.53, 0.48, latch);
+  assert.equal(stageD.action, 'play');
+  assert.equal(stageD.speechToPlay?.id, 's01-02', 'Stage D must trigger s01-02');
+  assert.equal(stageD.speechToPlay?.audioSrc, '/assets/audio/voices/narrator/scene-01-highway.mp3');
 });

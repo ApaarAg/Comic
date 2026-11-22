@@ -210,10 +210,12 @@ export const Scene01Mumbai: React.FC<SceneProps> = React.memo(({
   const [selectedPinId, setSelectedPinId] = useState<string | null>(null);
   const [discoveredPins, setDiscoveredPins] = useState<Record<string, boolean>>({});
   const [activeStageName, setActiveStageName] = useState<string>('Stage A · Mumbai Twilight Skyline');
+  const [showOpeningNarration, setShowOpeningNarration] = useState<boolean>(false);
   const [showHighwayNarration, setShowHighwayNarration] = useState<boolean>(false);
 
   const prevProgressRef = useRef<number>(0);
-  const hasTriggeredNarrationRef = useRef<boolean>(false);
+  const hasTriggeredOpeningRef = useRef<boolean>(false);
+  const hasTriggeredHighwayRef = useRef<boolean>(false);
 
   useEffect(() => {
     if (reducedMotion || !sectionRef.current) return;
@@ -366,23 +368,63 @@ export const Scene01Mumbai: React.FC<SceneProps> = React.memo(({
             setActiveStageName(cam.stageName);
           }
 
-          // Highway narration card visibility threshold
-          setShowHighwayNarration(p >= 0.40);
+          // Card visibility thresholds: Stage B (first comic panel) vs Stage D (highway overpass)
+          setShowOpeningNarration(p >= 0.14 && p < 0.44);
+          setShowHighwayNarration(p >= 0.46);
 
-          // Audio synchronization: trigger highway narration if forward scroll crossed threshold
-          if (
-            prev < 0.48 &&
-            p >= 0.48 &&
-            !hasTriggeredNarrationRef.current &&
-            characterVoicePlayer.getActiveSceneId() === 'scene-01'
-          ) {
-            hasTriggeredNarrationRef.current = true;
-            narrative?.triggerNarrationBeat('s01-02');
+          const isFastScroll = Math.abs(p - prev) > 0.25;
+          if (isFastScroll && characterVoicePlayer.getActiveSceneId() === 'scene-01') {
+            characterVoicePlayer.stop(0, 'rapid_scroll_skip');
           }
 
-          // Backward scroll hysteresis: reset trigger only after deliberate retreat
-          if (p < 0.35) {
-            hasTriggeredNarrationRef.current = false;
+          // Audio synchronization: trigger first comic narration (s01-01) at Stage B
+          if (
+            prev < 0.20 &&
+            p >= 0.20 &&
+            p <= 0.28 &&
+            !isFastScroll &&
+            !hasTriggeredOpeningRef.current &&
+            characterVoicePlayer.getActiveSceneId() === 'scene-01'
+          ) {
+            hasTriggeredOpeningRef.current = true;
+            narrative?.triggerNarrationBeat('s01-01', true);
+          } else if (p > 0.35) {
+            hasTriggeredOpeningRef.current = true;
+          }
+
+          // Audio synchronization: trigger highway narration (s01-02) at Stage D
+          if (
+            prev < 0.52 &&
+            p >= 0.52 &&
+            p <= 0.60 &&
+            !isFastScroll &&
+            !hasTriggeredHighwayRef.current &&
+            characterVoicePlayer.getActiveSceneId() === 'scene-01'
+          ) {
+            hasTriggeredHighwayRef.current = true;
+            narrative?.triggerNarrationBeat('s01-02', true);
+          } else if (p > 0.68) {
+            hasTriggeredHighwayRef.current = true;
+          }
+
+          // Backward scroll hysteresis: reset triggers only after deliberate retreat
+          if (p < 0.10) {
+            hasTriggeredOpeningRef.current = false;
+            if (
+              characterVoicePlayer.getActiveLineId() === 's01-01' &&
+              characterVoicePlayer.getActiveSceneId() === 'scene-01'
+            ) {
+              characterVoicePlayer.stop(160, 'reverse_scroll');
+            }
+          }
+          if (p < 0.38) {
+            hasTriggeredHighwayRef.current = false;
+            if (
+              characterVoicePlayer.getActiveLineId() === 's01-02' &&
+              characterVoicePlayer.getActiveSceneId() === 'scene-01'
+            ) {
+              characterVoicePlayer.stop(160, 'reverse_scroll');
+            }
           }
         },
       });
@@ -424,6 +466,7 @@ export const Scene01Mumbai: React.FC<SceneProps> = React.memo(({
   return (
     <section
       id="scene-01"
+      data-scene-id="scene-01"
       ref={sectionRef}
       aria-label="Scene 1: The City of Mumbai"
       className="relative overflow-x-clip bg-[#141225] pt-20 pb-16"
@@ -704,7 +747,34 @@ export const Scene01Mumbai: React.FC<SceneProps> = React.memo(({
                   Scene 01 · The City of Mumbai
                 </span>
                 <h3 className="font-display mt-2 text-2xl font-semibold text-[#f8f1e7]">
-                  Late December · 4:45 PM
+                  Wednesday · 4:45 PM
+                </h3>
+                <p className="mt-3 font-display text-sm italic leading-relaxed text-[#dfd5c7]/90">
+                  &ldquo;It began on a Wednesday afternoon as a late December sun was just dipping below the Mumbai skyline.&rdquo;
+                </p>
+                <div className="mt-4 pt-3 border-t border-white/10 flex items-center justify-between text-xs text-[#cfc5b9]/75 flex-wrap gap-2">
+                  <span className="font-mono text-[11px] text-[#f28b50]">Voice: The Chronicle (Brian · 1.05x)</span>
+                  <div className="flex items-center gap-2">
+                    <button
+                      type="button"
+                      onClick={() => narrative?.triggerNarrationBeat('s01-01', true)}
+                      className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded border border-white/15 bg-black/40 hover:border-[#f28b50] hover:text-[#f28b50] text-[#e6ddd0] text-[10px] font-mono transition-all cursor-pointer"
+                      title="Replay Opening Narration"
+                    >
+                      <RotateCcw className="w-3 h-3 text-[#f28b50]" />
+                      <span>Replay</span>
+                    </button>
+                    <span className="font-mono text-[11px]">Mumbai Sunset</span>
+                  </div>
+                </div>
+              </div>
+
+              <div className="border border-white/10 bg-[#121324]/85 p-6 backdrop-blur-md shadow-2xl">
+                <span className="font-mono text-[10px] uppercase tracking-[0.28em] text-[#f28b50] font-semibold">
+                  Scene 01 · Concrete Overpass
+                </span>
+                <h3 className="font-display mt-2 text-2xl font-semibold text-[#f8f1e7]">
+                  Late December · Rush Hour
                 </h3>
                 <p className="mt-3 font-display text-sm italic leading-relaxed text-[#dfd5c7]/90">
                   &ldquo;Down where the elevated highway curves between glass towers, the city exhaled in horns and heat.&rdquo;
@@ -809,9 +879,48 @@ export const Scene01Mumbai: React.FC<SceneProps> = React.memo(({
                 className="pointer-events-none absolute inset-x-0 bottom-0 h-36 bg-gradient-to-t from-[#0a0d1a]/95 via-[#0a0d1a]/45 to-transparent z-20"
               />
 
+              {/* Stage B First Comic Narration Overlay Card */}
+              <div
+                data-testid="caption-s01-01"
+                className={`absolute bottom-4 inset-x-4 sm:inset-x-8 z-30 pointer-events-auto transition-all duration-500 ease-out ${
+                  showOpeningNarration
+                    ? 'opacity-100 translate-y-0'
+                    : 'opacity-0 translate-y-3 pointer-events-none'
+                }`}
+              >
+                <div className="mx-auto max-w-2xl border border-white/15 bg-[#0a0d1a]/90 p-4 sm:p-5 backdrop-blur-md shadow-2xl rounded-lg">
+                  <div className="flex items-center justify-between gap-2 border-b border-white/10 pb-2 mb-2.5">
+                    <span className="font-mono text-[10px] uppercase tracking-[0.24em] text-[#f28b50] font-semibold">
+                      Scene 01 · The City of Mumbai
+                    </span>
+                    <span className="font-mono text-[10px] uppercase tracking-[0.16em] text-[#cfc5b9]/70">
+                      Wednesday · 4:45 PM
+                    </span>
+                  </div>
+                  <p className="font-display text-sm sm:text-base italic leading-relaxed text-[#fbf4ea]/95">
+                    &ldquo;It began on a Wednesday afternoon as a late December sun was just dipping below the Mumbai skyline.&rdquo;
+                  </p>
+                  <div className="mt-3 pt-2.5 border-t border-white/10 flex items-center justify-between text-xs text-[#cfc5b9]/80 flex-wrap gap-2">
+                    <span className="font-mono text-[10px] sm:text-[11px] text-[#f28b50]">
+                      Voice: The Chronicle (Brian · 1.05x)
+                    </span>
+                    <button
+                      type="button"
+                      onClick={() => narrative?.triggerNarrationBeat('s01-01', true)}
+                      className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded border border-white/20 bg-black/50 hover:border-[#f28b50] hover:text-[#f28b50] text-[#e6ddd0] text-[10px] font-mono transition-all cursor-pointer shadow-sm"
+                      title="Replay Opening Narration"
+                    >
+                      <RotateCcw className="w-3 h-3 text-[#f28b50]" />
+                      <span>Replay Voice</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+
               {/* Bottom Editorial Narration Overlay Card */}
               <div
                 ref={captionHighwayRef}
+                data-testid="caption-s01-02"
                 className={`absolute bottom-4 inset-x-4 sm:inset-x-8 z-30 pointer-events-auto transition-all duration-500 ease-out ${
                   showHighwayNarration
                     ? 'opacity-100 translate-y-0'

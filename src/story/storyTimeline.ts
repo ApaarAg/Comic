@@ -291,17 +291,37 @@ export const STORYBOARD_TIMELINE: ReadonlyArray<TimelineScene> = [
       {
         id: 's01-beat-01',
         sceneId: 'scene-01',
-        stageProgress: 0.10,
+        stageProgress: 0.20,
         panelId: 'p06_panel01',
         panelAlt: 'Panoramic Mumbai splash showing glowing late-December sunset over towers',
         camera: { panXPercent: 0, panYPercent: -20, zoom: 1.02, isHold: true },
         parallax: { bgOffsetPx: 0, midOffsetPx: 0, fgOffsetPx: 0 },
-        holdWindow: { start: 0.05, end: 0.25 },
+        speech: {
+          id: 's01-01',
+          speaker: 'narrator',
+          speakerLabel: 'The Chronicle (Brian · 1.05x)',
+          text: 'It began on a Wednesday afternoon as a late December sun was just dipping below the Mumbai skyline.',
+          mode: 'narration',
+          audioSrc: '/assets/audio/voices/narrator/scene-01-opening.mp3',
+          durationMs: 5526,
+          priority: 'narration',
+          interruptionPolicy: 'pause_resume',
+          placement: 'bottom',
+        },
+        audioCue: {
+          cueId: 'discover',
+          type: 'sfx',
+          audioSrc: '/assets/audio/sfx_discover.wav',
+          durationMs: 750,
+          priority: 'sfx',
+          volume: 0.45,
+        },
+        holdWindow: { start: 0.14, end: 0.36 },
       },
       {
         id: 's01-beat-02',
         sceneId: 'scene-01',
-        stageProgress: 0.50,
+        stageProgress: 0.52,
         panelId: 'p06_panel01',
         panelAlt: 'Camera panning down to the curved concrete elevated highway overpass',
         camera: { panXPercent: 5, panYPercent: 12, zoom: 1.10, isHold: true },
@@ -319,14 +339,14 @@ export const STORYBOARD_TIMELINE: ReadonlyArray<TimelineScene> = [
           placement: 'bottom',
         },
         audioCue: {
-          cueId: 'discover',
+          cueId: 'horn',
           type: 'sfx',
-          audioSrc: '/assets/audio/sfx_discover.wav',
+          audioSrc: '/assets/audio/sfx_horn.wav',
           durationMs: 750,
           priority: 'sfx',
           volume: 0.45,
         },
-        holdWindow: { start: 0.45, end: 0.70 },
+        holdWindow: { start: 0.46, end: 0.72 },
       },
       {
         id: 's01-beat-03',
@@ -2017,8 +2037,8 @@ export function validateStoryTimeline(): {
     });
   });
 
-  if (totalNarrationBeats !== 14) {
-    errors.push(`Expected 14 narration beats, found ${totalNarrationBeats}`);
+  if (totalNarrationBeats !== 15) {
+    errors.push(`Expected 15 narration beats, found ${totalNarrationBeats}`);
   }
 
   if (totalDialogueBeats !== 34) {

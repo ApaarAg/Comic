@@ -12,7 +12,7 @@ test('validateStoryTimeline confirms schema completeness and monotonic ordering'
   const result = validateStoryTimeline();
   assert.equal(result.isValid, true, `Timeline validation failed: ${result.errors.join(', ')}`);
   assert.equal(result.totalScenes, 11, 'Should have exactly 11 scenes (00 through 10)');
-  assert.equal(result.totalNarrationBeats, 14, 'Should contain all 14 George narration beats');
+  assert.equal(result.totalNarrationBeats, 15, 'Should contain all 15 Brian narration beats');
   assert.equal(result.totalDialogueBeats, 34, 'Should contain all 34 character dialogue lines');
   assert.equal(result.errors.length, 0);
 });
