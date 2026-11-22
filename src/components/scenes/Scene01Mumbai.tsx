@@ -9,7 +9,7 @@
  * Transforms the opening full-page splash artwork (Filipe Andrade, 1920x2913)
  * into a guided, scroll-driven cinematic camera journey exploring the source
  * comic page across five progressive stages:
- * - STAGE A: Complete Artwork Reveal (Establishing the wide twilight splash)
+ * - STAGE A: Mumbai Twilight Skyline (Establishing the wide twilight splash)
  * - STAGE B: Sunset Horizon Focus (Close-in on late-December solar corona)
  * - STAGE C: Glass Monoliths & Narration (Descending past BKC towers with synchronized narration)
  * - STAGE D: Elevated Highway Overpass (Framing the knotted concrete curve and traffic gridlock)
@@ -101,7 +101,7 @@ const SCENE01_CAMERA_KEYFRAMES: ReadonlyArray<CameraKeyframe> = [
     yRatio: 0.00,
     originX: 50,
     originY: 18,
-    stageName: 'Stage A · Complete Artwork Reveal',
+    stageName: 'Stage A · Mumbai Twilight Skyline',
   },
   {
     progress: 0.26,
@@ -209,7 +209,7 @@ export const Scene01Mumbai: React.FC<SceneProps> = React.memo(({
 
   const [selectedPinId, setSelectedPinId] = useState<string | null>(null);
   const [discoveredPins, setDiscoveredPins] = useState<Record<string, boolean>>({});
-  const [activeStageName, setActiveStageName] = useState<string>('Stage A · Complete Artwork Reveal');
+  const [activeStageName, setActiveStageName] = useState<string>('Stage A · Mumbai Twilight Skyline');
   const [showHighwayNarration, setShowHighwayNarration] = useState<boolean>(false);
 
   const prevProgressRef = useRef<number>(0);
@@ -259,24 +259,6 @@ export const Scene01Mumbai: React.FC<SceneProps> = React.memo(({
         end: 'bottom top',
         scrub: true,
       };
-
-      ScrollTrigger.create({
-        trigger: sectionRef.current,
-        start: 'top 50%',
-        end: 'bottom 50%',
-        onEnter: () => characterVoicePlayer.setActiveScene('scene-01'),
-        onEnterBack: () => characterVoicePlayer.setActiveScene('scene-01'),
-        onLeave: () => {
-          if (characterVoicePlayer.getActiveSceneId() === 'scene-01') {
-            characterVoicePlayer.setActiveScene(null);
-          }
-        },
-        onLeaveBack: () => {
-          if (characterVoicePlayer.getActiveSceneId() === 'scene-01') {
-            characterVoicePlayer.setActiveScene(null);
-          }
-        },
-      });
 
       // BACKGROUND TIER (slowest apparent motion)
       if (skylineLayerRef.current) {
