@@ -255,24 +255,27 @@ async function main() {
       );
     };
 
-    const audioButton = await cdp.evaluate(`(() => {
-      const button = [...document.querySelectorAll('button')]
-        .find((item) => item.title === 'Enter Experience & Enable Audio' || item.textContent.includes('Enter & Listen'));
-      if (!button) return false;
-      button.click();
-      return true;
+    // Confirm prominent audio unlock button has been removed and no premature playback occurs at scroll zero
+    const hasProminentButton = await cdp.evaluate(`(() => {
+      const buttons = [...document.querySelectorAll('button')];
+      return buttons.some(b => b.textContent.includes('Enable Full Cinematic Audio') || b.textContent.includes('Enter & Listen'));
     })()`);
-    assert.equal(audioButton, true, 'Opening canvas should expose the approved audio unlock control');
-    const openingStart = await waitEvent(
-      (event) => event.type === 'lifecycle' && event.lifecycle === 'PLAYING' && event.lineId === 's00-01',
-      'opening narration playback',
-    );
+    assert.equal(hasProminentButton, false, 'Prominent audio unlock button must be completely removed');
+
+    await delay(400);
+    const prematureAtZero = (await log()).filter((event) => event.lifecycle === 'PLAYING');
+    assert.equal(prematureAtZero.length, 0, 'No narration must play at initial load without scrolling');
+
+    // Scroll intentionally to the Scene 00 Opening Canvas narration trigger
+    const s00Marker = (await getMarkers('scene-00')).find((marker) => marker.id === 's00-01');
+    assert.ok(s00Marker, 'Scene 00 opening canvas narration marker should exist');
+    const openingStart = await startVoiceAt('scene-00', s00Marker);
     const openingSnapshotBefore = await currentVoice();
     await delay(700);
     const openingSnapshotAfter = await currentVoice();
     assert.equal(openingStart.ownerSceneId, 'scene-00');
     assert.equal(openingStart.timingSource, 'audio-seek', 'Opening narration must use the production recording');
-    assert.equal(openingStart.audioContextState, 'running', 'AudioContext must be running after the user unlock gesture');
+    assert.equal(openingStart.audioContextState, 'running', 'AudioContext must be running when narration starts');
     assert.ok(
       openingSnapshotAfter.voice.elapsedSec > openingSnapshotBefore.voice.elapsedSec + 0.3,
       'Recorded narration time should advance while it plays',

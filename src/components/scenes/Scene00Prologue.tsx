@@ -1,67 +1,60 @@
 /**
- * @license
- * SPDX-License-Identifier: Apache-2.0
+ * Storyverse — Prologue Scene Component
  *
  * Scene00Prologue.tsx
  *
- * Storyverse 3.1: Continuous Cinematic Opening Experience & Opening Canvas Narration
+ * Storyverse 4.4: Refined Cinematic Opening Experience & Scroll-Synchronized Prologue
  *
  * Coordinates:
- * 1. Darkness & Atmosphere (0.00 – 0.12): Deep twilight void, floating motes, audio unlock prompt.
- * 2. The Opening Canvas: Once Upon a Falling Starr (0.12 – 0.54):
+ * 1. Darkness & Atmospheric Opening (0.00 – 0.08): Deep twilight void, floating motes, discreet scroll prompt.
+ * 2. "THE STORY" Introduction (0.08 – 0.30):
+ *    - Spoiler-free narrative synopsis introducing Laila Starr and Mumbai.
+ *    - Elegant serif typography, warm gold accents, generous negative space.
+ * 3. The Opening Canvas: Once Upon a Falling Starr (0.30 – 0.58):
  *    - Coral sunset emerges behind Mumbai skyline silhouettes.
- *    - Brian's 1.05x Indian English narration begins immediately upon audio unlock.
- *    - Synchronized progressive text reveal with discreet replay button.
+ *    - Brian's 1.05x Indian English narration triggers via authoritative scroll timeline (beat stageProgress: 0.36).
+ *    - Synchronized progressive word reveal with discreet replay/pause controls.
  *    - Camera glides from sunset sky down toward the curving elevated highway.
- * 3. Title Manifestation (0.54 – 0.82): Gold foil title reveals with motif_storyverse.
- * 4. Camera Dive (0.82 – 1.00): Camera pushes through sunset clouds directly into Scene 01.
+ * 4. Title Manifestation (0.58 – 0.86): Gold foil title reveals with motif_storyverse.
+ * 5. Camera Dive (0.86 – 1.00): Camera pushes through sunset clouds directly into Scene 01.
  */
 
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { CinematicViewportStage } from '../CinematicViewportStage';
-import type { ResolvedVisualState } from '../../story/storyTimeline';
 import mumbaiSkylineUrl from '../../assets/images/mumbai_skyline_backdrop_1795078714752.jpg';
 import mumbaiCloudsUrl from '../../assets/images/mumbai_clouds_haze_1795078713772.jpg';
 import mumbaiSilhouettesUrl from '../../assets/images/mumbai_foreground_silhouettes_1795078713773.jpg';
 import { sceneAudioManager } from '../../audio/SceneAudioManager';
-import { soundscape } from '../../audio/soundscape';
-import { Volume2, VolumeX, ChevronDown, RotateCcw, Play, Pause } from 'lucide-react';
+import { ChevronDown, RotateCcw, Play, Pause } from 'lucide-react';
 import { useOptionalNarrative } from '../../narrative/NarrativeEngine';
 
 interface Scene00PrologueProps {
   reducedMotion: boolean;
-  isMuted: boolean;
-  onToggleMute: () => void;
+  isMuted?: boolean;
+  onToggleMute?: () => void;
   onUnlockAudio?: () => void;
 }
 
-const PROLOGUE_MOTES = [
-  { left: '15%', top: '22%', size: 3, delay: '0s', duration: '4.2s' },
-  { left: '28%', top: '56%', size: 4, delay: '1.2s', duration: '5.1s' },
-  { left: '42%', top: '38%', size: 2.5, delay: '2.4s', duration: '3.8s' },
-  { left: '62%', top: '25%', size: 3.5, delay: '0.6s', duration: '4.7s' },
-  { left: '74%', top: '62%', size: 3, delay: '1.8s', duration: '5.5s' },
-  { left: '86%', top: '34%', size: 4, delay: '2.9s', duration: '4.1s' },
-  { left: '20%', top: '78%', size: 2.5, delay: '3.2s', duration: '4.9s' },
-  { left: '68%', top: '82%', size: 3.5, delay: '0.8s', duration: '5.2s' },
-];
+const PROLOGUE_MOTES = Array.from({ length: 18 }, (_, i) => ({
+  left: `${(i * 19 + 7) % 94}%`,
+  top: `${(i * 23 + 11) % 88}%`,
+  size: 2 + (i % 3),
+  delay: `${(i * 0.4).toFixed(1)}s`,
+  duration: `${3.5 + (i % 3) * 0.8}s`,
+}));
 
 const OPENING_PASSAGE_TEXT =
-  'It began on a Wednesday afternoon as a late December sun was just dipping below the Mumbai skyline. Down where the elevated highway curves between glass towers, the city exhaled in horns and heat.';
+  'It began as it always had, in the quiet between two breaths. Before the rain. Before Mumbai woke to find itself immortal.';
 const OPENING_PASSAGE_WORDS = OPENING_PASSAGE_TEXT.split(' ');
 
 export const Scene00Prologue: React.FC<Scene00PrologueProps> = React.memo(({
   reducedMotion,
-  isMuted,
-  onToggleMute,
-  onUnlockAudio,
 }) => {
   const [stageProgress, setStageProgress] = useState(0);
-  const [audioUnlocked, setAudioUnlocked] = useState(!sceneAudioManager.getMuted());
+  const [, setAudioUnlocked] = useState(!sceneAudioManager.getMuted());
   const narrative = useOptionalNarrative();
-  const hasTriggeredRef = useRef(false);
 
-  // Check if Web Audio is currently playing/unlocked
+  // Sync with audio manager state for UI indicators
   useEffect(() => {
     const checkState = () => {
       const muted = sceneAudioManager.getMuted();
@@ -71,84 +64,76 @@ export const Scene00Prologue: React.FC<Scene00PrologueProps> = React.memo(({
     return sceneAudioManager.subscribe(checkState);
   }, []);
 
-  // Trigger opening narration immediately upon audio unlock
-  const handleUnlock = useCallback(() => {
-    sceneAudioManager.ensureAutoplayUnlocked();
-    sceneAudioManager.unmute();
-    soundscape.unmute();
-    onUnlockAudio?.();
-    setAudioUnlocked(true);
-    if (!hasTriggeredRef.current) {
-      hasTriggeredRef.current = true;
-      narrative?.triggerNarrationBeat('s00-01');
-    }
-  }, [narrative, onUnlockAudio]);
-
-  // If audio is already unlocked and user begins scrolling into the opening range, trigger narration once
-  useEffect(() => {
-    if (audioUnlocked && !hasTriggeredRef.current && stageProgress >= 0.04) {
-      hasTriggeredRef.current = true;
-      narrative?.triggerNarrationBeat('s00-01');
-    }
-  }, [audioUnlocked, stageProgress, narrative]);
-
   // Compute keyframe-driven visual envelopes
   const darknessOpacity = Math.max(0, 0.12 - stageProgress * 1.5);
-  const skylineOpacity = 1.0;
 
-  // Opening Canvas: Once Upon a Falling Starr envelope (visible from the start)
-  const canvasOpacity =
-    stageProgress < 0.45
-      ? 1
-      : Math.max(0, 1 - (stageProgress - 0.45) / 0.09);
-
-  // Title Manifestation envelope (0.54 – 0.82)
-  const titleOpacity =
-    stageProgress < 0.54
+  // 1. "THE STORY" Card envelope:
+  // Enters around 0.08, fully legible through 0.14 - 0.24, smoothly fades out before 0.30
+  const storySummaryOpacity =
+    stageProgress < 0.08
       ? 0
-      : stageProgress < 0.66
-        ? (stageProgress - 0.54) / 0.12
-        : stageProgress < 0.82
+      : stageProgress <= 0.14
+        ? (stageProgress - 0.08) / 0.06
+        : stageProgress <= 0.24
           ? 1
-          : Math.max(0, 1 - (stageProgress - 0.82) / 0.10);
+          : stageProgress < 0.30
+            ? Math.max(0, 1 - (stageProgress - 0.24) / 0.06)
+            : 0;
 
-  const portalZoom = stageProgress > 0.80 ? 1 + (stageProgress - 0.80) * 1.5 : 1.0;
-  const exitFade = stageProgress > 0.88 ? Math.max(0, 1 - (stageProgress - 0.88) / 0.12) : 1.0;
+  // 2. "The Opening Canvas" Card envelope:
+  // Fades in at 0.30, fully visible 0.34 - 0.52, fades out before 0.58
+  const canvasOpacity =
+    stageProgress < 0.30
+      ? 0
+      : stageProgress <= 0.34
+        ? (stageProgress - 0.30) / 0.04
+        : stageProgress <= 0.52
+          ? 1
+          : stageProgress < 0.58
+            ? Math.max(0, 1 - (stageProgress - 0.52) / 0.06)
+            : 0;
 
-  // Camera choreography developing alongside narration
-  const cameraPanY = stageProgress < 0.54 ? stageProgress * 30 : 16.2;
-  const cameraScale = 1 + stageProgress * 0.05;
+  // 3. Sunset skyline backdrop envelope
+  const skylineOpacity = Math.min(1, Math.max(0, (stageProgress - 0.08) / 0.22));
 
-  // Synchronized word lighting calculation
-  const isNarrating = narrative?.activeNarrationId === 's00-01' && narrative.isNarratorActive;
-  const wordProgress =
-    narrative?.activeNarrationId === 's00-01'
-      ? narrative.narratorProgress
-      : stageProgress > 0.45
-        ? 1
-        : 0;
-  const currentWordIndex = Math.min(
-    OPENING_PASSAGE_WORDS.length,
-    Math.floor(wordProgress * OPENING_PASSAGE_WORDS.length),
-  );
+  // 4. Monumental Title reveal envelope: 0.58 - 0.86
+  const titleOpacity =
+    stageProgress < 0.58
+      ? 0
+      : stageProgress < 0.72
+        ? (stageProgress - 0.58) / 0.14
+        : stageProgress < 0.86
+          ? 1
+          : Math.max(0, 1 - (stageProgress - 0.86) / 0.14);
+
+  // 5. Exit portal zoom and cross-dissolve into Scene 01
+  const portalZoom = 1 + Math.max(0, (stageProgress - 0.82) * 2.2);
+  const exitFade = Math.max(0, 1 - Math.max(0, (stageProgress - 0.90) * 10));
+
+  // Real voice playback tracking for word-by-word progressive lighting
+  const isNarrating = narrative?.activeNarrationId === 's00-01' && narrative.audioState === 'Playing';
+  const audioProgress = narrative?.audioProgress ?? 0;
+  const currentWordIndex = isNarrating
+    ? Math.min(
+        OPENING_PASSAGE_WORDS.length,
+        Math.floor(audioProgress * OPENING_PASSAGE_WORDS.length * 1.08),
+      )
+    : 0;
 
   return (
-    <section aria-label="Scene 0: Cinematic Prologue" className="relative w-full">
+    <section
+      id="scene-00"
+      data-scene-id="scene-00"
+      className="relative w-full"
+      aria-label="Prologue: The Threshold"
+    >
       <CinematicViewportStage
         sceneId="scene-00"
-        reducedMotion={reducedMotion}
-        trackHeightVh={320}
-        onProgressChange={(p) => setStageProgress(p)}
+        onProgressChange={setStageProgress}
         backgroundLayer={
           <div
-            className="absolute inset-0 transition-opacity duration-300 will-change-transform"
-            style={{
-              opacity: skylineOpacity * exitFade,
-              transform: reducedMotion
-                ? 'none'
-                : `translateY(${cameraPanY}px) scale(${cameraScale})`,
-              transition: 'transform 180ms ease-out',
-            }}
+            className="absolute inset-0 transition-opacity duration-500"
+            style={{ opacity: skylineOpacity * exitFade }}
           >
             <img
               src={mumbaiSkylineUrl}
@@ -177,174 +162,6 @@ export const Scene00Prologue: React.FC<Scene00PrologueProps> = React.memo(({
             />
           </div>
         }
-        cameraRigLayer={(visual: ResolvedVisualState) => (
-          <div
-            className="relative flex flex-col items-center justify-center text-center px-4 sm:px-6 max-w-5xl mx-auto will-change-transform"
-            style={{
-              transform: `scale(${portalZoom})`,
-              opacity: exitFade,
-              transition: reducedMotion ? 'none' : 'transform 100ms ease-out',
-            }}
-          >
-            {/* ── 1. THE OPENING CANVAS · ONCE UPON A FALLING STARR (0.12 – 0.54) ── */}
-            {canvasOpacity > 0.02 && (
-              <div
-                className="absolute inset-x-0 flex flex-col items-center justify-center max-w-3xl mx-auto px-4 z-20 pointer-events-auto"
-                style={{
-                  opacity: canvasOpacity,
-                  transform: `translateY(${(1 - canvasOpacity) * 20}px)`,
-                }}
-              >
-                <div className="w-full border border-[#f28b50]/45 bg-[#0d101d]/90 p-6 sm:p-8 backdrop-blur-xl shadow-[0_24px_64px_rgba(0,0,0,0.85)] rounded-xl text-left">
-                  {/* Card Header & Replay Controls */}
-                  <div className="flex items-center justify-between gap-3 border-b border-white/10 pb-3 mb-4 flex-wrap">
-                    <div className="flex items-center gap-2.5">
-                      <span className="h-2 w-2 rounded-full bg-[#f28b50] animate-pulse" />
-                      <span className="font-mono text-[10px] sm:text-[11px] uppercase tracking-[0.28em] text-[#f28b50] font-semibold">
-                        The Opening Canvas · Ram V & Filipe Andrade
-                      </span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      {!audioUnlocked ? (
-                        <button
-                          type="button"
-                          onClick={handleUnlock}
-                          className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#f28b50] hover:bg-[#ff9c65] text-black text-[11px] font-mono font-bold tracking-wider uppercase transition-all cursor-pointer shadow-[0_0_14px_rgba(242,139,80,0.55)]"
-                          title="Enter Experience & Enable Audio"
-                        >
-                          <Volume2 className="w-3.5 h-3.5" />
-                          <span>Enter & Listen</span>
-                        </button>
-                      ) : (
-                        <>
-                          <span className="font-mono text-[10px] uppercase tracking-wider text-[#ffd29d]/85 bg-[#f28b50]/15 px-2.5 py-0.5 rounded border border-[#f28b50]/30">
-                            Brian · 1.05x
-                          </span>
-                          {narrative?.activeNarrationId === 's00-01' && (
-                            <button
-                              type="button"
-                              onClick={() => {
-                                if (narrative.audioState === 'Paused') {
-                                  narrative.resumeNarrator();
-                                } else {
-                                  narrative.pauseNarrator();
-                                }
-                              }}
-                              className="inline-flex items-center gap-1 px-2.5 py-1 rounded border border-white/20 bg-black/40 hover:border-[#f28b50] hover:text-[#f28b50] text-[#e6ddd0] text-xs font-mono transition-all cursor-pointer shadow-md"
-                              title={narrative.audioState === 'Paused' ? 'Resume Opening Narration' : 'Pause Opening Narration'}
-                            >
-                              {narrative.audioState === 'Paused' ? (
-                                <>
-                                  <Play className="w-3 h-3 text-[#f28b50]" />
-                                  <span className="text-[10px] uppercase tracking-wider">Resume</span>
-                                </>
-                              ) : (
-                                <>
-                                  <Pause className="w-3 h-3 text-[#f28b50]" />
-                                  <span className="text-[10px] uppercase tracking-wider">Pause</span>
-                                </>
-                              )}
-                            </button>
-                          )}
-                          <button
-                            type="button"
-                            onClick={() => narrative?.triggerNarrationBeat('s00-01', true)}
-                            className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded border border-white/20 bg-black/40 hover:border-[#f28b50] hover:text-[#f28b50] text-[#e6ddd0] text-xs font-mono transition-all cursor-pointer shadow-md"
-                            title="Replay Opening Narration"
-                          >
-                            <RotateCcw className="w-3 h-3 text-[#f28b50]" />
-                            <span className="text-[10px] uppercase tracking-wider">Replay</span>
-                          </button>
-                        </>
-                      )}
-                    </div>
-                  </div>
-
-                  {/* Section Title */}
-                  <h2 className="font-display text-2xl sm:text-3xl font-semibold text-[#f8f1e7] mb-3 [text-wrap:balance]">
-                    Once Upon a Falling Starr
-                  </h2>
-
-                  {/* Synchronized Word Highlighting */}
-                  <p className="font-display text-base sm:text-lg md:text-xl italic leading-relaxed text-[#dfd5c7]">
-                    &ldquo;
-                    {OPENING_PASSAGE_WORDS.map((word, idx) => {
-                      const isSpoken = idx < currentWordIndex;
-                      const isCurrent = idx === currentWordIndex - 1 && isNarrating;
-                      return (
-                        <span
-                          key={`canvas-w-${idx}`}
-                          className="inline-block transition-all duration-150"
-                          style={{
-                            opacity: isSpoken ? 1 : 0.35,
-                            color: isCurrent ? '#f7c27d' : isSpoken ? '#fbf4ea' : '#9d97b0',
-                            textShadow: isCurrent ? '0 0 14px rgba(247,194,125,0.7)' : 'none',
-                          }}
-                        >
-                          {word}
-                          {idx < OPENING_PASSAGE_WORDS.length - 1 ? '\u00A0' : ''}
-                        </span>
-                      );
-                    })}
-                    &rdquo;
-                  </p>
-
-                  {/* Metadata Footer */}
-                  <div className="mt-4 pt-3 border-t border-white/10 flex items-center justify-between text-[11px] font-mono text-[#cfc5b9]/70 flex-wrap gap-2">
-                    <span className="text-[#f28b50]">Voice: The Chronicle (Brian · Indian English)</span>
-                    <span>Bandra-Kurla Complex · 16:40 IST</span>
-                  </div>
-                </div>
-              </div>
-            )}
-
-            {/* ── 2. MONUMENTAL TITLE REVEAL (0.54 – 0.82) ───────────────────── */}
-            {titleOpacity > 0.02 && (
-              <div
-                className="transition-all duration-700 flex flex-col items-center select-none"
-                style={{
-                  opacity: titleOpacity,
-                  transform: `translateY(${(1 - titleOpacity) * 32}px)`,
-                }}
-              >
-                {/* Prestigious Editorial Eyebrow */}
-                <div className="flex items-center gap-3 mb-4">
-                  <span className="h-[1px] w-8 sm:w-12 bg-gradient-to-r from-transparent to-[#e8a84a]/60" />
-                  <span className="font-mono text-[10px] sm:text-[11px] uppercase tracking-[0.38em] text-[#e8a84a]/90 font-medium">
-                    BOOM! STUDIOS · RAM V & FILIPE ANDRADE
-                  </span>
-                  <span className="h-[1px] w-8 sm:w-12 bg-gradient-to-l from-transparent to-[#e8a84a]/60" />
-                </div>
-
-                {/* Title Part 1: Wide Spaced Serif Eyebrow */}
-                <p className="font-mono text-xs sm:text-sm md:text-base uppercase tracking-[0.32em] text-[#dfd5c7]/85 mb-1 sm:mb-2 drop-shadow-[0_2px_8px_rgba(0,0,0,0.85)]">
-                  THE MANY DEATHS OF
-                </p>
-
-                {/* Title Part 2: Colossal Graphic Novel Masthead */}
-                <h1 className="font-display text-5xl sm:text-7xl md:text-8xl lg:text-9xl font-black tracking-tight leading-[0.92] text-[#fbf4ea] drop-shadow-[0_16px_48px_rgba(0,0,0,0.95)] max-w-4xl">
-                  <span className="bg-gradient-to-r from-[#f7c27d] via-[#f28b50] to-[#e66c8b] bg-clip-text text-transparent">
-                    LAILA STARR
-                  </span>
-                </h1>
-
-                {/* Poetic Narrative Hook Line */}
-                <p className="mt-5 sm:mt-6 font-serif italic text-sm sm:text-lg md:text-xl text-[#fbf4ea]/80 max-w-xl mx-auto leading-relaxed drop-shadow-[0_2px_12px_rgba(0,0,0,0.9)] [text-wrap:balance]">
-                  "When the goddess of death is cast down into a dying city, mortality is not an end. It is an education."
-                </p>
-
-                {/* Setting / Act Metadata */}
-                <div className="mt-5 sm:mt-6 flex items-center justify-center gap-3 sm:gap-4 font-mono text-[10px] sm:text-[11px] uppercase tracking-[0.30em] text-white/50">
-                  <span>MUMBAI</span>
-                  <span className="text-[#f28b50]">•</span>
-                  <span>16:40 IST</span>
-                  <span className="text-[#f28b50]">•</span>
-                  <span>CHAPTER 01</span>
-                </div>
-              </div>
-            )}
-          </div>
-        )}
         foregroundLayer={
           <>
             {/* Silhouetted Mumbai rooftops */}
@@ -390,35 +207,220 @@ export const Scene00Prologue: React.FC<Scene00PrologueProps> = React.memo(({
           </>
         }
       >
-        {/* Cinematic Audio Unlock & Scroll Guidance Prompt */}
-        {stageProgress < 0.38 && (
+        {/* ── 1. THE STORY · SHORT INTRODUCTION (0.08 – 0.30) ─────────── */}
+        {storySummaryOpacity > 0.02 && (
           <div
-            className="absolute bottom-[max(2rem,calc(env(safe-area-inset-bottom,0px)+1.5rem))] left-1/2 -translate-x-1/2 z-50 pointer-events-auto flex flex-col items-center gap-3 transition-opacity duration-300"
-            style={{ opacity: Math.max(0, 1 - stageProgress * 3.2) }}
+            data-testid="story-summary-card"
+            className="absolute inset-0 flex items-center justify-center p-4 sm:p-6 z-50 pointer-events-none"
+            style={{
+              opacity: storySummaryOpacity * exitFade,
+              transform: `translateY(${(1 - storySummaryOpacity) * 20}px)`,
+              transition: reducedMotion ? 'none' : 'opacity 200ms ease-out, transform 200ms ease-out',
+            }}
           >
-            {!audioUnlocked ? (
-              <button
-                type="button"
-                data-testid="enable-audio-btn"
-                onClick={handleUnlock}
-                className="group relative flex items-center gap-3 rounded-full bg-[#120d22]/90 px-6 py-3 text-xs font-mono tracking-[0.22em] uppercase text-[#fbf4ea] border border-[#f28b50]/50 shadow-[0_4px_24px_rgba(242,139,80,0.25)] backdrop-blur-xl hover:bg-[#1a1432] hover:border-[#f28b50] hover:shadow-[0_4px_32px_rgba(242,139,80,0.4)] transition-all cursor-pointer"
-              >
-                <span className="relative flex h-2.5 w-2.5">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#f28b50] opacity-75" />
-                  <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-[#f28b50]" />
+            <div className="w-full max-w-2xl border border-[#e8a84a]/35 bg-[#0a0d18]/92 p-6 sm:p-8 backdrop-blur-2xl shadow-[0_32px_80px_rgba(0,0,0,0.92)] rounded-2xl text-left pointer-events-auto select-none">
+              {/* Metadata Header */}
+              <div className="flex items-center gap-2 mb-4 flex-wrap border-b border-white/10 pb-3">
+                <span className="h-2 w-2 rounded-full bg-[#e8a84a] animate-pulse" />
+                <span className="font-mono text-[10px] sm:text-[11px] uppercase tracking-[0.28em] text-[#e8a84a] font-semibold">
+                  Graphic Novel
                 </span>
-                <VolumeX className="w-4 h-4 text-[#f28b50] group-hover:scale-110 transition-transform" />
-                <span className="font-semibold">Enable Full Cinematic Audio</span>
-              </button>
-            ) : (
-              <div className="flex items-center gap-2.5 rounded-full bg-black/60 px-5 py-2 text-[11px] font-mono tracking-[0.24em] uppercase text-[#f7c27d] border border-[#f28b50]/30 backdrop-blur-xl shadow-lg">
-                <Volume2 className="w-3.5 h-3.5 text-[#f28b50] animate-pulse" />
-                <span>Cinematic Score & Voices Active</span>
+                <span className="text-[#f28b50]">•</span>
+                <span className="font-mono text-[10px] sm:text-[11px] uppercase tracking-[0.28em] text-[#cfc5b9]/80 font-semibold">
+                  Chapter One
+                </span>
+                <span className="text-[#f28b50]">•</span>
+                <span className="font-mono text-[10px] sm:text-[11px] uppercase tracking-[0.28em] text-[#cfc5b9]/80 font-semibold">
+                  Mumbai, India
+                </span>
               </div>
-            )}
 
+              {/* Title */}
+              <h2 className="font-serif text-2xl sm:text-3xl font-bold tracking-wide text-[#fbf4ea] mb-4">
+                THE STORY
+              </h2>
+
+              {/* Body Paragraphs */}
+              <div className="space-y-3 font-serif text-sm sm:text-base leading-relaxed text-[#dfd5c7]">
+                <p>
+                  Death has always had a job to do. But when humanity discovers a way to escape mortality, Death suddenly finds herself out of work.
+                </p>
+                <p>
+                  Cast down into the world she once watched from afar, she must experience life as a mortal in Mumbai.
+                </p>
+                <p className="italic text-[#f7c27d]/95 pt-1">
+                  The Many Deaths of Laila Starr is a story about life, death, destiny and the unexpected connections that make our existence meaningful.
+                </p>
+              </div>
+
+              {/* Footer Metadata */}
+              <div className="mt-5 pt-3 border-t border-white/10 flex items-center justify-between text-[10px] sm:text-[11px] font-mono uppercase tracking-[0.24em] text-[#cfc5b9]/70 flex-wrap gap-2">
+                <span className="text-[#e8a84a]/90">A story of life, death and destiny</span>
+                <span className="flex items-center gap-1.5 text-white/50">
+                  <span>Scroll to continue</span>
+                  <ChevronDown className="w-3 h-3 text-[#e8a84a]" />
+                </span>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* ── 2. THE OPENING CANVAS · ONCE UPON A FALLING STARR (0.30 – 0.58) ── */}
+        {canvasOpacity > 0.02 && (
+          <div
+            data-testid="opening-canvas-card"
+            className="absolute inset-0 flex items-center justify-center p-4 sm:p-6 z-50 pointer-events-none"
+            style={{
+              opacity: canvasOpacity * exitFade,
+              transform: `translateY(${(1 - canvasOpacity) * 20}px)`,
+              transition: reducedMotion ? 'none' : 'opacity 200ms ease-out, transform 200ms ease-out',
+            }}
+          >
+            <div className="w-full max-w-3xl border border-[#f28b50]/45 bg-[#0a0d18]/92 p-6 sm:p-8 backdrop-blur-2xl shadow-[0_32px_80px_rgba(0,0,0,0.92)] rounded-2xl text-left pointer-events-auto select-none">
+              {/* Card Header & Controls */}
+              <div className="flex items-center justify-between gap-3 border-b border-white/10 pb-3 mb-4 flex-wrap">
+                <div className="flex items-center gap-2.5">
+                  <span className="h-2 w-2 rounded-full bg-[#f28b50] animate-pulse" />
+                  <span className="font-mono text-[10px] sm:text-[11px] uppercase tracking-[0.28em] text-[#f28b50] font-semibold">
+                    The Opening Canvas · Ram V & Filipe Andrade
+                  </span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="font-mono text-[10px] uppercase tracking-wider text-[#ffd29d]/85 bg-[#f28b50]/15 px-2.5 py-0.5 rounded border border-[#f28b50]/30">
+                    Brian · 1.05x
+                  </span>
+                  {narrative?.activeNarrationId === 's00-01' && (
+                    <button
+                      type="button"
+                      onClick={() => {
+                        if (narrative.audioState === 'Paused') {
+                          narrative.resumeNarrator();
+                        } else {
+                          narrative.pauseNarrator();
+                        }
+                      }}
+                      className="inline-flex items-center gap-1 px-2.5 py-1 rounded border border-white/20 bg-black/40 hover:border-[#f28b50] hover:text-[#f28b50] text-[#e6ddd0] text-xs font-mono transition-all cursor-pointer shadow-md"
+                      title={narrative.audioState === 'Paused' ? 'Resume Opening Narration' : 'Pause Opening Narration'}
+                    >
+                      {narrative.audioState === 'Paused' ? (
+                        <>
+                          <Play className="w-3 h-3 text-[#f28b50]" />
+                          <span className="text-[10px] uppercase tracking-wider">Resume</span>
+                        </>
+                      ) : (
+                        <>
+                          <Pause className="w-3 h-3 text-[#f28b50]" />
+                          <span className="text-[10px] uppercase tracking-wider">Pause</span>
+                        </>
+                      )}
+                    </button>
+                  )}
+                  <button
+                    type="button"
+                    onClick={() => narrative?.triggerNarrationBeat('s00-01', true)}
+                    className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded border border-white/20 bg-black/40 hover:border-[#f28b50] hover:text-[#f28b50] text-[#e6ddd0] text-xs font-mono transition-all cursor-pointer shadow-md"
+                    title="Replay Opening Narration"
+                  >
+                    <RotateCcw className="w-3 h-3 text-[#f28b50]" />
+                    <span className="text-[10px] uppercase tracking-wider">Replay</span>
+                  </button>
+                </div>
+              </div>
+
+              {/* Section Title */}
+              <h2 className="font-display text-2xl sm:text-3xl font-semibold text-[#f8f1e7] mb-3 [text-wrap:balance]">
+                Once Upon a Falling Starr
+              </h2>
+
+              {/* Synchronized Word Highlighting */}
+              <p className="font-display text-base sm:text-lg md:text-xl italic leading-relaxed text-[#dfd5c7]">
+                &ldquo;
+                {OPENING_PASSAGE_WORDS.map((word, idx) => {
+                  const isSpoken = idx < currentWordIndex;
+                  const isCurrent = idx === currentWordIndex - 1 && isNarrating;
+                  return (
+                    <span
+                      key={`canvas-w-${idx}`}
+                      className="inline-block transition-all duration-150"
+                      style={{
+                        opacity: isSpoken ? 1 : 0.35,
+                        color: isCurrent ? '#f7c27d' : isSpoken ? '#fbf4ea' : '#9d97b0',
+                        textShadow: isCurrent ? '0 0 14px rgba(247,194,125,0.7)' : 'none',
+                      }}
+                    >
+                      {word}
+                      {idx < OPENING_PASSAGE_WORDS.length - 1 ? '\u00A0' : ''}
+                    </span>
+                  );
+                })}
+                &rdquo;
+              </p>
+
+              {/* Metadata Footer */}
+              <div className="mt-4 pt-3 border-t border-white/10 flex items-center justify-between text-[11px] font-mono text-[#cfc5b9]/70 flex-wrap gap-2">
+                <span className="text-[#f28b50]">Voice: The Chronicle (Brian · Indian English)</span>
+                <span>Bandra-Kurla Complex · 16:40 IST</span>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* ── 3. MONUMENTAL TITLE REVEAL (0.58 – 0.86) ───────────────────── */}
+        {titleOpacity > 0.02 && (
+          <div
+            className="absolute inset-0 flex flex-col items-center justify-center p-4 sm:p-6 z-40 pointer-events-none select-none text-center"
+            style={{
+              opacity: titleOpacity * exitFade,
+              transform: `scale(${portalZoom}) translateY(${(1 - titleOpacity) * 24}px)`,
+              transition: reducedMotion ? 'none' : 'opacity 200ms ease-out',
+            }}
+          >
+            {/* Prestigious Editorial Eyebrow */}
+            <div className="flex items-center gap-3 mb-4">
+              <span className="h-[1px] w-8 sm:w-12 bg-gradient-to-r from-transparent to-[#e8a84a]/60" />
+              <span className="font-mono text-[10px] sm:text-[11px] uppercase tracking-[0.38em] text-[#e8a84a]/90 font-medium">
+                BOOM! STUDIOS · RAM V & FILIPE ANDRADE
+              </span>
+              <span className="h-[1px] w-8 sm:w-12 bg-gradient-to-l from-transparent to-[#e8a84a]/60" />
+            </div>
+
+            {/* Title Part 1: Wide Spaced Serif Eyebrow */}
+            <p className="font-mono text-xs sm:text-sm md:text-base uppercase tracking-[0.32em] text-[#dfd5c7]/85 mb-1 sm:mb-2 drop-shadow-[0_2px_8px_rgba(0,0,0,0.85)]">
+              THE MANY DEATHS OF
+            </p>
+
+            {/* Title Part 2: Colossal Graphic Novel Masthead */}
+            <h1 className="font-display text-5xl sm:text-7xl md:text-8xl lg:text-9xl font-black tracking-tight leading-[0.92] text-[#fbf4ea] drop-shadow-[0_16px_48px_rgba(0,0,0,0.95)] max-w-4xl">
+              <span className="bg-gradient-to-r from-[#f7c27d] via-[#f28b50] to-[#e66c8b] bg-clip-text text-transparent">
+                LAILA STARR
+              </span>
+            </h1>
+
+            {/* Poetic Narrative Hook Line */}
+            <p className="mt-5 sm:mt-6 font-serif italic text-sm sm:text-lg md:text-xl text-[#fbf4ea]/80 max-w-xl mx-auto leading-relaxed drop-shadow-[0_2px_12px_rgba(0,0,0,0.9)] [text-wrap:balance]">
+              "When the goddess of death is cast down into a dying city, mortality is not an end. It is an education."
+            </p>
+
+            {/* Setting / Act Metadata */}
+            <div className="mt-5 sm:mt-6 flex items-center justify-center gap-3 sm:gap-4 font-mono text-[10px] sm:text-[11px] uppercase tracking-[0.30em] text-white/50">
+              <span>MUMBAI</span>
+              <span className="text-[#f28b50]">•</span>
+              <span>16:40 IST</span>
+              <span className="text-[#f28b50]">•</span>
+              <span>CHAPTER 01</span>
+            </div>
+          </div>
+        )}
+
+        {/* Discreet Scroll Guidance Indicator (Fades smoothly as viewer scrolls past 0.10) */}
+        {stageProgress < 0.10 && (
+          <div
+            className="absolute bottom-[max(2rem,calc(env(safe-area-inset-bottom,0px)+1.5rem))] left-1/2 -translate-x-1/2 z-40 pointer-events-none flex flex-col items-center gap-2 transition-opacity duration-300"
+            style={{ opacity: Math.max(0, 1 - stageProgress * 12) }}
+            aria-hidden="true"
+          >
             <div className="flex items-center gap-2 text-[10px] font-mono uppercase tracking-[0.28em] text-white/50 animate-bounce">
-              <span>Scroll to Begin Journey</span>
+              <span>Scroll to Begin</span>
               <ChevronDown className="w-3.5 h-3.5 text-[#f28b50]" />
             </div>
           </div>
@@ -429,4 +431,3 @@ export const Scene00Prologue: React.FC<Scene00PrologueProps> = React.memo(({
 });
 
 Scene00Prologue.displayName = 'Scene00Prologue';
-

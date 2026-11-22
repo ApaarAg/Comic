@@ -67,3 +67,38 @@ test('rapid movement never restarts a line that is already playing', () => {
   const action = resolveTimelineAudioAction('scene-02', 0.09, 0.07, latch);
   assert.equal(action.action, 'none');
 });
+
+test('Scene 00 does not trigger narration prematurely at scroll position zero or during story summary', () => {
+  const latch = createLatch();
+  
+  // At scroll position zero
+  const zeroAction = resolveTimelineAudioAction('scene-00', 0.0, 0.0, latch);
+  assert.equal(zeroAction.action, 'none', 'No narration should play at scroll position zero');
+
+  // Small scroll into atmosphere
+  const smallScroll = resolveTimelineAudioAction('scene-00', 0.05, 0.0, latch);
+  assert.equal(smallScroll.action, 'none', 'Atmosphere beat must not trigger narration');
+
+  // Scrolling into THE STORY introduction summary
+  const summaryScroll = resolveTimelineAudioAction('scene-00', 0.20, 0.15, latch);
+  assert.equal(summaryScroll.action, 'none', 'Story summary must be purely visual without speech trigger');
+});
+
+test('Scene 00 narration triggers only when scroll reaches the opening canvas beat', () => {
+  const latch = createLatch();
+
+  // Forward scroll reaching the opening canvas at 0.36
+  const canvasAction = resolveTimelineAudioAction('scene-00', 0.38, 0.30, latch);
+  assert.equal(canvasAction.action, 'play', 'Narration must trigger when reaching opening canvas beat');
+  assert.equal(canvasAction.speechToPlay?.id, 's00-01');
+  assert.equal(canvasAction.speechToPlay?.mode, 'narration');
+
+  // Once completed, staying in opening canvas does not restart
+  latch.completedSpeechIds.add('s00-01');
+  const heldAction = resolveTimelineAudioAction('scene-00', 0.42, 0.39, latch);
+  assert.equal(heldAction.action, 'none', 'Completed narration must not retrigger while holding');
+
+  // Deliberate reverse scroll above 0.31 rearms for replay
+  resolveTimelineAudioAction('scene-00', 0.28, 0.40, latch);
+  assert.equal(latch.completedSpeechIds.has('s00-01'), false, 'Retreating past beat must rearm s00-01');
+});

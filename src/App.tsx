@@ -91,6 +91,17 @@ export default function App() {
     return () => mql.removeEventListener('change', onChange);
   }, []);
 
+  // Automatic Audio Initialization: Attempt immediate playback and register user interaction unlock
+  useEffect(() => {
+    soundscape.ensureAutoplayUnlocked(() => {
+      setIsMuted(false);
+    });
+    const syncMuteState = () => {
+      setIsMuted(soundscape.getMuted());
+    };
+    return soundscape.subscribe(syncMuteState);
+  }, []);
+
   // Initialize Single Coordinated Scroll Architecture: Lenis smooth scroll + GSAP ScrollTrigger
   useEffect(() => {
     const updateLayout = () => {

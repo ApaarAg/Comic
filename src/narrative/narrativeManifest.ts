@@ -83,7 +83,7 @@ export const SCENE_NARRATION_BEATS: NarrationBeat[] = [
     sceneId: 'scene-00',
     text: 'It began on a Wednesday afternoon as a late December sun was just dipping below the Mumbai skyline. Down where the elevated highway curves between glass towers, the city exhaled in horns and heat.',
     audioSrc: '/assets/audio/voices/narrator/scene-00-opening-canvas.mp3',
-    triggerProgress: 0.0001,
+    triggerProgress: 0.002,
     durationMs: 11378,
     captionStyle: 'cinematic',
     sourceOrigin: 'comic',

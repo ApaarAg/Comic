@@ -721,6 +721,10 @@ class SceneAudioManager {
     this.playScoreTrack(toTrack);
   }
 
+  public isAudioContextRunning(): boolean {
+    return typeof window !== 'undefined' && Boolean(Howler.ctx && Howler.ctx.state === 'running');
+  }
+
   private autoplayListenersBound = false;
 
   public ensureAutoplayUnlocked(onUnlocked?: () => void): void {
@@ -754,6 +758,17 @@ class SceneAudioManager {
     if (Howler.ctx && Howler.ctx.state === 'running') {
       tryResumeAndPlay();
       return;
+    }
+
+    // Attempt immediate resume if browser allows autoplay without gesture
+    if (Howler.ctx && Howler.ctx.state === 'suspended') {
+      void Howler.ctx.resume().then(() => {
+        if (Howler.ctx && Howler.ctx.state === 'running') {
+          tryResumeAndPlay();
+        }
+      }).catch(() => {
+        // Autoplay restricted by browser policy; wait for user interaction gesture
+      });
     }
 
     if (this.autoplayListenersBound) return;
